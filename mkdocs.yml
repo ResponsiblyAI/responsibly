@@ -1,0 +1,13 @@
+site_name: ethically
+site_description: Sample project generated from jacebrowning/template-python.
+site_author: Shlomi Hod
+repo_url: https://github.com/shlomihod/ethically
+
+theme: readthedocs
+
+pages:
+- Home: index.md
+- About:
+  - Release Notes: about/changelog.md
+  - Contributing: about/contributing.md
+  - License: about/license.md
