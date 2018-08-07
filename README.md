@@ -2,7 +2,7 @@
 Status](https://img.shields.io/travis/shlomihod/ethically/master.svg)](https://travis-ci.org/shlomihod/ethically) Windows: [![Windows Build Status](https://img.shields.io/appveyor/ci/shlomihod/ethically/master.svg)](https://ci.appveyor.com/project/shlomihod/ethically)<br>Metrics: [![Coverage Status](https://img.shields.io/coveralls/shlomihod/ethically/master.svg)](https://coveralls.io/r/shlomihod/ethically) [![Scrutinizer Code Quality](https://img.shields.io/scrutinizer/g/shlomihod/ethically.svg)](https://scrutinizer-ci.com/g/shlomihod/ethically/?branch=master)<br>Usage: [![PyPI Version](https://img.shields.io/pypi/v/ethically.svg)](https://pypi.org/project/ethically) -->
 
 # Ethically
-Python Package for Designing, Auditing and Adjusting the Ethics of AI Systems
+Python Package for Designing, Auditing and Adjusting the Ethics of AI Systems.
 
 ## Features (planned, incomplete list)
 - [ ] Words Embedding
