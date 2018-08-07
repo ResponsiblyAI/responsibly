@@ -1,7 +1,7 @@
 # Project settings
 PROJECT := ethically
 PACKAGE := ethically
-REPOSITORY := shlomihod/ethically
+REPOSITORY := ethicallyAI/ethically
 
 # Project paths
 PACKAGES := $(PACKAGE) tests

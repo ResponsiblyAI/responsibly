@@ -41,7 +41,7 @@ setuptools.setup(
     version=read_package_variable('__version__'),
 
     description="Sample project generated from jacebrowning/template-python.",
-    url='https://github.com/shlomihod/ethically',
+    url='https://github.com/ethicallyAI/ethically',
     author='Shlomi Hod',
     author_email='shlomi.hod@gmail.com',
 

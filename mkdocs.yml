@@ -1,7 +1,7 @@
-site_name: ethically
-site_description: Sample project generated from jacebrowning/template-python.
+site_name: Ethically
+site_description: Python Package for Designing, Auditing and Adjusting the Ethics of AI Systems.
 site_author: Shlomi Hod
-repo_url: https://github.com/shlomihod/ethically
+repo_url: https://github.com/ethicallyAI/ethically
 
 theme: readthedocs
 
