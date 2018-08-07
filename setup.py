@@ -56,8 +56,10 @@ setuptools.setup(
     long_description_content_type='text/markdown',
     license='MIT',
     classifiers=[
-        # TODO: update this list to match your application: https://pypi.org/pypi?%3Aaction=list_classifiers
         'Development Status :: 1 - Planning',
+        'Intended Audience :: Science/Research',
+        'Topic :: Scientific/Engineering :: Artificial Intelligence',
+        'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
