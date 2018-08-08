@@ -10,8 +10,8 @@ Python Package for Designing, Auditing and Adjusting the Ethics of AI Systems.
   - [ ] Caliskan, Aylin, Joanna J. Bryson, and Arvind Narayanan. 2017. [Semantics derived automatically from language corpora contain human-like biases](https://researchportal.bath.ac.uk/en/publications/semantics-derived-automatically-from-language-corpora-necessarily). Science.
 
 - [ ] Fairness in Classification
-  - [ ] Designing - loss functions
-  - [ ] Auditing - metrics
+  - [ ] Designing - Regularization
+  - [ ] Auditing - Metrics
   - [ ] Adjusting
 
 ## Requirements
