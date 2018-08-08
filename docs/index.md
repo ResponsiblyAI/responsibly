@@ -1,3 +1,1 @@
-# ethically
-
-Sample project generated from jacebrowning/template-python.
+../README.md
