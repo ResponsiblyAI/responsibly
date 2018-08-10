@@ -43,3 +43,7 @@ $ python
 >>> import ethically
 >>> ethically.__version__
 ```
+
+
+## Credits
+* `ethically.we.tolga` code and data is based on https://github.com/tolga-b/debiaswe

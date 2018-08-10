@@ -47,9 +47,10 @@ setuptools.setup(
 
     packages=setuptools.find_packages(),
 
+    include_package_data=True,
+
     entry_points={'console_scripts': [
         'ethically-cli = ethically.cli:main',
-        'ethically-gui = ethically.gui:main',
     ]},
 
     long_description=build_description(),
@@ -68,7 +69,12 @@ setuptools.setup(
     ],
 
     install_requires=[
-        # TODO: Add your library's requirements here
+        "numpy ~= 1.14.5",
+        "pandas ~= 0.23.3",
+        "matplotlib ~= 2.2.2",
+        "seaborn ~= 0.9.0",
+        "scikit-learn ~= 0.19.1",
+        "gensim ~= 3.4.0",
         "click ~= 6.0",
         "minilog ~=0.2.1",
     ]
