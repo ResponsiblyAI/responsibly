@@ -23,7 +23,7 @@ class WordsEmbedding:
     def __init__(self, model):
         if not isinstance(model, KeyedVectors):
             raise TypeError('model should be of type KeyedVectors, not {}'
-                .format(type(model)))
+                             .format(type(model)))
 
         self.model = model
 
@@ -36,7 +36,7 @@ class WordsEmbedding:
         if self.direction is None:
             raise RuntimeError('The direction was not identified'
                                ' for this {} instance'
-                                .format(self.__class__.__name__))
+                               .format(self.__class__.__name__))
 
     # There is a mistake in the article
     # it is written (section 5.1):
@@ -44,21 +44,21 @@ class WordsEmbedding:
     # however in the source code:
     # https://github.com/tolga-b/debiaswe/blob/10277b23e187ee4bd2b6872b507163ef4198686b/debiaswe/we.py#L235-L245
     def _identify_subspace_by_pca(self, definitional_pairs, n_components):
-            matrix = []
+        matrix = []
 
-            for word1, word2 in definitional_pairs:
-                vector1 = normalize(self.model[word1])
-                vector2 = normalize(self.model[word2])
+        for word1, word2 in definitional_pairs:
+            vector1 = normalize(self.model[word1])
+            vector2 = normalize(self.model[word2])
 
-                center = (vector1 + vector2) / 2
+            center = (vector1 + vector2) / 2
 
-                matrix.append(vector1 - center)
-                matrix.append(vector2 - center)
+            matrix.append(vector1 - center)
+            matrix.append(vector2 - center)
 
-            pca = PCA(n_components=n_components)
-            pca.fit(matrix)
+        pca = PCA(n_components=n_components)
+        pca.fit(matrix)
 
-            return pca
+        return pca
 
 
     def _identify_direction(self, positive_end, negative_end,
@@ -70,7 +70,7 @@ class WordsEmbedding:
 
         if method == 'single':
             direction = normalize(normalize(self.model[definitional[0]])
-                             - normalize(self.model[definitional[1]]))
+                                  - normalize(self.model[definitional[1]]))
 
 
         elif method == 'sum':
@@ -87,7 +87,7 @@ class WordsEmbedding:
             pca = self._identify_subspace_by_pca(definitional, 1)
             if pca.explained_variance_ratio_[0] < FIRST_PC_THRESHOLD:
                 raise RuntimeError('The Explained variance of the first principal component should be at least {}, but it is {}'.
-                                  format(FIRST_PC_THRESHOLD, pca.explained_variance_ratio_[0]))
+                                   format(FIRST_PC_THRESHOLD, pca.explained_variance_ratio_[0]))
             direction = pca.components_[0]
 
         self.direction = direction

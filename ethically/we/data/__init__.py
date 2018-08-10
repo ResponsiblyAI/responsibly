@@ -13,5 +13,4 @@ def load_json_resource(resource_name):
 TOLGA_DATA = load_json_resource('tolga')
 
 TOLGA_DATA['gender']['professions_names'] = list(
-                                        zip(*TOLGA_DATA['gender']['professions'])
-                                        )[0]
+    zip(*TOLGA_DATA['gender']['professions']))[0]
