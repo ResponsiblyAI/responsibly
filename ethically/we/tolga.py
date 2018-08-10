@@ -1,10 +1,10 @@
-import numpy as np
-import pandas as pd
-from gensim.models.keyedvectors import KeyedVectors
-from sklearn.decomposition import PCA
 
 import matplotlib.pylab as plt
+import numpy as np
+import pandas as pd
 import seaborn as sns
+from gensim.models.keyedvectors import KeyedVectors
+from sklearn.decomposition import PCA
 
 from .data import TOLGA_DATA
 from .utils import cosine_similarity, normalize, reject_vector
