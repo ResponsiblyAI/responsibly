@@ -1,6 +1,6 @@
 """Sample integration test module using pytest-describe and expecter."""
 # pylint: disable=redefined-outer-name,unused-variable,expression-not-assigned,singleton-comparison
-
+"""
 import pytest
 from expecter import expect
 
@@ -29,3 +29,4 @@ def describe_cli():
 
             expect(result.exit_code) == 0
             expect(result.output) == ""
+"""
