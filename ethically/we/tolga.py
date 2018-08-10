@@ -3,14 +3,11 @@ import pandas as pd
 from gensim.models.keyedvectors import KeyedVectors
 from sklearn.decomposition import PCA
 
+import matplotlib.pylab as plt
+import seaborn as sns
+
 from .data import TOLGA_DATA
-from .utils import cosine_similarity, normalize, project_vector, reject_vector
-
-
-#import matplotlib.pylab as plt
-#import seaborn as sns
-
-
+from .utils import cosine_similarity, normalize, reject_vector
 
 
 DIRECTION_METHODS = ['single', 'sum', 'pca']
