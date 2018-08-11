@@ -19,11 +19,11 @@ def cosine_similarity(v, u):
 
 
 def project_vector(v, u):
-    """Projecting the vector v onto direction u"""
+    """Projecting the vector v onto direction u."""
     normalize_u = normalize(u)
     return (v @ normalize_u) * normalize_u
 
 
 def reject_vector(v, u):
-    """Projecting the vector v onto direction u"""
+    """Projecting the vector v onto direction u."""
     return v - project_vector(v, u)

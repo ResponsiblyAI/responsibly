@@ -1,1 +1,1 @@
-from .tolga import GenderBiasWE, RaceBiasWE
+from .tolga import GenderBiasWE
