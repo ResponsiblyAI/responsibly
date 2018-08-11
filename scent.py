@@ -18,7 +18,7 @@ else:
 watch_paths = ["ethically", "tests"]
 
 
-class Options(object):
+class Options:
     group = int(time.time())  # unique per run
     show_coverage = False
     rerun_args = None
