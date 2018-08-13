@@ -128,8 +128,7 @@ docs:
 
 .PHONY: publish
 publish: docs
-	cd docs
-	sh ./gh-pages.sh
+	cd docs && sh ./gh-pages.sh
 
 # PYREVERSE := pipenv run pyreverse
 # MKDOCS := pipenv run mkdocs
