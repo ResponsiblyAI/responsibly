@@ -42,6 +42,7 @@ release = ethically.__version__
 # ones.
 extensions = [
     'sphinx.ext.autodoc',
+    'sphinx.ext.autosummary',
     'sphinx.ext.doctest',
     'sphinx.ext.intersphinx',
     'sphinx.ext.todo',
@@ -50,6 +51,28 @@ extensions = [
     'sphinx.ext.viewcode',
     'sphinx.ext.githubpages',
 ]
+
+
+# Theme options are theme-specific and customize the look and feel of a theme
+# further.  For a list of options available for each theme, see the
+# documentation.
+## alabater theme opitons
+html_theme_options = {
+    'github_button': True,
+    'github_type': 'star&v=2',  ## Use v2 button
+    'github_user': 'ethicallyAI',
+    'github_repo': 'ethically',
+    'github_banner': True,
+}
+
+## Include Python objects as they appear in source files
+## Default: alphabetically ('alphabetical')
+autodoc_member_order = 'bysource'
+## Default flags used by autodoc directives
+autodoc_default_flags = ['members', 'show-inheritance']
+## Generate autodoc stubs with summaries from code
+autosummary_generate = True
+
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']
