@@ -15,6 +15,7 @@ Python Package for Designing, Auditing and Adjusting the Ethics of AI Systems.
 
    words-embedding
 
+TEST
 
 Indices and tables
 ==================
