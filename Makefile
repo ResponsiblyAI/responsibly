@@ -122,7 +122,8 @@ read-coverage:
 
 .PHONY: docs
 docs:
-	cd docs && sphinx-apidoc  -o api ../ethically && make html
+	cd docs && make html
+	# && sphinx-apidoc  -o api ../ethically
 	@echo "\033[95m\n\nBuild successful! View the docs homepage at docs/_build/html/index.html.\n\033[0m"
 
 # PYREVERSE := pipenv run pyreverse
