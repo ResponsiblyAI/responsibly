@@ -40,10 +40,10 @@ setuptools.setup(
     name=read_package_variable('__project__'),
     version=read_package_variable('__version__'),
 
-    description="Sample project generated from jacebrowning/template-python.",
-    url='https://github.com/ethicallyAI/ethically',
-    author='Shlomi Hod',
-    author_email='shlomi.hod@gmail.com',
+    description=read_package_variable('__description__'),
+    url=read_package_variable('__url__'),
+    author=read_package_variable('__author__'),
+    author_email=read_package_variable('__author_email__'),
 
     packages=setuptools.find_packages(),
 
@@ -55,7 +55,7 @@ setuptools.setup(
 
     long_description=build_description(),
     long_description_content_type='text/markdown',
-    license='MIT',
+    license=read_package_variable('__license__'),
     classifiers=[
         'Development Status :: 1 - Planning',
         'Intended Audience :: Science/Research',
