@@ -15,7 +15,7 @@ buildDirectory=_build/html
 # # build html docs from sphinx files
 # sphinx-build -b html . "$buildDirectory"
 
-create or use orphaned gh-pages branch
+# create or use orphaned gh-pages branch
 branch_name=gh-pages
 if [ $(git branch --list "$branch_name") ]
 then
