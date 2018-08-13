@@ -7,7 +7,7 @@ import setuptools
 
 
 PACKAGE_NAME = 'ethically'
-MINIMUM_PYTHON_VERSION = '3.6'
+MINIMUM_PYTHON_VERSION = '3.5'
 
 
 def check_python_version():
