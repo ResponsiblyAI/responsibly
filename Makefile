@@ -213,7 +213,8 @@ clean-all: clean
 
 .PHONY: .clean-docs
 .clean-docs:
-	rm -rf *.rst docs/apidocs *.html docs/*.png site
+	# rm -rf *.rst docs/apidocs *.html docs/*.png site
+	cd docs && make clean && rm -rf api
 
 .PHONY: .clean-build
 .clean-build:
