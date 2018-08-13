@@ -1,6 +1,10 @@
-Unix: `Unix Build
-Status <https://travis-ci.org/ethicallyAI/ethically>`__ Usage: `PyPI
-Version <https://pypi.org/project/ethically>`__\
+Unix:
+.. image:: https://img.shields.io/travis/ethicallyAI/ethically/master.svg
+    :target: https://travis-ci.org/ethicallyAI/ethically
+Usage:
+.. image:: https://img.shields.io/pypi/v/ethically.svg
+    :target: https://pypi.org/project/ethically
+
 
 Ethically
 =========
