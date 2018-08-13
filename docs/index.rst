@@ -6,10 +6,14 @@
 Welcome to Ethically's documentation!
 =====================================
 
+Python Package for Designing, Auditing and Adjusting the Ethics of AI Systems.
+
+
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
+   words-embedding
 
 
 Indices and tables
