@@ -319,8 +319,7 @@ class WordsEmbedding:
         if not debug:
             return full_specific_words, clf
 
-        if debug:
-            return full_specific_words, clf, X, y
+        return full_specific_words, clf, X, y
 
 
 class GenderBiasWE(WordsEmbedding):
