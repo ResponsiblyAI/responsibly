@@ -1,18 +1,27 @@
 
+import os
+
 import matplotlib.pylab as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
 from gensim.models.keyedvectors import KeyedVectors
+from pkg_resources import resource_filename
 from sklearn.decomposition import PCA
+from sklearn.svm import LinearSVC
 
 from .data import TOLGA_DATA
-from .utils import cosine_similarity, normalize, reject_vector
+from .utils import (
+    cosine_similarity, normalize, project_reject_vector, project_vector,
+    reject_vector, update_word_vector,
+)
 
 
 DIRECTION_METHODS = ['single', 'sum', 'pca']
-DEBIAS_METHODS = ['hard', 'soft']
+DEBIAS_METHODS = ['neutralize', 'hard', 'soft']
 FIRST_PC_THRESHOLD = 0.5
+RANDOM_STATE = 42
+MAX_NON_SPECIFIC_EXAMPLES = 1000
 
 
 class WordsEmbedding:
@@ -57,6 +66,9 @@ class WordsEmbedding:
 
         return pca
 
+    # TODO: add the SVD method from section 6 step 1
+    # It seems there is a mistake there, I think it is the same as PCA
+    # just with repleacing it with SVD
     def _identify_direction(self, positive_end, negative_end,
                             definitional, method='pca'):
         if method not in DIRECTION_METHODS:
@@ -175,28 +187,180 @@ class WordsEmbedding:
                          / inner_product)
         return indirect_bias
 
-    def debias(self, method='hard'):
-        pass
+    def _extract_neutral_words(self, specific_words):
+        extended_specific_words = set()
+
+        # because or specific_full data was trained on partial words embedding
+        for word in specific_words:
+            extended_specific_words.add(word)
+            extended_specific_words.add(word.lower())
+            extended_specific_words.add(word.upper())
+            extended_specific_words.add(word.title())
+
+        neutral_words = [word for word in self.model.vocab
+                         if word not in extended_specific_words]
+
+        return neutral_words
+
+    def _neutralize(self, neutral_words):
+        self._is_direction_identified()
+
+        for word in neutral_words:
+            neutralized_vector = reject_vector(self.model[word],
+                                               self.direction)
+            update_word_vector(self.model, word, neutralized_vector)
+
+    def _equalize(self, equality_sets):
+        for equality_set_words in equality_sets:
+            equality_set_vectors = [self.model[word]
+                                    for word in equality_set_words]
+            center = np.mean(equality_set_vectors, axis=0)
+            (projected_center,
+             rejected_center) = project_reject_vector(center,
+                                                      self.direction)
+
+            for word, vector in zip(equality_set_words, equality_set_vectors):
+                projected_vector = project_vector(vector, self.direction)
+
+                projected_part = normalize(projected_vector - projected_center)
+                scaling = np.sqrt(1 - np.linalg.norm(rejected_center)**2)
+
+                equalized_vector = rejected_center + scaling * projected_part
+
+                update_word_vector(self.model, word, equalized_vector)
+
+    # TODO: what is PairBais?
+    def debias(self, method='hard', neutral_words=None, equality_sets=None):
+        if method not in DEBIAS_METHODS:
+            raise ValueError('method should be one of {}, {} was given'.format(
+                DEBIAS_METHODS, method))
+
+        if method in ['hard', 'neutralize']:
+            self._neutralize(neutral_words)
+
+        if method == 'hard':
+            self._equalize(equality_sets)
 
     def evaluate_words_embedding(self):
-        # self.model.evaluate_word_pairs
-        # self.model.evaluate_word_analogies
-        pass
+        word_pairs_path = resource_filename(__name__,
+                                            os.path.join('data',
+                                                         'evaluation',
+                                                         'wordsim353.tsv'))
+        word_paris_result = self.model.evaluate_word_pairs(word_pairs_path)
+
+        analogies_path = resource_filename(__name__,
+                                           os.path.join('data',
+                                                        'evaluation',
+                                                        'questions-words.txt'))
+        analogies_result = self.model.evaluate_word_analogies(analogies_path)
+
+        print('From Gensim')
+        print()
+        print('-' * 30)
+        print()
+        print('Word Pairs Result - WordSimilarity-353:')
+        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
+        print('Pearson correlation coefficient:', word_paris_result[0])
+        print('Spearman rank-order correlation coefficient'
+              'between the similarities from the dataset'
+              'and the similarities produced by the model itself:',
+              word_paris_result[1])
+        print('Ratio of pairs with unknown words:', word_paris_result[2])
+        print()
+        print('-' * 30)
+        print()
+        print('Analogies Result')
+        print('~~~~~~~~~~~~~~~~')
+        print('Overall evaluation score:', analogies_result[0])
+
+    def learn_full_specific_words(self, seed_specific_words,
+                                  max_non_specific_examples=None, debug=None):
+
+        if debug is None:
+            debug = False
+
+        if max_non_specific_examples is None:
+            max_non_specific_examples = MAX_NON_SPECIFIC_EXAMPLES
+
+        data = []
+        non_specific_example_count = 0
+
+        for word in self.model.vocab:
+            is_specific = word in seed_specific_words
+
+            if not is_specific:
+                non_specific_example_count += 1
+                if non_specific_example_count <= max_non_specific_examples:
+                    data.append((self.model[word], is_specific))
+            else:
+                data.append((self.model[word], is_specific))
+
+        np.random.seed(RANDOM_STATE)
+        np.random.shuffle(data)
+
+        X, y = zip(*data)
+
+        X = np.array(X)
+        X /= np.linalg.norm(X, axis=1)[:, None]
+
+        y = np.array(y).astype('int')
+
+        clf = LinearSVC(C=1, class_weight='balanced',
+                        random_state=RANDOM_STATE)
+
+        clf.fit(X, y)
+
+        full_specific_words = []
+        for word in self.model.vocab:
+            vector = [normalize(self.model[word])]
+            if clf.predict(vector):
+                full_specific_words.append(word)
+
+        if not debug:
+            return full_specific_words, clf
+
+        if debug:
+            return full_specific_words, clf, X, y
 
 
 class GenderBiasWE(WordsEmbedding):
     PROFESSIONS_NAME = TOLGA_DATA['gender']['professions_names']
     DEFINITIONAL_PAIRS = TOLGA_DATA['gender']['definitional_pairs']
+    SPECIFIC_SEED = set(TOLGA_DATA['gender']['specific_seed'])
+    SPECIFIC_FULL = set(TOLGA_DATA['gender']['specific_full'])
+    NEUTRAL_PROFESSIONS_NAME = list(set(PROFESSIONS_NAME)
+                                    - set(SPECIFIC_FULL))
 
     def __init__(self, model):
         super().__init__(model)
-        self._identify_direction('she', 'he',
+        self._identify_direction('he', 'she',
                                  self.__class__.DEFINITIONAL_PAIRS,
                                  'pca')
 
     def calc_direct_bias(self, neutral_words='professions', c=None):
         if isinstance(neutral_words, str) and neutral_words == 'professions':
             return super().calc_direct_bias(
-                self.__class__.PROFESSIONS_NAME, c)
+                self.__class__.NEUTRAL_PROFESSIONS_NAME, c)
         else:
             return super().calc_direct_bias(neutral_words)
+
+    def debias(self, method='hard', neutral_words=None, equality_sets=None):
+        if method in ['hard', 'neutralize']:
+            if neutral_words is None:
+                neutral_words = self._extract_neutral_words(self.__class__
+                                                            .SPECIFIC_FULL)
+
+        if method == 'hard' and equality_sets is None:
+            equality_sets = self.__class__.DEFINITIONAL_PAIRS
+
+        super().debias(method, neutral_words, equality_sets)
+
+    def learn_full_specific_words(self, seed_specific_words='tolga',
+                                  max_non_specific_examples=None,
+                                  debug=None):
+        if seed_specific_words == 'tolga':
+            seed_specific_words = self.__class__.SPECIFIC_SEED
+
+        return super().learn_full_specific_words(seed_specific_words,
+                                                 max_non_specific_examples,
+                                                 debug)

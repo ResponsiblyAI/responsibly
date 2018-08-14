@@ -74,7 +74,7 @@ setuptools.setup(
         "matplotlib ~= 2.2.2",
         "seaborn ~= 0.9.0",
         "scikit-learn ~= 0.19.1",
-        "gensim ~= 3.4.0",
+        "gensim ~= 3.5.0",
         "click ~= 6.0",
         "minilog ~=0.2.1",
     ]

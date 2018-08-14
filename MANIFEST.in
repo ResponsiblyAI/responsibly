@@ -2,5 +2,4 @@ include *.rst *.txt *.md
 recursive-include docs *.rst *.txt *.md
 graft */files
 graft */*/files
-include ethically/*/data/*.json
-include ethically/*/data/*.bin
+recursive-include docs *.json *.txt *.csv *.tsv

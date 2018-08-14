@@ -25,5 +25,18 @@ def project_vector(v, u):
 
 
 def reject_vector(v, u):
-    """Projecting the vector v onto direction u."""
+    """Rejecting the vector v onto direction u."""
     return v - project_vector(v, u)
+
+
+def project_reject_vector(v, u):
+    """Projecting and rejecting the vector v onto direction u."""
+    projected_vector = project_vector(v, u)
+    rejected_vector = v - project_vector(v, u)
+    return projected_vector, rejected_vector
+
+
+def update_word_vector(model, word, new_vector):
+    model.syn0[model.vocab[word].index] = new_vector
+    if model.syn0norm is not None:
+        model.syn0norm[model.vocab[word].index] = normalize(new_vector)
