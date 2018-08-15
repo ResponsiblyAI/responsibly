@@ -24,7 +24,7 @@ RANDOM_STATE = 42
 MAX_NON_SPECIFIC_EXAMPLES = 1000
 
 
-class WordsEmbedding:
+class BiasWordsEmbedding:
 
     def __init__(self, model):
         if not isinstance(model, KeyedVectors):
@@ -322,7 +322,7 @@ class WordsEmbedding:
         return full_specific_words, clf, X, y
 
 
-class GenderBiasWE(WordsEmbedding):
+class GenderBiasWE(BiasWordsEmbedding):
     PROFESSIONS_NAME = BOLUKBASI_DATA['gender']['professions_names']
     DEFINITIONAL_PAIRS = BOLUKBASI_DATA['gender']['definitional_pairs']
     SPECIFIC_SEED = set(BOLUKBASI_DATA['gender']['specific_seed'])
