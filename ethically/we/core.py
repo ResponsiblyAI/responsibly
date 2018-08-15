@@ -39,7 +39,7 @@ class BiasWordsEmbedding:
         self.negative_end = None
 
     def __copy__(self):
-        bias_words_embedding = BiasWordsEmbedding(self.model)
+        bias_words_embedding = self.__class__(self.model)
         bias_words_embedding.direction = copy.deepcopy(self.direction)
         bias_words_embedding.positive_end = copy.deepcopy(self.positive_end)
         bias_words_embedding.negative_end = copy.deepcopy(self.negative_end)
@@ -49,6 +49,9 @@ class BiasWordsEmbedding:
         bias_words_embedding = copy.copy(self)
         bias_words_embedding.model = copy.deepcopy(bias_words_embedding.model)
         return bias_words_embedding
+
+    def __getitem__(self, key):
+        return self.model[key]
 
     def _is_direction_identified(self):
         if self.direction is None:
@@ -254,7 +257,7 @@ class BiasWordsEmbedding:
         if inplace:
             bias_words_embedding = self
         else:
-            bias_words_embedding = copy.deepcopy(bias_words_embedding)
+            bias_words_embedding = copy.deepcopy(self)
 
         if method not in DEBIAS_METHODS:
             raise ValueError('method should be one of {}, {} was given'.format(
@@ -375,6 +378,12 @@ class GenderBiasWE(BiasWordsEmbedding):
 
         self.NEUTRAL_WORDS = self._extract_neutral_words(self.__class__
                                                          .SPECIFIC_FULL_WITH_DEFINITIONAL)  # pylint: disable=C0301
+
+    def __copy__(self):
+        return super().__copy__()
+
+    def __deepcopy__(self, memo):
+        return super().__deepcopy__(memo)
 
     def calc_direct_bias(self, neutral_words='professions', c=None):
         if isinstance(neutral_words, str) and neutral_words == 'professions':
