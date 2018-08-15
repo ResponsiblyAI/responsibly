@@ -137,13 +137,14 @@ def test_equalize(gender_biased_we, is_preforming=True):
                                        atol=ATOL)
 
 
-def test_hard_debias(gender_biased_we):
+def test_hard_debias_inplace(gender_biased_we, is_preforming=True):
     """
     Test hard_debias method in GenderBiasWE
     """
     # pylint: disable=C0301
-    test_calc_direct_bias(gender_biased_we)
-    gender_biased_we.debias(method='hard')
+    if is_preforming:
+        test_calc_direct_bias(gender_biased_we)
+        gender_biased_we.debias(method='hard')
 
     test_neutralize(gender_biased_we, is_preforming=False)
     test_equalize(gender_biased_we, is_preforming=False)
@@ -168,3 +169,12 @@ def test_hard_debias(gender_biased_we):
                                           - gender_biased_we.model[equality_word2])
 
             np.testing.assert_allclose(we1_distance, we2_distance, atol=ATOL)
+
+def test_hard_debias_not_inplace(gender_biased_we):
+    test_calc_direct_bias(gender_biased_we)
+
+    gender_debiased_we = gender_biased_we.debias(method='hard',
+                                                 inplace=False)
+
+    test_calc_direct_bias(gender_biased_we)
+    test_hard_debias_inplace(gender_debiased_we, is_preforming=False)
