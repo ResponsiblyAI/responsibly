@@ -6,7 +6,8 @@ from pkg_resources import resource_string
 
 def load_json_resource(resource_name):
     return json.loads(
-        resource_string(__name__, resource_name + '.json')
+        resource_string(__name__, resource_name + '.json').decode('utf-8')
+
     )
 
 
