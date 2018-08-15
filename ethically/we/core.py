@@ -249,7 +249,7 @@ class BiasWordsEmbedding:
 
     # TODO: what is PairBais?
     def debias(self, method='hard', neutral_words=None, equality_sets=None,
-               inplace=True):
+               inplace=True, verbose=False):
         # pylint: disable=W0212
         if inplace:
             bias_words_embedding = self
@@ -261,9 +261,13 @@ class BiasWordsEmbedding:
                 DEBIAS_METHODS, method))
 
         if method in ['hard', 'neutralize']:
-            bias_words_embedding._neutralize(neutral_words)
+            if verbose:
+                print('Neutralize...')
+            bias_words_embedding._neutralize(neutral_words, verbose)
 
         if method == 'hard':
+            if verbose:
+                print('Equalize...')
             bias_words_embedding._equalize(equality_sets)
 
         if inplace:
@@ -380,7 +384,7 @@ class GenderBiasWE(BiasWordsEmbedding):
             return super().calc_direct_bias(neutral_words)
 
     def debias(self, method='hard', neutral_words=None, equality_sets=None,
-               inplace=True):
+               inplace=True, verbose=False):
         if method in ['hard', 'neutralize']:
             if neutral_words is None:
                 neutral_words = self.NEUTRAL_WORDS
@@ -388,7 +392,9 @@ class GenderBiasWE(BiasWordsEmbedding):
         if method == 'hard' and equality_sets is None:
             equality_sets = self.__class__.DEFINITIONAL_PAIRS
 
-        super().debias(method, neutral_words, equality_sets, inplace)
+
+        return super().debias(method, neutral_words, equality_sets,
+                              inplace, verbose)
 
     def learn_full_specific_words(self, seed_specific_words='bolukbasi',
                                   max_non_specific_examples=None,
