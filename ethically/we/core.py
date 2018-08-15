@@ -132,7 +132,6 @@ class BiasWordsEmbedding:
                                                     direction)
 
         if negative_end_projection > positive_end_projection:
-            print('flipped!')
             direction = -direction
 
         self.direction = direction
