@@ -396,12 +396,6 @@ class GenderBiasWE(BiasWordsEmbedding):
         self.NEUTRAL_WORDS = self._extract_neutral_words(self.__class__
                                                          .SPECIFIC_FULL_WITH_DEFINITIONAL)  # pylint: disable=C0301
 
-    def __copy__(self):
-        return super().__copy__()
-
-    def __deepcopy__(self, memo):
-        return super().__deepcopy__(memo)
-
     def calc_direct_bias(self, neutral_words='professions', c=None):
         if isinstance(neutral_words, str) and neutral_words == 'professions':
             return super().calc_direct_bias(
@@ -417,7 +411,6 @@ class GenderBiasWE(BiasWordsEmbedding):
 
         if method == 'hard' and equality_sets is None:
             equality_sets = self.__class__.DEFINITIONAL_PAIRS
-
 
         return super().debias(method, neutral_words, equality_sets,
                               inplace, verbose)
