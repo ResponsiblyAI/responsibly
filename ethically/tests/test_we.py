@@ -35,8 +35,9 @@ def test_calc_direct_bias(gender_biased_we):
     Based on section 5.2
     """
 
-    # it seemse that in the article it was checked on all the professions names
-    # including gender specific ones (e.g. businesswomen)
+    # TODO: it seemse that in the article it was checked on
+    # all the professions names including gender specific ones
+    # (e.g. businesswomen)
     assert isclose(gender_biased_we.calc_direct_bias(), 0.07, abs_tol=1e-2)
     assert isclose(gender_biased_we.calc_direct_bias(gender_biased_we
                                                      .PROFESSIONS_NAME),
