@@ -1,5 +1,5 @@
 "Unit test module for ethically.we.core "
-# pylint: disable=redefined-outer-name,unused-variable,expression-not-assigned,singleton-comparison
+# pylint: disable=redefined-outer-name,unused-variable,expression-not-assigned,singleton-comparison,protected-access
 
 import os
 from math import isclose
@@ -12,8 +12,11 @@ from pkg_resources import resource_filename
 from ethically.we import GenderBiasWE
 from ethically.we.utils import project_reject_vector, project_vector
 
+from ..consts import RANDOM_STATE
+
 
 ATOL = 1e-6
+N_RANDOM_NEUTRAL_WORDS_DEBIAS_TO_TEST = 1000
 
 
 @pytest.fixture
@@ -84,24 +87,33 @@ def test_calc_indirect_bias(gender_biased_we):
                    0.02, abs_tol=1e-2)
 
 
-def test_neutralize(gender_biased_we):
+def test_neutralize(gender_biased_we, is_preforming=True):
     """
     Test _neutralize method in GenderBiasWE
     """
-    neutral_words = gender_biased_we.PROFESSIONS_NAME
-    gender_biased_we._neutralize(neutral_words)  # pylint: disable=W0212
+    neutral_words = gender_biased_we.NEUTRAL_WORDS
+
+    if is_preforming:
+        gender_biased_we._neutralize(neutral_words)
+
     direction_projections = [project_vector(gender_biased_we.model[word],
                                             gender_biased_we.direction)
                              for word in neutral_words]
+
     np.testing.assert_allclose(direction_projections, 0, atol=ATOL)
 
     np.testing.assert_allclose(gender_biased_we.calc_direct_bias(), 0,
                                atol=ATOL)
 
 
-def test_equalize(gender_biased_we):
+def test_equalize(gender_biased_we, is_preforming=True):
+    """
+    Test _equalize method in GenderBiasWE
+    """
     equality_sets = gender_biased_we.DEFINITIONAL_PAIRS
-    gender_biased_we._equalize(equality_sets)  # pylint: disable=W0212
+
+    if is_preforming:
+        gender_biased_we._equalize(equality_sets)
 
     for equality_set in equality_sets:
         projection_vectors = []
@@ -126,14 +138,22 @@ def test_equalize(gender_biased_we):
 
 
 def test_hard_debias(gender_biased_we):
+    """
+    Test hard_debias method in GenderBiasWE
+    """
     # pylint: disable=C0301
-
+    test_calc_direct_bias(gender_biased_we)
     gender_biased_we.debias(method='hard')
-    test_neutralize(gender_biased_we)
-    # test_equalize(gender_biased_we)
+
+    test_neutralize(gender_biased_we, is_preforming=False)
+    test_equalize(gender_biased_we, is_preforming=False)
 
     equality_sets = gender_biased_we.DEFINITIONAL_PAIRS
-    neutral_words = gender_biased_we.PROFESSIONS_NAME
+
+    np.random.seed(RANDOM_STATE)
+    neutral_words = np.random.choice(gender_biased_we.NEUTRAL_WORDS,
+                                     N_RANDOM_NEUTRAL_WORDS_DEBIAS_TO_TEST,
+                                     replace=False)
 
     for neutral_word in neutral_words:
         for equality_word1, equality_word2 in equality_sets:

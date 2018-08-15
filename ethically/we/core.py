@@ -1,4 +1,4 @@
-
+import copy
 import os
 
 import matplotlib.pylab as plt
@@ -10,6 +10,7 @@ from pkg_resources import resource_filename
 from sklearn.decomposition import PCA
 from sklearn.svm import LinearSVC
 
+from ..consts import RANDOM_STATE
 from .data import BOLUKBASI_DATA
 from .utils import (
     cosine_similarity, normalize, project_reject_vector, project_vector,
@@ -20,7 +21,6 @@ from .utils import (
 DIRECTION_METHODS = ['single', 'sum', 'pca']
 DEBIAS_METHODS = ['neutralize', 'hard', 'soft']
 FIRST_PC_THRESHOLD = 0.5
-RANDOM_STATE = 42
 MAX_NON_SPECIFIC_EXAMPLES = 1000
 
 
@@ -36,6 +36,18 @@ class BiasWordsEmbedding:
         self.direction = None
         self.positive_end = None
         self.negative_end = None
+
+    def __copy__(self):
+        bias_words_embedding = BiasWordsEmbedding(self.model)
+        bias_words_embedding.direction = copy.deepcopy(self.direction)
+        bias_words_embedding.positive_end = copy.deepcopy(self.positive_end)
+        bias_words_embedding.negative_end = copy.deepcopy(self.negative_end)
+        return bias_words_embedding
+
+    def __deepcopy__(self, memo):
+        bias_words_embedding = copy.copy(self)
+        bias_words_embedding.model = copy.deepcopy(bias_words_embedding.model)
+        return bias_words_embedding
 
     def _is_direction_identified(self):
         if self.direction is None:
@@ -230,16 +242,28 @@ class BiasWordsEmbedding:
                 update_word_vector(self.model, word, equalized_vector)
 
     # TODO: what is PairBais?
-    def debias(self, method='hard', neutral_words=None, equality_sets=None):
+    def debias(self, method='hard', neutral_words=None, equality_sets=None,
+               inplace=True):
+        # pylint: disable=W0212
+        if inplace:
+            bias_words_embedding = self
+        else:
+            bias_words_embedding = copy.deepcopy(bias_words_embedding)
+
         if method not in DEBIAS_METHODS:
             raise ValueError('method should be one of {}, {} was given'.format(
                 DEBIAS_METHODS, method))
 
         if method in ['hard', 'neutralize']:
-            self._neutralize(neutral_words)
+            bias_words_embedding._neutralize(neutral_words)
 
         if method == 'hard':
-            self._equalize(equality_sets)
+            bias_words_embedding._equalize(equality_sets)
+
+        if inplace:
+            return None
+        else:
+            return bias_words_embedding
 
     def evaluate_words_embedding(self):
         word_pairs_path = resource_filename(__name__,
@@ -327,6 +351,9 @@ class GenderBiasWE(BiasWordsEmbedding):
     DEFINITIONAL_PAIRS = BOLUKBASI_DATA['gender']['definitional_pairs']
     SPECIFIC_SEED = set(BOLUKBASI_DATA['gender']['specific_seed'])
     SPECIFIC_FULL = set(BOLUKBASI_DATA['gender']['specific_full'])
+
+    SPECIFIC_FULL_WITH_DEFINITIONAL = (set.union(*map(set, DEFINITIONAL_PAIRS))
+                                       | SPECIFIC_FULL)
     NEUTRAL_PROFESSIONS_NAME = list(set(PROFESSIONS_NAME)
                                     - set(SPECIFIC_FULL))
 
@@ -336,6 +363,9 @@ class GenderBiasWE(BiasWordsEmbedding):
                                  self.__class__.DEFINITIONAL_PAIRS,
                                  'pca')
 
+        self.NEUTRAL_WORDS = self._extract_neutral_words(self.__class__
+                                                         .SPECIFIC_FULL_WITH_DEFINITIONAL)  # pylint: disable=C0301
+
     def calc_direct_bias(self, neutral_words='professions', c=None):
         if isinstance(neutral_words, str) and neutral_words == 'professions':
             return super().calc_direct_bias(
@@ -343,16 +373,16 @@ class GenderBiasWE(BiasWordsEmbedding):
         else:
             return super().calc_direct_bias(neutral_words)
 
-    def debias(self, method='hard', neutral_words=None, equality_sets=None):
+    def debias(self, method='hard', neutral_words=None, equality_sets=None,
+               inplace=True):
         if method in ['hard', 'neutralize']:
             if neutral_words is None:
-                neutral_words = self._extract_neutral_words(self.__class__
-                                                            .SPECIFIC_FULL)
+                neutral_words = self.NEUTRAL_WORDS
 
         if method == 'hard' and equality_sets is None:
             equality_sets = self.__class__.DEFINITIONAL_PAIRS
 
-        super().debias(method, neutral_words, equality_sets)
+        super().debias(method, neutral_words, equality_sets, inplace)
 
     def learn_full_specific_words(self, seed_specific_words='bolukbasi',
                                   max_non_specific_examples=None,
