@@ -91,6 +91,11 @@ class BiasWordsEmbedding:
             raise ValueError('method should be one of {}, {} was given'.format(
                 DIRECTION_METHODS, method))
 
+        if positive_end == negative_end:
+            raise ValueError('positive_end and negative_end'
+                             'should be different, and not the same "{}"'
+                             .format(positive_end))
+
         if method == 'single':
             direction = normalize(normalize(self.model[definitional[0]])
                                   - normalize(self.model[definitional[1]]))
@@ -117,6 +122,18 @@ class BiasWordsEmbedding:
                                    .format(FIRST_PC_THRESHOLD,
                                            pca.explained_variance_ratio_[0]))
             direction = pca.components_[0]
+
+        # if direction is oposite (e.g. we cannot control
+        # what the PCA will return)
+        positive_end_projection = cosine_similarity(self.model[positive_end],
+                                                    direction)
+
+        negative_end_projection = cosine_similarity(self.model[negative_end],
+                                                    direction)
+
+        if negative_end_projection > positive_end_projection:
+            print('flipped!')
+            direction = -direction
 
         self.direction = direction
         self.positive_end = positive_end
