@@ -9,6 +9,7 @@ from gensim.models.keyedvectors import KeyedVectors
 from pkg_resources import resource_filename
 from sklearn.decomposition import PCA
 from sklearn.svm import LinearSVC
+from tqdm import tqdm
 
 from ..consts import RANDOM_STATE
 from .data import BOLUKBASI_DATA
@@ -214,10 +215,15 @@ class BiasWordsEmbedding:
 
         return neutral_words
 
-    def _neutralize(self, neutral_words):
+    def _neutralize(self, neutral_words, verbose=False):
         self._is_direction_identified()
 
-        for word in neutral_words:
+        if verbose:
+            neutral_words_iter = tqdm(neutral_words)
+        else:
+            neutral_words_iter = iter(neutral_words)
+
+        for word in neutral_words_iter:
             neutralized_vector = reject_vector(self.model[word],
                                                self.direction)
             update_word_vector(self.model, word, neutralized_vector)
