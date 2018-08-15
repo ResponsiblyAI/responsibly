@@ -230,7 +230,7 @@ class BiasWordsEmbedding:
 
     def _equalize(self, equality_sets):
         for equality_set_words in equality_sets:
-            equality_set_vectors = [self.model[word]
+            equality_set_vectors = [normalize(self.model[word])
                                     for word in equality_set_words]
             center = np.mean(equality_set_vectors, axis=0)
             (projected_center,
