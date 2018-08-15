@@ -6,7 +6,7 @@ Python Package for Designing, Auditing and Adjusting the Ethics of AI Systems.
 
 ## Features (planned, incomplete list)
 - [ ] Words Embedding
-  - [ ] Bolukbasi, Tolga, Kai-Wei Chang, James Y. Zou, Venkatesh Saligrama, and Adam T. Kalai. [Man is to computer programmer as woman is to homemaker? debiasing word embeddings](https://arxiv.org/abs/1607.06520). NIPS.
+  - [ ] Bolukbasi Tolga, Kai-Wei Chang, James Y. Zou, Venkatesh Saligrama, and Adam T. Kalai. [Man is to computer programmer as woman is to homemaker? debiasing word embeddings](https://arxiv.org/abs/1607.06520). NIPS.
   - [ ] Caliskan, Aylin, Joanna J. Bryson, and Arvind Narayanan. 2017. [Semantics derived automatically from language corpora contain human-like biases](https://researchportal.bath.ac.uk/en/publications/semantics-derived-automatically-from-language-corpora-necessarily). Science.
 
 - [ ] Fairness in Classification
@@ -46,5 +46,5 @@ $ python
 
 
 ## Credits
-* `ethically.we.tolga` code and data is based on
+* `ethically.we.core` code and data is based on
 https://github.com/tolga-b/debiaswe

@@ -1,4 +1,4 @@
-"Unit test module for ethically.we.tolga "
+"Unit test module for ethically.we.core "
 # pylint: disable=redefined-outer-name,unused-variable,expression-not-assigned,singleton-comparison
 
 import os
@@ -21,7 +21,7 @@ def gender_biased_we():
     # pylint: disable=C0301
     model = KeyedVectors.load_word2vec_format(
         resource_filename(__name__, os.path.join('data',
-                                                 'GoogleNews-vectors-negative300-tolga.bin')),
+                                                 'GoogleNews-vectors-negative300-bolukbasi.bin')),
         binary=True)
     return GenderBiasWE(model)
 

@@ -10,7 +10,7 @@ def load_json_resource(resource_name):
     )
 
 
-TOLGA_DATA = load_json_resource('tolga')
+BOLUKBASI_DATA = load_json_resource('bolukbasi')
 
-TOLGA_DATA['gender']['professions_names'] = list(
-    zip(*TOLGA_DATA['gender']['professions']))[0]
+BOLUKBASI_DATA['gender']['professions_names'] = list(
+    zip(*BOLUKBASI_DATA['gender']['professions']))[0]

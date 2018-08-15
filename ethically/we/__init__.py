@@ -1,3 +1,3 @@
 __all__ = ['GenderBiasWE']
 
-from .tolga import GenderBiasWE
+from .core import GenderBiasWE

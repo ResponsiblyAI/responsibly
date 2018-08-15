@@ -10,7 +10,7 @@ from pkg_resources import resource_filename
 from sklearn.decomposition import PCA
 from sklearn.svm import LinearSVC
 
-from .data import TOLGA_DATA
+from .data import BOLUKBASI_DATA
 from .utils import (
     cosine_similarity, normalize, project_reject_vector, project_vector,
     reject_vector, update_word_vector,
@@ -323,10 +323,10 @@ class WordsEmbedding:
 
 
 class GenderBiasWE(WordsEmbedding):
-    PROFESSIONS_NAME = TOLGA_DATA['gender']['professions_names']
-    DEFINITIONAL_PAIRS = TOLGA_DATA['gender']['definitional_pairs']
-    SPECIFIC_SEED = set(TOLGA_DATA['gender']['specific_seed'])
-    SPECIFIC_FULL = set(TOLGA_DATA['gender']['specific_full'])
+    PROFESSIONS_NAME = BOLUKBASI_DATA['gender']['professions_names']
+    DEFINITIONAL_PAIRS = BOLUKBASI_DATA['gender']['definitional_pairs']
+    SPECIFIC_SEED = set(BOLUKBASI_DATA['gender']['specific_seed'])
+    SPECIFIC_FULL = set(BOLUKBASI_DATA['gender']['specific_full'])
     NEUTRAL_PROFESSIONS_NAME = list(set(PROFESSIONS_NAME)
                                     - set(SPECIFIC_FULL))
 
@@ -354,10 +354,10 @@ class GenderBiasWE(WordsEmbedding):
 
         super().debias(method, neutral_words, equality_sets)
 
-    def learn_full_specific_words(self, seed_specific_words='tolga',
+    def learn_full_specific_words(self, seed_specific_words='bolukbasi',
                                   max_non_specific_examples=None,
                                   debug=None):
-        if seed_specific_words == 'tolga':
+        if seed_specific_words == 'bolukbasi':
             seed_specific_words = self.__class__.SPECIFIC_SEED
 
         return super().learn_full_specific_words(seed_specific_words,
