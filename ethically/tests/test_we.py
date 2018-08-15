@@ -171,6 +171,7 @@ def test_hard_debias_inplace(gender_biased_we, is_preforming=True):
 
             np.testing.assert_allclose(we1_distance, we2_distance, atol=ATOL)
 
+
 def test_hard_debias_not_inplace(gender_biased_we):
     test_calc_direct_bias(gender_biased_we)
 
