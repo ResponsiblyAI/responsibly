@@ -267,7 +267,7 @@ class BiasWordsEmbedding:
 
                 update_word_vector(self.model, word, equalized_vector)
 
-    # TODO: what is PairBais?
+    # TODO: what is PairBais? Maybe it is indirect bias?
     def debias(self, method='hard', neutral_words=None, equality_sets=None,
                inplace=True, verbose=False):
         # pylint: disable=W0212
@@ -382,8 +382,11 @@ class GenderBiasWE(BiasWordsEmbedding):
     SPECIFIC_SEED = set(BOLUKBASI_DATA['gender']['specific_seed'])
     SPECIFIC_FULL = set(BOLUKBASI_DATA['gender']['specific_full'])
 
+    # TODO: in the code of the article, the last definitional pair
+    # is not in the specific full
     SPECIFIC_FULL_WITH_DEFINITIONAL = (set.union(*map(set, DEFINITIONAL_PAIRS))
                                        | SPECIFIC_FULL)
+
     NEUTRAL_PROFESSIONS_NAME = list(set(PROFESSIONS_NAME)
                                     - set(SPECIFIC_FULL))
 
