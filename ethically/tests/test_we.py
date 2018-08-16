@@ -45,47 +45,53 @@ def test_calc_direct_bias(gender_biased_we):
 
 
 # TODO: iterate over a dictionary
-def test_calc_indirect_bias(gender_biased_we):
+def test_calc_indirect_bias(gender_biased_we, all_zero=False):
     """
     Test calc_direct_bias method in GenderBiasWE
     Based on figure 3 & section 3.5
     """
     assert isclose(gender_biased_we.calc_indirect_bias('softball',
                                                        'pitcher'),
-                   -0.01, abs_tol=1e-2)
+                   0 if all_zero else -0.01, abs_tol=1e-2)
     assert isclose(gender_biased_we.calc_indirect_bias('softball',
                                                        'bookkeeper'),
-                   0.20, abs_tol=1e-2)
+                   0 if all_zero else 0.20, abs_tol=1e-2)
     assert isclose(gender_biased_we.calc_indirect_bias('softball',
                                                        'receptionist'),
-                   0.67, abs_tol=1e-2)
-    assert isclose(gender_biased_we.calc_indirect_bias('softball',
-                                                       'registered_nurse'),
-                   0.29, abs_tol=1e-2)
-    # TODO: in the article it is 0.35 - why?
-    assert isclose(gender_biased_we.calc_indirect_bias('softball',
-                                                       'waitress'),
-                   0.31, abs_tol=1e-2)
+                   0 if all_zero else 0.67, abs_tol=1e-2)
+    # these words have legit gender direction projection
+    if not all_zero:
+        assert isclose(gender_biased_we.calc_indirect_bias('softball',
+                                                           'registered_nurse'),
+                       0 if all_zero else 0.29, abs_tol=1e-2)
+        # TODO: in the article it is 0.35 - why?
+        assert isclose(gender_biased_we.calc_indirect_bias('softball',
+                                                           'waitress'),
+                       0 if all_zero else 0.31, abs_tol=1e-2)
     assert isclose(gender_biased_we.calc_indirect_bias('softball',
                                                        'homemaker'),
-                   0.38, abs_tol=1e-2)
+                   0 if all_zero else 0.38, abs_tol=1e-2)
 
     assert isclose(gender_biased_we.calc_indirect_bias('football',
                                                        'footballer'),
-                   0.02, abs_tol=1e-2)
-    # TODO in the article it is 0.31 - why?
-    assert isclose(gender_biased_we.calc_indirect_bias('football',
-                                                       'businessman'),
-                   0.17, abs_tol=1e-2)
+                   0 if all_zero else 0.02, abs_tol=1e-2)
+    # this word have legit gender direction projection
+    if not all_zero:
+        # TODO in the article it is 0.31 - why?
+        assert isclose(gender_biased_we.calc_indirect_bias('football',
+                                                           'businessman'),
+                       0 if all_zero else 0.17, abs_tol=1e-2)
     assert isclose(gender_biased_we.calc_indirect_bias('football',
                                                        'pundit'),
-                   0.10, abs_tol=1e-2)
+                   0 if all_zero else 0.10, abs_tol=1e-2)
     assert isclose(gender_biased_we.calc_indirect_bias('football',
                                                        'maestro'),
-                   0.41, abs_tol=1e-2)
+                   0 if all_zero else 0.41, abs_tol=1e-2)
     assert isclose(gender_biased_we.calc_indirect_bias('football',
                                                        'cleric'),
-                   0.02, abs_tol=1e-2)
+                   0 if all_zero else 0.02, abs_tol=1e-2)
+
+
 def check_all_vectors_unit_length(bias_we):
     for word in bias_we.model.vocab:
         vector = bias_we[word]

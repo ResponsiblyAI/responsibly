@@ -203,6 +203,7 @@ class BiasWordsEmbedding:
         return direct_bias
 
     def calc_indirect_bias(self, word1, word2):
+        """Also known in the article as PairBias"""        
         self._is_direction_identified()
 
         vector1 = normalize(self[word1])
@@ -264,6 +265,9 @@ class BiasWordsEmbedding:
                 projected_part = normalize(projected_vector - projected_center)
                 scaling = np.sqrt(1 - np.linalg.norm(rejected_center)**2)
 
+                # TODO - in the code it is different - why?
+                # equalized_vector = rejected_center + scaling * self.direction
+                # https://github.com/tolga-b/debiaswe/blob/10277b23e187ee4bd2b6872b507163ef4198686b/debiaswe/debias.py#L36-L37
                 equalized_vector = rejected_center + scaling * projected_part
 
                 update_word_vector(self.model, word, equalized_vector)
