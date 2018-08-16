@@ -69,8 +69,8 @@ class BiasWordsEmbedding:
         matrix = []
 
         for word1, word2 in definitional_pairs:
-            vector1 = normalize(self.model[word1])
-            vector2 = normalize(self.model[word2])
+            vector1 = normalize(self[word1])
+            vector2 = normalize(self[word2])
 
             center = (vector1 + vector2) / 2
 
@@ -97,15 +97,15 @@ class BiasWordsEmbedding:
                              .format(positive_end))
 
         if method == 'single':
-            direction = normalize(normalize(self.model[definitional[0]])
-                                  - normalize(self.model[definitional[1]]))
+            direction = normalize(normalize(self[definitional[0]])
+                                  - normalize(self[definitional[1]]))
 
         elif method == 'sum':
             groups = list(zip(*definitional))
 
-            group1_sum_vector = np.sum([self.model[word]
+            group1_sum_vector = np.sum([self[word]
                                         for word in groups[0]], axis=0)
-            group2_sum_vector = np.sum([self.model[word]
+            group2_sum_vector = np.sum([self[word]
                                         for word in groups[1]], axis=0)
 
             diff_vector = (normalize(group1_sum_vector)
@@ -125,10 +125,10 @@ class BiasWordsEmbedding:
 
         # if direction is oposite (e.g. we cannot control
         # what the PCA will return)
-        positive_end_projection = cosine_similarity(self.model[positive_end],
+        positive_end_projection = cosine_similarity(self[positive_end],
                                                     direction)
 
-        negative_end_projection = cosine_similarity(self.model[negative_end],
+        negative_end_projection = cosine_similarity(self[negative_end],
                                                     direction)
 
         if negative_end_projection > positive_end_projection:
@@ -141,7 +141,7 @@ class BiasWordsEmbedding:
     def project_on_direction(self, word):
         self._is_direction_identified()
 
-        vector = self.model[word]
+        vector = self[word]
         projection_score = self.model.cosine_similarities(self.direction,
                                                           [vector])[0]
         return projection_score
@@ -205,8 +205,8 @@ class BiasWordsEmbedding:
     def calc_indirect_bias(self, word1, word2):
         self._is_direction_identified()
 
-        vector1 = normalize(self.model[word1])
-        vector2 = normalize(self.model[word2])
+        vector1 = normalize(self[word1])
+        vector2 = normalize(self[word2])
 
         perpendicular_vector1 = reject_vector(vector1, self.direction)
         perpendicular_vector2 = reject_vector(vector2, self.direction)
@@ -243,13 +243,13 @@ class BiasWordsEmbedding:
             neutral_words_iter = iter(neutral_words)
 
         for word in neutral_words_iter:
-            neutralized_vector = reject_vector(self.model[word],
+            neutralized_vector = reject_vector(self[word],
                                                self.direction)
             update_word_vector(self.model, word, neutralized_vector)
 
     def _equalize(self, equality_sets):
         for equality_set_words in equality_sets:
-            equality_set_vectors = [normalize(self.model[word])
+            equality_set_vectors = [normalize(self[word])
                                     for word in equality_set_words]
             center = np.mean(equality_set_vectors, axis=0)
             (projected_center,
@@ -350,9 +350,9 @@ class BiasWordsEmbedding:
             if not is_specific:
                 non_specific_example_count += 1
                 if non_specific_example_count <= max_non_specific_examples:
-                    data.append((self.model[word], is_specific))
+                    data.append((self[word], is_specific))
             else:
-                data.append((self.model[word], is_specific))
+                data.append((self[word], is_specific))
 
         np.random.seed(RANDOM_STATE)
         np.random.shuffle(data)
@@ -371,7 +371,7 @@ class BiasWordsEmbedding:
 
         full_specific_words = []
         for word in self.model.vocab:
-            vector = [normalize(self.model[word])]
+            vector = [normalize(self[word])]
             if clf.predict(vector):
                 full_specific_words.append(word)
 
