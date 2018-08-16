@@ -1,5 +1,5 @@
 altgraph==0.16.1
-astroid==2.0.2
+astroid==2.0.4
 atomicwrites==1.1.5
 attrs==18.1.0
 backports.shutil-get-terminal-size==1.0.0
