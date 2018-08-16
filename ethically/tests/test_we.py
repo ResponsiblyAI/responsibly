@@ -220,7 +220,7 @@ def test_evaluate_words_embedding(gender_biased_we):
     gender_biased_we.evaluate_words_embedding(verbose=True)
 
 
-# TODO deeper testing
+# TODO deeper testing, not sure that the number is true
 def test_learn_full_specific_words(gender_biased_we):
     (full_specific_words,
      clf, X, y) = gender_biased_we.learn_full_specific_words(debug=True)
