@@ -30,6 +30,10 @@ def gender_biased_we():
     return GenderBiasWE(model, only_lower=True)
 
 
+def test_words_embbeding_loading(gender_biased_we):
+    assert len(gender_biased_we.model.vocab) == 26423
+
+
 def test_calc_direct_bias(gender_biased_we):
     """
     Test calc_direct_bias method in GenderBiasWE
