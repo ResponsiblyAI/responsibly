@@ -100,6 +100,8 @@ class BiasWordsEmbedding:
                              'should be different, and not the same "{}"'
                              .format(positive_end))
 
+        direction = None
+
         if method == 'single':
             direction = normalize(normalize(self[definitional[0]])
                                   - normalize(self[definitional[1]]))
