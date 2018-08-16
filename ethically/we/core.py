@@ -131,14 +131,11 @@ class BiasWordsEmbedding:
 
         # if direction is oposite (e.g. we cannot control
         # what the PCA will return)
-        positive_end_projection = cosine_similarity(self[positive_end],
-                                                    direction)
-
-        negative_end_projection = cosine_similarity(self[negative_end],
-                                                    direction)
-
-        if negative_end_projection > positive_end_projection:
-            direction = -direction
+        ends_diff_projection = cosine_similarity((self[positive_end]
+                                                  - self[negative_end]),
+                                                 direction)
+        if ends_diff_projection < 0:
+            direction = -direction  # pylint: disable=invalid-unary-operand-type
 
         self.direction = direction
         self.positive_end = positive_end
