@@ -1,7 +1,6 @@
 build:
-  build:
-    environment:
-        python: 3.5.0
+  environment:
+      python: 3.5.0
   tests:
     override:
       - pylint-run --rcfile=.pylint.ini
