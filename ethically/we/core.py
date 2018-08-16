@@ -13,11 +13,9 @@ from sklearn.svm import LinearSVC
 from tqdm import tqdm
 
 from ..consts import RANDOM_STATE
-from .data import BOLUKBASI_DATA
 from .utils import (
-    cosine_similarity, generate_one_word_forms, generate_words_forms,
-    normalize, project_reject_vector, project_vector, reject_vector,
-    update_word_vector,
+    cosine_similarity, normalize, project_reject_vector, project_vector,
+    reject_vector, update_word_vector,
 )
 
 
@@ -60,6 +58,9 @@ class BiasWordsEmbedding:
 
     def __contains__(self, item):
         return item in self.model
+
+    def _filter_words_by_model(self, words):
+        return [word for word in words if word in self]
 
     def _is_direction_identified(self):
         if self.direction is None:
@@ -396,68 +397,3 @@ class BiasWordsEmbedding:
             return full_specific_words, clf
 
         return full_specific_words, clf, X, y
-
-
-class GenderBiasWE(BiasWordsEmbedding):
-    PROFESSIONS_NAME = BOLUKBASI_DATA['gender']['professions_names']
-    DEFINITIONAL_PAIRS = BOLUKBASI_DATA['gender']['definitional_pairs']
-    SPECIFIC_SEED = set(BOLUKBASI_DATA['gender']['specific_seed'])
-    SPECIFIC_FULL = set(BOLUKBASI_DATA['gender']['specific_full'])
-
-    # TODO: in the code of the article, the last definitional pair
-    # is not in the specific full
-    SPECIFIC_FULL_WITH_DEFINITIONAL = (set.union(*map(set, DEFINITIONAL_PAIRS))
-                                       | SPECIFIC_FULL)
-
-    NEUTRAL_PROFESSIONS_NAME = list(set(PROFESSIONS_NAME)
-                                    - set(SPECIFIC_FULL))
-
-    def __init__(self, model, only_lower=True):
-        super().__init__(model, only_lower)
-        self._identify_direction('he', 'she',
-                                 self.__class__.DEFINITIONAL_PAIRS,
-                                 'pca')
-
-        if not self.only_lower:
-            self.SPECIFIC_FULL_WITH_DEFINITIONAL = generate_words_forms(self.SPECIFIC_FULL_WITH_DEFINITIONAL)  # pylint: disable=C0301
-
-        self.NEUTRAL_WORDS = self._extract_neutral_words(self.__class__
-                                                         .SPECIFIC_FULL_WITH_DEFINITIONAL)  # pylint: disable=C0301
-
-    def calc_direct_bias(self, neutral_words='professions', c=None):
-        if isinstance(neutral_words, str) and neutral_words == 'professions':
-            return super().calc_direct_bias(
-                self.__class__.NEUTRAL_PROFESSIONS_NAME, c)
-        else:
-            return super().calc_direct_bias(neutral_words)
-
-    def debias(self, method='hard', neutral_words=None, equality_sets=None,
-               inplace=True, verbose=False):
-        if method in ['hard', 'neutralize']:
-            if neutral_words is None:
-                neutral_words = self.NEUTRAL_WORDS
-
-        if method == 'hard' and equality_sets is None:
-            equality_sets = self.__class__.DEFINITIONAL_PAIRS
-
-            if not self.only_lower:
-                assert all(len(equality_set) == 2
-                           for equality_set in equality_sets), "currently supporting only equality pairs if only_lower is False"  # pylint: disable=C0301
-                # TODO: refactor
-                equality_sets = {(candidate1, candidate2)
-                                 for word1, word2 in equality_sets
-                                 for candidate1, candidate2 in zip(generate_one_word_forms(word1),
-                                                                   generate_one_word_forms(word2))}  # pylint: disable=C0301
-
-        return super().debias(method, neutral_words, equality_sets,
-                              inplace, verbose)
-
-    def learn_full_specific_words(self, seed_specific_words='bolukbasi',
-                                  max_non_specific_examples=None,
-                                  debug=None):
-        if seed_specific_words == 'bolukbasi':
-            seed_specific_words = self.__class__.SPECIFIC_SEED
-
-        return super().learn_full_specific_words(seed_specific_words,
-                                                 max_non_specific_examples,
-                                                 debug)

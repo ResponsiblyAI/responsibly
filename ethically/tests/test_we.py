@@ -50,7 +50,8 @@ def test_calc_direct_bias(gender_biased_we):
     # (e.g. businesswomen)
     assert isclose(gender_biased_we.calc_direct_bias(), 0.07, abs_tol=1e-2)
     assert isclose(gender_biased_we.calc_direct_bias(gender_biased_we
-                                                     .PROFESSIONS_NAME),
+                                                     ._data['profession_names']),  # pylint: disable=C0301
+
                    0.08, abs_tol=1e-2)
 
 
@@ -113,7 +114,7 @@ def test_neutralize(gender_biased_we, is_preforming=True):
     """
     Test _neutralize method in GenderBiasWE
     """
-    neutral_words = gender_biased_we.NEUTRAL_WORDS
+    neutral_words = gender_biased_we._data['neutral_words']
 
     if is_preforming:
         gender_biased_we._neutralize(neutral_words)
@@ -135,7 +136,7 @@ def test_equalize(gender_biased_we, is_preforming=True):
     """
     Test _equalize method in GenderBiasWE
     """
-    equality_sets = gender_biased_we.DEFINITIONAL_PAIRS
+    equality_sets = gender_biased_we._data['definitional_pairs']
 
     if is_preforming:
         gender_biased_we._equalize(equality_sets)
@@ -176,10 +177,10 @@ def test_hard_debias_inplace(gender_biased_we, is_preforming=True):
     test_neutralize(gender_biased_we, is_preforming=False)
     test_equalize(gender_biased_we, is_preforming=False)
 
-    equality_sets = gender_biased_we.DEFINITIONAL_PAIRS
+    equality_sets = gender_biased_we._data['definitional_pairs']
 
     np.random.seed(RANDOM_STATE)
-    neutral_words = np.random.choice(gender_biased_we.NEUTRAL_WORDS,
+    neutral_words = np.random.choice(gender_biased_we._data['neutral_words'],
                                      N_RANDOM_NEUTRAL_WORDS_DEBIAS_TO_TEST,
                                      replace=False)
 
