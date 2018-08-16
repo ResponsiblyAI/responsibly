@@ -49,6 +49,12 @@ $(DEPENDENCIES):
 	pipenv install --dev
 	@ touch $@
 
+# FREEZE ######################################################################
+
+.PHONY: freeze
+freeze:
+	pipenv run pip freeze > .pyup/requirements.txt
+
 # CHECKS ######################################################################
 
 ISORT := pipenv run isort

@@ -1,6 +1,6 @@
 search: False
 
 requirements:
-  - requirements.txt
+  - .pyup/requirements.txt
 
 branch: master
