@@ -247,6 +247,8 @@ class BiasWordsEmbedding:
                                                self.direction)
             update_word_vector(self.model, word, neutralized_vector)
 
+        self.model.init_sims(replace=True)
+
     def _equalize(self, equality_sets):
         for equality_set_words in equality_sets:
             equality_set_vectors = [normalize(self[word])
@@ -266,7 +268,9 @@ class BiasWordsEmbedding:
 
                 update_word_vector(self.model, word, equalized_vector)
 
-    # TODO: what is PairBais? Maybe it is indirect bias?
+        self.model.init_sims(replace=True)
+
+
     def debias(self, method='hard', neutral_words=None, equality_sets=None,
                inplace=True, verbose=False):
         # pylint: disable=W0212

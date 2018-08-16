@@ -86,6 +86,11 @@ def test_calc_indirect_bias(gender_biased_we):
     assert isclose(gender_biased_we.calc_indirect_bias('football',
                                                        'cleric'),
                    0.02, abs_tol=1e-2)
+def check_all_vectors_unit_length(bias_we):
+    for word in bias_we.model.vocab:
+        vector = bias_we[word]
+        norm = (vector ** 2).sum()
+        np.testing.assert_allclose(norm, 1, atol=ATOL)
 
 
 def test_neutralize(gender_biased_we, is_preforming=True):
@@ -105,6 +110,9 @@ def test_neutralize(gender_biased_we, is_preforming=True):
 
     np.testing.assert_allclose(gender_biased_we.calc_direct_bias(), 0,
                                atol=ATOL)
+
+    check_all_vectors_unit_length(gender_biased_we)
+    test_calc_indirect_bias(gender_biased_we, all_zero=True)
 
 
 def test_equalize(gender_biased_we, is_preforming=True):
@@ -137,6 +145,7 @@ def test_equalize(gender_biased_we, is_preforming=True):
                                        rejection_vector,
                                        atol=ATOL)
 
+    check_all_vectors_unit_length(gender_biased_we)
 
 def test_hard_debias_inplace(gender_biased_we, is_preforming=True):
     """
