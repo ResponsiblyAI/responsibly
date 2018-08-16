@@ -1,5 +1,6 @@
 import copy
 import os
+import warnings
 
 import matplotlib.pylab as plt
 import numpy as np
@@ -305,21 +306,24 @@ class BiasWordsEmbedding:
             return bias_words_embedding
 
     def evaluate_words_embedding(self, verbose=False):
-        if verbose:
-            print('Evaluate word pairs...')
-        word_pairs_path = resource_filename(__name__,
-                                            os.path.join('data',
-                                                         'evaluation',
-                                                         'wordsim353.tsv'))
-        word_paris_result = self.model.evaluate_word_pairs(word_pairs_path)
+        with warnings.catch_warnings():
+            warnings.simplefilter('ignore', category=FutureWarning)
 
-        if verbose:
-            print('Evaluate analogies...')
-        analogies_path = resource_filename(__name__,
-                                           os.path.join('data',
-                                                        'evaluation',
-                                                        'questions-words.txt'))
-        analogies_result = self.model.evaluate_word_analogies(analogies_path)
+            if verbose:
+                print('Evaluate word pairs...')
+            word_pairs_path = resource_filename(__name__,
+                                                os.path.join('data',
+                                                             'evaluation',
+                                                             'wordsim353.tsv'))
+            word_paris_result = self.model.evaluate_word_pairs(word_pairs_path)
+
+            if verbose:
+                print('Evaluate analogies...')
+            analogies_path = resource_filename(__name__,
+                                               os.path.join('data',
+                                                            'evaluation',
+                                                            'questions-words.txt'))  # pylint: disable=C0301
+            analogies_result = self.model.evaluate_word_analogies(analogies_path)  # pylint: disable=C0301
 
         if verbose:
             print()
