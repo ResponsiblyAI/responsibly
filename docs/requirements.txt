@@ -34,7 +34,7 @@ MarkupSafe==1.0
 matplotlib==2.2.3
 mccabe==0.6.1
 minilog==0.4
-mkdocs==0.17.5
+mkdocs==1.0.1
 more-itertools==4.3.0
 nose==1.3.7
 numpy==1.14.5
