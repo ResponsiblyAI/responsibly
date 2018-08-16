@@ -15,7 +15,7 @@ Python Package for Designing, Auditing and Adjusting the Ethics of AI Systems.
 
 ## Requirements
 
-* Python 3.6+
+* Python 3.5+
 
 ## Installation
 
