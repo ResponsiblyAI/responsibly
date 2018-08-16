@@ -97,7 +97,7 @@ def test_neutralize(gender_biased_we, is_preforming=True):
     if is_preforming:
         gender_biased_we._neutralize(neutral_words)
 
-    direction_projections = [project_vector(gender_biased_we.model[word],
+    direction_projections = [project_vector(gender_biased_we[word],
                                             gender_biased_we.direction)
                              for word in neutral_words]
 
@@ -121,7 +121,7 @@ def test_equalize(gender_biased_we, is_preforming=True):
         rejection_vectors = []
 
         for equality_word in equality_set:
-            vector = gender_biased_we.model[equality_word]
+            vector = gender_biased_we[equality_word]
 
             np.testing.assert_allclose(np.linalg.norm(vector), 1, atol=ATOL)
 
@@ -160,14 +160,14 @@ def test_hard_debias_inplace(gender_biased_we, is_preforming=True):
     for neutral_word in neutral_words:
         for equality_word1, equality_word2 in equality_sets:
 
-            we1 = gender_biased_we.model[neutral_word] @ gender_biased_we.model[equality_word1]
-            we2 = gender_biased_we.model[neutral_word] @ gender_biased_we.model[equality_word2]
+            we1 = gender_biased_we[neutral_word] @ gender_biased_we[equality_word1]
+            we2 = gender_biased_we[neutral_word] @ gender_biased_we[equality_word2]
             np.testing.assert_allclose(we1, we2, atol=ATOL)
 
-            we1_distance = np.linalg.norm(gender_biased_we.model[neutral_word]
-                                          - gender_biased_we.model[equality_word1])
-            we2_distance = np.linalg.norm(gender_biased_we.model[neutral_word]
-                                          - gender_biased_we.model[equality_word2])
+            we1_distance = np.linalg.norm(gender_biased_we[neutral_word]
+                                          - gender_biased_we[equality_word1])
+            we2_distance = np.linalg.norm(gender_biased_we[neutral_word]
+                                          - gender_biased_we[equality_word2])
 
             np.testing.assert_allclose(we1_distance, we2_distance, atol=ATOL)
 
