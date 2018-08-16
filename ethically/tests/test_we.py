@@ -209,3 +209,15 @@ def test_deepcopy(gender_biased_we):
     gender_biased_we_copy = copy.deepcopy(gender_biased_we)
     assert gender_biased_we.direction is not gender_biased_we_copy.direction
     assert gender_biased_we.model is not gender_biased_we_copy.model
+
+
+# TODO deeper testing
+def test_evaluate_words_embedding(gender_biased_we):
+    gender_biased_we.evaluate_words_embedding(verbose=True)
+
+
+# TODO deeper testing
+def test_learn_full_specific_words(gender_biased_we):
+    (full_specific_words,
+     clf, X, y) = gender_biased_we.learn_full_specific_words(debug=True)
+    assert len(full_specific_words) == 5753
