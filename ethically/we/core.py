@@ -58,6 +58,9 @@ class BiasWordsEmbedding:
     def __getitem__(self, key):
         return self.model[key]
 
+    def __contains__(self, item):
+        return item in self.model
+
     def _is_direction_identified(self):
         if self.direction is None:
             raise RuntimeError('The direction was not identified'

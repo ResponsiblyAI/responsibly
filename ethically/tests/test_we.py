@@ -34,6 +34,11 @@ def test_words_embbeding_loading(gender_biased_we):
     assert len(gender_biased_we.model.vocab) == 26423
 
 
+def test_contains(gender_biased_we):
+    assert 'home' in gender_biased_we
+    assert 'HOME' not in gender_biased_we
+
+
 def test_calc_direct_bias(gender_biased_we):
     """
     Test calc_direct_bias method in GenderBiasWE
