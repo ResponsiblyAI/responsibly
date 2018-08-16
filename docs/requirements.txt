@@ -19,7 +19,7 @@ docutils==0.14
 -e git+git@github.com:ethicallyAI/ethically.git@9bb7c464d55f4c32ca2101228cebfff343aa3930#egg=ethically
 freezegun==0.3.10
 future==0.16.0
-gensim==3.4.0
+gensim==3.5.0
 idna==2.7
 isort==4.3.4
 Jinja2==2.10
