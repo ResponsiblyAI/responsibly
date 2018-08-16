@@ -14,8 +14,9 @@ from tqdm import tqdm
 from ..consts import RANDOM_STATE
 from .data import BOLUKBASI_DATA
 from .utils import (
-    cosine_similarity, normalize, project_reject_vector, project_vector,
-    reject_vector, update_word_vector,
+    cosine_similarity, generate_one_word_forms, generate_words_forms,
+    normalize, project_reject_vector, project_vector, reject_vector,
+    update_word_vector,
 )
 
 
@@ -27,12 +28,15 @@ MAX_NON_SPECIFIC_EXAMPLES = 1000
 
 class BiasWordsEmbedding:
 
-    def __init__(self, model):
+    def __init__(self, model, only_lower=True):
         if not isinstance(model, KeyedVectors):
             raise TypeError('model should be of type KeyedVectors, not {}'
                             .format(type(model)))
 
         self.model = model
+
+        # TODO: write unitest for when it is False
+        self.only_lower = only_lower
 
         self.direction = None
         self.positive_end = None
@@ -203,7 +207,7 @@ class BiasWordsEmbedding:
         return direct_bias
 
     def calc_indirect_bias(self, word1, word2):
-        """Also known in the article as PairBias"""        
+        """Also known in the article as PairBias"""
         self._is_direction_identified()
 
         vector1 = normalize(self[word1])
@@ -273,7 +277,6 @@ class BiasWordsEmbedding:
                 update_word_vector(self.model, word, equalized_vector)
 
         self.model.init_sims(replace=True)
-
 
     def debias(self, method='hard', neutral_words=None, equality_sets=None,
                inplace=True, verbose=False):
@@ -403,11 +406,14 @@ class GenderBiasWE(BiasWordsEmbedding):
     NEUTRAL_PROFESSIONS_NAME = list(set(PROFESSIONS_NAME)
                                     - set(SPECIFIC_FULL))
 
-    def __init__(self, model):
-        super().__init__(model)
+    def __init__(self, model, only_lower=True):
+        super().__init__(model, only_lower)
         self._identify_direction('he', 'she',
                                  self.__class__.DEFINITIONAL_PAIRS,
                                  'pca')
+
+        if not self.only_lower:
+            self.SPECIFIC_FULL_WITH_DEFINITIONAL = generate_words_forms(self.SPECIFIC_FULL_WITH_DEFINITIONAL)  # pylint: disable=C0301
 
         self.NEUTRAL_WORDS = self._extract_neutral_words(self.__class__
                                                          .SPECIFIC_FULL_WITH_DEFINITIONAL)  # pylint: disable=C0301
@@ -427,6 +433,15 @@ class GenderBiasWE(BiasWordsEmbedding):
 
         if method == 'hard' and equality_sets is None:
             equality_sets = self.__class__.DEFINITIONAL_PAIRS
+
+            if not self.only_lower:
+                assert all(len(equality_set) == 2
+                           for equality_set in equality_sets), "currently supporting only equality pairs if only_lower is False"  # pylint: disable=C0301
+                # TODO: refactor
+                equality_sets = {(candidate1, candidate2)
+                                 for word1, word2 in equality_sets
+                                 for candidate1, candidate2 in zip(generate_one_word_forms(word1),
+                                                                   generate_one_word_forms(word2))}  # pylint: disable=C0301
 
         return super().debias(method, neutral_words, equality_sets,
                               inplace, verbose)

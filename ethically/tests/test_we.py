@@ -1,8 +1,8 @@
 "Unit test module for ethically.we.core "
 # pylint: disable=redefined-outer-name,unused-variable,expression-not-assigned,singleton-comparison,protected-access
 
-import os
 import copy
+import os
 from math import isclose
 
 import numpy as np
@@ -27,7 +27,7 @@ def gender_biased_we():
         resource_filename(__name__, os.path.join('data',
                                                  'GoogleNews-vectors-negative300-bolukbasi.bin')),
         binary=True)
-    return GenderBiasWE(model)
+    return GenderBiasWE(model, only_lower=True)
 
 
 def test_calc_direct_bias(gender_biased_we):
@@ -153,6 +153,7 @@ def test_equalize(gender_biased_we, is_preforming=True):
                                        atol=ATOL)
 
     check_all_vectors_unit_length(gender_biased_we)
+
 
 def test_hard_debias_inplace(gender_biased_we, is_preforming=True):
     """
