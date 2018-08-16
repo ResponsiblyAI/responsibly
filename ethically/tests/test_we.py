@@ -231,3 +231,9 @@ def test_learn_full_specific_words(gender_biased_we):
     (full_specific_words,
      clf, X, y) = gender_biased_we.learn_full_specific_words(debug=True)
     assert len(full_specific_words) == 5753
+
+
+# TODO deeper testing
+def test_plot_projection_scores(gender_biased_we):
+    gender_biased_we.plot_projection_scores(gender_biased_we
+                                            ._data['profession_names'])

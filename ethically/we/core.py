@@ -23,6 +23,7 @@ DIRECTION_METHODS = ['single', 'sum', 'pca']
 DEBIAS_METHODS = ['neutralize', 'hard', 'soft']
 FIRST_PC_THRESHOLD = 0.5
 MAX_NON_SPECIFIC_EXAMPLES = 1000
+AXIS_PROJECTION_STEP = 0.1
 
 
 class BiasWordsEmbedding:
@@ -167,7 +168,8 @@ class BiasWordsEmbedding:
         return df
 
     def plot_projection_scores(self, words,
-                               ax=None, axis_projection_step=None):
+                               ax=None,
+                               axis_projection_step=AXIS_PROJECTION_STEP):
         self._is_direction_identified()
 
         projections_df = self._calc_projection_scores(words)
@@ -175,9 +177,6 @@ class BiasWordsEmbedding:
 
         if ax is None:
             _, ax = plt.subplots(1)
-
-        if axis_projection_step is None:
-            axis_projection_step = 0.1
 
         cmap = plt.get_cmap('RdBu')
         projections_df['color'] = ((projections_df['projection'] + 0.5)
