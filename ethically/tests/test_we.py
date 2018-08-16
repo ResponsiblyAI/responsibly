@@ -2,6 +2,7 @@
 # pylint: disable=redefined-outer-name,unused-variable,expression-not-assigned,singleton-comparison,protected-access
 
 import os
+import copy
 from math import isclose
 
 import numpy as np
@@ -195,3 +196,15 @@ def test_hard_debias_not_inplace(gender_biased_we):
 
     test_calc_direct_bias(gender_biased_we)
     test_hard_debias_inplace(gender_debiased_we, is_preforming=False)
+
+
+def test_copy(gender_biased_we):
+    gender_biased_we_copy = copy.copy(gender_biased_we)
+    assert gender_biased_we.direction is not gender_biased_we_copy.direction
+    assert gender_biased_we.model is gender_biased_we_copy.model
+
+
+def test_deepcopy(gender_biased_we):
+    gender_biased_we_copy = copy.deepcopy(gender_biased_we)
+    assert gender_biased_we.direction is not gender_biased_we_copy.direction
+    assert gender_biased_we.model is not gender_biased_we_copy.model
