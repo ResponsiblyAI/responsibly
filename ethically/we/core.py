@@ -209,7 +209,7 @@ class BiasWordsEmbedding:
         return direct_bias
 
     def calc_indirect_bias(self, word1, word2):
-        """Also known in the article as PairBias"""
+        """Also known in the article as PairBias."""
         self._is_direction_identified()
 
         vector1 = normalize(self[word1])
