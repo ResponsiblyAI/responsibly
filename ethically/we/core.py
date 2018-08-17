@@ -12,6 +12,8 @@ from sklearn.decomposition import PCA
 from sklearn.svm import LinearSVC
 from tqdm import tqdm
 
+from tabulate import tabulate
+
 from ..consts import RANDOM_STATE
 from .utils import (
     cosine_similarity, normalize, project_reject_vector, project_vector,
@@ -91,6 +93,12 @@ class BiasWordsEmbedding:
         pca = PCA(n_components=n_components)
         pca.fit(matrix)
 
+        if self._verbose:
+            table = enumerate(pca.explained_variance_ratio_, start=1)
+            headers = ['Principal Component',
+                       'Explained Variance Ratio']
+            print(tabulate(table, headers=headers))
+
         return pca
 
     # TODO: add the SVD method from section 6 step 1
@@ -106,6 +114,8 @@ class BiasWordsEmbedding:
             raise ValueError('positive_end and negative_end'
                              'should be different, and not the same "{}"'
                              .format(positive_end))
+
+        print('Identify direction using {} method...'.format(method))
 
         direction = None
 
@@ -127,7 +137,7 @@ class BiasWordsEmbedding:
             direction = normalize(diff_vector)
 
         elif method == 'pca':
-            pca = self._identify_subspace_by_pca(definitional, 1)
+            pca = self._identify_subspace_by_pca(definitional, 10)
             if pca.explained_variance_ratio_[0] < FIRST_PC_THRESHOLD:
                 raise RuntimeError('The Explained variance'
                                    'of the first principal component should be'
@@ -202,6 +212,7 @@ class BiasWordsEmbedding:
         plt.xlabel('Direction Projection')
         plt.ylabel('Words')
 
+        return ax
     def calc_direct_bias(self, neutral_words, c=None):
         if c is None:
             c = 1
