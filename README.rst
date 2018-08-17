@@ -1,24 +1,21 @@
-Unix: |Unix| Windows: |Windows|
-
-Metrics: |Coverage| |Code Quality|
-
-Usage: |PyPI|
-
-
-.. |Unix| image:: https://img.shields.io/travis/ethicallyAI/ethically/master.svg
-.. Unix: https://travis-ci.org/ethicallyAI/ethically
-.. |Windows| image:: https://img.shields.io/appveyor/ci/shlomihod/ethically/master.svg
-.. Windows: https://ci.appveyor.com/project/shlomihod/ethically
-.. |Coverage| image:: https://img.shields.io/coveralls/ethicallyAI/ethically/master.svg
-.. Coverage: https://coveralls.io/r/ethicallyAI/ethically
-.. |Code Quality| image:: https://img.shields.io/scrutinizer/g/ethicallyAI/ethically.svg
-.. Code Quality: https://scrutinizer-ci.com/g/ethicallyAI/ethically/?branch=master
-.. |PyPI| image:: https://img.shields.io/pypi/v/ethically.svg
-.. PyPI: https://pypi.org/project/ethically
-
 Ethically
 =========
 *in active development*
+
+.. image:: https://img.shields.io/travis/ethicallyAI/ethically/master.svg
+    :target: https://travis-ci.org/ethicallyAI/ethically
+
+.. image:: https://img.shields.io/appveyor/ci/shlomihod/ethically/master.svg
+   :target: https://ci.appveyor.com/project/shlomihod/ethically
+
+.. image::  https://img.shields.io/coveralls/ethicallyAI/ethically/master.svg
+   :target: hhttps://coveralls.io/r/ethicallyAI/ethically
+
+.. image::  https://img.shields.io/scrutinizer/g/ethicallyAI/ethically.svg
+  :target: https://scrutinizer-ci.com/g/ethicallyAI/ethically/?branch=master
+
+.. image::  https://img.shields.io/pypi/v/ethically.svg
+  :target: https://pypi.org/project/ethically
 
 Python Package for Auditing, Designing and Adjusting the Ethics of AI
 Systems.
