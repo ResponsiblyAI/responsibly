@@ -6,7 +6,15 @@ from .utils import generate_one_word_forms, generate_words_forms
 
 
 class GenderBiasWE(BiasWordsEmbedding):
-    def __init__(self, model, only_lower=True, verbose=False):
+    """Audit and Adjust the Gender Bias in English Words Embedding.
+
+    :param model: Words embedding model of ``gensim.model.KeyedVectors``
+    :param bool only_lower: Whether the words embedding contrains
+                            only lower case words
+    :param bool verbose: Set vebosity
+    """
+
+    def __init__(self, model, only_lower=False, verbose=False):
         super().__init__(model, only_lower, verbose)
         self._initialize_data()
         self._identify_direction('he', 'she',

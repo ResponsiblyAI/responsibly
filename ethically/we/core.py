@@ -28,8 +28,15 @@ MAX_NON_SPECIFIC_EXAMPLES = 1000
 
 
 class BiasWordsEmbedding:
+    """Audit and Adjust a Bias in English Words Embedding.
 
-    def __init__(self, model, only_lower=True, verbose=False):
+    :param model: Words embedding model of ``gensim.model.KeyedVectors``
+    :param bool only_lower: Whether the words embedding contrains
+                            only lower case words
+    :param bool verbose: Set vebosity
+    """
+
+    def __init__(self, model, only_lower=False, verbose=False):
         if not isinstance(model, KeyedVectors):
             raise TypeError('model should be of type KeyedVectors, not {}'
                             .format(type(model)))
@@ -159,6 +166,12 @@ class BiasWordsEmbedding:
         self.negative_end = negative_end
 
     def project_on_direction(self, word):
+        """Project the normalized vector of the word on the direction.
+
+        :param str word: The word tor project
+        :return float: The projection scalar
+        """
+
         self._is_direction_identified()
 
         vector = self[word]
@@ -180,6 +193,12 @@ class BiasWordsEmbedding:
 
     def plot_projection_scores(self, words,
                                ax=None, axis_projection_step=None):
+        """Plot the projection scalar of words on the direction.
+
+        :param list words: The words tor project
+        :return: The ax object of the plot
+        """
+
         self._is_direction_identified()
 
         projections_df = self._calc_projection_scores(words)
@@ -215,14 +234,20 @@ class BiasWordsEmbedding:
         return ax
 
     def plot_dist_projections_on_direction(self, word_groups, ax=None):
+        """Plot the projection scalars distribution on the direction.
+
+        :param dict word_groups word: The groups to projects
+        :return float: The ax object of the plot
+        """
+
         if ax is None:
             _, ax = plt.subplots(1)
 
         names = sorted(word_groups.keys())
 
         for name in names:
-            label = '{} (#{})'.format(name, len(words))
             words = word_groups[name]
+            label = '{} (#{})'.format(name, len(words))
             vectors = [self[word] for word in words]
             projections = self.model.cosine_similarities(self.direction,
                                                          vectors)
@@ -240,6 +265,16 @@ class BiasWordsEmbedding:
         return ax
 
     def calc_direct_bias(self, neutral_words, c=None):
+        """Calculate the direct bias.
+
+        Based on the projection of neuteral words on the direction.
+
+        :param list neutral_words
+        :param c: Strictness of bias measuring
+        :type c: float or None
+        :return: The direct bias
+        """
+
         if c is None:
             c = 1
 
@@ -250,7 +285,17 @@ class BiasWordsEmbedding:
         return direct_bias
 
     def calc_indirect_bias(self, word1, word2):
-        """Also known in the article as PairBias."""
+        """Calculate the indirect bias between two words.
+
+        Based on the amount of shared projection of the words on the direction.
+
+        Also called PairBias.
+        :param str word1: First word
+        :param str word2: Second word
+        :type c: float or None
+        :return The indirect bias between the two words
+        """
+
         self._is_direction_identified()
 
         vector1 = normalize(self[word1])
@@ -323,6 +368,24 @@ class BiasWordsEmbedding:
 
     def debias(self, method='hard', neutral_words=None, equality_sets=None,
                inplace=True):
+        """Debias the words embedding.
+
+        :param str method: The method of debiasing.
+        :param list neutral_words: List of neutral words
+                                   for the neutralize step
+        :param list equality_sets: List of equality sets
+                                   for the equalize step
+        :param bool inplace: Whether to debias the object inplace
+                             or return a new one
+
+        .. warning::
+
+          After calling `debias`,
+          all the vectors of the words embedding
+          will be normalized to unit length.
+
+        """
+
         # pylint: disable=W0212
         if inplace:
             bias_words_embedding = self
@@ -349,6 +412,12 @@ class BiasWordsEmbedding:
             return bias_words_embedding
 
     def evaluate_words_embedding(self):
+        """Print a words embedding evaluation based on standard protocols.
+
+        1. Word pairs task
+        2. Analogies task
+        """
+
         with warnings.catch_warnings():
             warnings.simplefilter('ignore', category=FutureWarning)
 
@@ -391,6 +460,15 @@ class BiasWordsEmbedding:
 
     def learn_full_specific_words(self, seed_specific_words,
                                   max_non_specific_examples=None, debug=None):
+        """Learn specific words given a list of seed specific wordsself.
+
+        Using Linear SVM.
+
+        :param list seed_specific_words: List of seed specific words
+        :param int max_non_specific_examples: The number of non-specifc words
+                                              to sample for training
+        :return: List of learned specific words and the classifier object
+        """
 
         if debug is None:
             debug = False
