@@ -27,6 +27,15 @@ class GenderBiasWE(BiasWordsEmbedding):
 
         self._data['neutral_words'] = self._extract_neutral_words(self
                                                                   ._data['specific_full_with_definitional'])  # pylint: disable=C0301
+        self._data['word_group_keys'].append('neutral_words')
+
+    def plot_dist_projections_on_direction(self, word_groups='bolukbasi',
+                                           ax=None):
+        if word_groups == 'bolukbasi':
+            word_groups = {key: self._data[key]
+                           for key in self._data['word_group_keys']}
+
+        super().plot_dist_projections_on_direction(word_groups, ax)
 
     def calc_direct_bias(self, neutral_words='professions', c=None):
         if isinstance(neutral_words, str) and neutral_words == 'professions':

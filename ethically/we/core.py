@@ -213,6 +213,29 @@ class BiasWordsEmbedding:
         plt.ylabel('Words')
 
         return ax
+
+    def plot_dist_projections_on_direction(self, word_groups, ax=None):
+        if ax is None:
+            _, ax = plt.subplots(1)
+
+        for name, words in word_groups.items():
+            label = '{} (#{})'.format(name, len(words))
+            vectors = [self[word] for word in words]
+            projections = self.model.cosine_similarities(self.direction,
+                                                         vectors)
+            sns.distplot(projections, hist=False, label=label, ax=ax)
+
+        plt.axvline(0, color='k', linestyle='--')
+
+        plt.title('← {} {} {} →'.format(self.negative_end,
+                                        ' ' * 20,
+                                        self.positive_end))
+        plt.xlabel('Direction Projection')
+        plt.ylabel('Density')
+        ax.legend(loc='center left', bbox_to_anchor=(1, 0.5))
+
+        return ax
+
     def calc_direct_bias(self, neutral_words, c=None):
         if c is None:
             c = 1
