@@ -128,7 +128,7 @@ read-coverage:
 
 .PHONY: docs
 docs:
-	ln -sf `realpath README.rst --relative-to=docs` docs/index.rst
+	ln -sf `realpath README.rst --relative-to=docs` docs/readme.rst
 	ln -sf `realpath CHANGELOG.rst --relative-to=docs/about` docs/about/changelog.rst
 	ln -sf `realpath CONTRIBUTING.rst --relative-to=docs/about` docs/about/contributing.rst
 	ln -sf `realpath LICENSE.rst --relative-to=docs/about` docs/about/license.rst
