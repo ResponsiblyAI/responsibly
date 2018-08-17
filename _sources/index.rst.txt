@@ -3,7 +3,7 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-.. include:: ../README.rst
+.. include:: readme.rst
 
 
 Contents
@@ -12,12 +12,13 @@ Contents
 .. toctree::
   :maxdepth: 1
 
+  tutorials
   words-embedding-bias
   classification-fairness
   API Reference <api/modules>
-  CONTRIBUTING
-  CHANGELOG
-  LICENSE
+  about/contributing
+  about/changelog
+  about/license
 
 
 Indices and tables

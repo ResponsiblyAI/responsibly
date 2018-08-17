@@ -16,7 +16,7 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Words Embedding Bias" href="words-embedding-bias.html" />
+    <link rel="next" title="Tutorials" href="tutorials.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -33,23 +33,25 @@
 
           <div class="body" role="main">
             
-  <p>Unix: <img alt="Unix" src="https://img.shields.io/travis/ethicallyAI/ethically/master.svg" /> Windows: <img alt="Windows" src="https://img.shields.io/appveyor/ci/shlomihod/ethically/master.svg" /></p>
-<p>Metrics: <img alt="Coverage" src="https://img.shields.io/coveralls/ethicallyAI/ethically/master.svg" /> <img alt="Code Quality" src="https://img.shields.io/scrutinizer/g/ethicallyAI/ethically.svg" /></p>
-<p>Usage: <img alt="PyPI" src="https://img.shields.io/pypi/v/ethically.svg" /></p>
-<div class="section" id="ethically">
+  <div class="section" id="ethically">
 <h1>Ethically<a class="headerlink" href="#ethically" title="Permalink to this headline">¶</a></h1>
 <p><em>in active development</em></p>
+<a class="reference external image-reference" href="https://travis-ci.org/ethicallyAI/ethically"><img alt="https://img.shields.io/travis/ethicallyAI/ethically/master.svg" src="https://img.shields.io/travis/ethicallyAI/ethically/master.svg" /></a>
+<a class="reference external image-reference" href="https://ci.appveyor.com/project/shlomihod/ethically"><img alt="https://img.shields.io/appveyor/ci/shlomihod/ethically/master.svg" src="https://img.shields.io/appveyor/ci/shlomihod/ethically/master.svg" /></a>
+<a class="reference external image-reference" href="hhttps://coveralls.io/r/ethicallyAI/ethically"><img alt="https://img.shields.io/coveralls/ethicallyAI/ethically/master.svg" src="https://img.shields.io/coveralls/ethicallyAI/ethically/master.svg" /></a>
+<a class="reference external image-reference" href="https://scrutinizer-ci.com/g/ethicallyAI/ethically/?branch=master"><img alt="https://img.shields.io/scrutinizer/g/ethicallyAI/ethically.svg" src="https://img.shields.io/scrutinizer/g/ethicallyAI/ethically.svg" /></a>
+<a class="reference external image-reference" href="https://pypi.org/project/ethically"><img alt="https://img.shields.io/pypi/v/ethically.svg" src="https://img.shields.io/pypi/v/ethically.svg" /></a>
 <p>Python Package for Auditing, Designing and Adjusting the Ethics of AI
 Systems.</p>
-<dl class="glossary docutils">
-<dt id="term-auditing">Auditing</dt>
+<dl class="docutils">
+<dt>Auditing</dt>
 <dd>Mesuring the ethics of a trained model.
 For example, binary classification fariness mesures
 (demographic parity, …).</dd>
-<dt id="term-designing">Designing</dt>
+<dt>Designing</dt>
 <dd>Improving the ethics of a model before training.
 For example, fairness fairness regularization.</dd>
-<dt id="term-adjusting">Adjusting</dt>
+<dt>Adjusting</dt>
 <dd>Improving the ethics of trained model.
 For example, gender debiasing of words embedding.</dd>
 </dl>
@@ -57,10 +59,10 @@ For example, gender debiasing of words embedding.</dd>
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
 <p>After installation, the package can imported:</p>
 <div class="code sh highlight-default notranslate"><div class="highlight"><pre><span></span>$ python
-&gt;&gt;&gt; import ethically
+&gt;&gt;&gt; from ethically.we import GenderBiasWE
 &gt;&gt;&gt; from gensim import downloader
 &gt;&gt;&gt; w2v_model = downloader.load(&#39;word2vec-google-news-300&#39;)
-&gt;&gt;&gt; w2v_gender_bias_we = ethically.we.GenderBiasWE(w2v_model)
+&gt;&gt;&gt; w2v_gender_bias_we = GenderBiasWE(w2v_model)
 &gt;&gt;&gt; w2v_gender_bias_we.calc_direct_bias()
 0.07307904249481942
 &gt;&gt;&gt; w2v_gender_bias_we.debias()
@@ -92,12 +94,13 @@ $ python setup.py install
 <h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="words-embedding-bias.html">Words Embedding Bias</a></li>
 <li class="toctree-l1"><a class="reference internal" href="classification-fairness.html">Classifiction Fairness</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/modules.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">For Contributors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="CHANGELOG.html">Revision History</a></li>
-<li class="toctree-l1"><a class="reference internal" href="LICENSE.html">LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about/contributing.html">For Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about/changelog.html">Revision History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about/license.html">License</a></li>
 </ul>
 </div>
 </div>
@@ -136,19 +139,20 @@ $ python setup.py install
 
 <h3>Navigation</h3>
 <ul>
+<li class="toctree-l1"><a class="reference internal" href="tutorials.html">Tutorials</a></li>
 <li class="toctree-l1"><a class="reference internal" href="words-embedding-bias.html">Words Embedding Bias</a></li>
 <li class="toctree-l1"><a class="reference internal" href="classification-fairness.html">Classifiction Fairness</a></li>
 <li class="toctree-l1"><a class="reference internal" href="api/modules.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="CONTRIBUTING.html">For Contributors</a></li>
-<li class="toctree-l1"><a class="reference internal" href="CHANGELOG.html">Revision History</a></li>
-<li class="toctree-l1"><a class="reference internal" href="LICENSE.html">LICENSE</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about/contributing.html">For Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about/changelog.html">Revision History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about/license.html">License</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="#">Documentation overview</a><ul>
-      <li>Next: <a href="words-embedding-bias.html" title="next chapter">Words Embedding Bias</a></li>
+      <li>Next: <a href="tutorials.html" title="next chapter">Tutorials</a></li>
   </ul></li>
 </ul>
 </div>
