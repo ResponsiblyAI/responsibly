@@ -27,7 +27,7 @@ def gender_biased_we():
         resource_filename(__name__, os.path.join('data',
                                                  'GoogleNews-vectors-negative300-bolukbasi.bin')),
         binary=True)
-    return GenderBiasWE(model, only_lower=True)
+    return GenderBiasWE(model, only_lower=True, verbose=True)
 
 
 def test_words_embbeding_loading(gender_biased_we):
@@ -223,7 +223,7 @@ def test_deepcopy(gender_biased_we):
 
 # TODO deeper testing
 def test_evaluate_words_embedding(gender_biased_we):
-    gender_biased_we.evaluate_words_embedding(verbose=True)
+    gender_biased_we.evaluate_words_embedding()
 
 
 # TODO deeper testing, not sure that the number is true

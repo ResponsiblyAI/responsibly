@@ -6,8 +6,8 @@ from .utils import generate_one_word_forms, generate_words_forms
 
 
 class GenderBiasWE(BiasWordsEmbedding):
-    def __init__(self, model, only_lower=True):
-        super().__init__(model, only_lower)
+    def __init__(self, model, only_lower=True, verbose=False):
+        super().__init__(model, only_lower, verbose)
         self._initialize_data()
         self._identify_direction('he', 'she',
                                  self._data['definitional_pairs'],
@@ -41,7 +41,7 @@ class GenderBiasWE(BiasWordsEmbedding):
             return super().calc_direct_bias(neutral_words)
 
     def debias(self, method='hard', neutral_words=None, equality_sets=None,
-               inplace=True, verbose=False):
+               inplace=True):
         # pylint: disable=C0301
         if method in ['hard', 'neutralize']:
             if neutral_words is None:
@@ -60,7 +60,7 @@ class GenderBiasWE(BiasWordsEmbedding):
                                                                    generate_one_word_forms(word2))}
 
         return super().debias(method, neutral_words, equality_sets,
-                              inplace, verbose)
+                              inplace)
 
     def learn_full_specific_words(self, seed_specific_words='bolukbasi',
                                   max_non_specific_examples=None,

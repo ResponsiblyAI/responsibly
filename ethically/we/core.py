@@ -27,7 +27,7 @@ MAX_NON_SPECIFIC_EXAMPLES = 1000
 
 class BiasWordsEmbedding:
 
-    def __init__(self, model, only_lower=True):
+    def __init__(self, model, only_lower=True, verbose=False):
         if not isinstance(model, KeyedVectors):
             raise TypeError('model should be of type KeyedVectors, not {}'
                             .format(type(model)))
@@ -36,6 +36,8 @@ class BiasWordsEmbedding:
 
         # TODO: write unitest for when it is False
         self.only_lower = only_lower
+
+        self._verbose = verbose
 
         self.direction = None
         self.positive_end = None
@@ -243,10 +245,10 @@ class BiasWordsEmbedding:
 
         return neutral_words
 
-    def _neutralize(self, neutral_words, verbose=False):
+    def _neutralize(self, neutral_words):
         self._is_direction_identified()
 
-        if verbose:
+        if self._verbose:
             neutral_words_iter = tqdm(neutral_words)
         else:
             neutral_words_iter = iter(neutral_words)
@@ -283,7 +285,7 @@ class BiasWordsEmbedding:
         self.model.init_sims(replace=True)
 
     def debias(self, method='hard', neutral_words=None, equality_sets=None,
-               inplace=True, verbose=False):
+               inplace=True):
         # pylint: disable=W0212
         if inplace:
             bias_words_embedding = self
@@ -295,12 +297,12 @@ class BiasWordsEmbedding:
                 DEBIAS_METHODS, method))
 
         if method in ['hard', 'neutralize']:
-            if verbose:
+            if self._verbose:
                 print('Neutralize...')
-            bias_words_embedding._neutralize(neutral_words, verbose)
+            bias_words_embedding._neutralize(neutral_words)
 
         if method == 'hard':
-            if verbose:
+            if self._verbose:
                 print('Equalize...')
             bias_words_embedding._equalize(equality_sets)
 
@@ -309,11 +311,11 @@ class BiasWordsEmbedding:
         else:
             return bias_words_embedding
 
-    def evaluate_words_embedding(self, verbose=False):
+    def evaluate_words_embedding(self):
         with warnings.catch_warnings():
             warnings.simplefilter('ignore', category=FutureWarning)
 
-            if verbose:
+            if self._verbose:
                 print('Evaluate word pairs...')
             word_pairs_path = resource_filename(__name__,
                                                 os.path.join('data',
@@ -321,7 +323,7 @@ class BiasWordsEmbedding:
                                                              'wordsim353.tsv'))
             word_paris_result = self.model.evaluate_word_pairs(word_pairs_path)
 
-            if verbose:
+            if self._verbose:
                 print('Evaluate analogies...')
             analogies_path = resource_filename(__name__,
                                                os.path.join('data',
@@ -329,7 +331,7 @@ class BiasWordsEmbedding:
                                                             'questions-words.txt'))  # pylint: disable=C0301
             analogies_result = self.model.evaluate_word_analogies(analogies_path)  # pylint: disable=C0301
 
-        if verbose:
+        if self._verbose:
             print()
         print('From Gensim')
         print()
