@@ -128,6 +128,10 @@ read-coverage:
 
 .PHONY: docs
 docs:
+	ln -sf `realpath README.rst --relative-to=docs` docs/index.rst
+	ln -sf `realpath CHANGELOG.rst --relative-to=docs/about` docs/about/changelog.rst
+	ln -sf `realpath CONTRIBUTING.rst --relative-to=docs/about` docs/about/contributing.rst
+	ln -sf `realpath LICENSE.rst --relative-to=docs/about` docs/about/license.rst
 	cd docs && make html && sphinx-apidoc  -o api ../ethically
 	@echo "\033[95m\n\nBuild successful! View the docs homepage at docs/_build/html/index.html.\n\033[0m"
 

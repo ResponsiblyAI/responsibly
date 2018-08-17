@@ -23,20 +23,19 @@ Ethically
 Python Package for Auditing, Designing and Adjusting the Ethics of AI
 Systems.
 
-.. glossary::
 
-   Auditing
-      Mesuring the ethics of a trained model.
-      For example, binary classification fariness mesures
-      (demographic parity, ...).
+Auditing
+  Mesuring the ethics of a trained model.
+  For example, binary classification fariness mesures
+  (demographic parity, ...).
 
-   Designing
-      Improving the ethics of a model before training.
-      For example, fairness fairness regularization.
+Designing
+  Improving the ethics of a model before training.
+  For example, fairness fairness regularization.
 
-   Adjusting
-      Improving the ethics of trained model.
-      For example, gender debiasing of words embedding.
+Adjusting
+  Improving the ethics of trained model.
+  For example, gender debiasing of words embedding.
 
 
 Usage
@@ -47,10 +46,10 @@ After installation, the package can imported:
 .. code:: sh
 
    $ python
-   >>> import ethically
+   >>> from ethically.we import GenderBiasWE
    >>> from gensim import downloader
    >>> w2v_model = downloader.load('word2vec-google-news-300')
-   >>> w2v_gender_bias_we = ethically.we.GenderBiasWE(w2v_model)
+   >>> w2v_gender_bias_we = GenderBiasWE(w2v_model)
    >>> w2v_gender_bias_we.calc_direct_bias()
    0.07307904249481942
    >>> w2v_gender_bias_we.debias()
