@@ -1,0 +1,628 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>ethically.we.core &#8212; Ethically 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ethically.we.core</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pylab</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">gensim.models.keyedvectors</span> <span class="k">import</span> <span class="n">KeyedVectors</span>
+<span class="kn">from</span> <span class="nn">pkg_resources</span> <span class="k">import</span> <span class="n">resource_filename</span>
+<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="k">import</span> <span class="n">PCA</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="k">import</span> <span class="n">LinearSVC</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="k">import</span> <span class="n">tqdm</span>
+
+<span class="kn">from</span> <span class="nn">tabulate</span> <span class="k">import</span> <span class="n">tabulate</span>
+
+<span class="kn">from</span> <span class="nn">..consts</span> <span class="k">import</span> <span class="n">RANDOM_STATE</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">cosine_similarity</span><span class="p">,</span> <span class="n">normalize</span><span class="p">,</span> <span class="n">project_reject_vector</span><span class="p">,</span> <span class="n">project_vector</span><span class="p">,</span>
+    <span class="n">reject_vector</span><span class="p">,</span> <span class="n">update_word_vector</span><span class="p">,</span>
+<span class="p">)</span>
+
+
+<span class="n">DIRECTION_METHODS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;single&#39;</span><span class="p">,</span> <span class="s1">&#39;sum&#39;</span><span class="p">,</span> <span class="s1">&#39;pca&#39;</span><span class="p">]</span>
+<span class="n">DEBIAS_METHODS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;neutralize&#39;</span><span class="p">,</span> <span class="s1">&#39;hard&#39;</span><span class="p">,</span> <span class="s1">&#39;soft&#39;</span><span class="p">]</span>
+<span class="n">FIRST_PC_THRESHOLD</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">MAX_NON_SPECIFIC_EXAMPLES</span> <span class="o">=</span> <span class="mi">1000</span>
+
+
+<div class="viewcode-block" id="BiasWordsEmbedding"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.core.BiasWordsEmbedding">[docs]</a><span class="k">class</span> <span class="nc">BiasWordsEmbedding</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Audit and Adjust a Bias in English Words Embedding.</span>
+
+<span class="sd">    :param model: Words embedding model of ``gensim.model.KeyedVectors``</span>
+<span class="sd">    :param bool only_lower: Whether the words embedding contrains</span>
+<span class="sd">                            only lower case words</span>
+<span class="sd">    :param bool verbose: Set vebosity</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">only_lower</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">KeyedVectors</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;model should be of type KeyedVectors, not </span><span class="si">{}</span><span class="s1">&#39;</span>
+                            <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">model</span><span class="p">)))</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">model</span>
+
+        <span class="c1"># TODO: write unitest for when it is False</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">only_lower</span> <span class="o">=</span> <span class="n">only_lower</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">positive_end</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">negative_end</span> <span class="o">=</span> <span class="kc">None</span>
+
+    <span class="k">def</span> <span class="nf">__copy__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">bias_words_embedding</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+        <span class="n">bias_words_embedding</span><span class="o">.</span><span class="n">direction</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span>
+        <span class="n">bias_words_embedding</span><span class="o">.</span><span class="n">positive_end</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">positive_end</span><span class="p">)</span>
+        <span class="n">bias_words_embedding</span><span class="o">.</span><span class="n">negative_end</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">negative_end</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">bias_words_embedding</span>
+
+    <span class="k">def</span> <span class="nf">__deepcopy__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">memo</span><span class="p">):</span>
+        <span class="n">bias_words_embedding</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">copy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+        <span class="n">bias_words_embedding</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">bias_words_embedding</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">bias_words_embedding</span>
+
+    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span>
+
+    <span class="k">def</span> <span class="nf">_filter_words_by_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">words</span><span class="p">):</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span> <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="bp">self</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">_is_direction_identified</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;The direction was not identified&#39;</span>
+                               <span class="s1">&#39; for this </span><span class="si">{}</span><span class="s1"> instance&#39;</span>
+                               <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span><span class="o">.</span><span class="vm">__name__</span><span class="p">))</span>
+
+    <span class="c1"># There is a mistake in the article</span>
+    <span class="c1"># it is written (section 5.1):</span>
+    <span class="c1"># &quot;To identify the gender subspace, we took the ten gender pair difference</span>
+    <span class="c1"># vectors and computed its principal components (PCs)&quot;</span>
+    <span class="c1"># however in the source code:</span>
+    <span class="c1"># https://github.com/tolga-b/debiaswe/blob/10277b23e187ee4bd2b6872b507163ef4198686b/debiaswe/we.py#L235-L245</span>
+    <span class="k">def</span> <span class="nf">_identify_subspace_by_pca</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">definitional_pairs</span><span class="p">,</span> <span class="n">n_components</span><span class="p">):</span>
+        <span class="n">matrix</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">word1</span><span class="p">,</span> <span class="n">word2</span> <span class="ow">in</span> <span class="n">definitional_pairs</span><span class="p">:</span>
+            <span class="n">vector1</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">word1</span><span class="p">])</span>
+            <span class="n">vector2</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">word2</span><span class="p">])</span>
+
+            <span class="n">center</span> <span class="o">=</span> <span class="p">(</span><span class="n">vector1</span> <span class="o">+</span> <span class="n">vector2</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
+
+            <span class="n">matrix</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vector1</span> <span class="o">-</span> <span class="n">center</span><span class="p">)</span>
+            <span class="n">matrix</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">vector2</span> <span class="o">-</span> <span class="n">center</span><span class="p">)</span>
+
+        <span class="n">pca</span> <span class="o">=</span> <span class="n">PCA</span><span class="p">(</span><span class="n">n_components</span><span class="o">=</span><span class="n">n_components</span><span class="p">)</span>
+        <span class="n">pca</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">matrix</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">:</span>
+            <span class="n">table</span> <span class="o">=</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">headers</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Principal Component&#39;</span><span class="p">,</span>
+                       <span class="s1">&#39;Explained Variance Ratio&#39;</span><span class="p">]</span>
+            <span class="nb">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">table</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="n">headers</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">pca</span>
+
+    <span class="c1"># TODO: add the SVD method from section 6 step 1</span>
+    <span class="c1"># It seems there is a mistake there, I think it is the same as PCA</span>
+    <span class="c1"># just with repleacing it with SVD</span>
+    <span class="k">def</span> <span class="nf">_identify_direction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">positive_end</span><span class="p">,</span> <span class="n">negative_end</span><span class="p">,</span>
+                            <span class="n">definitional</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;pca&#39;</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">DIRECTION_METHODS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;method should be one of </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1"> was given&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">DIRECTION_METHODS</span><span class="p">,</span> <span class="n">method</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">positive_end</span> <span class="o">==</span> <span class="n">negative_end</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;positive_end and negative_end&#39;</span>
+                             <span class="s1">&#39;should be different, and not the same &quot;</span><span class="si">{}</span><span class="s1">&quot;&#39;</span>
+                             <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">positive_end</span><span class="p">))</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Identify direction using </span><span class="si">{}</span><span class="s1"> method...&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">method</span><span class="p">))</span>
+
+        <span class="n">direction</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;single&#39;</span><span class="p">:</span>
+            <span class="n">direction</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">definitional</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+                                  <span class="o">-</span> <span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">definitional</span><span class="p">[</span><span class="mi">1</span><span class="p">]]))</span>
+
+        <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;sum&#39;</span><span class="p">:</span>
+            <span class="n">groups</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">definitional</span><span class="p">))</span>
+
+            <span class="n">group1_sum_vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="bp">self</span><span class="p">[</span><span class="n">word</span><span class="p">]</span>
+                                        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">[</span><span class="mi">0</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="n">group2_sum_vector</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">([</span><span class="bp">self</span><span class="p">[</span><span class="n">word</span><span class="p">]</span>
+                                        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">groups</span><span class="p">[</span><span class="mi">1</span><span class="p">]],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+            <span class="n">diff_vector</span> <span class="o">=</span> <span class="p">(</span><span class="n">normalize</span><span class="p">(</span><span class="n">group1_sum_vector</span><span class="p">)</span>
+                           <span class="o">-</span> <span class="n">normalize</span><span class="p">(</span><span class="n">group2_sum_vector</span><span class="p">))</span>
+
+            <span class="n">direction</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">diff_vector</span><span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;pca&#39;</span><span class="p">:</span>
+            <span class="n">pca</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_identify_subspace_by_pca</span><span class="p">(</span><span class="n">definitional</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">FIRST_PC_THRESHOLD</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;The Explained variance&#39;</span>
+                                   <span class="s1">&#39;of the first principal component should be&#39;</span>
+                                   <span class="s1">&#39;at least </span><span class="si">{}</span><span class="s1">, but it is </span><span class="si">{}</span><span class="s1">&#39;</span>
+                                   <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">FIRST_PC_THRESHOLD</span><span class="p">,</span>
+                                           <span class="n">pca</span><span class="o">.</span><span class="n">explained_variance_ratio_</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+            <span class="n">direction</span> <span class="o">=</span> <span class="n">pca</span><span class="o">.</span><span class="n">components_</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+        <span class="c1"># if direction is oposite (e.g. we cannot control</span>
+        <span class="c1"># what the PCA will return)</span>
+        <span class="n">ends_diff_projection</span> <span class="o">=</span> <span class="n">cosine_similarity</span><span class="p">((</span><span class="bp">self</span><span class="p">[</span><span class="n">positive_end</span><span class="p">]</span>
+                                                  <span class="o">-</span> <span class="bp">self</span><span class="p">[</span><span class="n">negative_end</span><span class="p">]),</span>
+                                                 <span class="n">direction</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">ends_diff_projection</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">direction</span> <span class="o">=</span> <span class="o">-</span><span class="n">direction</span>  <span class="c1"># pylint: disable=invalid-unary-operand-type</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">direction</span> <span class="o">=</span> <span class="n">direction</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">positive_end</span> <span class="o">=</span> <span class="n">positive_end</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">negative_end</span> <span class="o">=</span> <span class="n">negative_end</span>
+
+<div class="viewcode-block" id="BiasWordsEmbedding.project_on_direction"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.core.BiasWordsEmbedding.project_on_direction">[docs]</a>    <span class="k">def</span> <span class="nf">project_on_direction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Project the normalized vector of the word on the direction.</span>
+
+<span class="sd">        :param str word: The word tor project</span>
+<span class="sd">        :return float: The projection scalar</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_direction_identified</span><span class="p">()</span>
+
+        <span class="n">vector</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">word</span><span class="p">]</span>
+        <span class="n">projection_score</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">cosine_similarities</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span>
+                                                          <span class="p">[</span><span class="n">vector</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">projection_score</span></div>
+
+    <span class="k">def</span> <span class="nf">_calc_projection_scores</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">words</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_direction_identified</span><span class="p">()</span>
+
+        <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;word&#39;</span><span class="p">:</span> <span class="n">words</span><span class="p">})</span>
+
+        <span class="c1"># TODO: maybe using cosine_similarities on all the vectors?</span>
+        <span class="c1"># it might be faster</span>
+        <span class="n">df</span><span class="p">[</span><span class="s1">&#39;projection&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;word&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">project_on_direction</span><span class="p">)</span>
+        <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s1">&#39;projection&#39;</span><span class="p">,</span> <span class="n">ascending</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">df</span>
+
+<div class="viewcode-block" id="BiasWordsEmbedding.plot_projection_scores"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.core.BiasWordsEmbedding.plot_projection_scores">[docs]</a>    <span class="k">def</span> <span class="nf">plot_projection_scores</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">words</span><span class="p">,</span>
+                               <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis_projection_step</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plot the projection scalar of words on the direction.</span>
+
+<span class="sd">        :param list words: The words tor project</span>
+<span class="sd">        :return: The ax object of the plot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_direction_identified</span><span class="p">()</span>
+
+        <span class="n">projections_df</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_projection_scores</span><span class="p">(</span><span class="n">words</span><span class="p">)</span>
+        <span class="n">projections_df</span><span class="p">[</span><span class="s1">&#39;projection&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">projections_df</span><span class="p">[</span><span class="s1">&#39;projection&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">axis_projection_step</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">axis_projection_step</span> <span class="o">=</span> <span class="mf">0.1</span>
+
+        <span class="n">cmap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="s1">&#39;RdBu&#39;</span><span class="p">)</span>
+        <span class="n">projections_df</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">projections_df</span><span class="p">[</span><span class="s1">&#39;projection&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
+                                   <span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">cmap</span><span class="p">))</span>
+
+        <span class="n">most_extream_projection</span> <span class="o">=</span> <span class="p">(</span><span class="n">projections_df</span><span class="p">[</span><span class="s1">&#39;projection&#39;</span><span class="p">]</span>
+                                   <span class="o">.</span><span class="n">abs</span><span class="p">()</span>
+                                   <span class="o">.</span><span class="n">max</span><span class="p">()</span>
+                                   <span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+
+        <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;projection&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">projections_df</span><span class="p">,</span>
+                    <span class="n">palette</span><span class="o">=</span><span class="n">projections_df</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">])</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">xticks</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="o">-</span><span class="n">most_extream_projection</span><span class="p">,</span> <span class="n">most_extream_projection</span><span class="p">,</span>
+                             <span class="n">axis_projection_step</span><span class="p">))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;← </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> →&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">negative_end</span><span class="p">,</span>
+                                        <span class="s1">&#39; &#39;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">,</span>
+                                        <span class="bp">self</span><span class="o">.</span><span class="n">positive_end</span><span class="p">))</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Direction Projection&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Words&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ax</span></div>
+
+<div class="viewcode-block" id="BiasWordsEmbedding.plot_dist_projections_on_direction"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.core.BiasWordsEmbedding.plot_dist_projections_on_direction">[docs]</a>    <span class="k">def</span> <span class="nf">plot_dist_projections_on_direction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word_groups</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plot the projection scalars distribution on the direction.</span>
+
+<span class="sd">        :param dict word_groups word: The groups to projects</span>
+<span class="sd">        :return float: The ax object of the plot</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">names</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">word_groups</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span>
+
+        <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">names</span><span class="p">:</span>
+            <span class="n">words</span> <span class="o">=</span> <span class="n">word_groups</span><span class="p">[</span><span class="n">name</span><span class="p">]</span>
+            <span class="n">label</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> (#</span><span class="si">{}</span><span class="s1">)&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">words</span><span class="p">))</span>
+            <span class="n">vectors</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="p">[</span><span class="n">word</span><span class="p">]</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">]</span>
+            <span class="n">projections</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">cosine_similarities</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span>
+                                                         <span class="n">vectors</span><span class="p">)</span>
+            <span class="n">sns</span><span class="o">.</span><span class="n">distplot</span><span class="p">(</span><span class="n">projections</span><span class="p">,</span> <span class="n">hist</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">axvline</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">linestyle</span><span class="o">=</span><span class="s1">&#39;--&#39;</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;← </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> </span><span class="si">{}</span><span class="s1"> →&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">negative_end</span><span class="p">,</span>
+                                        <span class="s1">&#39; &#39;</span> <span class="o">*</span> <span class="mi">20</span><span class="p">,</span>
+                                        <span class="bp">self</span><span class="o">.</span><span class="n">positive_end</span><span class="p">))</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Direction Projection&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Density&#39;</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;center left&#39;</span><span class="p">,</span> <span class="n">bbox_to_anchor</span><span class="o">=</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">))</span>
+
+        <span class="k">return</span> <span class="n">ax</span></div>
+
+<div class="viewcode-block" id="BiasWordsEmbedding.calc_direct_bias"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.core.BiasWordsEmbedding.calc_direct_bias">[docs]</a>    <span class="k">def</span> <span class="nf">calc_direct_bias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">neutral_words</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate the direct bias.</span>
+
+<span class="sd">        Based on the projection of neuteral words on the direction.</span>
+
+<span class="sd">        :param list neutral_words</span>
+<span class="sd">        :param c: Strictness of bias measuring</span>
+<span class="sd">        :type c: float or None</span>
+<span class="sd">        :return: The direct bias</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">c</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="n">projections</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calc_projection_scores</span><span class="p">(</span><span class="n">neutral_words</span><span class="p">)[</span><span class="s1">&#39;projection&#39;</span><span class="p">]</span>
+        <span class="n">direct_bias_terms</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">projections</span><span class="p">)</span> <span class="o">**</span> <span class="n">c</span>
+        <span class="n">direct_bias</span> <span class="o">=</span> <span class="n">direct_bias_terms</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">neutral_words</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">direct_bias</span></div>
+
+<div class="viewcode-block" id="BiasWordsEmbedding.calc_indirect_bias"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.core.BiasWordsEmbedding.calc_indirect_bias">[docs]</a>    <span class="k">def</span> <span class="nf">calc_indirect_bias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word1</span><span class="p">,</span> <span class="n">word2</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Calculate the indirect bias between two words.</span>
+
+<span class="sd">        Based on the amount of shared projection of the words on the direction.</span>
+
+<span class="sd">        Also called PairBias.</span>
+<span class="sd">        :param str word1: First word</span>
+<span class="sd">        :param str word2: Second word</span>
+<span class="sd">        :type c: float or None</span>
+<span class="sd">        :return The indirect bias between the two words</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_direction_identified</span><span class="p">()</span>
+
+        <span class="n">vector1</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">word1</span><span class="p">])</span>
+        <span class="n">vector2</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">word2</span><span class="p">])</span>
+
+        <span class="n">perpendicular_vector1</span> <span class="o">=</span> <span class="n">reject_vector</span><span class="p">(</span><span class="n">vector1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span>
+        <span class="n">perpendicular_vector2</span> <span class="o">=</span> <span class="n">reject_vector</span><span class="p">(</span><span class="n">vector2</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span>
+
+        <span class="n">inner_product</span> <span class="o">=</span> <span class="n">vector1</span> <span class="o">@</span> <span class="n">vector2</span>
+        <span class="n">perpendicular_similarity</span> <span class="o">=</span> <span class="n">cosine_similarity</span><span class="p">(</span><span class="n">perpendicular_vector1</span><span class="p">,</span>
+                                                     <span class="n">perpendicular_vector2</span><span class="p">)</span>
+
+        <span class="n">indirect_bias</span> <span class="o">=</span> <span class="p">((</span><span class="n">inner_product</span> <span class="o">-</span> <span class="n">perpendicular_similarity</span><span class="p">)</span>
+                         <span class="o">/</span> <span class="n">inner_product</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">indirect_bias</span></div>
+
+    <span class="k">def</span> <span class="nf">_extract_neutral_words</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">specific_words</span><span class="p">):</span>
+        <span class="n">extended_specific_words</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+
+        <span class="c1"># because or specific_full data was trained on partial words embedding</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">specific_words</span><span class="p">:</span>
+            <span class="n">extended_specific_words</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+            <span class="n">extended_specific_words</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">lower</span><span class="p">())</span>
+            <span class="n">extended_specific_words</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">upper</span><span class="p">())</span>
+            <span class="n">extended_specific_words</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">word</span><span class="o">.</span><span class="n">title</span><span class="p">())</span>
+
+        <span class="n">neutral_words</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">vocab</span>
+                         <span class="k">if</span> <span class="n">word</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">extended_specific_words</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">neutral_words</span>
+
+    <span class="k">def</span> <span class="nf">_neutralize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">neutral_words</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_is_direction_identified</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">:</span>
+            <span class="n">neutral_words_iter</span> <span class="o">=</span> <span class="n">tqdm</span><span class="p">(</span><span class="n">neutral_words</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">neutral_words_iter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">neutral_words</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">neutral_words_iter</span><span class="p">:</span>
+            <span class="n">neutralized_vector</span> <span class="o">=</span> <span class="n">reject_vector</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">word</span><span class="p">],</span>
+                                               <span class="bp">self</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span>
+            <span class="n">update_word_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">neutralized_vector</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">init_sims</span><span class="p">(</span><span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">_equalize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">equality_sets</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">equality_set_words</span> <span class="ow">in</span> <span class="n">equality_sets</span><span class="p">:</span>
+            <span class="n">equality_set_vectors</span> <span class="o">=</span> <span class="p">[</span><span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">word</span><span class="p">])</span>
+                                    <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">equality_set_words</span><span class="p">]</span>
+            <span class="n">center</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">equality_set_vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+            <span class="p">(</span><span class="n">projected_center</span><span class="p">,</span>
+             <span class="n">rejected_center</span><span class="p">)</span> <span class="o">=</span> <span class="n">project_reject_vector</span><span class="p">(</span><span class="n">center</span><span class="p">,</span>
+                                                      <span class="bp">self</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span>
+
+            <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">vector</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">equality_set_words</span><span class="p">,</span> <span class="n">equality_set_vectors</span><span class="p">):</span>
+                <span class="n">projected_vector</span> <span class="o">=</span> <span class="n">project_vector</span><span class="p">(</span><span class="n">vector</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span>
+
+                <span class="n">projected_part</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">projected_vector</span> <span class="o">-</span> <span class="n">projected_center</span><span class="p">)</span>
+                <span class="n">scaling</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">rejected_center</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+
+                <span class="c1"># TODO - in the code it is different - why?</span>
+                <span class="c1"># equalized_vector = rejected_center + scaling * self.direction</span>
+                <span class="c1"># https://github.com/tolga-b/debiaswe/blob/10277b23e187ee4bd2b6872b507163ef4198686b/debiaswe/debias.py#L36-L37</span>
+                <span class="n">equalized_vector</span> <span class="o">=</span> <span class="n">rejected_center</span> <span class="o">+</span> <span class="n">scaling</span> <span class="o">*</span> <span class="n">projected_part</span>
+
+                <span class="n">update_word_vector</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">equalized_vector</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">init_sims</span><span class="p">(</span><span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="BiasWordsEmbedding.debias"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.core.BiasWordsEmbedding.debias">[docs]</a>    <span class="k">def</span> <span class="nf">debias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;hard&#39;</span><span class="p">,</span> <span class="n">neutral_words</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">equality_sets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+               <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Debias the words embedding.</span>
+
+<span class="sd">        :param str method: The method of debiasing.</span>
+<span class="sd">        :param list neutral_words: List of neutral words</span>
+<span class="sd">                                   for the neutralize step</span>
+<span class="sd">        :param list equality_sets: List of equality sets</span>
+<span class="sd">                                   for the equalize step</span>
+<span class="sd">        :param bool inplace: Whether to debias the object inplace</span>
+<span class="sd">                             or return a new one</span>
+
+<span class="sd">        .. warning::</span>
+
+<span class="sd">          After calling `debias`,</span>
+<span class="sd">          all the vectors of the words embedding</span>
+<span class="sd">          will be normalized to unit length.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># pylint: disable=W0212</span>
+        <span class="k">if</span> <span class="n">inplace</span><span class="p">:</span>
+            <span class="n">bias_words_embedding</span> <span class="o">=</span> <span class="bp">self</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">bias_words_embedding</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">DEBIAS_METHODS</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;method should be one of </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1"> was given&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+                <span class="n">DEBIAS_METHODS</span><span class="p">,</span> <span class="n">method</span><span class="p">))</span>
+
+        <span class="k">if</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;hard&#39;</span><span class="p">,</span> <span class="s1">&#39;neutralize&#39;</span><span class="p">]:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Neutralize...&#39;</span><span class="p">)</span>
+            <span class="n">bias_words_embedding</span><span class="o">.</span><span class="n">_neutralize</span><span class="p">(</span><span class="n">neutral_words</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;hard&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Equalize...&#39;</span><span class="p">)</span>
+            <span class="n">bias_words_embedding</span><span class="o">.</span><span class="n">_equalize</span><span class="p">(</span><span class="n">equality_sets</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">inplace</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">bias_words_embedding</span></div>
+
+<div class="viewcode-block" id="BiasWordsEmbedding.evaluate_words_embedding"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.core.BiasWordsEmbedding.evaluate_words_embedding">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate_words_embedding</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Print a words embedding evaluation based on standard protocols.</span>
+
+<span class="sd">        1. Word pairs task</span>
+<span class="sd">        2. Analogies task</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Evaluate word pairs...&#39;</span><span class="p">)</span>
+            <span class="n">word_pairs_path</span> <span class="o">=</span> <span class="n">resource_filename</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span>
+                                                <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span>
+                                                             <span class="s1">&#39;evaluation&#39;</span><span class="p">,</span>
+                                                             <span class="s1">&#39;wordsim353.tsv&#39;</span><span class="p">))</span>
+            <span class="n">word_paris_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">evaluate_word_pairs</span><span class="p">(</span><span class="n">word_pairs_path</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Evaluate analogies...&#39;</span><span class="p">)</span>
+            <span class="n">analogies_path</span> <span class="o">=</span> <span class="n">resource_filename</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span>
+                                               <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span>
+                                                            <span class="s1">&#39;evaluation&#39;</span><span class="p">,</span>
+                                                            <span class="s1">&#39;questions-words.txt&#39;</span><span class="p">))</span>  <span class="c1"># pylint: disable=C0301</span>
+            <span class="n">analogies_result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">evaluate_word_analogies</span><span class="p">(</span><span class="n">analogies_path</span><span class="p">)</span>  <span class="c1"># pylint: disable=C0301</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;From Gensim&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-&#39;</span> <span class="o">*</span> <span class="mi">30</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Word Pairs Result - WordSimilarity-353:&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Pearson correlation coefficient:&#39;</span><span class="p">,</span> <span class="n">word_paris_result</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Spearman rank-order correlation coefficient&#39;</span>
+              <span class="s1">&#39;between the similarities from the dataset&#39;</span>
+              <span class="s1">&#39;and the similarities produced by the model itself:&#39;</span><span class="p">,</span>
+              <span class="n">word_paris_result</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Ratio of pairs with unknown words:&#39;</span><span class="p">,</span> <span class="n">word_paris_result</span><span class="p">[</span><span class="mi">2</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;-&#39;</span> <span class="o">*</span> <span class="mi">30</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">()</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Analogies Result&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;~~~~~~~~~~~~~~~~&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Overall evaluation score:&#39;</span><span class="p">,</span> <span class="n">analogies_result</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span></div>
+
+<div class="viewcode-block" id="BiasWordsEmbedding.learn_full_specific_words"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.core.BiasWordsEmbedding.learn_full_specific_words">[docs]</a>    <span class="k">def</span> <span class="nf">learn_full_specific_words</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">seed_specific_words</span><span class="p">,</span>
+                                  <span class="n">max_non_specific_examples</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">debug</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Learn specific words given a list of seed specific wordsself.</span>
+
+<span class="sd">        Using Linear SVM.</span>
+
+<span class="sd">        :param list seed_specific_words: List of seed specific words</span>
+<span class="sd">        :param int max_non_specific_examples: The number of non-specifc words</span>
+<span class="sd">                                              to sample for training</span>
+<span class="sd">        :return: List of learned specific words and the classifier object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">debug</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">debug</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="k">if</span> <span class="n">max_non_specific_examples</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">max_non_specific_examples</span> <span class="o">=</span> <span class="n">MAX_NON_SPECIFIC_EXAMPLES</span>
+
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">non_specific_example_count</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">vocab</span><span class="p">:</span>
+            <span class="n">is_specific</span> <span class="o">=</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">seed_specific_words</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_specific</span><span class="p">:</span>
+                <span class="n">non_specific_example_count</span> <span class="o">+=</span> <span class="mi">1</span>
+                <span class="k">if</span> <span class="n">non_specific_example_count</span> <span class="o">&lt;=</span> <span class="n">max_non_specific_examples</span><span class="p">:</span>
+                    <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="bp">self</span><span class="p">[</span><span class="n">word</span><span class="p">],</span> <span class="n">is_specific</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">data</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="bp">self</span><span class="p">[</span><span class="n">word</span><span class="p">],</span> <span class="n">is_specific</span><span class="p">))</span>
+
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">RANDOM_STATE</span><span class="p">)</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">shuffle</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="n">X</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">data</span><span class="p">)</span>
+
+        <span class="n">X</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">X</span><span class="p">)</span>
+        <span class="n">X</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">]</span>
+
+        <span class="n">y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;int&#39;</span><span class="p">)</span>
+
+        <span class="n">clf</span> <span class="o">=</span> <span class="n">LinearSVC</span><span class="p">(</span><span class="n">C</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">class_weight</span><span class="o">=</span><span class="s1">&#39;balanced&#39;</span><span class="p">,</span>
+                        <span class="n">random_state</span><span class="o">=</span><span class="n">RANDOM_STATE</span><span class="p">)</span>
+
+        <span class="n">clf</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+        <span class="n">full_specific_words</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">vocab</span><span class="p">:</span>
+            <span class="n">vector</span> <span class="o">=</span> <span class="p">[</span><span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">word</span><span class="p">])]</span>
+            <span class="k">if</span> <span class="n">clf</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">vector</span><span class="p">):</span>
+                <span class="n">full_specific_words</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">debug</span><span class="p">:</span>
+            <span class="k">return</span> <span class="n">full_specific_words</span><span class="p">,</span> <span class="n">clf</span>
+
+        <span class="k">return</span> <span class="n">full_specific_words</span><span class="p">,</span> <span class="n">clf</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span></div></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Ethically</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=ethicallyAI&repo=ethically&type=star&v=2&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../words-embedding-bias.html">Words Embedding Bias</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../classification-fairness.html">Classifiction Fairness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CONTRIBUTING.html">For Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../CHANGELOG.html">Revision History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../LICENSE.html">LICENSE</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Shlomi Hod.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/ethicallyAI/ethically" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
