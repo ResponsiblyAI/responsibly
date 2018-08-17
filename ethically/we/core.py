@@ -114,8 +114,8 @@ class BiasWordsEmbedding:
             raise ValueError('positive_end and negative_end'
                              'should be different, and not the same "{}"'
                              .format(positive_end))
-
-        print('Identify direction using {} method...'.format(method))
+        if self._verbose:
+            print('Identify direction using {} method...'.format(method))
 
         direction = None
 
@@ -218,8 +218,11 @@ class BiasWordsEmbedding:
         if ax is None:
             _, ax = plt.subplots(1)
 
-        for name, words in word_groups.items():
+        names = sorted(word_groups.keys())
+
+        for name in names:
             label = '{} (#{})'.format(name, len(words))
+            words = word_groups[name]
             vectors = [self[word] for word in words]
             projections = self.model.cosine_similarities(self.direction,
                                                          vectors)
