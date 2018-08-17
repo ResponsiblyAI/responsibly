@@ -2,6 +2,7 @@ Ethically
 =========
 *in active development*
 
+
 .. image:: https://img.shields.io/travis/ethicallyAI/ethically/master.svg
     :target: https://travis-ci.org/ethicallyAI/ethically
 
@@ -16,6 +17,7 @@ Ethically
 
 .. image::  https://img.shields.io/pypi/v/ethically.svg
   :target: https://pypi.org/project/ethically
+
 
 Python Package for Auditing, Designing and Adjusting the Ethics of AI
 Systems.
