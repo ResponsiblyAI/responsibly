@@ -21,14 +21,9 @@ class GenderBiasWE(BiasWordsEmbedding):
                 generate_words_forms(self
                                      ._data['specific_full_with_definitional'])  # pylint: disable=C0301
 
-        for key in self._data:
-            # if self._data[key] is list of strings
-            if (isinstance(self._data[key], list)
-                    and self._data[key]
-                    and isinstance(self._data[key][0], str)):
-
-                self._data[key] = (self._filter_words_by_model(self
-                                                               ._data[key]))
+        for key in self._data['word_group_keys']:
+            self._data[key] = (self._filter_words_by_model(self
+                                                           ._data[key]))
 
         self._data['neutral_words'] = self._extract_neutral_words(self
                                                                   ._data['specific_full_with_definitional'])  # pylint: disable=C0301

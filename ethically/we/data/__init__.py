@@ -30,3 +30,9 @@ BOLUKBASI_DATA['gender']['neutral_profession_names'] = list(
     set(BOLUKBASI_DATA['gender']['profession_names'])
     - set(BOLUKBASI_DATA['gender']['specific_full_with_definitional'])
 )
+
+BOLUKBASI_DATA['gender']['word_group_keys'] = ['profession_names',
+                                               'neutral_profession_names',
+                                               'specific_seed',
+                                               'specific_full',
+                                               'specific_full_with_definitional']  # pylint: disable=C0301
