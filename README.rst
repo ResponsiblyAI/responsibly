@@ -81,10 +81,13 @@ or directly from the source code:
 Development Roadmap - 2018
 --------------------------
 1. Words Embedding
- 1. Bolukbasi et al. Debiasing (Gender & Race)
- 2. Word Embedding Association Test (WEAT)
+
+   1. Bolukbasi et al. Debiasing (Gender & Race)
+   2. Word Embedding Association Test (WEAT)
+
 2. Fairness in Binary Classification
- 1. Loading of common datasets in ML fairness research
- 2. Auditing (e.g demographic parity)
- 3. Designing (e.g. fairness regularization)
- 4. Adjusting (e.g.  reject option classification)
+
+   1. Loading of common datasets in ML fairness research
+   2. Auditing (e.g demographic parity)
+   3. Designing (e.g. fairness regularization)
+   4. Adjusting (e.g.  reject option classification)
