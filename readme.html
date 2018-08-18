@@ -47,10 +47,10 @@ Systems.</p>
 <dd>Mesuring the ethics of a trained model.
 For example, binary classification fariness mesures
 (demographic parity, …).</dd>
-<dt>Designing</dt>
-<dd>Improving the ethics of a model before training.
-For example, fairness fairness regularization.</dd>
-<dt>Adjusting</dt>
+<dt>Designing (Pre-Mitigation)</dt>
+<dd>Improving the ethics of a model or data before training.
+For example, fairness regularization.</dd>
+<dt>Adjusting (Post-Mitigation)</dt>
 <dd>Improving the ethics of trained model.
 For example, gender debiasing of words embedding.</dd>
 </dl>
@@ -88,6 +88,23 @@ $ cd ethically
 $ python setup.py install
 </pre></div>
 </div>
+</div>
+<div class="section" id="development-roadmap-2018">
+<h2>Development Roadmap - 2018<a class="headerlink" href="#development-roadmap-2018" title="Permalink to this headline">¶</a></h2>
+<ol class="arabic simple">
+<li>Words Embedding<ol class="arabic">
+<li>Bolukbasi et al. Debiasing (Gender &amp; Race)</li>
+<li>Word Embedding Association Test (WEAT)</li>
+</ol>
+</li>
+<li>Fairness in Binary Classification<ol class="arabic">
+<li>Loading of common datasets in ML fairness research</li>
+<li>Auditing (e.g demographic parity)</li>
+<li>Designing (e.g. fairness regularization)</li>
+<li>Adjusting (e.g.  reject option classification)</li>
+</ol>
+</li>
+</ol>
 </div>
 </div>
 

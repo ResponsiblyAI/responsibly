@@ -28,11 +28,11 @@ Auditing
   For example, binary classification fariness mesures
   (demographic parity, ...).
 
-Designing
-  Improving the ethics of a model before training.
-  For example, fairness fairness regularization.
+Designing (Pre-Mitigation)
+  Improving the ethics of a model or data before training.
+  For example, fairness regularization.
 
-Adjusting
+Adjusting (Post-Mitigation)
   Improving the ethics of trained model.
   For example, gender debiasing of words embedding.
 
@@ -76,3 +76,18 @@ or directly from the source code:
    $ git clone https://github.com/ethicallyAI/ethically.git
    $ cd ethically
    $ python setup.py install
+
+
+Development Roadmap - 2018
+--------------------------
+1. Words Embedding
+
+   1. Bolukbasi et al. Debiasing (Gender & Race)
+   2. Word Embedding Association Test (WEAT)
+
+2. Fairness in Binary Classification
+
+   1. Loading of common datasets in ML fairness research
+   2. Auditing (e.g demographic parity)
+   3. Designing (e.g. fairness regularization)
+   4. Adjusting (e.g.  reject option classification)
