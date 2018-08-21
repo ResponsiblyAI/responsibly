@@ -60,7 +60,7 @@ extensions = [
 html_theme_options = {
     'github_button': True,
     'github_type': 'star&v=2',  ## Use v2 button
-    'github_user': 'ethicallyAI',
+    'github_user': 'EthicallyAI',
     'github_repo': 'ethically',
     'github_banner': True,
 }

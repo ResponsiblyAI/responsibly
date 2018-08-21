@@ -4,20 +4,20 @@ Ethically
 
 
 .. image:: https://img.shields.io/gitter/room/nwjs/nw.js.svg
-   :alt: Join the chat at https://gitter.im/ethicallyAI/ethically
-   :target: https://gitter.im/ethicallyAI/ethically?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+   :alt: Join the chat at https://gitter.im/EthicallyAI/ethically
+   :target: https://gitter.im/EthicallyAI/ethically
 
-.. image:: https://img.shields.io/travis/ethicallyAI/ethically/master.svg
-    :target: https://travis-ci.org/ethicallyAI/ethically
+.. image:: https://img.shields.io/travis/EthicallyAI/ethically/master.svg
+    :target: https://travis-ci.org/EthicallyAI/ethically
 
 .. image:: https://img.shields.io/appveyor/ci/shlomihod/ethically/master.svg
    :target: https://ci.appveyor.com/project/shlomihod/ethically
 
-.. image::  https://img.shields.io/coveralls/ethicallyAI/ethically/master.svg
-   :target: hhttps://coveralls.io/r/ethicallyAI/ethically
+.. image::  https://img.shields.io/coveralls/EthicallyAI/ethically/master.svg
+   :target: https://coveralls.io/r/EthicallyAI/ethically
 
-.. image::  https://img.shields.io/scrutinizer/g/ethicallyAI/ethically.svg
-  :target: https://scrutinizer-ci.com/g/ethicallyAI/ethically/?branch=master
+.. image::  https://img.shields.io/scrutinizer/g/EthicallyAI/ethically.svg
+  :target: https://scrutinizer-ci.com/g/EthicallyAI/ethically/?branch=master
 
 .. image::  https://img.shields.io/pypi/v/ethically.svg
   :target: https://pypi.org/project/ethically
@@ -77,7 +77,7 @@ or directly from the source code:
 
 .. code:: sh
 
-   $ git clone https://github.com/ethicallyAI/ethically.git
+   $ git clone https://github.com/EthicallyAI/ethically.git
    $ cd ethically
    $ python setup.py install
 
