@@ -1,5 +1,9 @@
 Ethically
 =========
+
+.. image:: https://badges.gitter.im/ethicallyAI/ethically.svg
+   :alt: Join the chat at https://gitter.im/ethicallyAI/ethically
+   :target: https://gitter.im/ethicallyAI/ethically?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
 *in active development*
 
 
