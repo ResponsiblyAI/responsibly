@@ -3,6 +3,10 @@ Ethically
 *in active development*
 
 
+.. image:: https://img.shields.io/gitter/room/nwjs/nw.js.svg
+   :alt: Join the chat at https://gitter.im/ethicallyAI/ethically
+   :target: https://gitter.im/ethicallyAI/ethically?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge
+
 .. image:: https://img.shields.io/travis/ethicallyAI/ethically/master.svg
     :target: https://travis-ci.org/ethicallyAI/ethically
 

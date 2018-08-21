@@ -74,6 +74,17 @@
     <span class="k">assert</span> <span class="s1">&#39;HOME&#39;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">gender_biased_we</span></div>
 
 
+<div class="viewcode-block" id="test_data_is_sorted_list"><a class="viewcode-back" href="../../../api/ethically.tests.html#ethically.tests.test_we.test_data_is_sorted_list">[docs]</a><span class="k">def</span> <span class="nf">test_data_is_sorted_list</span><span class="p">(</span><span class="n">gender_biased_we</span><span class="p">):</span>
+    <span class="c1"># otherwise &#39;specific_full_with_definitional&#39; is not sorted</span>
+    <span class="k">assert</span> <span class="n">gender_biased_we</span><span class="o">.</span><span class="n">only_lower</span>
+
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">gender_biased_we</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="s1">&#39;word_group_keys&#39;</span><span class="p">]:</span>
+        <span class="n">word_list</span> <span class="o">=</span> <span class="n">gender_biased_we</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">word_list</span><span class="p">,</span> <span class="nb">list</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="n">word_list</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">word_list</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+                   <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">word_list</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span></div>
+
+
 <div class="viewcode-block" id="test_calc_direct_bias"><a class="viewcode-back" href="../../../api/ethically.tests.html#ethically.tests.test_we.test_calc_direct_bias">[docs]</a><span class="k">def</span> <span class="nf">test_calc_direct_bias</span><span class="p">(</span><span class="n">gender_biased_we</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Test calc_direct_bias method in GenderBiasWE</span>
@@ -261,11 +272,15 @@
     <span class="n">gender_biased_we</span><span class="o">.</span><span class="n">evaluate_words_embedding</span><span class="p">()</span></div>
 
 
-<span class="c1"># TODO deeper testing, not sure that the number is true</span>
+<span class="c1"># TODO deeper testing, this is barely checking it runs</span>
+<span class="c1"># TODO not all full_specific_words are lower case - why? maybe just names?</span>
+<span class="c1"># TODO maybe it was trained on the whole w2v?</span>
 <div class="viewcode-block" id="test_learn_full_specific_words"><a class="viewcode-back" href="../../../api/ethically.tests.html#ethically.tests.test_we.test_learn_full_specific_words">[docs]</a><span class="k">def</span> <span class="nf">test_learn_full_specific_words</span><span class="p">(</span><span class="n">gender_biased_we</span><span class="p">):</span>
     <span class="p">(</span><span class="n">full_specific_words</span><span class="p">,</span>
      <span class="n">clf</span><span class="p">,</span> <span class="n">X</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span> <span class="o">=</span> <span class="n">gender_biased_we</span><span class="o">.</span><span class="n">learn_full_specific_words</span><span class="p">(</span><span class="n">debug</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">full_specific_words</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5753</span></div>
+    <span class="n">full_specific_words</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+    <span class="k">assert</span> <span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">gender_biased_we</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="s1">&#39;specific_seed&#39;</span><span class="p">])</span>
+            <span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">full_specific_words</span><span class="p">))</span></div>
 </pre></div>
 
           </div>

@@ -52,19 +52,22 @@
     <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">BOLUKBASI_DATA</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">][</span><span class="s1">&#39;professions&#39;</span><span class="p">]))[</span><span class="mi">0</span><span class="p">]</span>
 
 
+<span class="n">BOLUKBASI_DATA</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">][</span><span class="s1">&#39;specific_full&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
 <span class="c1"># TODO: in the code of the article, the last definitional pair</span>
 <span class="c1"># is not in the specific full</span>
-<span class="n">BOLUKBASI_DATA</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">][</span><span class="s1">&#39;specific_full_with_definitional&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span>
+<span class="n">BOLUKBASI_DATA</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">][</span><span class="s1">&#39;specific_full_with_definitional&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
     <span class="nb">set</span><span class="o">.</span><span class="n">union</span><span class="p">(</span>
         <span class="o">*</span><span class="nb">map</span><span class="p">(</span><span class="nb">set</span><span class="p">,</span> <span class="n">BOLUKBASI_DATA</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">][</span><span class="s1">&#39;definitional_pairs&#39;</span><span class="p">])</span>
     <span class="p">)</span> <span class="o">|</span> <span class="nb">set</span><span class="p">(</span><span class="n">BOLUKBASI_DATA</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">][</span><span class="s1">&#39;specific_full&#39;</span><span class="p">])</span>
 <span class="p">)</span>
-
+<span class="n">BOLUKBASI_DATA</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">][</span><span class="s1">&#39;specific_full_with_definitional&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
 
 <span class="n">BOLUKBASI_DATA</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">][</span><span class="s1">&#39;neutral_profession_names&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span>
     <span class="nb">set</span><span class="p">(</span><span class="n">BOLUKBASI_DATA</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">][</span><span class="s1">&#39;profession_names&#39;</span><span class="p">])</span>
     <span class="o">-</span> <span class="nb">set</span><span class="p">(</span><span class="n">BOLUKBASI_DATA</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">][</span><span class="s1">&#39;specific_full_with_definitional&#39;</span><span class="p">])</span>
 <span class="p">)</span>
+<span class="n">BOLUKBASI_DATA</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">][</span><span class="s1">&#39;neutral_profession_names&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
 
 <span class="n">BOLUKBASI_DATA</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">][</span><span class="s1">&#39;word_group_keys&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;profession_names&#39;</span><span class="p">,</span>
                                                <span class="s1">&#39;neutral_profession_names&#39;</span><span class="p">,</span>
