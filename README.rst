@@ -96,4 +96,4 @@ Development Roadmap - 2018
    3. Designing (e.g. fairness regularization)
    4. Adjusting (e.g.  reject option classification)
 
-3. Web Auditing Tool (for non-programmer)
+3. Web Auditing Tool (for non-programmers)
