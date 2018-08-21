@@ -30,15 +30,15 @@ Systems.
 Auditing
   Mesuring the ethics of a trained model.
   For example, binary classification fariness mesures
-  (demographic parity, ...).
+  (demographic parity, ...), WEAT score of a words embedding.
 
 Designing (Pre-Mitigation)
-  Improving the ethics of a model or data before training.
-  For example, fairness regularization.
+  Improving the ethics of a model or data before or while the training.
+  For example, fairness regularization, data preprocessing.
 
 Adjusting (Post-Mitigation)
-  Improving the ethics of trained model.
-  For example, gender debiasing of words embedding.
+  Improving the ethics of a trained model.
+  For example, gender debiasing of a words embedding.
 
 
 Usage
