@@ -23,7 +23,7 @@ Ethically
   :target: https://pypi.org/project/ethically
 
 
-Python Package for Auditing, Designing and Adjusting the Ethics of AI
+Toolbox for Auditing, Designing and Adjusting the Ethics of AI
 Systems.
 
 
@@ -95,3 +95,5 @@ Development Roadmap - 2018
    2. Auditing (e.g demographic parity)
    3. Designing (e.g. fairness regularization)
    4. Adjusting (e.g.  reject option classification)
+
+3. Web Auditing Tool (for non-programmer)
