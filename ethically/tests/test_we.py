@@ -39,6 +39,17 @@ def test_contains(gender_biased_we):
     assert 'HOME' not in gender_biased_we
 
 
+def test_data_is_sorted_list(gender_biased_we):
+    # otherwise 'specific_full_with_definitional' is not sorted
+    assert gender_biased_we.only_lower
+
+    for key in gender_biased_we._data['word_group_keys']:
+        word_list = gender_biased_we._data[key]
+        assert isinstance(word_list, list)
+        assert all(word_list[i] <= word_list[i + 1]
+                   for i in range(len(word_list) - 1))
+
+
 def test_calc_direct_bias(gender_biased_we):
     """
     Test calc_direct_bias method in GenderBiasWE
@@ -226,8 +237,12 @@ def test_evaluate_words_embedding(gender_biased_we):
     gender_biased_we.evaluate_words_embedding()
 
 
-# TODO deeper testing, not sure that the number is true
+# TODO deeper testing, this is barely checking it runs
+# TODO not all full_specific_words are lower case - why? maybe just names?
+# TODO maybe it was trained on the whole w2v?
 def test_learn_full_specific_words(gender_biased_we):
     (full_specific_words,
      clf, X, y) = gender_biased_we.learn_full_specific_words(debug=True)
-    assert len(full_specific_words) == 5753
+    full_specific_words.sort()
+    assert (set(gender_biased_we._data['specific_seed'])
+            .issubset(full_specific_words))

@@ -77,7 +77,6 @@ setuptools.setup(
         "gensim ~= 3.5.0",
         "tabulate ~= 0.8.2",
         "click ~= 6.0",
-        "minilog ~=0.4",
         "tqdm ~= 4.24.0"
     ]
 )
