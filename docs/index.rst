@@ -18,7 +18,7 @@ Contents
   API Reference <api/modules>
   about/contributing
   about/changelog
-  about/license
+  License <about/license>
 
 
 Indices and tables
