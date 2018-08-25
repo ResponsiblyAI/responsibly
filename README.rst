@@ -49,7 +49,7 @@ Adjusting (Post-Mitigation)
 Usage
 -----
 
-After installation, the package can imported:
+After installation, the package can be imported:
 
 .. code:: sh
 
