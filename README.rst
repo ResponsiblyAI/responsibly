@@ -3,6 +3,9 @@ Ethically
 *in active development*
 
 
+.. image:: https://img.shields.io/badge/docs-passing-brightgreen.svg
+    :target: https://docs.ethically.ai
+
 .. image:: https://img.shields.io/gitter/room/nwjs/nw.js.svg
    :alt: Join the chat at https://gitter.im/EthicallyAI/ethically
    :target: https://gitter.im/EthicallyAI/ethically
@@ -22,6 +25,8 @@ Ethically
 .. image::  https://img.shields.io/pypi/v/ethically.svg
   :target: https://pypi.org/project/ethically
 
+.. image::  https://img.shields.io/github/license/EthicallyAI/ethically.svg
+    :target: http://docs.ethically.ai/about/license.html
 
 Toolbox for Auditing, Designing and Adjusting the Ethics of AI
 Systems.

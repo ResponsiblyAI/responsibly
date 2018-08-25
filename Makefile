@@ -131,7 +131,7 @@ docs:
 	ln -sf `realpath README.rst --relative-to=docs` docs/readme.rst
 	ln -sf `realpath CHANGELOG.rst --relative-to=docs/about` docs/about/changelog.rst
 	ln -sf `realpath CONTRIBUTING.rst --relative-to=docs/about` docs/about/contributing.rst
-	ln -sf `realpath LICENSE.rst --relative-to=docs/about` docs/about/license.rst
+	ln -sf `realpath LICENSE --relative-to=docs/about` docs/about/license.rst
 	cd docs/notebooks && find *.ipynb -exec jupyter nbconvert --to rst {} \;
 	cd docs && sphinx-apidoc  -o api ../ethically && make html
 	@echo "\033[95m\n\nBuild successful! View the docs homepage at docs/_build/html/index.html.\n\033[0m"
