@@ -1,13 +1,10 @@
 import copy
-import os
-import warnings
 
 import matplotlib.pylab as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
 from gensim.models.keyedvectors import KeyedVectors
-from pkg_resources import resource_filename
 from scipy.stats import spearmanr
 from sklearn.decomposition import PCA
 from sklearn.metrics.pairwise import euclidean_distances
@@ -17,6 +14,7 @@ from tqdm import tqdm
 from tabulate import tabulate
 
 from ..consts import RANDOM_STATE
+from .benchmark import evaluate_words_embedding
 from .utils import (
     cosine_similarity, normalize, project_reject_vector, project_vector,
     reject_vector, take_two_sides_extreme_sorted, update_word_vector,
@@ -628,51 +626,14 @@ class BiasWordsEmbedding:
             return bias_words_embedding
 
     def evaluate_words_embedding(self):
-        """Print a words embedding evaluation based on standard protocols.
+        """
+        Evaluate word pairs tasks and word analogies tasks.
 
-        1. Word pairs task
-        2. Analogies task
+        :param model: Words embedding.
+        :return: Tuple of DataFrame for the evaluation results.
         """
 
-        with warnings.catch_warnings():
-            warnings.simplefilter('ignore', category=FutureWarning)
-
-            if self._verbose:
-                print('Evaluate word pairs...')
-            word_pairs_path = resource_filename(__name__,
-                                                os.path.join('data',
-                                                             'evaluation',
-                                                             'wordsim353.tsv'))
-            word_paris_result = self.model.evaluate_word_pairs(word_pairs_path)
-
-            if self._verbose:
-                print('Evaluate analogies...')
-            analogies_path = resource_filename(__name__,
-                                               os.path.join('data',
-                                                            'evaluation',
-                                                            'questions-words.txt'))  # pylint: disable=C0301
-            analogies_result = self.model.evaluate_word_analogies(analogies_path)  # pylint: disable=C0301
-
-        if self._verbose:
-            print()
-        print('From Gensim')
-        print()
-        print('-' * 30)
-        print()
-        print('Word Pairs Result - WordSimilarity-353:')
-        print('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
-        print('Pearson correlation coefficient:', word_paris_result[0])
-        print('Spearman rank-order correlation coefficient'
-              'between the similarities from the dataset'
-              'and the similarities produced by the model itself:',
-              word_paris_result[1])
-        print('Ratio of pairs with unknown words:', word_paris_result[2])
-        print()
-        print('-' * 30)
-        print()
-        print('Analogies Result')
-        print('~~~~~~~~~~~~~~~~')
-        print('Overall evaluation score:', analogies_result[0])
+        return evaluate_words_embedding(self.model)
 
     def learn_full_specific_words(self, seed_specific_words,
                                   max_non_specific_examples=None, debug=None):
