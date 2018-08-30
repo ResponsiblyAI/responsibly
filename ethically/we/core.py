@@ -8,7 +8,9 @@ import pandas as pd
 import seaborn as sns
 from gensim.models.keyedvectors import KeyedVectors
 from pkg_resources import resource_filename
+from scipy.stats import spearmanr
 from sklearn.decomposition import PCA
+from sklearn.metrics.pairwise import euclidean_distances
 from sklearn.svm import LinearSVC
 from tqdm import tqdm
 
@@ -17,7 +19,7 @@ from tabulate import tabulate
 from ..consts import RANDOM_STATE
 from .utils import (
     cosine_similarity, normalize, project_reject_vector, project_vector,
-    reject_vector, update_word_vector,
+    reject_vector, take_two_sides_extreme_sorted, update_word_vector,
 )
 
 
@@ -191,11 +193,12 @@ class BiasWordsEmbedding:
 
         return df
 
-    def plot_projection_scores(self, words,
+    def plot_projection_scores(self, words, n_extreme=10,
                                ax=None, axis_projection_step=None):
         """Plot the projection scalar of words on the direction.
 
         :param list words: The words tor project
+        :param int or None n_extreme: The number of extreme words to show
         :return: The ax object of the plot
         """
 
@@ -203,6 +206,10 @@ class BiasWordsEmbedding:
 
         projections_df = self._calc_projection_scores(words)
         projections_df['projection'] = projections_df['projection'].round(2)
+
+        if n_extreme is not None:
+            projections_df = take_two_sides_extreme_sorted(projections_df,
+                                                           n_extreme=10)
 
         if ax is None:
             _, ax = plt.subplots(1)
@@ -222,7 +229,8 @@ class BiasWordsEmbedding:
         sns.barplot(x='projection', y='word', data=projections_df,
                     palette=projections_df['color'])
 
-        plt.xticks(np.arange(-most_extream_projection, most_extream_projection,
+        plt.xticks(np.arange(-most_extream_projection,
+                             most_extream_projection + axis_projection_step,
                              axis_projection_step))
         plt.title('← {} {} {} →'.format(self.negative_end,
                                         ' ' * 20,
@@ -264,12 +272,147 @@ class BiasWordsEmbedding:
 
         return ax
 
+    # TODO: refactor without static method
+    @staticmethod
+    def _calc_bias_across_words_embeddings(words_embedding_bias_dict, words):
+        """
+        Calculate to projections and rho of words for two words embeddings.
+
+        :param dict words_embedding_bias_dict: ``WordsEmbeddingBias`` objects
+                                               as values,
+                                               and their names as keys.
+        :param list words: Words to be projected.
+        :return tuple: Projections and spearman rho.
+        """
+        # pylint: disable=W0212
+        assert len(words_embedding_bias_dict) == 2, 'Support only in two'\
+                                                    'words embeddings'
+
+        intersection_words = [word for word in words
+                              if all(word in web
+                                     for web in (words_embedding_bias_dict
+                                                 .values()))]
+
+        assert intersection_words, 'There are no intersecting words.'
+
+        projections = {name: web._calc_projection_scores(words)['projection']
+                       for name, web in words_embedding_bias_dict.items()}
+
+        df = pd.DataFrame(projections)
+        df.index = words
+
+        rho, _ = spearmanr(*df)
+
+        return df, rho
+
+    # TODO: refactor without static method
+    @staticmethod
+    def plot_bias_across_words_embeddings(words_embedding_bias_dict, words,
+                                          ax=None):
+        """
+        Plot the projections of same words of two words Embeddings.
+
+        :param dict words_embedding_bias_dict: ``WordsEmbeddingBias`` objects
+                                               as values,
+                                               and their names as keys.
+        :param list words: Words to be projected.
+        """
+        # pylint: disable=W0212
+
+        df, rho = __class__._calc_bias_across_words_embeddings(words_embedding_bias_dict,  # pylint: disable=C0301
+                                                               words)
+
+        if ax is None:
+            _, ax = plt.subplots(1)
+
+        name1, name2 = words_embedding_bias_dict.keys()
+
+        negative_end = words_embedding_bias_dict[name1].negative_end
+        positive_end = words_embedding_bias_dict[name1].positive_end
+        ax.scatter(x=name1, y=name2, data=df)
+        plt.title('Bias Across Words Embeddings'
+                  '(Spearman Rho = {:0.2f})'.format(rho))
+        plt.xlabel('← {}     {}     {} →'.format(positive_end,
+                                                 name1,
+                                                 negative_end))
+
+        plt.ylabel('← {}     {}     {} →'.format(positive_end,
+                                                 name2,
+                                                 negative_end))
+
+        return ax
+
+    # TODO: refactor for speed and clarity
+    def generate_analogies(self, n_analogies=100, multiple=False, delta=1.):
+        """
+        Generate anologies based on the bias directionself.
+
+        x - y ~ direction.
+        or a:x::b:y when a-b ~ direction.
+
+        ``delta`` is used for semantically coherent. Default vale of 1
+        corresponds to an angle <= pi/3.
+
+        :param int n_analogies: Number of analogies to generate.
+        :param bool multiple: Whether to allow multiple apprerences of a word
+                              in the analogies.
+        :param float delta: Threshold for semantic similarity.
+                            The maximal distance between x and y.
+        :return: Data Frame of anologies (x, y), thier distances,
+                 and their cosine similarity scores
+        """
+
+        # pylint: disable=C0301,R0914
+
+        self._is_direction_identified()
+
+        normalized_vectores = (self.model.vectors
+                               / np.linalg.norm(self.model.vectors, axis=1)[:, None])
+
+        pairs_distances = euclidean_distances(normalized_vectores, normalized_vectores)
+        pairs_indices = np.array(np.nonzero(
+            ((pairs_distances < delta)
+             & (pairs_distances != 0)))).T
+        x_vecores = np.take(normalized_vectores, pairs_indices[:, 0], axis=0)
+        y_vecores = np.take(normalized_vectores, pairs_indices[:, 1], axis=0)
+
+        x_minus_y_vectors = x_vecores - y_vecores
+        normalized_x_minus_y_vectors = (x_minus_y_vectors
+                                        / np.linalg.norm(x_minus_y_vectors, axis=1)[:, None])
+
+        cos_distances = normalized_x_minus_y_vectors @ self.direction
+
+        sorted_cos_distances_indices = np.argsort(cos_distances)[::-1]
+
+        sorted_cos_distances_indices_iter = iter(sorted_cos_distances_indices)
+
+        analogies = []
+        generated_words = set()
+
+        while len(analogies) < n_analogies:
+            cos_distance_index = next(sorted_cos_distances_indices_iter)
+            paris_index = pairs_indices[cos_distance_index]
+            word_x, word_y = [self.model.index2word[index]
+                              for index in paris_index]
+
+            if multiple or (not multiple
+                            and (word_x not in generated_words
+                                 and word_y not in generated_words)):
+                analogies.append({'x': word_x,
+                                  'y': word_y,
+                                  'score': cos_distances[cos_distance_index],
+                                  'distance': pairs_distances[tuple(paris_index)]})
+            generated_words.add(word_x)
+            generated_words.add(word_y)
+
+        return pd.DataFrame(analogies)
+
     def calc_direct_bias(self, neutral_words, c=None):
         """Calculate the direct bias.
 
         Based on the projection of neuteral words on the direction.
 
-        :param list neutral_words
+        :param list neutral_words: List of neutral words
         :param c: Strictness of bias measuring
         :type c: float or None
         :return: The direct bias
@@ -312,6 +455,48 @@ class BiasWordsEmbedding:
                          / inner_product)
         return indirect_bias
 
+    def generate_closest_words_indirect_bias(self,
+                                             neutral_positive_end,
+                                             neutral_negative_end,
+                                             words=None, n_extreme=5):
+        """
+        Generate closest words to a neutral direction and thier indirect bias.
+
+        :param str neutral_positive_end: A word that define the positive side
+                                         of the neutral direction.
+        :param str neutral_negative_end: A word that define the negative side
+                                         of the neutral direction.
+        :param list words: List of words to project on the neutral direction.
+        :param int n_extreme: The number for the most extreme words
+                              (positive and negative) to show.
+        :return: Data Frame of the most extreme words
+                 with their projection scores and indirect biases.
+        """
+
+        neutral_direction = normalize(self[neutral_positive_end]
+                                      - self[neutral_negative_end])
+
+        vectors = [normalize(self[word]) for word in words]
+        df = (pd.DataFrame([{'word': word,
+                             'projection': vector @ neutral_direction}
+                            for word, vector in zip(words, vectors)])
+              .sort_values('projection', ascending=False))
+
+        df = take_two_sides_extreme_sorted(df, n_extreme,
+                                           'end',
+                                           neutral_positive_end,
+                                           neutral_negative_end)
+
+        df['indirect_bias'] = df.apply(lambda r:
+                                       self.calc_indirect_bias(r['word'],
+                                                               r['end']),
+                                       axis=1)
+
+        df = df.set_index(['end', 'word'])
+        df = df[['projection', 'indirect_bias']]
+
+        return df
+
     def _extract_neutral_words(self, specific_words):
         extended_specific_words = set()
 
@@ -343,26 +528,56 @@ class BiasWordsEmbedding:
         self.model.init_sims(replace=True)
 
     def _equalize(self, equality_sets):
-        for equality_set_words in equality_sets:
+        # pylint: disable=R0914
+
+        self._is_direction_identified()
+
+        if self._verbose:
+            words_data = []
+
+        for equality_set_index, equality_set_words in enumerate(equality_sets):
             equality_set_vectors = [normalize(self[word])
                                     for word in equality_set_words]
             center = np.mean(equality_set_vectors, axis=0)
             (projected_center,
              rejected_center) = project_reject_vector(center,
                                                       self.direction)
+            scaling = np.sqrt(1 - np.linalg.norm(rejected_center)**2)
 
             for word, vector in zip(equality_set_words, equality_set_vectors):
                 projected_vector = project_vector(vector, self.direction)
 
                 projected_part = normalize(projected_vector - projected_center)
-                scaling = np.sqrt(1 - np.linalg.norm(rejected_center)**2)
 
-                # TODO - in the code it is different - why?
+                # In the code it is different of Bolukbasi
+                # It behaves the same only for equality_sets
+                # with size of 2 (pairs) - not sure!
+                # However, my code is the same as the article
                 # equalized_vector = rejected_center + scaling * self.direction
                 # https://github.com/tolga-b/debiaswe/blob/10277b23e187ee4bd2b6872b507163ef4198686b/debiaswe/debias.py#L36-L37
+                # For pairs, projected_part_vector1 == -projected_part_vector2,
+                # and this is the same as
+                # projected_part_vector1 == self.direction
                 equalized_vector = rejected_center + scaling * projected_part
 
                 update_word_vector(self.model, word, equalized_vector)
+
+                if self._verbose:
+                    words_data.append({
+                        'equality_set_index': equality_set_index,
+                        'word': word,
+                        'scaling': scaling,
+                        'projected_scalar': vector @ self.direction,
+                        'equalized_projected_scalar': (equalized_vector
+                                                       @ self.direction),
+                    })
+
+        if self._verbose:
+            print('Equalize Words Data'
+                  '(all equal for 1-dim bais space (direction):')
+            words_data_df = (pd.DataFrame(words_data)
+                             .set_index(['equality_set_index', 'word']))
+            print(tabulate(words_data_df, headers='keys'))
 
         self.model.init_sims(replace=True)
 
@@ -373,8 +588,9 @@ class BiasWordsEmbedding:
         :param str method: The method of debiasing.
         :param list neutral_words: List of neutral words
                                    for the neutralize step
-        :param list equality_sets: List of equality sets
-                                   for the equalize step
+        :param list equality_sets: List of equality sets,
+                                   for the equalize step.
+                                   The sets represent the direction.
         :param bool inplace: Whether to debias the object inplace
                              or return a new one
 

@@ -1,7 +1,9 @@
 import numpy as np
+import pandas as pd
 
 
 def normalize(v):
+    """Normalize a 1-D vector."""
     if v.ndim != 1:
         raise ValueError('v should be 1-D, {}-D was given'.format(
             v.ndim))
@@ -12,6 +14,7 @@ def normalize(v):
 
 
 def cosine_similarity(v, u):
+    """Calculate the cosine similarity between two vectors."""
     v_norm = np.linalg.norm(v)
     u_norm = np.linalg.norm(u)
     similarity = v @ u / (v_norm * u_norm)
@@ -48,3 +51,19 @@ def generate_one_word_forms(word):
 
 def generate_words_forms(words):
     return sum([generate_one_word_forms(word) for word in words], [])
+
+
+def take_two_sides_extreme_sorted(df, n_extreme,
+                                  part_column=None,
+                                  head_value='',
+                                  tail_value=''):
+    head_df = df.head(n_extreme)[:]
+    tail_df = df.tail(n_extreme)[:]
+
+    if part_column is not None:
+        head_df[part_column] = head_value
+        tail_df[part_column] = tail_value
+
+    return (pd.concat([head_df, tail_df])
+            .drop_duplicates()
+            .reset_index(drop=True))

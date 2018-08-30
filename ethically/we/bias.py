@@ -38,6 +38,14 @@ class GenderBiasWE(BiasWordsEmbedding):
         self._data['neutral_words'].sort()
         self._data['word_group_keys'].append('neutral_words')
 
+    def plot_projection_scores(self, words='professions', n_extreme=10,
+                               ax=None, axis_projection_step=None):
+        if words == 'professions':
+            words = self._data['profession_names']
+
+        return super().plot_projection_scores(words, n_extreme,
+                                              ax, axis_projection_step)
+
     def plot_dist_projections_on_direction(self, word_groups='bolukbasi',
                                            ax=None):
         if word_groups == 'bolukbasi':
@@ -52,6 +60,20 @@ class GenderBiasWE(BiasWordsEmbedding):
                 self._data['neutral_profession_names'], c)
         else:
             return super().calc_direct_bias(neutral_words)
+
+    def generate_closest_words_indirect_bias(self,
+                                             neutral_positive_end,
+                                             neutral_negative_end,
+                                             words='professions', n_extreme=5):
+        # pylint: disable=C0301
+
+        if words == 'professions':
+            words = self._data['profession_names']
+
+        return super().generate_closest_words_indirect_bias(neutral_positive_end,
+                                                            neutral_negative_end,
+                                                            words,
+                                                            n_extreme=n_extreme)
 
     def debias(self, method='hard', neutral_words=None, equality_sets=None,
                inplace=True):
