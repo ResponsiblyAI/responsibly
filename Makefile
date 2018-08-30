@@ -81,6 +81,12 @@ pycodestyle: install
 pydocstyle: install
 	$(PYDOCSTYLE) $(PACKAGES) $(CONFIG)
 
+.PHONY: rstlint
+rstlint: install
+	rst-lint README.rst
+	rst-lint CHANGELOG.rst
+	rst-lint CONTRIBUTING.rst
+
 # TESTS #######################################################################
 
 PYTEST := pipenv run py.test
@@ -184,7 +190,7 @@ build: dist
 dist: install $(DIST_FILES)
 $(DIST_FILES): $(MODULES)
 	rm -f $(DIST_FILES)
-	pipenv run python setup.py check --strict --metadata
+	pipenv run python setup.py check --strict --metadata --restructuredtext
 	pipenv run python setup.py sdist
 	pipenv run python setup.py bdist_wheel
 

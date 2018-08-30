@@ -29,8 +29,10 @@ def read_package_variable(key, filename='__init__.py'):
 
 def build_description():
     """Build a description for the project from documentation files."""
-    readme = open("README.rst").read()
-    changelog = open("CHANGELOG.rst").read()
+    with open("README.rst") as f:
+        readme = f.read()
+    with open("CHANGELOG.rst") as f:
+        changelog = f.read()
     return readme + '\n' + changelog
 
 
@@ -54,18 +56,22 @@ setuptools.setup(
     # ]},
 
     long_description=build_description(),
-    long_description_content_type='text/markdown',
+    long_description_content_type='text/x-rst',
     license=read_package_variable('__license__'),
     classifiers=[
         'Development Status :: 1 - Planning',
         'Intended Audience :: Science/Research',
         'Topic :: Scientific/Engineering :: Artificial Intelligence',
+        'Topic :: Text Processing :: Linguistic',
         'License :: OSI Approved :: MIT License',
         'Natural Language :: English',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
+        'Programming Language :: Python :: 3 :: Only',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
+        'Programming Language :: Python :: 3.7',
     ],
 
     install_requires=[
@@ -77,6 +83,6 @@ setuptools.setup(
         "gensim ~= 3.5.0",
         "tabulate ~= 0.8.2",
         "click ~= 6.0",
-        "tqdm ~= 4.24.0"
-    ]
+        "tqdm ~= 4.24.0",
+    ],
 )
