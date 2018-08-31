@@ -14,12 +14,14 @@ class GenderBiasWE(BiasWordsEmbedding):
     :param bool verbose: Set vebosity
     """
 
-    def __init__(self, model, only_lower=False, verbose=False):
+    def __init__(self, model, only_lower=False, verbose=False,
+                 identify_direction=True):
         super().__init__(model, only_lower, verbose)
         self._initialize_data()
-        self._identify_direction('he', 'she',
-                                 self._data['definitional_pairs'],
-                                 'pca')
+        if identify_direction:
+            self._identify_direction('she', 'he',
+                                     self._data['definitional_pairs'],
+                                     'pca')
 
     def _initialize_data(self):
         self._data = copy.deepcopy(BOLUKBASI_DATA['gender'])
@@ -53,6 +55,17 @@ class GenderBiasWE(BiasWordsEmbedding):
                            for key in self._data['word_group_keys']}
 
         return super().plot_dist_projections_on_direction(word_groups, ax)
+
+    @classmethod
+    def plot_bias_across_words_embeddings(cls, words_embedding_bias_dict,
+                                          ax=None, scatter_kwargs=None):
+        # pylint: disable=W0221
+        words = BOLUKBASI_DATA['gender']['neutral_profession_names']
+        # TODO: is it correct for inhertence of class method?
+        super(cls, cls).plot_bias_across_words_embeddings(words_embedding_bias_dict,  # pylint: disable=C0301
+                                                          words,
+                                                          ax,
+                                                          scatter_kwargs)
 
     def calc_direct_bias(self, neutral_words='professions', c=None):
         if isinstance(neutral_words, str) and neutral_words == 'professions':

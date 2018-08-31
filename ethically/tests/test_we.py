@@ -2,31 +2,27 @@
 # pylint: disable=redefined-outer-name,unused-variable,expression-not-assigned,singleton-comparison,protected-access
 
 import copy
-import os
 from math import isclose
 
 import numpy as np
 import pytest
-from gensim.models.keyedvectors import KeyedVectors
-from pkg_resources import resource_filename
 
 from ethically.we import GenderBiasWE
-from ethically.we.utils import project_reject_vector, project_vector
+from ethically.we.utils import (
+    load_w2v_small, project_reject_vector, project_vector,
+)
 
 from ..consts import RANDOM_STATE
 
 
 ATOL = 1e-6
+
 N_RANDOM_NEUTRAL_WORDS_DEBIAS_TO_TEST = 1000
 
 
 @pytest.fixture
 def gender_biased_w2v_small():
-    # pylint: disable=C0301
-    model = KeyedVectors.load_word2vec_format(
-        resource_filename(__name__, os.path.join('data',
-                                                 'GoogleNews-vectors-negative300-bolukbasi.bin')),
-        binary=True)
+    model = load_w2v_small()
     return GenderBiasWE(model, only_lower=True, verbose=True)
 
 

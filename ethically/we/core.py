@@ -17,7 +17,8 @@ from ..consts import RANDOM_STATE
 from .benchmark import evaluate_words_embedding
 from .utils import (
     cosine_similarity, normalize, project_reject_vector, project_vector,
-    reject_vector, take_two_sides_extreme_sorted, update_word_vector,
+    reject_vector, round_to_extreme, take_two_sides_extreme_sorted,
+    update_word_vector,
 )
 
 
@@ -36,10 +37,20 @@ class BiasWordsEmbedding:
     :param bool verbose: Set vebosity
     """
 
-    def __init__(self, model, only_lower=False, verbose=False):
+    def __init__(self, model, only_lower=False, verbose=False,
+                 identify_direction=False):
         if not isinstance(model, KeyedVectors):
             raise TypeError('model should be of type KeyedVectors, not {}'
                             .format(type(model)))
+
+        # TODO: this is bad Python, ask someone about it
+        # probably should be a better design
+        # identify_direction doesn't have any meaning
+        # for the calss BiasWordsEmbedding
+        if self.__class__ == __class__ and identify_direction is not False:
+            raise ValueError('identify_direction must be False'
+                             ' for an instance of {}'
+                             .format(__class__))
 
         self.model = model
 
@@ -53,7 +64,10 @@ class BiasWordsEmbedding:
         self.negative_end = None
 
     def __copy__(self):
-        bias_words_embedding = self.__class__(self.model)
+        bias_words_embedding = self.__class__(self.model,
+                                              self.only_lower,
+                                              self._verbose,
+                                              identify_direction=False)
         bias_words_embedding.direction = copy.deepcopy(self.direction)
         bias_words_embedding.positive_end = copy.deepcopy(self.positive_end)
         bias_words_embedding.negative_end = copy.deepcopy(self.negative_end)
@@ -131,12 +145,10 @@ class BiasWordsEmbedding:
                                   - normalize(self[definitional[1]]))
 
         elif method == 'sum':
-            groups = list(zip(*definitional))
-
             group1_sum_vector = np.sum([self[word]
-                                        for word in groups[0]], axis=0)
+                                        for word in definitional[0]], axis=0)
             group2_sum_vector = np.sum([self[word]
-                                        for word in groups[1]], axis=0)
+                                        for word in definitional[1]], axis=0)
 
             diff_vector = (normalize(group1_sum_vector)
                            - normalize(group2_sum_vector))
@@ -153,13 +165,13 @@ class BiasWordsEmbedding:
                                            pca.explained_variance_ratio_[0]))
             direction = pca.components_[0]
 
-        # if direction is oposite (e.g. we cannot control
-        # what the PCA will return)
-        ends_diff_projection = cosine_similarity((self[positive_end]
-                                                  - self[negative_end]),
-                                                 direction)
-        if ends_diff_projection < 0:
-            direction = -direction  # pylint: disable=invalid-unary-operand-type
+            # if direction is oposite (e.g. we cannot control
+            # what the PCA will return)
+            ends_diff_projection = cosine_similarity((self[positive_end]
+                                                      - self[negative_end]),
+                                                     direction)
+            if ends_diff_projection < 0:
+                direction = -direction  # pylint: disable=invalid-unary-operand-type
 
         self.direction = direction
         self.positive_end = positive_end
@@ -207,7 +219,7 @@ class BiasWordsEmbedding:
 
         if n_extreme is not None:
             projections_df = take_two_sides_extreme_sorted(projections_df,
-                                                           n_extreme=10)
+                                                           n_extreme=n_extreme)
 
         if ax is None:
             _, ax = plt.subplots(1)
@@ -270,9 +282,10 @@ class BiasWordsEmbedding:
 
         return ax
 
-    # TODO: refactor without static method
-    @staticmethod
-    def _calc_bias_across_words_embeddings(words_embedding_bias_dict, words):
+    @classmethod
+    def _calc_bias_across_words_embeddings(cls,
+                                           words_embedding_bias_dict,
+                                           words):
         """
         Calculate to projections and rho of words for two words embeddings.
 
@@ -291,22 +304,18 @@ class BiasWordsEmbedding:
                                      for web in (words_embedding_bias_dict
                                                  .values()))]
 
-        assert intersection_words, 'There are no intersecting words.'
-
-        projections = {name: web._calc_projection_scores(words)['projection']
+        projections = {name: web._calc_projection_scores(intersection_words)['projection']  # pylint: disable=C0301
                        for name, web in words_embedding_bias_dict.items()}
 
         df = pd.DataFrame(projections)
-        df.index = words
+        df.index = intersection_words
 
-        rho, _ = spearmanr(*df)
-
+        rho, _ = spearmanr(*df.transpose().values)
         return df, rho
 
-    # TODO: refactor without static method
-    @staticmethod
-    def plot_bias_across_words_embeddings(words_embedding_bias_dict, words,
-                                          ax=None):
+    @classmethod
+    def plot_bias_across_words_embeddings(cls, words_embedding_bias_dict,
+                                          words, ax=None, scatter_kwargs=None):
         """
         Plot the projections of same words of two words Embeddings.
 
@@ -314,34 +323,47 @@ class BiasWordsEmbedding:
                                                as values,
                                                and their names as keys.
         :param list words: Words to be projected.
+        :param scatter_kwargs: Kwargs for matplotlib.pylab.scatter.
+        :type scatter_kwargs: dict or None
+        :return: The ax object of the plot
         """
         # pylint: disable=W0212
 
-        df, rho = __class__._calc_bias_across_words_embeddings(words_embedding_bias_dict,  # pylint: disable=C0301
-                                                               words)
+        df, rho = cls._calc_bias_across_words_embeddings(words_embedding_bias_dict,  # pylint: disable=C0301
+                                                         words)
 
         if ax is None:
             _, ax = plt.subplots(1)
 
+        if scatter_kwargs is None:
+            scatter_kwargs = {}
+
         name1, name2 = words_embedding_bias_dict.keys()
+
+        ax.scatter(x=name1, y=name2, data=df, **scatter_kwargs)
+
+        plt.title('Bias Across Words Embeddings'
+                  '(Spearman Rho = {:0.2f})'.format(rho))
 
         negative_end = words_embedding_bias_dict[name1].negative_end
         positive_end = words_embedding_bias_dict[name1].positive_end
-        ax.scatter(x=name1, y=name2, data=df)
-        plt.title('Bias Across Words Embeddings'
-                  '(Spearman Rho = {:0.2f})'.format(rho))
-        plt.xlabel('← {}     {}     {} →'.format(positive_end,
+        plt.xlabel('← {}     {}     {} →'.format(negative_end,
                                                  name1,
-                                                 negative_end))
-
-        plt.ylabel('← {}     {}     {} →'.format(positive_end,
+                                                 positive_end))
+        plt.ylabel('← {}     {}     {} →'.format(negative_end,
                                                  name2,
-                                                 negative_end))
+                                                 positive_end))
+
+        ax_min = round_to_extreme(df.values.min())
+        ax_max = round_to_extreme(df.values.max())
+        plt.xlim(ax_min, ax_max)
+        plt.ylim(ax_min, ax_max)
 
         return ax
 
     # TODO: refactor for speed and clarity
-    def generate_analogies(self, n_analogies=100, multiple=False, delta=1.):
+    def generate_analogies(self, n_analogies=100, multiple=False,
+                           delta=1., restrict_vocab=30000):
         """
         Generate anologies based on the bias directionself.
 
@@ -356,6 +378,7 @@ class BiasWordsEmbedding:
                               in the analogies.
         :param float delta: Threshold for semantic similarity.
                             The maximal distance between x and y.
+        :param int restrict_vocab: The vocabulary size to use.
         :return: Data Frame of anologies (x, y), thier distances,
                  and their cosine similarity scores
         """
@@ -364,8 +387,10 @@ class BiasWordsEmbedding:
 
         self._is_direction_identified()
 
-        normalized_vectores = (self.model.vectors
-                               / np.linalg.norm(self.model.vectors, axis=1)[:, None])
+        restrict_vocab_vectors = self.model.vectors[:restrict_vocab]
+
+        normalized_vectores = (restrict_vocab_vectors
+                               / np.linalg.norm(restrict_vocab_vectors, axis=1)[:, None])
 
         pairs_distances = euclidean_distances(normalized_vectores, normalized_vectores)
         pairs_indices = np.array(np.nonzero(
@@ -403,7 +428,9 @@ class BiasWordsEmbedding:
             generated_words.add(word_x)
             generated_words.add(word_y)
 
-        return pd.DataFrame(analogies)
+        df = pd.DataFrame(analogies)
+        df = df[['x', 'y', 'distance', 'score']]
+        return df
 
     def calc_direct_bias(self, neutral_words, c=None):
         """Calculate the direct bias.
@@ -571,7 +598,7 @@ class BiasWordsEmbedding:
                     })
 
         if self._verbose:
-            print('Equalize Words Data'
+            print('Equalize Words Data '
                   '(all equal for 1-dim bais space (direction):')
             words_data_df = (pd.DataFrame(words_data)
                              .set_index(['equality_set_index', 'word']))
@@ -625,15 +652,27 @@ class BiasWordsEmbedding:
         else:
             return bias_words_embedding
 
-    def evaluate_words_embedding(self):
+    def evaluate_words_embedding(self,
+                                 kwargs_word_pairs=None,
+                                 kwargs_word_analogies=None):
         """
         Evaluate word pairs tasks and word analogies tasks.
 
         :param model: Words embedding.
+        :param kwargs_word_pairs: Kwargs for
+                                  evaluate_word_pairs
+                                  method.
+        :type kwargs_word_pairs: dict or None
+        :param kwargs_word_analogies: Kwargs for
+                                      evaluate_word_analogies
+                                      method.
+        :type evaluate_word_analogies: dict or None
         :return: Tuple of DataFrame for the evaluation results.
         """
 
-        return evaluate_words_embedding(self.model)
+        return evaluate_words_embedding(self.model,
+                                        kwargs_word_pairs,
+                                        kwargs_word_analogies)
 
     def learn_full_specific_words(self, seed_specific_words,
                                   max_non_specific_examples=None, debug=None):

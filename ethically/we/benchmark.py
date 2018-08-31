@@ -57,8 +57,12 @@ WORD_PAIRS_TASKS = {'WS353': 'wordsim353.tsv',
                     'SimLex999': 'SimLex-999.tsv',
                     'TR9856': 'TermRelatednessResults.tsv'}
 
-ANALOGIES_TASKS = {'MSR-syntax': 'msr-syntax.txt',
+ANALOGIES_TASKS = {'MSR-syntax': 'MSR-syntax.txt',
                    'Google': 'questions-words.txt'}
+
+PAIR_WORDS_EVALUATION_FIELDS = ['pearson_r', 'pearson_pvalue',
+                                'spearman_r', 'spearman_pvalue',
+                                'ratio_unkonwn_words']
 
 
 def get_data_resource_path(filename):
@@ -73,13 +77,20 @@ def prepare_word_pairs_file(src, dst, delimiter='\t'):
     df.loc[:, :2].to_csv(dst, sep=delimiter, index=False, header=False)
 
 
-def evaluate_word_pairs(model):
+def evaluate_word_pairs(model, kwargs_word_pairs=None):
     """
     Evaluate word pairs tasks.
 
     :param model: Words embedding.
+    :param kwargs_word_pairs: Kwargs for
+                              evaluate_word_pairs
+                              method.
+    :type kwargs_word_pairs: dict or None
     :return: DataFrame of evaluation results.
     """
+
+    if kwargs_word_pairs is None:
+        kwargs_word_pairs = {}
 
     results = {}
 
@@ -87,7 +98,8 @@ def evaluate_word_pairs(model):
         path = get_data_resource_path(filename)
         (pearson,
          spearman,
-         ratio_unknown_words) = model.evaluate_word_pairs(path)
+         ratio_unknown_words) = model.evaluate_word_pairs(path,
+                                                          **kwargs_word_pairs)  # pylint: disable=C0301
 
         results[name] = {'pearson_r': pearson[0],
                          'pearson_pvalue': pearson[1],
@@ -95,29 +107,35 @@ def evaluate_word_pairs(model):
                          'spearman_pvalue': spearman.pvalue,
                          'ratio_unkonwn_words': ratio_unknown_words}
 
-    metric_names = next(iter(results.values())).keys()
-
     df = (pd.DataFrame(results)
-          .reindex(metric_names)
+          .reindex(PAIR_WORDS_EVALUATION_FIELDS)
           .transpose()
           .round(3))
 
     return df
 
 
-def evaluate_word_analogies(model):
+def evaluate_word_analogies(model, kwargs_word_analogies=None):
     """
     Evaluate word analogies tasks.
 
     :param model: Words embedding.
+    :param kwargs_word_analogies: Kwargs for
+                                  evaluate_word_analogies
+                                  method.
+    :type evaluate_word_analogies: dict or None
     :return: DataFrame of evaluation results.
     """
+
+    if kwargs_word_analogies is None:
+        kwargs_word_analogies = {}
 
     results = {}
 
     for name, filename in ANALOGIES_TASKS.items():
         path = get_data_resource_path(filename)
-        overall_score, _ = model.evaluate_word_analogies(path)
+        overall_score, _ = model.evaluate_word_analogies(path,
+                                                         **kwargs_word_analogies)  # pylint: disable=C0301
 
         results[name] = {'score': overall_score}
 
@@ -128,11 +146,22 @@ def evaluate_word_analogies(model):
     return df
 
 
-def evaluate_words_embedding(model):
+def evaluate_words_embedding(model,
+                             kwargs_word_pairs=None,
+                             kwargs_word_analogies=None):
     """
     Evaluate word pairs tasks and word analogies tasks.
 
     :param model: Words embedding.
+    :param kwargs_word_pairs: Kwargs fo
+                              evaluate_word_pairs
+                              method.
+    :type kwargs_word_pairs: dict or None
+    :param kwargs_word_analogies: Kwargs for
+                                  evaluate_word_analogies
+                                  method.
+    :type evaluate_word_analogies: dict or None
     :return: Tuple of DataFrame for the evaluation results.
     """
-    return evaluate_word_pairs(model), evaluate_word_analogies(model)
+    return (evaluate_word_pairs(model, kwargs_word_pairs),
+            evaluate_word_analogies(model, kwargs_word_analogies))

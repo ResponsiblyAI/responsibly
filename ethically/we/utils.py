@@ -1,5 +1,15 @@
+import math
+
 import numpy as np
 import pandas as pd
+
+
+def round_to_extreme(value, digits=2):
+    place = 10**digits
+    new_value = math.ceil(abs(value) * place) / place
+    if value < 0:
+        new_value = -new_value
+    return new_value
 
 
 def normalize(v):
