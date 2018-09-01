@@ -8,9 +8,8 @@ import numpy as np
 import pytest
 
 from ethically.we import GenderBiasWE
-from ethically.we.utils import (
-    load_w2v_small, project_reject_vector, project_vector,
-)
+from ethically.we.data import load_w2v_small
+from ethically.we.utils import project_reject_vector, project_vector
 
 from ..consts import RANDOM_STATE
 
