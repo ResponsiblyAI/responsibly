@@ -14,12 +14,14 @@ class GenderBiasWE(BiasWordsEmbedding):
     :param bool verbose: Set vebosity
     """
 
-    def __init__(self, model, only_lower=False, verbose=False):
+    def __init__(self, model, only_lower=False, verbose=False,
+                 identify_direction=True):
         super().__init__(model, only_lower, verbose)
         self._initialize_data()
-        self._identify_direction('he', 'she',
-                                 self._data['definitional_pairs'],
-                                 'pca')
+        if identify_direction:
+            self._identify_direction('she', 'he',
+                                     self._data['definitional_pairs'],
+                                     'pca')
 
     def _initialize_data(self):
         self._data = copy.deepcopy(BOLUKBASI_DATA['gender'])
@@ -38,6 +40,14 @@ class GenderBiasWE(BiasWordsEmbedding):
         self._data['neutral_words'].sort()
         self._data['word_group_keys'].append('neutral_words')
 
+    def plot_projection_scores(self, words='professions', n_extreme=10,
+                               ax=None, axis_projection_step=None):
+        if words == 'professions':
+            words = self._data['profession_names']
+
+        return super().plot_projection_scores(words, n_extreme,
+                                              ax, axis_projection_step)
+
     def plot_dist_projections_on_direction(self, word_groups='bolukbasi',
                                            ax=None):
         if word_groups == 'bolukbasi':
@@ -46,12 +56,37 @@ class GenderBiasWE(BiasWordsEmbedding):
 
         return super().plot_dist_projections_on_direction(word_groups, ax)
 
+    @classmethod
+    def plot_bias_across_words_embeddings(cls, words_embedding_bias_dict,
+                                          ax=None, scatter_kwargs=None):
+        # pylint: disable=W0221
+        words = BOLUKBASI_DATA['gender']['neutral_profession_names']
+        # TODO: is it correct for inhertence of class method?
+        super(cls, cls).plot_bias_across_words_embeddings(words_embedding_bias_dict,  # pylint: disable=C0301
+                                                          words,
+                                                          ax,
+                                                          scatter_kwargs)
+
     def calc_direct_bias(self, neutral_words='professions', c=None):
         if isinstance(neutral_words, str) and neutral_words == 'professions':
             return super().calc_direct_bias(
                 self._data['neutral_profession_names'], c)
         else:
             return super().calc_direct_bias(neutral_words)
+
+    def generate_closest_words_indirect_bias(self,
+                                             neutral_positive_end,
+                                             neutral_negative_end,
+                                             words='professions', n_extreme=5):
+        # pylint: disable=C0301
+
+        if words == 'professions':
+            words = self._data['profession_names']
+
+        return super().generate_closest_words_indirect_bias(neutral_positive_end,
+                                                            neutral_negative_end,
+                                                            words,
+                                                            n_extreme=n_extreme)
 
     def debias(self, method='hard', neutral_words=None, equality_sets=None,
                inplace=True):

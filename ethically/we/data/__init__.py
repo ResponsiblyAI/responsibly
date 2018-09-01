@@ -1,7 +1,15 @@
 # TODO how import files from a package
 import json
 
-from pkg_resources import resource_string
+from gensim.models.keyedvectors import KeyedVectors
+from pkg_resources import resource_filename, resource_string
+
+
+def load_w2v_small():
+    # pylint: disable=C0301
+    return KeyedVectors.load_word2vec_format(
+        resource_filename(__name__, 'GoogleNews-vectors-negative300-bolukbasi.bin'),
+        binary=True)
 
 
 def load_json_resource(resource_name):

@@ -1,3 +1,4 @@
-__all__ = ['GenderBiasWE']
+__all__ = ['BiasWordsEmbedding', 'GenderBiasWE']
 
 from .bias import GenderBiasWE
+from .core import BiasWordsEmbedding

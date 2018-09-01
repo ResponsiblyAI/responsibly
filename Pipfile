@@ -15,6 +15,7 @@ isort = "*"
 pylint = "*"
 pycodestyle = "*"
 pydocstyle = "*"
+restructuredtext_lint = "*"
 
 # Testing
 pytest = "~= 3.3"
@@ -36,12 +37,14 @@ pygments = "*"
 # Build
 wheel = "*"
 pyinstaller = "*"
+readme_renderer = "*"
 
 # Release
 setuptools = ">= 38.6.0"
 twine = ">= 1.11.0"
 
 # Tooling
+jupyter = "*"
 sniffer = "*"
 MacFSEvents = { version = "*", sys_platform = "== 'darwin'" }
 pync = { version = "*", sys_platform = "== 'darwin'" }

@@ -12,7 +12,7 @@ Contents
 .. toctree::
   :maxdepth: 1
 
-  tutorials
+  demos
   words-embedding-bias
   classification-fairness
   API Reference <api/modules>

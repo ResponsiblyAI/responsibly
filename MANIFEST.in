@@ -5,4 +5,4 @@ graft */*/files
 recursive-include ethically/we/data *.txt *.tsv *.json *.bin
 recursive-include ethically/we/data/evaluation *.txt *.tsv *.json *.bin
 recursive-include ethically/tests/data *.txt *.tsv *.json *.bin
-recursive-include docs/notebooks/*/*.png
+recursive-include docs/notebooks/* *.png
