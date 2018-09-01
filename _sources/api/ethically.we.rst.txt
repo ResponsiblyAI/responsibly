@@ -11,6 +11,14 @@ Subpackages
 Submodules
 ----------
 
+ethically.we.benchmark module
+-----------------------------
+
+.. automodule:: ethically.we.benchmark
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 ethically.we.bias module
 ------------------------
 

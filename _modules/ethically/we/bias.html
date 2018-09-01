@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ethically.we.bias &#8212; Ethically 0.0.1 documentation</title>
+    <title>ethically.we.bias &#8212; Ethically 0.0.2 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -49,12 +49,14 @@
 <span class="sd">    :param bool verbose: Set vebosity</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">only_lower</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">only_lower</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">identify_direction</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">only_lower</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_data</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_identify_direction</span><span class="p">(</span><span class="s1">&#39;he&#39;</span><span class="p">,</span> <span class="s1">&#39;she&#39;</span><span class="p">,</span>
-                                 <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="s1">&#39;definitional_pairs&#39;</span><span class="p">],</span>
-                                 <span class="s1">&#39;pca&#39;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">identify_direction</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_identify_direction</span><span class="p">(</span><span class="s1">&#39;she&#39;</span><span class="p">,</span> <span class="s1">&#39;he&#39;</span><span class="p">,</span>
+                                     <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="s1">&#39;definitional_pairs&#39;</span><span class="p">],</span>
+                                     <span class="s1">&#39;pca&#39;</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_initialize_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">BOLUKBASI_DATA</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">])</span>
@@ -73,6 +75,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="s1">&#39;neutral_words&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="s1">&#39;word_group_keys&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="s1">&#39;neutral_words&#39;</span><span class="p">)</span>
 
+<div class="viewcode-block" id="GenderBiasWE.plot_projection_scores"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.bias.GenderBiasWE.plot_projection_scores">[docs]</a>    <span class="k">def</span> <span class="nf">plot_projection_scores</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">words</span><span class="o">=</span><span class="s1">&#39;professions&#39;</span><span class="p">,</span> <span class="n">n_extreme</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
+                               <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis_projection_step</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">words</span> <span class="o">==</span> <span class="s1">&#39;professions&#39;</span><span class="p">:</span>
+            <span class="n">words</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="s1">&#39;profession_names&#39;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">plot_projection_scores</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">n_extreme</span><span class="p">,</span>
+                                              <span class="n">ax</span><span class="p">,</span> <span class="n">axis_projection_step</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="GenderBiasWE.plot_dist_projections_on_direction"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.bias.GenderBiasWE.plot_dist_projections_on_direction">[docs]</a>    <span class="k">def</span> <span class="nf">plot_dist_projections_on_direction</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">word_groups</span><span class="o">=</span><span class="s1">&#39;bolukbasi&#39;</span><span class="p">,</span>
                                            <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">word_groups</span> <span class="o">==</span> <span class="s1">&#39;bolukbasi&#39;</span><span class="p">:</span>
@@ -81,12 +91,37 @@
 
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">plot_dist_projections_on_direction</span><span class="p">(</span><span class="n">word_groups</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="GenderBiasWE.plot_bias_across_words_embeddings"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.bias.GenderBiasWE.plot_bias_across_words_embeddings">[docs]</a>    <span class="nd">@classmethod</span>
+    <span class="k">def</span> <span class="nf">plot_bias_across_words_embeddings</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">words_embedding_bias_dict</span><span class="p">,</span>
+                                          <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">scatter_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="c1"># pylint: disable=W0221</span>
+        <span class="n">words</span> <span class="o">=</span> <span class="n">BOLUKBASI_DATA</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">][</span><span class="s1">&#39;neutral_profession_names&#39;</span><span class="p">]</span>
+        <span class="c1"># TODO: is it correct for inhertence of class method?</span>
+        <span class="nb">super</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="bp">cls</span><span class="p">)</span><span class="o">.</span><span class="n">plot_bias_across_words_embeddings</span><span class="p">(</span><span class="n">words_embedding_bias_dict</span><span class="p">,</span>  <span class="c1"># pylint: disable=C0301</span>
+                                                          <span class="n">words</span><span class="p">,</span>
+                                                          <span class="n">ax</span><span class="p">,</span>
+                                                          <span class="n">scatter_kwargs</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="GenderBiasWE.calc_direct_bias"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.bias.GenderBiasWE.calc_direct_bias">[docs]</a>    <span class="k">def</span> <span class="nf">calc_direct_bias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">neutral_words</span><span class="o">=</span><span class="s1">&#39;professions&#39;</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">neutral_words</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">neutral_words</span> <span class="o">==</span> <span class="s1">&#39;professions&#39;</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">calc_direct_bias</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="s1">&#39;neutral_profession_names&#39;</span><span class="p">],</span> <span class="n">c</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">calc_direct_bias</span><span class="p">(</span><span class="n">neutral_words</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GenderBiasWE.generate_closest_words_indirect_bias"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.bias.GenderBiasWE.generate_closest_words_indirect_bias">[docs]</a>    <span class="k">def</span> <span class="nf">generate_closest_words_indirect_bias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                             <span class="n">neutral_positive_end</span><span class="p">,</span>
+                                             <span class="n">neutral_negative_end</span><span class="p">,</span>
+                                             <span class="n">words</span><span class="o">=</span><span class="s1">&#39;professions&#39;</span><span class="p">,</span> <span class="n">n_extreme</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
+        <span class="c1"># pylint: disable=C0301</span>
+
+        <span class="k">if</span> <span class="n">words</span> <span class="o">==</span> <span class="s1">&#39;professions&#39;</span><span class="p">:</span>
+            <span class="n">words</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="s1">&#39;profession_names&#39;</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">generate_closest_words_indirect_bias</span><span class="p">(</span><span class="n">neutral_positive_end</span><span class="p">,</span>
+                                                            <span class="n">neutral_negative_end</span><span class="p">,</span>
+                                                            <span class="n">words</span><span class="p">,</span>
+                                                            <span class="n">n_extreme</span><span class="o">=</span><span class="n">n_extreme</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="GenderBiasWE.debias"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.bias.GenderBiasWE.debias">[docs]</a>    <span class="k">def</span> <span class="nf">debias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;hard&#39;</span><span class="p">,</span> <span class="n">neutral_words</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">equality_sets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -145,7 +180,7 @@
 
 <h3>Navigation</h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../demos.html">Demos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../words-embedding-bias.html">Words Embedding Bias</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../classification-fairness.html">Classifiction Fairness</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">API Reference</a></li>

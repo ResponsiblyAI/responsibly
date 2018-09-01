@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ethically.we package &#8212; Ethically 0.0.1 documentation</title>
+    <title>ethically.we package &#8212; Ethically 0.0.2 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -50,11 +50,123 @@
 <div class="section" id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
 </div>
+<div class="section" id="module-ethically.we.benchmark">
+<span id="ethically-we-benchmark-module"></span><h2>ethically.we.benchmark module<a class="headerlink" href="#module-ethically.we.benchmark" title="Permalink to this headline">¶</a></h2>
+<p>Evaluate words embeedings by standard benchmarks.</p>
+<p>Reference: <a class="reference external" href="https://github.com/kudkudak/word-embeddings-benchmarks">https://github.com/kudkudak/word-embeddings-benchmarks</a></p>
+<p>Word Pairs Tasks</p>
+<ol class="arabic simple">
+<li>The WordSimilarity-353 Test Collection
+<a class="reference external" href="http://www.cs.technion.ac.il/~gabr/resources/data/wordsim353/">http://www.cs.technion.ac.il/~gabr/resources/data/wordsim353/</a></li>
+<li>Rubenstein, H., and Goodenough, J. 1965. Contextual correlates of synonymy
+<a class="reference external" href="https://www.seas.upenn.edu/~hansens/conceptSim/">https://www.seas.upenn.edu/~hansens/conceptSim/</a></li>
+<li>Stanford Rare Word (RW) Similarity Dataset
+<a class="reference external" href="https://nlp.stanford.edu/~lmthang/morphoNLM/">https://nlp.stanford.edu/~lmthang/morphoNLM/</a></li>
+<li>The Word Relatedness Mturk-771 Test Collection
+<a class="reference external" href="http://www2.mta.ac.il/~gideon/datasets/mturk_771.html">http://www2.mta.ac.il/~gideon/datasets/mturk_771.html</a></li>
+<li>The MEN Test Collection
+<a class="reference external" href="http://clic.cimec.unitn.it/~elia.bruni/MEN.html">http://clic.cimec.unitn.it/~elia.bruni/MEN.html</a></li>
+<li>SimLex-999
+<a class="reference external" href="https://fh295.github.io/simlex.html">https://fh295.github.io/simlex.html</a></li>
+<li>TR9856
+<a class="reference external" href="https://www.research.ibm.com/haifa/dept/vst/files/IBM_Debater_(R)_TR9856.v2.zip">https://www.research.ibm.com/haifa/dept/vst/files/IBM_Debater_(R)_TR9856.v2.zip</a></li>
+</ol>
+<p>Analogies Tasks</p>
+<ol class="arabic simple">
+<li>Google Analogies (subset of WordRep)
+<a class="reference external" href="https://code.google.com/archive/p/word2vec/source">https://code.google.com/archive/p/word2vec/source</a></li>
+<li>MSR - Syntactic Analogies
+<a class="reference external" href="http://research.microsoft.com/en-us/projects/rnn/">http://research.microsoft.com/en-us/projects/rnn/</a></li>
+</ol>
+<dl class="function">
+<dt id="ethically.we.benchmark.get_data_resource_path">
+<code class="descclassname">ethically.we.benchmark.</code><code class="descname">get_data_resource_path</code><span class="sig-paren">(</span><em>filename</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/benchmark.html#get_data_resource_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.benchmark.get_data_resource_path" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ethically.we.benchmark.prepare_word_pairs_file">
+<code class="descclassname">ethically.we.benchmark.</code><code class="descname">prepare_word_pairs_file</code><span class="sig-paren">(</span><em>src</em>, <em>dst</em>, <em>delimiter='\t'</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/benchmark.html#prepare_word_pairs_file"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.benchmark.prepare_word_pairs_file" title="Permalink to this definition">¶</a></dt>
+<dd><p>Transform formats of word pairs files to tsv.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="ethically.we.benchmark.evaluate_word_pairs">
+<code class="descclassname">ethically.we.benchmark.</code><code class="descname">evaluate_word_pairs</code><span class="sig-paren">(</span><em>model</em>, <em>kwargs_word_pairs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/benchmark.html#evaluate_word_pairs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.benchmark.evaluate_word_pairs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate word pairs tasks.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>model</strong> – Words embedding.</li>
+<li><strong>kwargs_word_pairs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – Kwargs for
+evaluate_word_pairs
+method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">DataFrame of evaluation results.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ethically.we.benchmark.evaluate_word_analogies">
+<code class="descclassname">ethically.we.benchmark.</code><code class="descname">evaluate_word_analogies</code><span class="sig-paren">(</span><em>model</em>, <em>kwargs_word_analogies=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/benchmark.html#evaluate_word_analogies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.benchmark.evaluate_word_analogies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate word analogies tasks.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>model</strong> – Words embedding.</li>
+<li><strong>kwargs_word_analogies</strong> – Kwargs for
+evaluate_word_analogies
+method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">DataFrame of evaluation results.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ethically.we.benchmark.evaluate_words_embedding">
+<code class="descclassname">ethically.we.benchmark.</code><code class="descname">evaluate_words_embedding</code><span class="sig-paren">(</span><em>model</em>, <em>kwargs_word_pairs=None</em>, <em>kwargs_word_analogies=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/benchmark.html#evaluate_words_embedding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.benchmark.evaluate_words_embedding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate word pairs tasks and word analogies tasks.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>model</strong> – Words embedding.</li>
+<li><strong>kwargs_word_pairs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – Kwargs fo
+evaluate_word_pairs
+method.</li>
+<li><strong>kwargs_word_analogies</strong> – Kwargs for
+evaluate_word_analogies
+method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Tuple of DataFrame for the evaluation results.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
 <div class="section" id="module-ethically.we.bias">
 <span id="ethically-we-bias-module"></span><h2>ethically.we.bias module<a class="headerlink" href="#module-ethically.we.bias" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="ethically.we.bias.GenderBiasWE">
-<em class="property">class </em><code class="descclassname">ethically.we.bias.</code><code class="descname">GenderBiasWE</code><span class="sig-paren">(</span><em>model</em>, <em>only_lower=False</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/bias.html#GenderBiasWE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.bias.GenderBiasWE" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ethically.we.bias.</code><code class="descname">GenderBiasWE</code><span class="sig-paren">(</span><em>model</em>, <em>only_lower=False</em>, <em>verbose=False</em>, <em>identify_direction=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/bias.html#GenderBiasWE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.bias.GenderBiasWE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethically.we.core.BiasWordsEmbedding" title="ethically.we.core.BiasWordsEmbedding"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethically.we.core.BiasWordsEmbedding</span></code></a></p>
 <p>Audit and Adjust the Gender Bias in English Words Embedding.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -72,6 +184,27 @@ only lower case words</li>
 </tbody>
 </table>
 <dl class="method">
+<dt id="ethically.we.bias.GenderBiasWE.plot_projection_scores">
+<code class="descname">plot_projection_scores</code><span class="sig-paren">(</span><em>words='professions'</em>, <em>n_extreme=10</em>, <em>ax=None</em>, <em>axis_projection_step=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/bias.html#GenderBiasWE.plot_projection_scores"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.bias.GenderBiasWE.plot_projection_scores" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the projection scalar of words on the direction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>words</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – The words tor project</li>
+<li><strong>or None n_extreme</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The number of extreme words to show</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The ax object of the plot</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="ethically.we.bias.GenderBiasWE.plot_dist_projections_on_direction">
 <code class="descname">plot_dist_projections_on_direction</code><span class="sig-paren">(</span><em>word_groups='bolukbasi'</em>, <em>ax=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/bias.html#GenderBiasWE.plot_dist_projections_on_direction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.bias.GenderBiasWE.plot_dist_projections_on_direction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the projection scalars distribution on the direction.</p>
@@ -87,15 +220,77 @@ only lower case words</li>
 </table>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="ethically.we.bias.GenderBiasWE.plot_bias_across_words_embeddings">
+<em class="property">classmethod </em><code class="descname">plot_bias_across_words_embeddings</code><span class="sig-paren">(</span><em>words_embedding_bias_dict</em>, <em>ax=None</em>, <em>scatter_kwargs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/bias.html#GenderBiasWE.plot_bias_across_words_embeddings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.bias.GenderBiasWE.plot_bias_across_words_embeddings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the projections of same words of two words Embeddings.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>words_embedding_bias_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – <code class="docutils literal notranslate"><span class="pre">WordsEmbeddingBias</span></code> objects
+as values,
+and their names as keys.</li>
+<li><strong>words</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – Words to be projected.</li>
+<li><strong>scatter_kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – Kwargs for matplotlib.pylab.scatter.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The ax object of the plot</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="ethically.we.bias.GenderBiasWE.calc_direct_bias">
 <code class="descname">calc_direct_bias</code><span class="sig-paren">(</span><em>neutral_words='professions'</em>, <em>c=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/bias.html#GenderBiasWE.calc_direct_bias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.bias.GenderBiasWE.calc_direct_bias" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the direct bias.</p>
 <p>Based on the projection of neuteral words on the direction.</p>
-<p>:param list neutral_words
-:param c: Strictness of bias measuring
-:type c: float or None
-:return: The direct bias</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>neutral_words</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of neutral words</li>
+<li><strong>c</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – Strictness of bias measuring</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The direct bias</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethically.we.bias.GenderBiasWE.generate_closest_words_indirect_bias">
+<code class="descname">generate_closest_words_indirect_bias</code><span class="sig-paren">(</span><em>neutral_positive_end</em>, <em>neutral_negative_end</em>, <em>words='professions'</em>, <em>n_extreme=5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/bias.html#GenderBiasWE.generate_closest_words_indirect_bias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.bias.GenderBiasWE.generate_closest_words_indirect_bias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate closest words to a neutral direction and thier indirect bias.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>neutral_positive_end</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A word that define the positive side
+of the neutral direction.</li>
+<li><strong>neutral_negative_end</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A word that define the negative side
+of the neutral direction.</li>
+<li><strong>words</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of words to project on the neutral direction.</li>
+<li><strong>n_extreme</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The number for the most extreme words
+(positive and negative) to show.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Data Frame of the most extreme words
+with their projection scores and indirect biases.</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -110,8 +305,9 @@ only lower case words</li>
 <li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The method of debiasing.</li>
 <li><strong>neutral_words</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of neutral words
 for the neutralize step</li>
-<li><strong>equality_sets</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of equality sets
-for the equalize step</li>
+<li><strong>equality_sets</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of equality sets,
+for the equalize step.
+The sets represent the direction.</li>
 <li><strong>inplace</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to debias the object inplace
 or return a new one</li>
 </ul>
@@ -157,7 +353,7 @@ to sample for training</li>
 <span id="ethically-we-core-module"></span><h2>ethically.we.core module<a class="headerlink" href="#module-ethically.we.core" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="ethically.we.core.BiasWordsEmbedding">
-<em class="property">class </em><code class="descclassname">ethically.we.core.</code><code class="descname">BiasWordsEmbedding</code><span class="sig-paren">(</span><em>model</em>, <em>only_lower=False</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.core.BiasWordsEmbedding" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ethically.we.core.</code><code class="descname">BiasWordsEmbedding</code><span class="sig-paren">(</span><em>model</em>, <em>only_lower=False</em>, <em>verbose=False</em>, <em>identify_direction=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.core.BiasWordsEmbedding" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
 <p>Audit and Adjust a Bias in English Words Embedding.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -192,15 +388,20 @@ only lower case words</li>
 
 <dl class="method">
 <dt id="ethically.we.core.BiasWordsEmbedding.plot_projection_scores">
-<code class="descname">plot_projection_scores</code><span class="sig-paren">(</span><em>words</em>, <em>ax=None</em>, <em>axis_projection_step=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.plot_projection_scores"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.core.BiasWordsEmbedding.plot_projection_scores" title="Permalink to this definition">¶</a></dt>
+<code class="descname">plot_projection_scores</code><span class="sig-paren">(</span><em>words</em>, <em>n_extreme=10</em>, <em>ax=None</em>, <em>axis_projection_step=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.plot_projection_scores"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.core.BiasWordsEmbedding.plot_projection_scores" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the projection scalar of words on the direction.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>words</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – The words tor project</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>words</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – The words tor project</li>
+<li><strong>or None n_extreme</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The number of extreme words to show</li>
+</ul>
+</td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">The ax object of the plot</td>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The ax object of the plot</p>
+</td>
 </tr>
 </tbody>
 </table>
@@ -222,15 +423,80 @@ only lower case words</li>
 </table>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="ethically.we.core.BiasWordsEmbedding.plot_bias_across_words_embeddings">
+<em class="property">classmethod </em><code class="descname">plot_bias_across_words_embeddings</code><span class="sig-paren">(</span><em>words_embedding_bias_dict</em>, <em>words</em>, <em>ax=None</em>, <em>scatter_kwargs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.plot_bias_across_words_embeddings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.core.BiasWordsEmbedding.plot_bias_across_words_embeddings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the projections of same words of two words Embeddings.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>words_embedding_bias_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – <code class="docutils literal notranslate"><span class="pre">WordsEmbeddingBias</span></code> objects
+as values,
+and their names as keys.</li>
+<li><strong>words</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – Words to be projected.</li>
+<li><strong>scatter_kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – Kwargs for matplotlib.pylab.scatter.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The ax object of the plot</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethically.we.core.BiasWordsEmbedding.generate_analogies">
+<code class="descname">generate_analogies</code><span class="sig-paren">(</span><em>n_analogies=100</em>, <em>multiple=False</em>, <em>delta=1.0</em>, <em>restrict_vocab=30000</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.generate_analogies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.core.BiasWordsEmbedding.generate_analogies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate anologies based on the bias directionself.</p>
+<p>x - y ~ direction.
+or a:x::b:y when a-b ~ direction.</p>
+<p><code class="docutils literal notranslate"><span class="pre">delta</span></code> is used for semantically coherent. Default vale of 1
+corresponds to an angle &lt;= pi/3.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>n_analogies</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of analogies to generate.</li>
+<li><strong>multiple</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to allow multiple apprerences of a word
+in the analogies.</li>
+<li><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Threshold for semantic similarity.
+The maximal distance between x and y.</li>
+<li><strong>restrict_vocab</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The vocabulary size to use.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Data Frame of anologies (x, y), thier distances,
+and their cosine similarity scores</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="ethically.we.core.BiasWordsEmbedding.calc_direct_bias">
 <code class="descname">calc_direct_bias</code><span class="sig-paren">(</span><em>neutral_words</em>, <em>c=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.calc_direct_bias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.core.BiasWordsEmbedding.calc_direct_bias" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the direct bias.</p>
 <p>Based on the projection of neuteral words on the direction.</p>
-<p>:param list neutral_words
-:param c: Strictness of bias measuring
-:type c: float or None
-:return: The direct bias</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>neutral_words</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of neutral words</li>
+<li><strong>c</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – Strictness of bias measuring</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The direct bias</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -246,6 +512,33 @@ only lower case words</li>
 </dd></dl>
 
 <dl class="method">
+<dt id="ethically.we.core.BiasWordsEmbedding.generate_closest_words_indirect_bias">
+<code class="descname">generate_closest_words_indirect_bias</code><span class="sig-paren">(</span><em>neutral_positive_end</em>, <em>neutral_negative_end</em>, <em>words=None</em>, <em>n_extreme=5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.generate_closest_words_indirect_bias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.core.BiasWordsEmbedding.generate_closest_words_indirect_bias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate closest words to a neutral direction and thier indirect bias.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>neutral_positive_end</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A word that define the positive side
+of the neutral direction.</li>
+<li><strong>neutral_negative_end</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A word that define the negative side
+of the neutral direction.</li>
+<li><strong>words</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of words to project on the neutral direction.</li>
+<li><strong>n_extreme</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The number for the most extreme words
+(positive and negative) to show.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Data Frame of the most extreme words
+with their projection scores and indirect biases.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="ethically.we.core.BiasWordsEmbedding.debias">
 <code class="descname">debias</code><span class="sig-paren">(</span><em>method='hard'</em>, <em>neutral_words=None</em>, <em>equality_sets=None</em>, <em>inplace=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.debias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.core.BiasWordsEmbedding.debias" title="Permalink to this definition">¶</a></dt>
 <dd><p>Debias the words embedding.</p>
@@ -257,8 +550,9 @@ only lower case words</li>
 <li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The method of debiasing.</li>
 <li><strong>neutral_words</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of neutral words
 for the neutralize step</li>
-<li><strong>equality_sets</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of equality sets
-for the equalize step</li>
+<li><strong>equality_sets</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of equality sets,
+for the equalize step.
+The sets represent the direction.</li>
 <li><strong>inplace</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to debias the object inplace
 or return a new one</li>
 </ul>
@@ -276,12 +570,28 @@ will be normalized to unit length.</p>
 
 <dl class="method">
 <dt id="ethically.we.core.BiasWordsEmbedding.evaluate_words_embedding">
-<code class="descname">evaluate_words_embedding</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.evaluate_words_embedding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.core.BiasWordsEmbedding.evaluate_words_embedding" title="Permalink to this definition">¶</a></dt>
-<dd><p>Print a words embedding evaluation based on standard protocols.</p>
-<ol class="arabic simple">
-<li>Word pairs task</li>
-<li>Analogies task</li>
-</ol>
+<code class="descname">evaluate_words_embedding</code><span class="sig-paren">(</span><em>kwargs_word_pairs=None</em>, <em>kwargs_word_analogies=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.evaluate_words_embedding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.core.BiasWordsEmbedding.evaluate_words_embedding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate word pairs tasks and word analogies tasks.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>model</strong> – Words embedding.</li>
+<li><strong>kwargs_word_pairs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – Kwargs for
+evaluate_word_pairs
+method.</li>
+<li><strong>kwargs_word_analogies</strong> – Kwargs for
+evaluate_word_analogies
+method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Tuple of DataFrame for the evaluation results.</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -313,14 +623,21 @@ to sample for training</li>
 <div class="section" id="module-ethically.we.utils">
 <span id="ethically-we-utils-module"></span><h2>ethically.we.utils module<a class="headerlink" href="#module-ethically.we.utils" title="Permalink to this headline">¶</a></h2>
 <dl class="function">
+<dt id="ethically.we.utils.round_to_extreme">
+<code class="descclassname">ethically.we.utils.</code><code class="descname">round_to_extreme</code><span class="sig-paren">(</span><em>value</em>, <em>digits=2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/utils.html#round_to_extreme"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.utils.round_to_extreme" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
 <dt id="ethically.we.utils.normalize">
 <code class="descclassname">ethically.we.utils.</code><code class="descname">normalize</code><span class="sig-paren">(</span><em>v</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/utils.html#normalize"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.utils.normalize" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Normalize a 1-D vector.</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="ethically.we.utils.cosine_similarity">
 <code class="descclassname">ethically.we.utils.</code><code class="descname">cosine_similarity</code><span class="sig-paren">(</span><em>v</em>, <em>u</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/utils.html#cosine_similarity"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.utils.cosine_similarity" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Calculate the cosine similarity between two vectors.</p>
+</dd></dl>
 
 <dl class="function">
 <dt id="ethically.we.utils.project_vector">
@@ -355,12 +672,285 @@ to sample for training</li>
 <code class="descclassname">ethically.we.utils.</code><code class="descname">generate_words_forms</code><span class="sig-paren">(</span><em>words</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/utils.html#generate_words_forms"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.utils.generate_words_forms" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="function">
+<dt id="ethically.we.utils.take_two_sides_extreme_sorted">
+<code class="descclassname">ethically.we.utils.</code><code class="descname">take_two_sides_extreme_sorted</code><span class="sig-paren">(</span><em>df</em>, <em>n_extreme</em>, <em>part_column=None</em>, <em>head_value=''</em>, <em>tail_value=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/utils.html#take_two_sides_extreme_sorted"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.utils.take_two_sides_extreme_sorted" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 <div class="section" id="module-ethically.we">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-ethically.we" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
+<dt id="ethically.we.BiasWordsEmbedding">
+<em class="property">class </em><code class="descclassname">ethically.we.</code><code class="descname">BiasWordsEmbedding</code><span class="sig-paren">(</span><em>model</em>, <em>only_lower=False</em>, <em>verbose=False</em>, <em>identify_direction=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.BiasWordsEmbedding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/functions.html#object" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<p>Audit and Adjust a Bias in English Words Embedding.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>model</strong> – Words embedding model of <code class="docutils literal notranslate"><span class="pre">gensim.model.KeyedVectors</span></code></li>
+<li><strong>only_lower</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether the words embedding contrains
+only lower case words</li>
+<li><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Set vebosity</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="ethically.we.BiasWordsEmbedding.project_on_direction">
+<code class="descname">project_on_direction</code><span class="sig-paren">(</span><em>word</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.project_on_direction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.BiasWordsEmbedding.project_on_direction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Project the normalized vector of the word on the direction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>word</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The word tor project</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return float:</th><td class="field-body">The projection scalar</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethically.we.BiasWordsEmbedding.plot_projection_scores">
+<code class="descname">plot_projection_scores</code><span class="sig-paren">(</span><em>words</em>, <em>n_extreme=10</em>, <em>ax=None</em>, <em>axis_projection_step=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.plot_projection_scores"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.BiasWordsEmbedding.plot_projection_scores" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the projection scalar of words on the direction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>words</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – The words tor project</li>
+<li><strong>or None n_extreme</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The number of extreme words to show</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The ax object of the plot</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethically.we.BiasWordsEmbedding.plot_dist_projections_on_direction">
+<code class="descname">plot_dist_projections_on_direction</code><span class="sig-paren">(</span><em>word_groups</em>, <em>ax=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.plot_dist_projections_on_direction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.BiasWordsEmbedding.plot_dist_projections_on_direction" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the projection scalars distribution on the direction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>word_groups word</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – The groups to projects</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Return float:</th><td class="field-body">The ax object of the plot</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="classmethod">
+<dt id="ethically.we.BiasWordsEmbedding.plot_bias_across_words_embeddings">
+<em class="property">classmethod </em><code class="descname">plot_bias_across_words_embeddings</code><span class="sig-paren">(</span><em>words_embedding_bias_dict</em>, <em>words</em>, <em>ax=None</em>, <em>scatter_kwargs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.plot_bias_across_words_embeddings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.BiasWordsEmbedding.plot_bias_across_words_embeddings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the projections of same words of two words Embeddings.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>words_embedding_bias_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – <code class="docutils literal notranslate"><span class="pre">WordsEmbeddingBias</span></code> objects
+as values,
+and their names as keys.</li>
+<li><strong>words</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – Words to be projected.</li>
+<li><strong>scatter_kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – Kwargs for matplotlib.pylab.scatter.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The ax object of the plot</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethically.we.BiasWordsEmbedding.generate_analogies">
+<code class="descname">generate_analogies</code><span class="sig-paren">(</span><em>n_analogies=100</em>, <em>multiple=False</em>, <em>delta=1.0</em>, <em>restrict_vocab=30000</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.generate_analogies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.BiasWordsEmbedding.generate_analogies" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate anologies based on the bias directionself.</p>
+<p>x - y ~ direction.
+or a:x::b:y when a-b ~ direction.</p>
+<p><code class="docutils literal notranslate"><span class="pre">delta</span></code> is used for semantically coherent. Default vale of 1
+corresponds to an angle &lt;= pi/3.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>n_analogies</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of analogies to generate.</li>
+<li><strong>multiple</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to allow multiple apprerences of a word
+in the analogies.</li>
+<li><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Threshold for semantic similarity.
+The maximal distance between x and y.</li>
+<li><strong>restrict_vocab</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The vocabulary size to use.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Data Frame of anologies (x, y), thier distances,
+and their cosine similarity scores</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethically.we.BiasWordsEmbedding.calc_direct_bias">
+<code class="descname">calc_direct_bias</code><span class="sig-paren">(</span><em>neutral_words</em>, <em>c=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.calc_direct_bias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.BiasWordsEmbedding.calc_direct_bias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the direct bias.</p>
+<p>Based on the projection of neuteral words on the direction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>neutral_words</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of neutral words</li>
+<li><strong>c</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – Strictness of bias measuring</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The direct bias</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethically.we.BiasWordsEmbedding.calc_indirect_bias">
+<code class="descname">calc_indirect_bias</code><span class="sig-paren">(</span><em>word1</em>, <em>word2</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.calc_indirect_bias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.BiasWordsEmbedding.calc_indirect_bias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate the indirect bias between two words.</p>
+<p>Based on the amount of shared projection of the words on the direction.</p>
+<p>Also called PairBias.
+:param str word1: First word
+:param str word2: Second word
+:type c: float or None
+:return The indirect bias between the two words</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethically.we.BiasWordsEmbedding.generate_closest_words_indirect_bias">
+<code class="descname">generate_closest_words_indirect_bias</code><span class="sig-paren">(</span><em>neutral_positive_end</em>, <em>neutral_negative_end</em>, <em>words=None</em>, <em>n_extreme=5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.generate_closest_words_indirect_bias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.BiasWordsEmbedding.generate_closest_words_indirect_bias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate closest words to a neutral direction and thier indirect bias.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>neutral_positive_end</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A word that define the positive side
+of the neutral direction.</li>
+<li><strong>neutral_negative_end</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A word that define the negative side
+of the neutral direction.</li>
+<li><strong>words</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of words to project on the neutral direction.</li>
+<li><strong>n_extreme</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The number for the most extreme words
+(positive and negative) to show.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Data Frame of the most extreme words
+with their projection scores and indirect biases.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethically.we.BiasWordsEmbedding.debias">
+<code class="descname">debias</code><span class="sig-paren">(</span><em>method='hard'</em>, <em>neutral_words=None</em>, <em>equality_sets=None</em>, <em>inplace=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.debias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.BiasWordsEmbedding.debias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Debias the words embedding.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The method of debiasing.</li>
+<li><strong>neutral_words</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of neutral words
+for the neutralize step</li>
+<li><strong>equality_sets</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of equality sets,
+for the equalize step.
+The sets represent the direction.</li>
+<li><strong>inplace</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to debias the object inplace
+or return a new one</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">After calling <cite>debias</cite>,
+all the vectors of the words embedding
+will be normalized to unit length.</p>
+</div>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethically.we.BiasWordsEmbedding.evaluate_words_embedding">
+<code class="descname">evaluate_words_embedding</code><span class="sig-paren">(</span><em>kwargs_word_pairs=None</em>, <em>kwargs_word_analogies=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.evaluate_words_embedding"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.BiasWordsEmbedding.evaluate_words_embedding" title="Permalink to this definition">¶</a></dt>
+<dd><p>Evaluate word pairs tasks and word analogies tasks.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>model</strong> – Words embedding.</li>
+<li><strong>kwargs_word_pairs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – Kwargs for
+evaluate_word_pairs
+method.</li>
+<li><strong>kwargs_word_analogies</strong> – Kwargs for
+evaluate_word_analogies
+method.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Tuple of DataFrame for the evaluation results.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethically.we.BiasWordsEmbedding.learn_full_specific_words">
+<code class="descname">learn_full_specific_words</code><span class="sig-paren">(</span><em>seed_specific_words</em>, <em>max_non_specific_examples=None</em>, <em>debug=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.learn_full_specific_words"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.BiasWordsEmbedding.learn_full_specific_words" title="Permalink to this definition">¶</a></dt>
+<dd><p>Learn specific words given a list of seed specific wordsself.</p>
+<p>Using Linear SVM.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>seed_specific_words</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of seed specific words</li>
+<li><strong>max_non_specific_examples</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The number of non-specifc words
+to sample for training</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">List of learned specific words and the classifier object</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
 <dt id="ethically.we.GenderBiasWE">
-<em class="property">class </em><code class="descclassname">ethically.we.</code><code class="descname">GenderBiasWE</code><span class="sig-paren">(</span><em>model</em>, <em>only_lower=False</em>, <em>verbose=False</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/bias.html#GenderBiasWE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.GenderBiasWE" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ethically.we.</code><code class="descname">GenderBiasWE</code><span class="sig-paren">(</span><em>model</em>, <em>only_lower=False</em>, <em>verbose=False</em>, <em>identify_direction=True</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/bias.html#GenderBiasWE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.GenderBiasWE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethically.we.core.BiasWordsEmbedding" title="ethically.we.core.BiasWordsEmbedding"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethically.we.core.BiasWordsEmbedding</span></code></a></p>
 <p>Audit and Adjust the Gender Bias in English Words Embedding.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -378,6 +968,27 @@ only lower case words</li>
 </tbody>
 </table>
 <dl class="method">
+<dt id="ethically.we.GenderBiasWE.plot_projection_scores">
+<code class="descname">plot_projection_scores</code><span class="sig-paren">(</span><em>words='professions'</em>, <em>n_extreme=10</em>, <em>ax=None</em>, <em>axis_projection_step=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/bias.html#GenderBiasWE.plot_projection_scores"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.GenderBiasWE.plot_projection_scores" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the projection scalar of words on the direction.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>words</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – The words tor project</li>
+<li><strong>or None n_extreme</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The number of extreme words to show</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The ax object of the plot</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="ethically.we.GenderBiasWE.plot_dist_projections_on_direction">
 <code class="descname">plot_dist_projections_on_direction</code><span class="sig-paren">(</span><em>word_groups='bolukbasi'</em>, <em>ax=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/bias.html#GenderBiasWE.plot_dist_projections_on_direction"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.GenderBiasWE.plot_dist_projections_on_direction" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the projection scalars distribution on the direction.</p>
@@ -393,15 +1004,77 @@ only lower case words</li>
 </table>
 </dd></dl>
 
+<dl class="classmethod">
+<dt id="ethically.we.GenderBiasWE.plot_bias_across_words_embeddings">
+<em class="property">classmethod </em><code class="descname">plot_bias_across_words_embeddings</code><span class="sig-paren">(</span><em>words_embedding_bias_dict</em>, <em>ax=None</em>, <em>scatter_kwargs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/bias.html#GenderBiasWE.plot_bias_across_words_embeddings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.GenderBiasWE.plot_bias_across_words_embeddings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot the projections of same words of two words Embeddings.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>words_embedding_bias_dict</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – <code class="docutils literal notranslate"><span class="pre">WordsEmbeddingBias</span></code> objects
+as values,
+and their names as keys.</li>
+<li><strong>words</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – Words to be projected.</li>
+<li><strong>scatter_kwargs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – Kwargs for matplotlib.pylab.scatter.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The ax object of the plot</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
 <dl class="method">
 <dt id="ethically.we.GenderBiasWE.calc_direct_bias">
 <code class="descname">calc_direct_bias</code><span class="sig-paren">(</span><em>neutral_words='professions'</em>, <em>c=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/bias.html#GenderBiasWE.calc_direct_bias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.GenderBiasWE.calc_direct_bias" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the direct bias.</p>
 <p>Based on the projection of neuteral words on the direction.</p>
-<p>:param list neutral_words
-:param c: Strictness of bias measuring
-:type c: float or None
-:return: The direct bias</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>neutral_words</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of neutral words</li>
+<li><strong>c</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a><em> or </em><a class="reference external" href="https://docs.python.org/3/library/constants.html#None" title="(in Python v3.7)"><em>None</em></a>) – Strictness of bias measuring</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">The direct bias</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethically.we.GenderBiasWE.generate_closest_words_indirect_bias">
+<code class="descname">generate_closest_words_indirect_bias</code><span class="sig-paren">(</span><em>neutral_positive_end</em>, <em>neutral_negative_end</em>, <em>words='professions'</em>, <em>n_extreme=5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/bias.html#GenderBiasWE.generate_closest_words_indirect_bias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.GenderBiasWE.generate_closest_words_indirect_bias" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate closest words to a neutral direction and thier indirect bias.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>neutral_positive_end</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A word that define the positive side
+of the neutral direction.</li>
+<li><strong>neutral_negative_end</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – A word that define the negative side
+of the neutral direction.</li>
+<li><strong>words</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of words to project on the neutral direction.</li>
+<li><strong>n_extreme</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – The number for the most extreme words
+(positive and negative) to show.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Data Frame of the most extreme words
+with their projection scores and indirect biases.</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 <dl class="method">
@@ -416,8 +1089,9 @@ only lower case words</li>
 <li><strong>method</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The method of debiasing.</li>
 <li><strong>neutral_words</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of neutral words
 for the neutralize step</li>
-<li><strong>equality_sets</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of equality sets
-for the equalize step</li>
+<li><strong>equality_sets</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of equality sets,
+for the equalize step.
+The sets represent the direction.</li>
 <li><strong>inplace</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to debias the object inplace
 or return a new one</li>
 </ul>
@@ -486,7 +1160,7 @@ to sample for training</li>
 
 <h3>Navigation</h3>
 <ul class="current">
-<li class="toctree-l1"><a class="reference internal" href="../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../demos.html">Demos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../words-embedding-bias.html">Words Embedding Bias</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../classification-fairness.html">Classifiction Fairness</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">API Reference</a></li>

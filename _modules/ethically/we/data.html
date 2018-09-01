@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ethically.we.data &#8212; Ethically 0.0.1 documentation</title>
+    <title>ethically.we.data &#8212; Ethically 0.0.2 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -36,7 +36,15 @@
 <span></span><span class="c1"># TODO how import files from a package</span>
 <span class="kn">import</span> <span class="nn">json</span>
 
-<span class="kn">from</span> <span class="nn">pkg_resources</span> <span class="k">import</span> <span class="n">resource_string</span>
+<span class="kn">from</span> <span class="nn">gensim.models.keyedvectors</span> <span class="k">import</span> <span class="n">KeyedVectors</span>
+<span class="kn">from</span> <span class="nn">pkg_resources</span> <span class="k">import</span> <span class="n">resource_filename</span><span class="p">,</span> <span class="n">resource_string</span>
+
+
+<div class="viewcode-block" id="load_w2v_small"><a class="viewcode-back" href="../../../api/ethically.we.data.html#ethically.we.data.load_w2v_small">[docs]</a><span class="k">def</span> <span class="nf">load_w2v_small</span><span class="p">():</span>
+    <span class="c1"># pylint: disable=C0301</span>
+    <span class="k">return</span> <span class="n">KeyedVectors</span><span class="o">.</span><span class="n">load_word2vec_format</span><span class="p">(</span>
+        <span class="n">resource_filename</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span> <span class="s1">&#39;GoogleNews-vectors-negative300-bolukbasi.bin&#39;</span><span class="p">),</span>
+        <span class="n">binary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="load_json_resource"><a class="viewcode-back" href="../../../api/ethically.we.data.html#ethically.we.data.load_json_resource">[docs]</a><span class="k">def</span> <span class="nf">load_json_resource</span><span class="p">(</span><span class="n">resource_name</span><span class="p">):</span>
@@ -100,7 +108,7 @@
 
 <h3>Navigation</h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../tutorials.html">Tutorials</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../demos.html">Demos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../words-embedding-bias.html">Words Embedding Bias</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../classification-fairness.html">Classifiction Fairness</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">API Reference</a></li>
