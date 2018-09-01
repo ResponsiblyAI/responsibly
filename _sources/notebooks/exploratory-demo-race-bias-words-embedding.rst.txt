@@ -2,8 +2,8 @@
 Demo - Race Bias in Words Embedding
 ===================================
 
-Exploratory - API will change in a future release
--------------------------------------------------
+Exploratory - the API will be changed in a future release
+---------------------------------------------------------
 
 Based on:
 https://github.com/tolga-b/debiaswe/blob/master/tutorial_example1.ipynb
