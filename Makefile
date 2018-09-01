@@ -213,6 +213,13 @@ upload: dist ## Upload the current version to PyPI
 	$(TWINE) upload dist/*.*
 	bin/open https://pypi.org/project/$(PROJECT)
 
+.PHONY: upload-test
+upload: dist ## Upload the current version to Test PyPI
+	git diff --name-only --exit-code
+	$(TWINE) upload dist/*.*
+	bin/open https://test.pypi.org/project/$(PROJECT)
+
+
 # CLEANUP #####################################################################
 
 .PHONY: clean
