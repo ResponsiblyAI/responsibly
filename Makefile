@@ -216,7 +216,7 @@ upload: dist ## Upload the current version to PyPI
 .PHONY: upload-test
 upload-test: dist ## Upload the current version to Test PyPI
 	git diff --name-only --exit-code
-	$(TWINE) upload dist/*.*
+	$(TWINE) upload --repository-url https://test.pypi.org/legacy/ dist/*.*
 	bin/open https://test.pypi.org/project/$(PROJECT)
 
 
