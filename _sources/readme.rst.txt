@@ -55,14 +55,14 @@ After installation, the package can be imported:
 
    $ python
    >>> from ethically.we import GenderBiasWE
-   >>> from ethically.we.data import load_w2v_small
-   >>> w2v_small_model = load_w2v_small()
-   >>> w2v_gender_bias_we = GenderBiasWE(w2v_small_model, only_lower=True)
+   >>> from gensim import downloader
+   >>> w2v_model = downloader.load('word2vec-google-news-300')
+   >>> w2v_gender_bias_we = GenderBiasWE(w2v_model)
    >>> w2v_gender_bias_we.calc_direct_bias()
-   0.07307905390764366
+   0.07307904249481942
    >>> w2v_gender_bias_we.debias()
    >>> w2v_gender_bias_we.calc_direct_bias()
-   1.8275163172819303e-09
+   1.7964246601064155e-09
 
 Requirements
 ------------
