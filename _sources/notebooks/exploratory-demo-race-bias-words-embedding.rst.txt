@@ -2,8 +2,8 @@
 Demo - Race Bias in Words Embedding
 ===================================
 
-Exploratory - the API will be changed in a future release
----------------------------------------------------------
+Exploratory - API will change in a future release
+-------------------------------------------------
 
 Based on:
 https://github.com/tolga-b/debiaswe/blob/master/tutorial_example1.ipynb
@@ -21,21 +21,29 @@ https://github.com/tolga-b/debiaswe/blob/master/tutorial_example1.ipynb
 
 .. code:: ipython3
 
-    names = ["Emily", "Aisha", "Anne", "Keisha", "Jill", "Tamika", "Allison", "Lakisha", "Laurie", "Tanisha", "Sarah",
-             "Latoya", "Meredith", "Kenya", "Carrie", "Latonya", "Kristen", "Ebony", "Todd", "Rasheed", "Neil", "Tremayne",
-             "Geoffrey", "Kareem", "Brett", "Darnell", "Brendan", "Tyrone", "Greg", "Hakim", "Matthew", "Jamal", "Jay",
-             "Leroy", "Brad", "Jermaine"]
+    names = ["Emily", "Aisha", "Anne", "Keisha",
+             "Jill", "Tamika", "Allison", "Lakisha",
+             "Laurie", "Tanisha", "Sarah", "Latoya",
+             "Meredith", "Kenya", "Carrie", "Latonya",
+             "Kristen", "Ebony", "Todd", "Rasheed",
+             "Neil", "Tremayne", "Geoffrey", "Kareem",
+             "Brett", "Darnell", "Brendan", "Tyrone",
+             "Greg", "Hakim", "Matthew", "Jamal",
+             "Jay", "Leroy", "Brad", "Jermaine"]
     
     group1 = names[::2]
     group2 = names[1::2]
 
 .. code:: ipython3
 
-    race_bias_we = BiasWordsEmbedding(w2v_small_model, verbose=True)
+    race_bias_we = BiasWordsEmbedding(w2v_small_model,
+                                      verbose=True)
 
 .. code:: ipython3
 
-    race_bias_we._identify_direction('group1', 'group2', [group1, group2], method='sum')
+    race_bias_we._identify_direction('group1', 'group2',
+                                     [group1, group2],
+                                     method='sum')
 
 
 .. parsed-literal::
@@ -64,19 +72,11 @@ https://github.com/tolga-b/debiaswe/blob/master/tutorial_example1.ipynb
 
     race_bias_we.plot_dist_projections_on_direction({'profession_names': profession_names,
                                                      'group1': group1,
-                                                     'group2': group2})
+                                                     'group2': group2});
 
 
 
-
-.. parsed-literal::
-
-    <matplotlib.axes._subplots.AxesSubplot at 0x7f41eb585780>
-
-
-
-
-.. image:: exploratory-demo-race-bias-words-embedding_files/exploratory-demo-race-bias-words-embedding_8_1.png
+.. image:: exploratory-demo-race-bias-words-embedding_files/exploratory-demo-race-bias-words-embedding_8_0.png
 
 
 .. code:: ipython3
@@ -332,17 +332,9 @@ https://github.com/tolga-b/debiaswe/blob/master/tutorial_example1.ipynb
 .. code:: ipython3
 
     f, ax = plt.subplots(figsize=(15, 15))
-    race_bias_we.plot_projection_scores(profession_names, 15, ax=ax)
+    race_bias_we.plot_projection_scores(profession_names, 15, ax=ax);
 
 
 
-
-.. parsed-literal::
-
-    <matplotlib.axes._subplots.AxesSubplot at 0x7f41e34ba5c0>
-
-
-
-
-.. image:: exploratory-demo-race-bias-words-embedding_files/exploratory-demo-race-bias-words-embedding_10_1.png
+.. image:: exploratory-demo-race-bias-words-embedding_files/exploratory-demo-race-bias-words-embedding_10_0.png
 
