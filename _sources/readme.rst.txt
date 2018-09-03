@@ -87,12 +87,13 @@ or directly from the source code:
    $ python setup.py install
 
 
-Development Roadmap - 2018
---------------------------
+Development Roadmap
+-------------------
 1. Words Embedding
 
-   1. Bolukbasi et al. Debiasing (Gender & Race)
+   1. Bolukbasi et al. Debiasing (Gender, Race, Citizens-Immigrants/Refugees)
    2. Word Embedding Association Test (WEAT)
+   3. Adding support for the German language
 
 2. Fairness in Binary Classification
 
