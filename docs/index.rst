@@ -14,7 +14,6 @@ Contents
 
   demos
   words-embedding-bias
-  classification-fairness
   API Reference <api/modules>
   about/contributing
   about/changelog
