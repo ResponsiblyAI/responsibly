@@ -32,9 +32,9 @@ Direct Bias
 """""""""""
 
 1. Associations
-   Words that are closer to one end (e.g., *he*) than to the other end (*she*).
-   For example, occupational stereotypes (page 7).
-   Calculated by :meth:`~ethically.we.bias.BiasWordsEmbedding.calc_direct_bias`.
+    Words that are closer to one end (e.g., *he*) than to the other end (*she*).
+    For example, occupational stereotypes (page 7).
+    Calculated by :meth:`~ethically.we.bias.BiasWordsEmbedding.calc_direct_bias`.
 
 2. Analogies
     Analogies of *he:x::she:y*.
