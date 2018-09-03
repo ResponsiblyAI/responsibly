@@ -1,5 +1,5 @@
 
-# Created by https://www.gitignore.io/api/macos,linux,python,jupyternotebook
+# Created by https://www.gitignore.io/api/macos,linux,python,jupyternotebook,visualstudiocode
 
 ### JupyterNotebook ###
 .ipynb_checkpoints
@@ -172,6 +172,12 @@ venv.bak/
 pyvenv.cfg
 pip-selfcheck.json
 
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
 
-# End of https://www.gitignore.io/api/macos,linux,python,jupyternotebook
 
+# End of https://www.gitignore.io/api/macos,linux,python,jupyternotebook,visualstudiocode
