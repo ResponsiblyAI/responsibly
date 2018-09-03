@@ -36,8 +36,8 @@
             
   <div class="section" id="demo-race-bias-in-words-embedding">
 <h1>Demo - Race Bias in Words Embedding<a class="headerlink" href="#demo-race-bias-in-words-embedding" title="Permalink to this headline">¶</a></h1>
-<div class="section" id="exploratory-the-api-will-be-changed-in-a-future-release">
-<h2>Exploratory - the API will be changed in a future release<a class="headerlink" href="#exploratory-the-api-will-be-changed-in-a-future-release" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="exploratory-api-will-change-in-a-future-release">
+<h2>Exploratory - API will change in a future release<a class="headerlink" href="#exploratory-api-will-change-in-a-future-release" title="Permalink to this headline">¶</a></h2>
 <p>Based on:
 <a class="reference external" href="https://github.com/tolga-b/debiaswe/blob/master/tutorial_example1.ipynb">https://github.com/tolga-b/debiaswe/blob/master/tutorial_example1.ipynb</a></p>
 <div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pylab</span> <span class="k">as</span> <span class="nn">plt</span>
@@ -49,19 +49,27 @@
 <div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">w2v_small_model</span> <span class="o">=</span> <span class="n">load_w2v_small</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Emily&quot;</span><span class="p">,</span> <span class="s2">&quot;Aisha&quot;</span><span class="p">,</span> <span class="s2">&quot;Anne&quot;</span><span class="p">,</span> <span class="s2">&quot;Keisha&quot;</span><span class="p">,</span> <span class="s2">&quot;Jill&quot;</span><span class="p">,</span> <span class="s2">&quot;Tamika&quot;</span><span class="p">,</span> <span class="s2">&quot;Allison&quot;</span><span class="p">,</span> <span class="s2">&quot;Lakisha&quot;</span><span class="p">,</span> <span class="s2">&quot;Laurie&quot;</span><span class="p">,</span> <span class="s2">&quot;Tanisha&quot;</span><span class="p">,</span> <span class="s2">&quot;Sarah&quot;</span><span class="p">,</span>
-         <span class="s2">&quot;Latoya&quot;</span><span class="p">,</span> <span class="s2">&quot;Meredith&quot;</span><span class="p">,</span> <span class="s2">&quot;Kenya&quot;</span><span class="p">,</span> <span class="s2">&quot;Carrie&quot;</span><span class="p">,</span> <span class="s2">&quot;Latonya&quot;</span><span class="p">,</span> <span class="s2">&quot;Kristen&quot;</span><span class="p">,</span> <span class="s2">&quot;Ebony&quot;</span><span class="p">,</span> <span class="s2">&quot;Todd&quot;</span><span class="p">,</span> <span class="s2">&quot;Rasheed&quot;</span><span class="p">,</span> <span class="s2">&quot;Neil&quot;</span><span class="p">,</span> <span class="s2">&quot;Tremayne&quot;</span><span class="p">,</span>
-         <span class="s2">&quot;Geoffrey&quot;</span><span class="p">,</span> <span class="s2">&quot;Kareem&quot;</span><span class="p">,</span> <span class="s2">&quot;Brett&quot;</span><span class="p">,</span> <span class="s2">&quot;Darnell&quot;</span><span class="p">,</span> <span class="s2">&quot;Brendan&quot;</span><span class="p">,</span> <span class="s2">&quot;Tyrone&quot;</span><span class="p">,</span> <span class="s2">&quot;Greg&quot;</span><span class="p">,</span> <span class="s2">&quot;Hakim&quot;</span><span class="p">,</span> <span class="s2">&quot;Matthew&quot;</span><span class="p">,</span> <span class="s2">&quot;Jamal&quot;</span><span class="p">,</span> <span class="s2">&quot;Jay&quot;</span><span class="p">,</span>
-         <span class="s2">&quot;Leroy&quot;</span><span class="p">,</span> <span class="s2">&quot;Brad&quot;</span><span class="p">,</span> <span class="s2">&quot;Jermaine&quot;</span><span class="p">]</span>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;Emily&quot;</span><span class="p">,</span> <span class="s2">&quot;Aisha&quot;</span><span class="p">,</span> <span class="s2">&quot;Anne&quot;</span><span class="p">,</span> <span class="s2">&quot;Keisha&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;Jill&quot;</span><span class="p">,</span> <span class="s2">&quot;Tamika&quot;</span><span class="p">,</span> <span class="s2">&quot;Allison&quot;</span><span class="p">,</span> <span class="s2">&quot;Lakisha&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;Laurie&quot;</span><span class="p">,</span> <span class="s2">&quot;Tanisha&quot;</span><span class="p">,</span> <span class="s2">&quot;Sarah&quot;</span><span class="p">,</span> <span class="s2">&quot;Latoya&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;Meredith&quot;</span><span class="p">,</span> <span class="s2">&quot;Kenya&quot;</span><span class="p">,</span> <span class="s2">&quot;Carrie&quot;</span><span class="p">,</span> <span class="s2">&quot;Latonya&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;Kristen&quot;</span><span class="p">,</span> <span class="s2">&quot;Ebony&quot;</span><span class="p">,</span> <span class="s2">&quot;Todd&quot;</span><span class="p">,</span> <span class="s2">&quot;Rasheed&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;Neil&quot;</span><span class="p">,</span> <span class="s2">&quot;Tremayne&quot;</span><span class="p">,</span> <span class="s2">&quot;Geoffrey&quot;</span><span class="p">,</span> <span class="s2">&quot;Kareem&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;Brett&quot;</span><span class="p">,</span> <span class="s2">&quot;Darnell&quot;</span><span class="p">,</span> <span class="s2">&quot;Brendan&quot;</span><span class="p">,</span> <span class="s2">&quot;Tyrone&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;Greg&quot;</span><span class="p">,</span> <span class="s2">&quot;Hakim&quot;</span><span class="p">,</span> <span class="s2">&quot;Matthew&quot;</span><span class="p">,</span> <span class="s2">&quot;Jamal&quot;</span><span class="p">,</span>
+         <span class="s2">&quot;Jay&quot;</span><span class="p">,</span> <span class="s2">&quot;Leroy&quot;</span><span class="p">,</span> <span class="s2">&quot;Brad&quot;</span><span class="p">,</span> <span class="s2">&quot;Jermaine&quot;</span><span class="p">]</span>
 
 <span class="n">group1</span> <span class="o">=</span> <span class="n">names</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>
 <span class="n">group2</span> <span class="o">=</span> <span class="n">names</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span>
 </pre></div>
 </div>
-<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">race_bias_we</span> <span class="o">=</span> <span class="n">BiasWordsEmbedding</span><span class="p">(</span><span class="n">w2v_small_model</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">race_bias_we</span> <span class="o">=</span> <span class="n">BiasWordsEmbedding</span><span class="p">(</span><span class="n">w2v_small_model</span><span class="p">,</span>
+                                  <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">race_bias_we</span><span class="o">.</span><span class="n">_identify_direction</span><span class="p">(</span><span class="s1">&#39;group1&#39;</span><span class="p">,</span> <span class="s1">&#39;group2&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">group1</span><span class="p">,</span> <span class="n">group2</span><span class="p">],</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;sum&#39;</span><span class="p">)</span>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">race_bias_we</span><span class="o">.</span><span class="n">_identify_direction</span><span class="p">(</span><span class="s1">&#39;group1&#39;</span><span class="p">,</span> <span class="s1">&#39;group2&#39;</span><span class="p">,</span>
+                                 <span class="p">[</span><span class="n">group1</span><span class="p">,</span> <span class="n">group2</span><span class="p">],</span>
+                                 <span class="n">method</span><span class="o">=</span><span class="s1">&#39;sum&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Identify</span> <span class="n">direction</span> <span class="n">using</span> <span class="nb">sum</span> <span class="n">method</span><span class="o">...</span>
@@ -78,13 +86,10 @@
 </div>
 <div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">race_bias_we</span><span class="o">.</span><span class="n">plot_dist_projections_on_direction</span><span class="p">({</span><span class="s1">&#39;profession_names&#39;</span><span class="p">:</span> <span class="n">profession_names</span><span class="p">,</span>
                                                  <span class="s1">&#39;group1&#39;</span><span class="p">:</span> <span class="n">group1</span><span class="p">,</span>
-                                                 <span class="s1">&#39;group2&#39;</span><span class="p">:</span> <span class="n">group2</span><span class="p">})</span>
+                                                 <span class="s1">&#39;group2&#39;</span><span class="p">:</span> <span class="n">group2</span><span class="p">});</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span> <span class="n">at</span> <span class="mh">0x7f41eb585780</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-<img alt="../_images/exploratory-demo-race-bias-words-embedding_8_1.png" src="../_images/exploratory-demo-race-bias-words-embedding_8_1.png" />
+<img alt="../_images/exploratory-demo-race-bias-words-embedding_8_0.png" src="../_images/exploratory-demo-race-bias-words-embedding_8_0.png" />
 <div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">race_bias_we</span><span class="o">.</span><span class="n">generate_analogies</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -326,13 +331,10 @@
   </tbody>
 </table>
 </div><div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
-<span class="n">race_bias_we</span><span class="o">.</span><span class="n">plot_projection_scores</span><span class="p">(</span><span class="n">profession_names</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+<span class="n">race_bias_we</span><span class="o">.</span><span class="n">plot_projection_scores</span><span class="p">(</span><span class="n">profession_names</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">);</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">matplotlib</span><span class="o">.</span><span class="n">axes</span><span class="o">.</span><span class="n">_subplots</span><span class="o">.</span><span class="n">AxesSubplot</span> <span class="n">at</span> <span class="mh">0x7f41e34ba5c0</span><span class="o">&gt;</span>
-</pre></div>
-</div>
-<img alt="../_images/exploratory-demo-race-bias-words-embedding_10_1.png" src="../_images/exploratory-demo-race-bias-words-embedding_10_1.png" />
+<img alt="../_images/exploratory-demo-race-bias-words-embedding_10_0.png" src="../_images/exploratory-demo-race-bias-words-embedding_10_0.png" />
 </div>
 </div>
 

@@ -62,14 +62,14 @@ For example, gender debiasing of a words embedding.</dd>
 <p>After installation, the package can be imported:</p>
 <div class="code sh highlight-default notranslate"><div class="highlight"><pre><span></span>$ python
 &gt;&gt;&gt; from ethically.we import GenderBiasWE
-&gt;&gt;&gt; from gensim import downloader
-&gt;&gt;&gt; w2v_model = downloader.load(&#39;word2vec-google-news-300&#39;)
-&gt;&gt;&gt; w2v_gender_bias_we = GenderBiasWE(w2v_model)
+&gt;&gt;&gt; from ethically.we.data import load_w2v_small
+&gt;&gt;&gt; w2v_small_model = load_w2v_small()
+&gt;&gt;&gt; w2v_gender_bias_we = GenderBiasWE(w2v_small_model, only_lower=True)
 &gt;&gt;&gt; w2v_gender_bias_we.calc_direct_bias()
-0.07307904249481942
+0.07307905390764366
 &gt;&gt;&gt; w2v_gender_bias_we.debias()
 &gt;&gt;&gt; w2v_gender_bias_we.calc_direct_bias()
-1.7964246601064155e-09
+1.8275163172819303e-09
 </pre></div>
 </div>
 </div>
