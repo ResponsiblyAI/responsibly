@@ -634,7 +634,7 @@
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Equalize Words Data &#39;</span>
-                  <span class="s1">&#39;(all equal for 1-dim bais space (direction):&#39;</span><span class="p">)</span>
+                  <span class="s1">&#39;(all equal for 1-dim bias space (direction):&#39;</span><span class="p">)</span>
             <span class="n">words_data_df</span> <span class="o">=</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">words_data</span><span class="p">)</span>
                              <span class="o">.</span><span class="n">set_index</span><span class="p">([</span><span class="s1">&#39;equality_set_index&#39;</span><span class="p">,</span> <span class="s1">&#39;word&#39;</span><span class="p">]))</span>
             <span class="nb">print</span><span class="p">(</span><span class="n">tabulate</span><span class="p">(</span><span class="n">words_data_df</span><span class="p">,</span> <span class="n">headers</span><span class="o">=</span><span class="s1">&#39;keys&#39;</span><span class="p">))</span>

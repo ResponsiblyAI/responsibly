@@ -826,7 +826,7 @@ analogies</p>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Equalize</span><span class="o">...</span>
-<span class="n">Equalize</span> <span class="n">Words</span> <span class="n">Data</span> <span class="p">(</span><span class="nb">all</span> <span class="n">equal</span> <span class="k">for</span> <span class="mi">1</span><span class="o">-</span><span class="n">dim</span> <span class="n">bais</span> <span class="n">space</span> <span class="p">(</span><span class="n">direction</span><span class="p">):</span>
+<span class="n">Equalize</span> <span class="n">Words</span> <span class="n">Data</span> <span class="p">(</span><span class="nb">all</span> <span class="n">equal</span> <span class="k">for</span> <span class="mi">1</span><span class="o">-</span><span class="n">dim</span> <span class="n">bias</span> <span class="n">space</span> <span class="p">(</span><span class="n">direction</span><span class="p">):</span>
                     <span class="n">equalized_projected_scalar</span>    <span class="n">projected_scalar</span>    <span class="n">scaling</span>
 <span class="o">----------------</span>  <span class="o">----------------------------</span>  <span class="o">------------------</span>  <span class="o">---------</span>
 <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;she&#39;</span><span class="p">)</span>                            <span class="mf">0.443113</span>           <span class="mf">0.469059</span>    <span class="mf">0.443113</span>
@@ -895,8 +895,8 @@ analogies</p>
 </div>
 <div class="section" id="now-our-model-is-gender-debiased-lets-check-what-changed">
 <h2>Now our model is gender debiased, let’s check what changed…<a class="headerlink" href="#now-our-model-is-gender-debiased-lets-check-what-changed" title="Permalink to this headline">¶</a></h2>
-<div class="section" id="evaluate-the-debaised-model">
-<h3>Evaluate the debaised model<a class="headerlink" href="#evaluate-the-debaised-model" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="evaluate-the-debiased-model">
+<h3>Evaluate the debiased model<a class="headerlink" href="#evaluate-the-debiased-model" title="Permalink to this headline">¶</a></h3>
 <p>The evaluation of the words embedding did not change so much because of
 the debiasing:</p>
 <div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">w2v_debiased_evaluation</span> <span class="o">=</span> <span class="n">w2v_gender_debias_we</span><span class="o">.</span><span class="n">evaluate_words_embedding</span><span class="p">()</span>
@@ -2257,7 +2257,7 @@ gender direction.</p>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Equalize</span><span class="o">...</span>
-<span class="n">Equalize</span> <span class="n">Words</span> <span class="n">Data</span> <span class="p">(</span><span class="nb">all</span> <span class="n">equal</span> <span class="k">for</span> <span class="mi">1</span><span class="o">-</span><span class="n">dim</span> <span class="n">bais</span> <span class="n">space</span> <span class="p">(</span><span class="n">direction</span><span class="p">):</span>
+<span class="n">Equalize</span> <span class="n">Words</span> <span class="n">Data</span> <span class="p">(</span><span class="nb">all</span> <span class="n">equal</span> <span class="k">for</span> <span class="mi">1</span><span class="o">-</span><span class="n">dim</span> <span class="n">bias</span> <span class="n">space</span> <span class="p">(</span><span class="n">direction</span><span class="p">):</span>
                     <span class="n">equalized_projected_scalar</span>    <span class="n">projected_scalar</span>    <span class="n">scaling</span>
 <span class="o">----------------</span>  <span class="o">----------------------------</span>  <span class="o">------------------</span>  <span class="o">---------</span>
 <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;she&#39;</span><span class="p">)</span>                            <span class="mf">0.327879</span>          <span class="mf">0.272553</span>     <span class="mf">0.327879</span>

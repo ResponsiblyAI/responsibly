@@ -881,7 +881,7 @@ The table shows the details of the equalize step on the equality sets.
 .. parsed-literal::
 
     Equalize...
-    Equalize Words Data (all equal for 1-dim bais space (direction):
+    Equalize Words Data (all equal for 1-dim bias space (direction):
                         equalized_projected_scalar    projected_scalar    scaling
     ----------------  ----------------------------  ------------------  ---------
     (0, 'she')                            0.443113           0.469059    0.443113
@@ -949,7 +949,7 @@ The table shows the details of the equalize step on the equality sets.
 Now our model is gender debiased, let’s check what changed…
 -----------------------------------------------------------
 
-Evaluate the debaised model
+Evaluate the debiased model
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 The evaluation of the words embedding did not change so much because of
@@ -2450,7 +2450,7 @@ And now let’s preform the same steps for FastText
 .. parsed-literal::
 
     Equalize...
-    Equalize Words Data (all equal for 1-dim bais space (direction):
+    Equalize Words Data (all equal for 1-dim bias space (direction):
                         equalized_projected_scalar    projected_scalar    scaling
     ----------------  ----------------------------  ------------------  ---------
     (0, 'she')                            0.327879          0.272553     0.327879
