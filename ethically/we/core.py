@@ -599,7 +599,7 @@ class BiasWordsEmbedding:
 
         if self._verbose:
             print('Equalize Words Data '
-                  '(all equal for 1-dim bais space (direction):')
+                  '(all equal for 1-dim bias space (direction):')
             words_data_df = (pd.DataFrame(words_data)
                              .set_index(['equality_set_index', 'word']))
             print(tabulate(words_data_df, headers='keys'))
