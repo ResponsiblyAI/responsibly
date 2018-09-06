@@ -75,16 +75,16 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Identify</span> <span class="n">direction</span> <span class="n">using</span> <span class="nb">sum</span> <span class="n">method</span><span class="o">...</span>
 </pre></div>
 </div>
-<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">profession_names</span> <span class="o">=</span> <span class="n">race_bias_we</span><span class="o">.</span><span class="n">_filter_words_by_model</span><span class="p">(</span><span class="n">BOLUKBASI_DATA</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">][</span><span class="s1">&#39;profession_names&#39;</span><span class="p">])</span>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">neutral_profession_names</span> <span class="o">=</span> <span class="n">race_bias_we</span><span class="o">.</span><span class="n">_filter_words_by_model</span><span class="p">(</span><span class="n">BOLUKBASI_DATA</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">][</span><span class="s1">&#39;neutral_profession_names&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">race_bias_we</span><span class="o">.</span><span class="n">calc_direct_bias</span><span class="p">(</span><span class="n">profession_names</span><span class="p">)</span>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">race_bias_we</span><span class="o">.</span><span class="n">calc_direct_bias</span><span class="p">(</span><span class="n">neutral_profession_names</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.057185549110977264</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mf">0.05703134608954762</span>
 </pre></div>
 </div>
-<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">race_bias_we</span><span class="o">.</span><span class="n">plot_dist_projections_on_direction</span><span class="p">({</span><span class="s1">&#39;profession_names&#39;</span><span class="p">:</span> <span class="n">profession_names</span><span class="p">,</span>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">race_bias_we</span><span class="o">.</span><span class="n">plot_dist_projections_on_direction</span><span class="p">({</span><span class="s1">&#39;neutral_profession_names&#39;</span><span class="p">:</span> <span class="n">neutral_profession_names</span><span class="p">,</span>
                                                  <span class="s1">&#39;group1&#39;</span><span class="p">:</span> <span class="n">group1</span><span class="p">,</span>
                                                  <span class="s1">&#39;group2&#39;</span><span class="p">:</span> <span class="n">group2</span><span class="p">});</span>
 </pre></div>
@@ -331,7 +331,7 @@
   </tbody>
 </table>
 </div><div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">15</span><span class="p">))</span>
-<span class="n">race_bias_we</span><span class="o">.</span><span class="n">plot_projection_scores</span><span class="p">(</span><span class="n">profession_names</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">);</span>
+<span class="n">race_bias_we</span><span class="o">.</span><span class="n">plot_projection_scores</span><span class="p">(</span><span class="n">neutral_profession_names</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">);</span>
 </pre></div>
 </div>
 <img alt="../_images/exploratory-demo-race-bias-words-embedding_10_0.png" src="../_images/exploratory-demo-race-bias-words-embedding_10_0.png" />
