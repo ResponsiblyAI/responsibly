@@ -53,24 +53,24 @@ https://github.com/tolga-b/debiaswe/blob/master/tutorial_example1.ipynb
 
 .. code:: ipython3
 
-    profession_names = race_bias_we._filter_words_by_model(BOLUKBASI_DATA['gender']['profession_names'])
+    neutral_profession_names = race_bias_we._filter_words_by_model(BOLUKBASI_DATA['gender']['neutral_profession_names'])
 
 .. code:: ipython3
 
-    race_bias_we.calc_direct_bias(profession_names)
+    race_bias_we.calc_direct_bias(neutral_profession_names)
 
 
 
 
 .. parsed-literal::
 
-    0.057185549110977264
+    0.05703134608954762
 
 
 
 .. code:: ipython3
 
-    race_bias_we.plot_dist_projections_on_direction({'profession_names': profession_names,
+    race_bias_we.plot_dist_projections_on_direction({'neutral_profession_names': neutral_profession_names,
                                                      'group1': group1,
                                                      'group2': group2});
 
@@ -332,7 +332,7 @@ https://github.com/tolga-b/debiaswe/blob/master/tutorial_example1.ipynb
 .. code:: ipython3
 
     f, ax = plt.subplots(figsize=(15, 15))
-    race_bias_we.plot_projection_scores(profession_names, 15, ax=ax);
+    race_bias_we.plot_projection_scores(neutral_profession_names, 15, ax=ax);
 
 
 

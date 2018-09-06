@@ -238,19 +238,11 @@ Plot the projection of the most extreme professions on the gender direction
 
 .. code:: ipython3
 
-    w2v_gender_bias_we.plot_projection_scores()
+    w2v_gender_bias_we.plot_projection_scores();
 
 
 
-
-.. parsed-literal::
-
-    <matplotlib.axes._subplots.AxesSubplot at 0x7f6dbd1b5550>
-
-
-
-
-.. image:: demo-gender-bias-words-embedding_files/demo-gender-bias-words-embedding_17_1.png
+.. image:: demo-gender-bias-words-embedding_files/demo-gender-bias-words-embedding_17_0.png
 
 
 Plot the distribution of projections of the word groups that are being used for the auditing and adjusting the model
@@ -269,19 +261,11 @@ Plot the distribution of projections of the word groups that are being used for 
 
 .. code:: ipython3
 
-    w2v_gender_bias_we.plot_dist_projections_on_direction()
+    w2v_gender_bias_we.plot_dist_projections_on_direction();
 
 
 
-
-.. parsed-literal::
-
-    <matplotlib.axes._subplots.AxesSubplot at 0x7f6de1949438>
-
-
-
-
-.. image:: demo-gender-bias-words-embedding_files/demo-gender-bias-words-embedding_19_1.png
+.. image:: demo-gender-bias-words-embedding_files/demo-gender-bias-words-embedding_19_0.png
 
 
 Generate analogies along the gender direction
@@ -1134,19 +1118,11 @@ gender direction.
 
 .. code:: ipython3
 
-    w2v_gender_debias_we.plot_projection_scores()
+    w2v_gender_debias_we.plot_projection_scores();
 
 
 
-
-.. parsed-literal::
-
-    <matplotlib.axes._subplots.AxesSubplot at 0x7f6da51c6860>
-
-
-
-
-.. image:: demo-gender-bias-words-embedding_files/demo-gender-bias-words-embedding_36_1.png
+.. image:: demo-gender-bias-words-embedding_files/demo-gender-bias-words-embedding_36_0.png
 
 
 Generate analogies along the gender direction
