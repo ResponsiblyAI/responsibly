@@ -2,6 +2,7 @@ import math
 
 import numpy as np
 import pandas as pd
+from gensim.models.keyedvectors import KeyedVectors
 
 
 def round_to_extreme(value, digits=2):
@@ -77,3 +78,9 @@ def take_two_sides_extreme_sorted(df, n_extreme,
     return (pd.concat([head_df, tail_df])
             .drop_duplicates()
             .reset_index(drop=True))
+
+
+def assert_gensim_keyed_vectors(model):
+    if not isinstance(model, KeyedVectors):
+        raise TypeError('model should be of type KeyedVectors, not {}'
+                        .format(type(model)))

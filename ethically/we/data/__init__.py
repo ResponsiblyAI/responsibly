@@ -47,3 +47,6 @@ BOLUKBASI_DATA['gender']['word_group_keys'] = ['profession_names',
                                                'specific_seed',
                                                'specific_full',
                                                'specific_full_with_definitional']  # pylint: disable=C0301
+
+
+WEAT_DATA = load_json_resource('weat')
