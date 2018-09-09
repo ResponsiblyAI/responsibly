@@ -1,6 +1,6 @@
 
-Demo - Word Embedding Association Test, (WEAT) [Alpha Version]
-==============================================================
+Demo - Word Embedding Association Test (WEAT) [Alpha Version]
+=============================================================
 
 Based on: Caliskan, A., Bryson, J. J., & Narayanan, A. (2017).
 `Semantics derived automatically from language corpora contain
