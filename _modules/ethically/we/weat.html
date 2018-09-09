@@ -1,0 +1,421 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>ethically.we.weat &#8212; Ethically 0.0.2 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ethically.we.weat</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Calculate WEAT score of a Words Embedding.</span>
+
+<span class="sd">WEAT = Word Embedding Association Test</span>
+
+<span class="sd">Based on:</span>
+<span class="sd">Caliskan, A., Bryson, J. J., &amp; Narayanan, A. (2017).</span>
+<span class="sd">Semantics derived automatically</span>
+<span class="sd">from language corpora contain human-like biases.</span>
+<span class="sd">Science, 356(6334), 183-186.</span>
+
+
+<span class="sd">Stimulus and original finding from:</span>
+
+<span class="sd">* [0, 1, 2]</span>
+<span class="sd">  A. G. Greenwald, D. E. McGhee, J. L. Schwartz,</span>
+<span class="sd">  Measuring individual differences in implicit cognition:</span>
+<span class="sd">  the implicit association test.,</span>
+<span class="sd">  Journal of personality and social psychology 74, 1464 (1998).</span>
+
+<span class="sd">* [3, 4]:</span>
+<span class="sd">  M. Bertrand, S. Mullainathan, Are Emily and Greg more employable</span>
+<span class="sd">  than Lakisha and Jamal? a field experiment on labor market discrimination,</span>
+<span class="sd">  The American Economic Review 94, 991 (2004).</span>
+
+<span class="sd">* [5, 6, 9]:</span>
+<span class="sd">  B. A. Nosek, M. Banaji, A. G. Greenwald, Harvesting implicit group attitudes</span>
+<span class="sd">  and beliefs from a demonstration web site.,</span>
+<span class="sd">  Group Dynamics: Theory, Research, and Practice 6, 101 (2002).</span>
+
+<span class="sd">* [7]:</span>
+<span class="sd">  B. A. Nosek, M. R. Banaji, A. G. Greenwald, Math=male, me=female,</span>
+<span class="sd">  therefore math̸=me.,</span>
+<span class="sd">  Journal of Personality and Social Psychology 83, 44 (2002).</span>
+
+<span class="sd">* [8]</span>
+<span class="sd">  P. D. Turney, P. Pantel, From frequency to meaning:</span>
+<span class="sd">  Vector space models of semantics,</span>
+<span class="sd">  Journal of Artificial Intelligence Research 37, 141 (2010).</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="c1"># pylint: disable=C0301</span>
+
+<span class="kn">import</span> <span class="nn">copy</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">mlxtend.evaluate</span> <span class="k">import</span> <span class="n">permutation_test</span>
+
+<span class="kn">from</span> <span class="nn">..consts</span> <span class="k">import</span> <span class="n">RANDOM_STATE</span>
+<span class="kn">from</span> <span class="nn">.data</span> <span class="k">import</span> <span class="n">WEAT_DATA</span>
+<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">assert_gensim_keyed_vectors</span>
+
+
+<span class="n">FILTER_BY_OPTIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">]</span>
+<span class="n">RESULTS_DF_COLUMNS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Target words&#39;</span><span class="p">,</span> <span class="s1">&#39;Attrib. words&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;Nt&#39;</span><span class="p">,</span> <span class="s1">&#39;Na&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">]</span>
+
+<span class="n">ORIGINAL_DF_COLUMNS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;original_&#39;</span> <span class="o">+</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">]]</span>
+
+
+<span class="k">def</span> <span class="nf">_calc_association_target_attributes</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">target_word</span><span class="p">,</span>
+                                        <span class="n">first_attribute_words</span><span class="p">,</span>
+                                        <span class="n">second_attribute_words</span><span class="p">):</span>
+    <span class="n">assert_gensim_keyed_vectors</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+
+    <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="ne">FutureWarning</span><span class="p">)</span>
+        <span class="n">first_mean</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">n_similarity</span><span class="p">([</span><span class="n">target_word</span><span class="p">],</span>
+                                        <span class="n">first_attribute_words</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="n">second_mean</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">n_similarity</span><span class="p">([</span><span class="n">target_word</span><span class="p">],</span>
+                                         <span class="n">second_attribute_words</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">first_mean</span> <span class="o">-</span> <span class="n">second_mean</span>
+
+
+<span class="k">def</span> <span class="nf">_calc_association_all_targets_attributes</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">target_words</span><span class="p">,</span>
+                                             <span class="n">first_attribute_words</span><span class="p">,</span>
+                                             <span class="n">second_attribute_words</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">_calc_association_target_attributes</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">target_word</span><span class="p">,</span>
+                                                <span class="n">first_attribute_words</span><span class="p">,</span>
+                                                <span class="n">second_attribute_words</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">target_word</span> <span class="ow">in</span> <span class="n">target_words</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_calc_weat_score</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
+                     <span class="n">first_target_words</span><span class="p">,</span> <span class="n">second_target_words</span><span class="p">,</span>
+                     <span class="n">first_attribute_words</span><span class="p">,</span> <span class="n">second_attribute_words</span><span class="p">):</span>
+
+    <span class="p">(</span><span class="n">first_associations</span><span class="p">,</span>
+     <span class="n">second_associations</span><span class="p">)</span> <span class="o">=</span> <span class="n">_calc_weat_associations</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
+                                                    <span class="n">first_target_words</span><span class="p">,</span>
+                                                    <span class="n">second_target_words</span><span class="p">,</span>
+                                                    <span class="n">first_attribute_words</span><span class="p">,</span>
+                                                    <span class="n">second_attribute_words</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">first_associations</span><span class="p">)</span> <span class="o">-</span> <span class="nb">sum</span><span class="p">(</span><span class="n">second_associations</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_calc_weat_pvalue</span><span class="p">(</span><span class="n">first_associations</span><span class="p">,</span> <span class="n">second_associations</span><span class="p">,</span>
+                      <span class="n">method</span><span class="o">=</span><span class="s1">&#39;exact&#39;</span><span class="p">):</span>
+    <span class="n">pvalue</span> <span class="o">=</span> <span class="n">permutation_test</span><span class="p">(</span><span class="n">first_associations</span><span class="p">,</span> <span class="n">second_associations</span><span class="p">,</span>
+                              <span class="n">func</span><span class="o">=</span><span class="s1">&#39;x_mean &gt; y_mean&#39;</span><span class="p">,</span>
+                              <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span>
+                              <span class="n">seed</span><span class="o">=</span><span class="n">RANDOM_STATE</span><span class="p">)</span>  <span class="c1"># if exact - no meaning</span>
+    <span class="k">return</span> <span class="n">pvalue</span>
+
+
+<span class="k">def</span> <span class="nf">_calc_weat_associations</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
+                            <span class="n">first_target_words</span><span class="p">,</span> <span class="n">second_target_words</span><span class="p">,</span>
+                            <span class="n">first_attribute_words</span><span class="p">,</span> <span class="n">second_attribute_words</span><span class="p">):</span>
+
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">first_target_words</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">second_target_words</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">first_attribute_words</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">second_attribute_words</span><span class="p">)</span>
+
+    <span class="n">first_associations</span> <span class="o">=</span> <span class="n">_calc_association_all_targets_attributes</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
+                                                                  <span class="n">first_target_words</span><span class="p">,</span>
+                                                                  <span class="n">first_attribute_words</span><span class="p">,</span>
+                                                                  <span class="n">second_attribute_words</span><span class="p">)</span>
+
+    <span class="n">second_associations</span> <span class="o">=</span> <span class="n">_calc_association_all_targets_attributes</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
+                                                                   <span class="n">second_target_words</span><span class="p">,</span>
+                                                                   <span class="n">first_attribute_words</span><span class="p">,</span>
+                                                                   <span class="n">second_attribute_words</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">first_associations</span><span class="p">,</span> <span class="n">second_associations</span>
+
+
+<span class="k">def</span> <span class="nf">_filter_by_data_weat_stimuli</span><span class="p">(</span><span class="n">stimuli</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Inplace.&quot;&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">stimuli</span><span class="p">:</span>
+        <span class="k">if</span> <span class="s1">&#39;remove&#39;</span> <span class="ow">in</span> <span class="n">stimuli</span><span class="p">[</span><span class="n">group</span><span class="p">]:</span>
+            <span class="n">words_to_remove</span> <span class="o">=</span> <span class="n">stimuli</span><span class="p">[</span><span class="n">group</span><span class="p">][</span><span class="s1">&#39;remove&#39;</span><span class="p">]</span>
+            <span class="n">stimuli</span><span class="p">[</span><span class="n">group</span><span class="p">][</span><span class="s1">&#39;words&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">stimuli</span><span class="p">[</span><span class="n">group</span><span class="p">][</span><span class="s1">&#39;words&#39;</span><span class="p">]</span>
+                                       <span class="k">if</span> <span class="n">word</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">words_to_remove</span><span class="p">]</span>
+
+
+<span class="k">def</span> <span class="nf">_sample_if_bigger</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">length</span><span class="p">:</span>
+        <span class="n">seq</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">seq</span>
+
+
+<span class="k">def</span> <span class="nf">_filter_by_model_weat_stimuli</span><span class="p">(</span><span class="n">stimuli</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Inplace.&quot;&quot;&quot;</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">RANDOM_STATE</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">group_category</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">,</span> <span class="s1">&#39;attribute&#39;</span><span class="p">]:</span>
+        <span class="n">first_group</span> <span class="o">=</span> <span class="s1">&#39;first_&#39;</span> <span class="o">+</span> <span class="n">group_category</span>
+        <span class="n">second_group</span> <span class="o">=</span> <span class="s1">&#39;second_&#39;</span> <span class="o">+</span> <span class="n">group_category</span>
+
+        <span class="n">first_words</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">stimuli</span><span class="p">[</span><span class="n">first_group</span><span class="p">][</span><span class="s1">&#39;words&#39;</span><span class="p">]</span>
+                       <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">model</span><span class="p">]</span>
+        <span class="n">second_words</span> <span class="o">=</span> <span class="p">[</span><span class="n">word</span> <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">stimuli</span><span class="p">[</span><span class="n">second_group</span><span class="p">][</span><span class="s1">&#39;words&#39;</span><span class="p">]</span>
+                        <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">model</span><span class="p">]</span>
+
+        <span class="n">min_len</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">first_words</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">second_words</span><span class="p">))</span>
+
+        <span class="n">first_words</span> <span class="o">=</span> <span class="n">_sample_if_bigger</span><span class="p">(</span><span class="n">first_words</span><span class="p">,</span> <span class="n">min_len</span><span class="p">)</span>
+        <span class="n">second_words</span> <span class="o">=</span> <span class="n">_sample_if_bigger</span><span class="p">(</span><span class="n">second_words</span><span class="p">,</span> <span class="n">min_len</span><span class="p">)</span>
+
+        <span class="n">first_words</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+        <span class="n">second_words</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
+
+        <span class="n">stimuli</span><span class="p">[</span><span class="n">first_group</span><span class="p">][</span><span class="s1">&#39;words&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">first_words</span>
+        <span class="n">stimuli</span><span class="p">[</span><span class="n">second_group</span><span class="p">][</span><span class="s1">&#39;words&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">second_words</span>
+
+
+<span class="k">def</span> <span class="nf">_filter_weat_data</span><span class="p">(</span><span class="n">weat_data</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">filter_by</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;inplace.&quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">filter_by</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">FILTER_BY_OPTIONS</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;filter_by should be one of </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1"> was given&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">FILTER_BY_OPTIONS</span><span class="p">,</span> <span class="n">filter_by</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">filter_by</span> <span class="o">==</span> <span class="s1">&#39;data&#39;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">stimuli</span> <span class="ow">in</span> <span class="n">weat_data</span><span class="p">:</span>
+            <span class="n">_filter_by_data_weat_stimuli</span><span class="p">(</span><span class="n">stimuli</span><span class="p">)</span>
+
+    <span class="k">elif</span> <span class="n">filter_by</span> <span class="o">==</span> <span class="s1">&#39;model&#39;</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">stimuli</span> <span class="ow">in</span> <span class="n">weat_data</span><span class="p">:</span>
+            <span class="n">_filter_by_model_weat_stimuli</span><span class="p">(</span><span class="n">stimuli</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+
+
+<div class="viewcode-block" id="calc_single_weat"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.calc_single_weat">[docs]</a><span class="k">def</span> <span class="nf">calc_single_weat</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
+                     <span class="n">first_target</span><span class="p">,</span> <span class="n">second_target</span><span class="p">,</span>
+                     <span class="n">first_attribute</span><span class="p">,</span> <span class="n">second_attribute</span><span class="p">,</span>
+                     <span class="n">with_pvalue</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pvalue_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calc the WEAT result of a words embedding.</span>
+
+<span class="sd">    :param model: Words embedding model of ``gensim.model.KeyedVectors``</span>
+<span class="sd">    :param dict first_target: First target words list and its name</span>
+<span class="sd">    :param dict second_target: Second target words list and its name</span>
+<span class="sd">    :param dict first_attribute: First attribute words list and its name</span>
+<span class="sd">    :param dict second_attribute: Second attribute words list and its name</span>
+<span class="sd">    :param bool with_pvalue: Whether to calculate the p-value of the</span>
+<span class="sd">                             WEAT score (might be computationally expensive)</span>
+<span class="sd">    :return: WEAT result (score, size effect, Nt, Na and p-value)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">pvalue_kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">pvalue_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="p">(</span><span class="n">first_associations</span><span class="p">,</span>
+     <span class="n">second_associations</span><span class="p">)</span> <span class="o">=</span> <span class="n">_calc_weat_associations</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
+                                                    <span class="n">first_target</span><span class="p">[</span><span class="s1">&#39;words&#39;</span><span class="p">],</span>
+                                                    <span class="n">second_target</span><span class="p">[</span><span class="s1">&#39;words&#39;</span><span class="p">],</span>
+                                                    <span class="n">first_attribute</span><span class="p">[</span><span class="s1">&#39;words&#39;</span><span class="p">],</span>
+                                                    <span class="n">second_attribute</span><span class="p">[</span><span class="s1">&#39;words&#39;</span><span class="p">])</span>
+
+    <span class="k">if</span> <span class="n">first_associations</span> <span class="ow">and</span> <span class="n">second_associations</span><span class="p">:</span>
+        <span class="n">score</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">first_associations</span><span class="p">)</span> <span class="o">-</span> <span class="nb">sum</span><span class="p">(</span><span class="n">second_associations</span><span class="p">)</span>
+        <span class="n">std_dev</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">first_associations</span> <span class="o">+</span> <span class="n">second_associations</span><span class="p">,</span> <span class="n">ddof</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">effect_size</span> <span class="o">=</span> <span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">first_associations</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">second_associations</span><span class="p">))</span>
+                       <span class="o">/</span> <span class="n">std_dev</span><span class="p">)</span>
+
+        <span class="n">pvalue</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">with_pvalue</span><span class="p">:</span>
+            <span class="n">pvalue</span> <span class="o">=</span> <span class="n">_calc_weat_pvalue</span><span class="p">(</span><span class="n">first_associations</span><span class="p">,</span>
+                                       <span class="n">second_associations</span><span class="p">,</span>
+                                       <span class="o">**</span><span class="n">pvalue_kwargs</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">score</span><span class="p">,</span> <span class="n">std_dev</span><span class="p">,</span> <span class="n">effect_size</span><span class="p">,</span> <span class="n">pvalue</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;Target words&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> vs. </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">first_target</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
+                                               <span class="n">second_target</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]),</span>
+            <span class="s1">&#39;Attrib. words&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1"> vs. </span><span class="si">{}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">first_attribute</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
+                                                <span class="n">second_attribute</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">]),</span>
+            <span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="n">score</span><span class="p">,</span>
+            <span class="s1">&#39;d&#39;</span><span class="p">:</span> <span class="n">effect_size</span><span class="p">,</span>
+            <span class="s1">&#39;p&#39;</span><span class="p">:</span> <span class="n">pvalue</span><span class="p">,</span>
+            <span class="s1">&#39;Nt&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">x2&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">first_target</span><span class="p">[</span><span class="s1">&#39;words&#39;</span><span class="p">])),</span>
+            <span class="s1">&#39;Na&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">x2&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">first_attribute</span><span class="p">[</span><span class="s1">&#39;words&#39;</span><span class="p">]))}</span></div>
+
+
+<div class="viewcode-block" id="calc_all_weat"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.calc_all_weat">[docs]</a><span class="k">def</span> <span class="nf">calc_all_weat</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">weat_data</span><span class="o">=</span><span class="s1">&#39;caliskan&#39;</span><span class="p">,</span> <span class="n">filter_by</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+                  <span class="n">with_original_finding</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                  <span class="n">with_pvalue</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pvalue_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calc the WEAT results of a words embedding on multiple cases.</span>
+
+<span class="sd">    :param model: Words embedding model of ``gensim.model.KeyedVectors``</span>
+<span class="sd">    :param dict weat_data: WEAT cases data</span>
+<span class="sd">    :param bool filter_by: Whether to filter the word lists</span>
+<span class="sd">                           by the `model` (`&#39;model&#39;`)</span>
+<span class="sd">                           or by the `remove` key in `weat_data` (`&#39;data&#39;`).</span>
+<span class="sd">    :param bool with_original_finding: Show the origina</span>
+<span class="sd">    :param bool with_pvalue: Whether to calculate the p-value of the</span>
+<span class="sd">                             WEAT results (might be computationally expensive)</span>
+<span class="sd">    :return: DataFrame of WEAT results</span>
+<span class="sd">             (score, size effect, Nt, Na and p-value)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">weat_data</span> <span class="o">==</span> <span class="s1">&#39;caliskan&#39;</span><span class="p">:</span>
+        <span class="n">weat_data</span> <span class="o">=</span> <span class="n">WEAT_DATA</span>
+
+    <span class="k">if</span> <span class="n">pvalue_kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">pvalue_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">weat_data</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">weat_data</span><span class="p">)</span>
+
+    <span class="n">_filter_weat_data</span><span class="p">(</span><span class="n">weat_data</span><span class="p">,</span>
+                      <span class="n">model</span><span class="p">,</span>
+                      <span class="n">filter_by</span><span class="p">)</span>
+
+    <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">stimuli</span> <span class="ow">in</span> <span class="n">weat_data</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">calc_single_weat</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
+                                  <span class="n">stimuli</span><span class="p">[</span><span class="s1">&#39;first_target&#39;</span><span class="p">],</span>
+                                  <span class="n">stimuli</span><span class="p">[</span><span class="s1">&#39;second_target&#39;</span><span class="p">],</span>
+                                  <span class="n">stimuli</span><span class="p">[</span><span class="s1">&#39;first_attribute&#39;</span><span class="p">],</span>
+                                  <span class="n">stimuli</span><span class="p">[</span><span class="s1">&#39;second_attribute&#39;</span><span class="p">],</span>
+                                  <span class="n">with_pvalue</span><span class="p">,</span> <span class="n">pvalue_kwargs</span><span class="p">)</span>
+
+        <span class="c1"># TODO: refactor - check before if one group is without words</span>
+        <span class="c1"># because of the filtering</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">all</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="s1">&#39;words&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">stimuli</span><span class="o">.</span><span class="n">values</span><span class="p">()</span>
+                   <span class="k">if</span> <span class="s1">&#39;words&#39;</span> <span class="ow">in</span> <span class="n">group</span><span class="p">):</span>
+            <span class="n">result</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">result</span><span class="p">[</span><span class="s1">&#39;effect_size&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+            <span class="n">result</span><span class="p">[</span><span class="s1">&#39;pvalue&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="n">result</span><span class="p">[</span><span class="s1">&#39;stimuli&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">stimuli</span>
+
+        <span class="k">if</span> <span class="n">with_original_finding</span><span class="p">:</span>
+            <span class="n">result</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="s1">&#39;original_&#39;</span> <span class="o">+</span> <span class="n">k</span><span class="p">:</span> <span class="n">v</span>
+                           <span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="ow">in</span> <span class="n">stimuli</span><span class="p">[</span><span class="s1">&#39;original_finding&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">items</span><span class="p">()})</span>
+        <span class="n">results</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+
+    <span class="n">results_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
+    <span class="n">results_df</span> <span class="o">=</span> <span class="n">results_df</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;nan&#39;</span><span class="p">,</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="n">results_df</span> <span class="o">=</span> <span class="n">results_df</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+
+    <span class="c1"># if not results_df.empty:</span>
+    <span class="n">cols</span> <span class="o">=</span> <span class="n">RESULTS_DF_COLUMNS</span><span class="p">[:]</span>
+    <span class="k">if</span> <span class="n">with_original_finding</span><span class="p">:</span>
+        <span class="n">cols</span> <span class="o">+=</span> <span class="n">ORIGINAL_DF_COLUMNS</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">with_pvalue</span><span class="p">:</span>
+        <span class="n">cols</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;p&#39;</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">results_df</span><span class="p">[</span><span class="s1">&#39;p&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">results_df</span><span class="p">[</span><span class="s1">&#39;p&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">pvalue</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{:0.1e}</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">pvalue</span><span class="p">)</span>  <span class="c1"># pylint: disable=W0108</span>
+                                                <span class="k">if</span> <span class="n">pvalue</span> <span class="k">else</span> <span class="n">pvalue</span><span class="p">)</span>
+
+    <span class="n">results_df</span> <span class="o">=</span> <span class="n">results_df</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
+    <span class="n">results_df</span> <span class="o">=</span> <span class="n">results_df</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">results_df</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Ethically</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=EthicallyAI&repo=ethically&type=star&v=2&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../demos.html">Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../words-embedding-bias.html">Words Embedding Bias</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/contributing.html">For Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/changelog.html">Revision History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/license.html">License</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Shlomi Hod.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/EthicallyAI/ethically" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

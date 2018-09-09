@@ -677,6 +677,11 @@ to sample for training</li>
 <code class="descclassname">ethically.we.utils.</code><code class="descname">take_two_sides_extreme_sorted</code><span class="sig-paren">(</span><em>df</em>, <em>n_extreme</em>, <em>part_column=None</em>, <em>head_value=''</em>, <em>tail_value=''</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/utils.html#take_two_sides_extreme_sorted"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.utils.take_two_sides_extreme_sorted" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="function">
+<dt id="ethically.we.utils.assert_gensim_keyed_vectors">
+<code class="descclassname">ethically.we.utils.</code><code class="descname">assert_gensim_keyed_vectors</code><span class="sig-paren">(</span><em>model</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/utils.html#assert_gensim_keyed_vectors"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.utils.assert_gensim_keyed_vectors" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 </div>
 <div class="section" id="module-ethically.we">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-ethically.we" title="Permalink to this headline">¶</a></h2>
@@ -1130,6 +1135,60 @@ to sample for training</li>
 </table>
 </dd></dl>
 
+</dd></dl>
+
+<dl class="function">
+<dt id="ethically.we.calc_single_weat">
+<code class="descclassname">ethically.we.</code><code class="descname">calc_single_weat</code><span class="sig-paren">(</span><em>model</em>, <em>first_target</em>, <em>second_target</em>, <em>first_attribute</em>, <em>second_attribute</em>, <em>with_pvalue=True</em>, <em>pvalue_kwargs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/weat.html#calc_single_weat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.calc_single_weat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calc the WEAT result of a words embedding.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>model</strong> – Words embedding model of <code class="docutils literal notranslate"><span class="pre">gensim.model.KeyedVectors</span></code></li>
+<li><strong>first_target</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – First target words list and its name</li>
+<li><strong>second_target</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Second target words list and its name</li>
+<li><strong>first_attribute</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – First attribute words list and its name</li>
+<li><strong>second_attribute</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Second attribute words list and its name</li>
+<li><strong>with_pvalue</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to calculate the p-value of the
+WEAT score (might be computationally expensive)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">WEAT result (score, size effect, Nt, Na and p-value)</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="ethically.we.calc_all_weat">
+<code class="descclassname">ethically.we.</code><code class="descname">calc_all_weat</code><span class="sig-paren">(</span><em>model</em>, <em>weat_data='caliskan'</em>, <em>filter_by='model'</em>, <em>with_original_finding=False</em>, <em>with_pvalue=True</em>, <em>pvalue_kwargs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/weat.html#calc_all_weat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.calc_all_weat" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calc the WEAT results of a words embedding on multiple cases.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>model</strong> – Words embedding model of <code class="docutils literal notranslate"><span class="pre">gensim.model.KeyedVectors</span></code></li>
+<li><strong>weat_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – WEAT cases data</li>
+<li><strong>filter_by</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to filter the word lists
+by the <cite>model</cite> (<cite>‘model’</cite>)
+or by the <cite>remove</cite> key in <cite>weat_data</cite> (<cite>‘data’</cite>).</li>
+<li><strong>with_original_finding</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Show the origina</li>
+<li><strong>with_pvalue</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to calculate the p-value of the
+WEAT results (might be computationally expensive)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">DataFrame of WEAT results
+(score, size effect, Nt, Na and p-value)</p>
+</td>
+</tr>
+</tbody>
+</table>
 </dd></dl>
 
 </div>

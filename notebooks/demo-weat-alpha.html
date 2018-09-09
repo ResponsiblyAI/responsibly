@@ -1,0 +1,694 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Demo - Word Embedding Association Test, (WEAT) [Alpha Version] &#8212; Ethically 0.0.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Words Embedding Bias" href="../words-embedding-bias.html" />
+    <link rel="prev" title="Demo - Race Bias in Words Embedding" href="exploratory-demo-race-bias-words-embedding.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="demo-word-embedding-association-test-weat-alpha-version">
+<h1>Demo - Word Embedding Association Test, (WEAT) [Alpha Version]<a class="headerlink" href="#demo-word-embedding-association-test-weat-alpha-version" title="Permalink to this headline">¶</a></h1>
+<p>Based on: Caliskan, A., Bryson, J. J., &amp; Narayanan, A. (2017).
+<a class="reference external" href="http://www.cs.bath.ac.uk/~jjb/ftp/CaliskanEtAl-authors-full.pdf">Semantics derived automatically from language corpora contain
+human-like
+biases</a>.
+Science, 356(6334), 183-186.</p>
+<p>WEAT in <code class="docutils literal notranslate"><span class="pre">ethically</span></code> is in a alpha version, and therefore it is not yet
+in the PyPI release. In order to use this coude, you should install
+<code class="docutils literal notranslate"><span class="pre">ethically</span></code> from the <code class="docutils literal notranslate"><span class="pre">feature_weat</span></code> branch by:</p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--upgrade</span> <span class="pre">git+https://github.com/EthicallyAI/ethically.git&#64;feature_weat</span></code></p>
+<div class="section" id="imports">
+<h2>Imports<a class="headerlink" href="#imports" title="Permalink to this headline">¶</a></h2>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ethically.we</span> <span class="k">import</span> <span class="n">calc_all_weat</span>
+<span class="kn">from</span> <span class="nn">ethically.we.data</span> <span class="k">import</span> <span class="n">load_w2v_small</span>
+</pre></div>
+</div>
+<p>For unzipping, converting and loading Glove and Word2Vec full models:</p>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">gzip</span>
+<span class="kn">import</span> <span class="nn">shutil</span>
+<span class="kn">from</span> <span class="nn">urllib.request</span> <span class="k">import</span> <span class="n">urlretrieve</span>
+<span class="kn">from</span> <span class="nn">zipfile</span> <span class="k">import</span> <span class="n">ZipFile</span>
+
+<span class="kn">from</span> <span class="nn">gensim.models</span> <span class="k">import</span> <span class="n">KeyedVectors</span>
+<span class="kn">from</span> <span class="nn">gensim.scripts.glove2word2vec</span> <span class="k">import</span> <span class="n">glove2word2vec</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="word2vec-only-lowercase-and-most-frequent-words">
+<h2>Word2Vec - Only Lowercase and Most Frequent Words<a class="headerlink" href="#word2vec-only-lowercase-and-most-frequent-words" title="Permalink to this headline">¶</a></h2>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">model_w2v_small</span> <span class="o">=</span> <span class="n">load_w2v_small</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">calc_all_weat</span><span class="p">(</span><span class="n">model_w2v_small</span><span class="p">,</span> <span class="n">filter_by</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="n">with_original_finding</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+              <span class="n">with_pvalue</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pvalue_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;approximate&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Target words</th>
+      <th>Attrib. words</th>
+      <th>Nt</th>
+      <th>Na</th>
+      <th>s</th>
+      <th>d</th>
+      <th>p</th>
+      <th>original_N</th>
+      <th>original_d</th>
+      <th>original_p</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Flowers vs. Insects</td>
+      <td>Pleasant vs. Unpleasant</td>
+      <td>2x2</td>
+      <td>24x2</td>
+      <td>0.079599</td>
+      <td>1.0885</td>
+      <td>1.6e-01</td>
+      <td>32</td>
+      <td>1.35</td>
+      <td>1e-8</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Instruments vs. Weapons</td>
+      <td>Pleasant vs. Unpleasant</td>
+      <td>16x2</td>
+      <td>24x2</td>
+      <td>2.24091</td>
+      <td>1.59012</td>
+      <td>0</td>
+      <td>32</td>
+      <td>1.66</td>
+      <td>1e-10</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>European American names vs. African American n...</td>
+      <td>Pleasant vs. Unpleasant</td>
+      <td>6x2</td>
+      <td>24x2</td>
+      <td>0.256634</td>
+      <td>1.03854</td>
+      <td>4.0e-02</td>
+      <td>26</td>
+      <td>1.17</td>
+      <td>1e-5</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>European American names vs. African American n...</td>
+      <td>Pleasant vs. Unpleasant</td>
+      <td>18x2</td>
+      <td>24x2</td>
+      <td>0.952434</td>
+      <td>1.31962</td>
+      <td>0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>European American names vs. African American n...</td>
+      <td>Pleasant vs. Unpleasant</td>
+      <td>18x2</td>
+      <td>8x2</td>
+      <td>0.538377</td>
+      <td>0.732444</td>
+      <td>1.8e-02</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Male names vs. Female names</td>
+      <td>Career vs. Family</td>
+      <td>1x2</td>
+      <td>8x2</td>
+      <td>0.247673</td>
+      <td>2</td>
+      <td>0</td>
+      <td>39k</td>
+      <td>0.72</td>
+      <td>&lt; 1e-2</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Math vs. Arts</td>
+      <td>Male terms vs. Female terms</td>
+      <td>7x2</td>
+      <td>8x2</td>
+      <td>0.184416</td>
+      <td>0.718851</td>
+      <td>1.0e-01</td>
+      <td>28k</td>
+      <td>0.82</td>
+      <td>&lt; 1e-2</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Science vs. Arts</td>
+      <td>Male terms vs. Female terms</td>
+      <td>6x2</td>
+      <td>8x2</td>
+      <td>0.370207</td>
+      <td>1.35016</td>
+      <td>7.0e-03</td>
+      <td>91</td>
+      <td>1.47</td>
+      <td>1e-24</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Mental disease vs. Physical disease</td>
+      <td>Temporary vs. Permanent</td>
+      <td>6x2</td>
+      <td>5x2</td>
+      <td>0.590304</td>
+      <td>1.22442</td>
+      <td>2.0e-02</td>
+      <td>135</td>
+      <td>1.01</td>
+      <td>1e-3</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Young people’s names vs. Old people’s names</td>
+      <td>Pleasant vs. Unpleasant</td>
+      <td>0x2</td>
+      <td>7x2</td>
+      <td></td>
+      <td></td>
+      <td></td>
+      <td>43k</td>
+      <td>1.42</td>
+      <td>&lt; 1e-2</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+<div class="section" id="for-the-two-next-sections-we-need-the-full-glove-and-word2vec-words-embedding-as-used-in-the-original-paper-note-that-it-might-take-a-while-to-download-extract-and-load-these-models">
+<h2>For the two next sections, we need the full Glove and Word2Vec words embedding, as used in the original paper. Note that it might take a while to download, extract and load these models.<a class="headerlink" href="#for-the-two-next-sections-we-need-the-full-glove-and-word2vec-words-embedding-as-used-in-the-original-paper-note-that-it-might-take-a-while-to-download-extract-and-load-these-models" title="Permalink to this headline">¶</a></h2>
+</div>
+<div class="section" id="glove-common-crawl-840b-tokens-2-2m-vocab-cased-300d-vectors-2-03-gb-download">
+<h2>Glove - Common Crawl (840B tokens, 2.2M vocab, cased, 300d vectors, 2.03 GB download)<a class="headerlink" href="#glove-common-crawl-840b-tokens-2-2m-vocab-cased-300d-vectors-2-03-gb-download" title="Permalink to this headline">¶</a></h2>
+<p>Download the Glove model:
+<a class="reference external" href="http://nlp.stanford.edu/data/glove.840B.300d.zip">http://nlp.stanford.edu/data/glove.840B.300d.zip</a></p>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;glove.840B.300d.w2v.txt&#39;</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;glove.840B.300d.txt&#39;</span><span class="p">):</span>
+        <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;glove.840B.300d.zip&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Unzipping...&#39;</span><span class="p">)</span>
+        <span class="k">with</span> <span class="n">ZipFile</span><span class="p">(</span><span class="s1">&#39;glove.840B.300d.zip&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">zip_ref</span><span class="p">:</span>
+            <span class="n">zip_ref</span><span class="o">.</span><span class="n">extractall</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Converting to Word2Vec format...&#39;</span><span class="p">)</span>
+    <span class="n">glove2word2vec</span><span class="p">(</span><span class="s1">&#39;glove.840B.300d.txt&#39;</span><span class="p">,</span> <span class="s1">&#39;glove.840B.300d.w2v.txt&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">glove_model</span> <span class="o">=</span> <span class="n">KeyedVectors</span><span class="o">.</span><span class="n">load_word2vec_format</span><span class="p">(</span><span class="s1">&#39;glove.840B.300d.w2v.txt&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">calc_all_weat</span><span class="p">(</span><span class="n">glove_model</span><span class="p">,</span> <span class="n">filter_by</span><span class="o">=</span><span class="s1">&#39;data&#39;</span><span class="p">,</span> <span class="n">with_original_finding</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+              <span class="n">with_pvalue</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pvalue_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;approximate&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Target words</th>
+      <th>Attrib. words</th>
+      <th>Nt</th>
+      <th>Na</th>
+      <th>s</th>
+      <th>d</th>
+      <th>p</th>
+      <th>original_N</th>
+      <th>original_d</th>
+      <th>original_p</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Flowers vs. Insects</td>
+      <td>Pleasant vs. Unpleasant</td>
+      <td>25x2</td>
+      <td>25x2</td>
+      <td>3.87</td>
+      <td>1.50</td>
+      <td>0</td>
+      <td>32</td>
+      <td>1.35</td>
+      <td>1e-8</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Instruments vs. Weapons</td>
+      <td>Pleasant vs. Unpleasant</td>
+      <td>25x2</td>
+      <td>25x2</td>
+      <td>3.85</td>
+      <td>1.52</td>
+      <td>0</td>
+      <td>32</td>
+      <td>1.66</td>
+      <td>1e-10</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>European American names vs. African American n...</td>
+      <td>Pleasant vs. Unpleasant</td>
+      <td>32x2</td>
+      <td>25x2</td>
+      <td>2.92</td>
+      <td>1.43</td>
+      <td>0</td>
+      <td>26</td>
+      <td>1.17</td>
+      <td>1e-5</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>European American names vs. African American n...</td>
+      <td>Pleasant vs. Unpleasant</td>
+      <td>16x2</td>
+      <td>25x2</td>
+      <td>1.30</td>
+      <td>1.53</td>
+      <td>0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>European American names vs. African American n...</td>
+      <td>Pleasant vs. Unpleasant</td>
+      <td>16x2</td>
+      <td>8x2</td>
+      <td>1.11</td>
+      <td>1.25</td>
+      <td>0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Male names vs. Female names</td>
+      <td>Career vs. Family</td>
+      <td>8x2</td>
+      <td>8x2</td>
+      <td>1.80</td>
+      <td>1.87</td>
+      <td>0</td>
+      <td>39k</td>
+      <td>0.72</td>
+      <td>&lt; 1e-2</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Math vs. Arts</td>
+      <td>Male terms vs. Female terms</td>
+      <td>8x2</td>
+      <td>8x2</td>
+      <td>0.23</td>
+      <td>1.05</td>
+      <td>2.2e-02</td>
+      <td>28k</td>
+      <td>0.82</td>
+      <td>&lt; 1e-2</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Science vs. Arts</td>
+      <td>Male terms vs. Female terms</td>
+      <td>8x2</td>
+      <td>8x2</td>
+      <td>0.40</td>
+      <td>1.27</td>
+      <td>2.0e-03</td>
+      <td>91</td>
+      <td>1.47</td>
+      <td>1e-24</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Mental disease vs. Physical disease</td>
+      <td>Temporary vs. Permanent</td>
+      <td>6x2</td>
+      <td>7x2</td>
+      <td>0.90</td>
+      <td>1.63</td>
+      <td>0</td>
+      <td>135</td>
+      <td>1.01</td>
+      <td>1e-3</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Young people’s names vs. Old people’s names</td>
+      <td>Pleasant vs. Unpleasant</td>
+      <td>8x2</td>
+      <td>8x2</td>
+      <td>0.59</td>
+      <td>1.45</td>
+      <td>1.0e-03</td>
+      <td>43k</td>
+      <td>1.42</td>
+      <td>&lt; 1e-2</td>
+    </tr>
+  </tbody>
+</table>
+</div><p>Results from the paper: <img alt="image0" src="../_images/weat_w2v.png" /></p>
+</div>
+<div class="section" id="word2vec-google-news-dataset-100b-tokens-3m-vocab-cased-300d-vectors-1-65gb-download">
+<h2>Word2Vec - Google News dataset (100B tokens, 3M vocab, cased, 300d vectors, 1.65GB download)<a class="headerlink" href="#word2vec-google-news-dataset-100b-tokens-3m-vocab-cased-300d-vectors-1-65gb-download" title="Permalink to this headline">¶</a></h2>
+<p>Download the Word2Vec model: <a class="reference external" href="https://code.google.com/archive/p/word2vec/">https://code.google.com/archive/p/word2vec/</a></p>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;GoogleNews-vectors-negative300.bin&#39;</span><span class="p">):</span>
+    <span class="k">assert</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="s1">&#39;GoogleNews-vectors-negative300.bin.gz&#39;</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Unzipping...&#39;</span><span class="p">)</span>
+    <span class="k">with</span> <span class="n">gzip</span><span class="o">.</span><span class="n">open</span><span class="p">(</span><span class="s1">&#39;GoogleNews-vectors-negative300.bin.gz&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f_gz</span><span class="p">:</span>
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;GoogleNews-vectors-negative300.bin&#39;</span><span class="p">,</span> <span class="s1">&#39;wb&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f_bin</span><span class="p">:</span>
+            <span class="n">shutil</span><span class="o">.</span><span class="n">copyfileobj</span><span class="p">(</span><span class="n">f_gz</span><span class="p">,</span> <span class="n">f_bin</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">w2v_model</span> <span class="o">=</span> <span class="n">KeyedVectors</span><span class="o">.</span><span class="n">load_word2vec_format</span><span class="p">(</span><span class="s1">&#39;GoogleNews-vectors-negative300.bin&#39;</span><span class="p">,</span>
+                                              <span class="n">binary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">calc_all_weat</span><span class="p">(</span><span class="n">w2v_model</span><span class="p">,</span> <span class="n">filter_by</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="n">with_original_finding</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+              <span class="n">with_pvalue</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pvalue_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;approximate&#39;</span><span class="p">})</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Target words</th>
+      <th>Attrib. words</th>
+      <th>Nt</th>
+      <th>Na</th>
+      <th>s</th>
+      <th>d</th>
+      <th>p</th>
+      <th>original_N</th>
+      <th>original_d</th>
+      <th>original_p</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Flowers vs. Insects</td>
+      <td>Pleasant vs. Unpleasant</td>
+      <td>25x2</td>
+      <td>25x2</td>
+      <td>3.23</td>
+      <td>1.55</td>
+      <td>0</td>
+      <td>32</td>
+      <td>1.35</td>
+      <td>1e-8</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Instruments vs. Weapons</td>
+      <td>Pleasant vs. Unpleasant</td>
+      <td>24x2</td>
+      <td>25x2</td>
+      <td>3.82</td>
+      <td>1.66</td>
+      <td>0</td>
+      <td>32</td>
+      <td>1.66</td>
+      <td>1e-10</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>European American names vs. African American n...</td>
+      <td>Pleasant vs. Unpleasant</td>
+      <td>47x2</td>
+      <td>25x2</td>
+      <td>1.14</td>
+      <td>0.55</td>
+      <td>3.0e-03</td>
+      <td>26</td>
+      <td>1.17</td>
+      <td>1e-5</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>European American names vs. African American n...</td>
+      <td>Pleasant vs. Unpleasant</td>
+      <td>18x2</td>
+      <td>25x2</td>
+      <td>0.86</td>
+      <td>1.27</td>
+      <td>0</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>European American names vs. African American n...</td>
+      <td>Pleasant vs. Unpleasant</td>
+      <td>18x2</td>
+      <td>8x2</td>
+      <td>0.50</td>
+      <td>0.71</td>
+      <td>2.0e-02</td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>Male names vs. Female names</td>
+      <td>Career vs. Family</td>
+      <td>8x2</td>
+      <td>8x2</td>
+      <td>2.04</td>
+      <td>1.93</td>
+      <td>0</td>
+      <td>39k</td>
+      <td>0.72</td>
+      <td>&lt; 1e-2</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>Math vs. Arts</td>
+      <td>Male terms vs. Female terms</td>
+      <td>8x2</td>
+      <td>8x2</td>
+      <td>0.27</td>
+      <td>0.91</td>
+      <td>3.7e-02</td>
+      <td>28k</td>
+      <td>0.82</td>
+      <td>&lt; 1e-2</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>Science vs. Arts</td>
+      <td>Male terms vs. Female terms</td>
+      <td>8x2</td>
+      <td>8x2</td>
+      <td>0.44</td>
+      <td>1.27</td>
+      <td>2.0e-03</td>
+      <td>91</td>
+      <td>1.47</td>
+      <td>1e-24</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>Mental disease vs. Physical disease</td>
+      <td>Temporary vs. Permanent</td>
+      <td>6x2</td>
+      <td>6x2</td>
+      <td>0.68</td>
+      <td>1.45</td>
+      <td>7.0e-03</td>
+      <td>135</td>
+      <td>1.01</td>
+      <td>1e-3</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>Young people’s names vs. Old people’s names</td>
+      <td>Pleasant vs. Unpleasant</td>
+      <td>8x2</td>
+      <td>7x2</td>
+      <td>-0.14</td>
+      <td>-0.38</td>
+      <td>7.5e-01</td>
+      <td>43k</td>
+      <td>1.42</td>
+      <td>&lt; 1e-2</td>
+    </tr>
+  </tbody>
+</table>
+</div><p>Results from the paper: <img alt="image0" src="../_images/weat_w2v.png" /></p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Ethically</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=EthicallyAI&repo=ethically&type=star&v=2&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="../demos.html">Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../words-embedding-bias.html">Words Embedding Bias</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../api/modules.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/contributing.html">For Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/changelog.html">Revision History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/license.html">License</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../demos.html">Demos</a><ul>
+      <li>Previous: <a href="exploratory-demo-race-bias-words-embedding.html" title="previous chapter">Demo - Race Bias in Words Embedding</a></li>
+      <li>Next: <a href="../words-embedding-bias.html" title="next chapter">Words Embedding Bias</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Shlomi Hod.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="../_sources/notebooks/demo-weat-alpha.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/EthicallyAI/ethically" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

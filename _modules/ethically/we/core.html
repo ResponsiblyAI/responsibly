@@ -39,7 +39,6 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="kn">from</span> <span class="nn">gensim.models.keyedvectors</span> <span class="k">import</span> <span class="n">KeyedVectors</span>
 <span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">spearmanr</span>
 <span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="k">import</span> <span class="n">PCA</span>
 <span class="kn">from</span> <span class="nn">sklearn.metrics.pairwise</span> <span class="k">import</span> <span class="n">euclidean_distances</span>
@@ -51,9 +50,9 @@
 <span class="kn">from</span> <span class="nn">..consts</span> <span class="k">import</span> <span class="n">RANDOM_STATE</span>
 <span class="kn">from</span> <span class="nn">.benchmark</span> <span class="k">import</span> <span class="n">evaluate_words_embedding</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="p">(</span>
-    <span class="n">cosine_similarity</span><span class="p">,</span> <span class="n">normalize</span><span class="p">,</span> <span class="n">project_reject_vector</span><span class="p">,</span> <span class="n">project_vector</span><span class="p">,</span>
-    <span class="n">reject_vector</span><span class="p">,</span> <span class="n">round_to_extreme</span><span class="p">,</span> <span class="n">take_two_sides_extreme_sorted</span><span class="p">,</span>
-    <span class="n">update_word_vector</span><span class="p">,</span>
+    <span class="n">assert_gensim_keyed_vectors</span><span class="p">,</span> <span class="n">cosine_similarity</span><span class="p">,</span> <span class="n">normalize</span><span class="p">,</span>
+    <span class="n">project_reject_vector</span><span class="p">,</span> <span class="n">project_vector</span><span class="p">,</span> <span class="n">reject_vector</span><span class="p">,</span> <span class="n">round_to_extreme</span><span class="p">,</span>
+    <span class="n">take_two_sides_extreme_sorted</span><span class="p">,</span> <span class="n">update_word_vector</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -74,9 +73,7 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">only_lower</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">identify_direction</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">KeyedVectors</span><span class="p">):</span>
-            <span class="k">raise</span> <span class="ne">TypeError</span><span class="p">(</span><span class="s1">&#39;model should be of type KeyedVectors, not </span><span class="si">{}</span><span class="s1">&#39;</span>
-                            <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="n">model</span><span class="p">)))</span>
+        <span class="n">assert_gensim_keyed_vectors</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 
         <span class="c1"># TODO: this is bad Python, ask someone about it</span>
         <span class="c1"># probably should be a better design</span>

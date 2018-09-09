@@ -42,7 +42,7 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pytest</span>
 
-<span class="kn">from</span> <span class="nn">ethically.we</span> <span class="k">import</span> <span class="n">GenderBiasWE</span>
+<span class="kn">from</span> <span class="nn">ethically.we</span> <span class="k">import</span> <span class="n">GenderBiasWE</span><span class="p">,</span> <span class="n">calc_all_weat</span>
 <span class="kn">from</span> <span class="nn">ethically.we.data</span> <span class="k">import</span> <span class="n">load_w2v_small</span>
 <span class="kn">from</span> <span class="nn">ethically.we.utils</span> <span class="k">import</span> <span class="n">project_reject_vector</span><span class="p">,</span> <span class="n">project_vector</span>
 
@@ -52,6 +52,11 @@
 <span class="n">ATOL</span> <span class="o">=</span> <span class="mf">1e-6</span>
 
 <span class="n">N_RANDOM_NEUTRAL_WORDS_DEBIAS_TO_TEST</span> <span class="o">=</span> <span class="mi">1000</span>
+
+
+<div class="viewcode-block" id="w2v_small"><a class="viewcode-back" href="../../../api/ethically.tests.html#ethically.tests.test_we.w2v_small">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
+<span class="k">def</span> <span class="nf">w2v_small</span><span class="p">():</span>
+    <span class="k">return</span> <span class="n">load_w2v_small</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="gender_biased_w2v_small"><a class="viewcode-back" href="../../../api/ethically.tests.html#ethically.tests.test_we.gender_biased_w2v_small">[docs]</a><span class="nd">@pytest</span><span class="o">.</span><span class="n">fixture</span>
@@ -329,6 +334,11 @@
     <span class="n">full_specific_words</span><span class="o">.</span><span class="n">sort</span><span class="p">()</span>
     <span class="k">assert</span> <span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">gender_biased_w2v_small</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="s1">&#39;specific_seed&#39;</span><span class="p">])</span>
             <span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">full_specific_words</span><span class="p">))</span></div>
+
+
+<div class="viewcode-block" id="test_calc_all_weat"><a class="viewcode-back" href="../../../api/ethically.tests.html#ethically.tests.test_we.test_calc_all_weat">[docs]</a><span class="k">def</span> <span class="nf">test_calc_all_weat</span><span class="p">(</span><span class="n">w2v_small</span><span class="p">):</span>
+    <span class="n">calc_all_weat</span><span class="p">(</span><span class="n">w2v_small</span><span class="p">,</span> <span class="n">filter_by</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="n">with_original_finding</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                  <span class="n">with_pvalue</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pvalue_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;approximate&#39;</span><span class="p">})</span></div>
 </pre></div>
 
           </div>
