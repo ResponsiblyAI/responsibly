@@ -302,4 +302,5 @@ def test_learn_full_specific_words(gender_biased_w2v_small):
 
 
 def test_calc_all_weat(w2v_small):
-    calc_all_weat(w2v_small)
+    calc_all_weat(w2v_small, filter_by='model', with_original_finding=True,
+                  with_pvalue=True, pvalue_kwargs={'method': 'approximate'})
