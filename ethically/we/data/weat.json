@@ -119,6 +119,12 @@
     "agony",
     "prison"
    ]
+  },
+  "original_finding": {
+   "Ref": "A. G. Greenwald, D. E. McGhee, J. L. Schwartz, Measuring individual differences in im- plicit cognition: the implicit association test., Journal of personality and social psychology 74, 1464 (1998).",
+   "N": "32",
+   "d": "1.35",
+   "p": "1e-8"
   }
  },
  {
@@ -241,6 +247,12 @@
     "agony",
     "prison"
    ]
+  },
+  "original_finding": {
+   "Ref": "A. G. Greenwald, D. E. McGhee, J. L. Schwartz, Measuring individual differences in im- plicit cognition: the implicit association test., Journal of personality and social psychology 74, 1464 (1998).",
+   "N": "32",
+   "d": "1.66",
+   "p": "1e-10"
   }
  },
  {
@@ -390,7 +402,7 @@
     "Sharise",
     "Tashika",
     "Lashandra",
-    "Shavonn,",
+    "Shavonn",
     "Tawanda"
    ]
   },
@@ -453,6 +465,12 @@
     "rotten",
     "vomit"
    ]
+  },
+  "original_finding": {
+   "Ref": "A. G. Greenwald, D. E. McGhee, J. L. Schwartz, Measuring individual differences in im- plicit cognition: the implicit association test., Journal of personality and social psychology 74, 1464 (1998).",
+   "N": "26",
+   "d": "1.17",
+   "p": "1e-5"
   }
  },
  {
@@ -569,6 +587,12 @@
     "rotten",
     "vomit"
    ]
+  },
+  "original_finding": {
+   "Ref": "M. Bertrand, S. Mullainathan, Are Emily and Greg more employable than Lakisha and Jamal? a field experiment on labor market discrimination, The American Economic Review 94, 991 (2004).",
+   "N": "",
+   "d": "",
+   "p": ""
   }
  },
  {
@@ -651,6 +675,12 @@
     "awful",
     "failure"
    ]
+  },
+  "original_finding": {
+   "Ref": "M. Bertrand, S. Mullainathan, Are Emily and Greg more employable than Lakisha and Jamal? a field experiment on labor market discrimination, The American Economic Review 94, 991 (2004).",
+   "N": "",
+   "d": "",
+   "p": ""
   }
  },
  {
@@ -705,6 +735,12 @@
     "wedding",
     "relatives"
    ]
+  },
+  "original_finding": {
+   "Ref": "B. A. Nosek, M. Banaji, A. G. Greenwald, Harvesting implicit group attitudes and beliefs from a demonstration web site., Group Dynamics: Theory, Research, and Practice 6, 101 (2002).",
+   "N": "39k",
+   "d": "0.72",
+   "p": "< 1e-2"
   }
  },
  {
@@ -759,6 +795,12 @@
     "hers",
     "daughter"
    ]
+  },
+  "original_finding": {
+   "Ref": "B. A. Nosek, M. Banaji, A. G. Greenwald, Harvesting implicit group attitudes and beliefs from a demonstration web site., Group Dynamics: Theory, Research, and Practice 6, 101 (2002).",
+   "N": "28k",
+   "d": "0.82",
+   "p": "< 1e-2"
   }
  },
  {
@@ -813,6 +855,12 @@
     "hers",
     "her"
    ]
+  },
+  "original_finding": {
+   "Ref": "B. A. Nosek, M. R. Banaji, A. G. Greenwald, Math=male, me=female, therefore math\u0338=me., Journal of Personality and Social Psychology 83, 44 (2002).",
+   "N": "91",
+   "d": "1.47",
+   "p": "1e-24"
   }
  },
  {
@@ -847,7 +895,7 @@
     "fleeting",
     "short-term",
     "brief",
-    "occasional (word2vec experiments used short instead of short-term)"
+    "occasional"
    ]
   },
   "second_attribute": {
@@ -861,6 +909,12 @@
     "prolonged",
     "forever"
    ]
+  },
+  "original_finding": {
+   "Ref": "P. D. Turney, P. Pantel, From frequency to meaning: Vector space models of semantics, Journal of Artificial Intelligence Research 37, 141 (2010).",
+   "N": "135",
+   "d": "1.01",
+   "p": "1e-3"
   }
  },
  {
@@ -915,6 +969,12 @@
     "awful",
     "failur"
    ]
+  },
+  "original_finding": {
+   "Ref": "B. A. Nosek, M. Banaji, A. G. Greenwald, Harvesting implicit group attitudes and beliefs from a demonstration web site., Group Dynamics: Theory, Research, and Practice 6, 101 (2002).",
+   "N": "43k",
+   "d": "1.42",
+   "p": "< 1e-2"
   }
  }
 ]
