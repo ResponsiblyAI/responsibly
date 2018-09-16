@@ -1,7 +1,0 @@
-{
-    "python.pythonPath": "${workspaceFolder}/.venv/bin/python",
-    "cSpell.words": [
-        "caliskan",
-        "weat"
-    ]
-}
