@@ -4,7 +4,6 @@ import matplotlib.pylab as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from gensim.models.keyedvectors import KeyedVectors
 from scipy.stats import spearmanr
 from sklearn.decomposition import PCA
 from sklearn.metrics.pairwise import euclidean_distances
@@ -16,8 +15,8 @@ from tabulate import tabulate
 from ..consts import RANDOM_STATE
 from .benchmark import evaluate_words_embedding
 from .utils import (
-    cosine_similarity, normalize, project_params, project_reject_vector,
-    project_vector, reject_vector, round_to_extreme,
+    assert_gensim_keyed_vectors, cosine_similarity, normalize, project_params,
+    project_reject_vector, project_vector, reject_vector, round_to_extreme,
     take_two_sides_extreme_sorted, update_word_vector,
 )
 
@@ -39,9 +38,7 @@ class BiasWordsEmbedding:
 
     def __init__(self, model, only_lower=False, verbose=False,
                  identify_direction=False):
-        if not isinstance(model, KeyedVectors):
-            raise TypeError('model should be of type KeyedVectors, not {}'
-                            .format(type(model)))
+        assert_gensim_keyed_vectors(model)
 
         # TODO: this is bad Python, ask someone about it
         # probably should be a better design

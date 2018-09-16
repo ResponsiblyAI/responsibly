@@ -76,6 +76,7 @@ setuptools.setup(
 
     install_requires=[
         "numpy ~= 1.15.0",
+        "scipy ~= 1.1.0",
         "pandas ~= 0.23.3",
         "matplotlib ~= 2.2.3",
         "seaborn ~= 0.9.0",
@@ -84,5 +85,6 @@ setuptools.setup(
         "tabulate ~= 0.8.2",
         "click ~= 6.0",
         "tqdm ~= 4.24.0",
+        "mlxtend ~= 0.13.0",
     ],
 )

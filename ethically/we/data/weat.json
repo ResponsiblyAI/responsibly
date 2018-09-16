@@ -1,0 +1,980 @@
+[
+ {
+  "first_target": {
+   "name": "Flowers",
+   "words": [
+    "aster",
+    "clover",
+    "hyacinth",
+    "marigold",
+    "poppy",
+    "azalea",
+    "crocus",
+    "iris",
+    "orchid",
+    "rose",
+    "bluebell",
+    "daffodil",
+    "lilac",
+    "pansy",
+    "tulip",
+    "buttercup",
+    "daisy",
+    "lily",
+    "peony",
+    "violet",
+    "carnation",
+    "gladiola",
+    "magnolia",
+    "petunia",
+    "zinnia"
+   ]
+  },
+  "second_target": {
+   "name": "Insects",
+   "words": [
+    "ant",
+    "caterpillar",
+    "flea",
+    "locust",
+    "spider",
+    "bedbug",
+    "centipede",
+    "fly",
+    "maggot",
+    "tarantula",
+    "bee",
+    "cockroach",
+    "gnat",
+    "mosquito",
+    "termite",
+    "beetle",
+    "cricket",
+    "hornet",
+    "moth",
+    "wasp",
+    "blackfly",
+    "dragonfly",
+    "horsefly",
+    "roach",
+    "weevil"
+   ]
+  },
+  "first_attribute": {
+   "name": "Pleasant",
+   "words": [
+    "caress",
+    "freedom",
+    "health",
+    "love",
+    "peace",
+    "cheer",
+    "friend",
+    "heaven",
+    "loyal",
+    "pleasure",
+    "diamond",
+    "gentle",
+    "honest",
+    "lucky",
+    "rainbow",
+    "diploma",
+    "gift",
+    "honor",
+    "miracle",
+    "sunrise",
+    "family",
+    "happy",
+    "laughter",
+    "paradise",
+    "vacation"
+   ]
+  },
+  "second_attribute": {
+   "name": "Unpleasant",
+   "words": [
+    "abuse",
+    "crash",
+    "filth",
+    "murder",
+    "sickness",
+    "accident",
+    "death",
+    "grief",
+    "poison",
+    "stink",
+    "assault",
+    "disaster",
+    "hatred",
+    "pollute",
+    "tragedy",
+    "divorce",
+    "jail",
+    "poverty",
+    "ugly",
+    "cancer",
+    "kill",
+    "rotten",
+    "vomit",
+    "agony",
+    "prison"
+   ]
+  },
+  "original_finding": {
+   "Ref": "A. G. Greenwald, D. E. McGhee, J. L. Schwartz, Measuring individual differences in im- plicit cognition: the implicit association test., Journal of personality and social psychology 74, 1464 (1998).",
+   "N": "32",
+   "d": "1.35",
+   "p": "1e-8"
+  }
+ },
+ {
+  "first_target": {
+   "name": "Instruments",
+   "words": [
+    "bagpipe",
+    "cello",
+    "guitar",
+    "lute",
+    "trombone",
+    "banjo",
+    "clarinet",
+    "harmonica",
+    "mandolin",
+    "trumpet",
+    "bassoon",
+    "drum",
+    "harp",
+    "oboe",
+    "tuba",
+    "bell",
+    "fiddle",
+    "harpsichord",
+    "piano",
+    "viola",
+    "bongo",
+    "flute",
+    "horn",
+    "saxophone",
+    "violin"
+   ]
+  },
+  "second_target": {
+   "name": "Weapons",
+   "words": [
+    "arrow",
+    "club",
+    "gun",
+    "missile",
+    "spear",
+    "axe",
+    "dagger",
+    "harpoon",
+    "pistol",
+    "sword",
+    "blade",
+    "dynamite",
+    "hatchet",
+    "rifle",
+    "tank",
+    "bomb",
+    "firearm",
+    "knife",
+    "shotgun",
+    "teargas",
+    "cannon",
+    "grenade",
+    "mace",
+    "slingshot",
+    "whip"
+   ]
+  },
+  "first_attribute": {
+   "name": "Pleasant",
+   "words": [
+    "caress",
+    "freedom",
+    "health",
+    "love",
+    "peace",
+    "cheer",
+    "friend",
+    "heaven",
+    "loyal",
+    "pleasure",
+    "diamond",
+    "gentle",
+    "honest",
+    "lucky",
+    "rainbow",
+    "diploma",
+    "gift",
+    "honor",
+    "miracle",
+    "sunrise",
+    "family",
+    "happy",
+    "laughter",
+    "paradise",
+    "vacation"
+   ]
+  },
+  "second_attribute": {
+   "name": "Unpleasant",
+   "words": [
+    "abuse",
+    "crash",
+    "filth",
+    "murder",
+    "sickness",
+    "accident",
+    "death",
+    "grief",
+    "poison",
+    "stink",
+    "assault",
+    "disaster",
+    "hatred",
+    "pollute",
+    "tragedy",
+    "divorce",
+    "jail",
+    "poverty",
+    "ugly",
+    "cancer",
+    "kill",
+    "rotten",
+    "vomit",
+    "agony",
+    "prison"
+   ]
+  },
+  "original_finding": {
+   "Ref": "A. G. Greenwald, D. E. McGhee, J. L. Schwartz, Measuring individual differences in im- plicit cognition: the implicit association test., Journal of personality and social psychology 74, 1464 (1998).",
+   "N": "32",
+   "d": "1.66",
+   "p": "1e-10"
+  }
+ },
+ {
+  "first_target": {
+   "name": "European American names",
+   "words": [
+    "Adam",
+    "Chip",
+    "Harry",
+    "Josh",
+    "Roger",
+    "Alan",
+    "Frank",
+    "Ian",
+    "Justin",
+    "Ryan",
+    "Andrew",
+    "Fred",
+    "Jack",
+    "Matthew",
+    "Stephen",
+    "Brad",
+    "Greg",
+    "Jed",
+    "Paul",
+    "Todd",
+    "Brandon",
+    "Hank",
+    "Jonathan",
+    "Peter",
+    "Wilbur",
+    "Amanda",
+    "Courtney",
+    "Heather",
+    "Melanie",
+    "Sara",
+    "Amber",
+    "Crystal",
+    "Katie",
+    "Meredith",
+    "Shannon",
+    "Betsy",
+    "Donna",
+    "Kristin",
+    "Nancy",
+    "Stephanie",
+    "Bobbie-Sue",
+    "Ellen",
+    "Lauren",
+    "Peggy",
+    "Sue-Ellen",
+    "Colleen",
+    "Emily",
+    "Megan",
+    "Rachel",
+    "Wendy"
+   ],
+   "remove": [
+    "Chip",
+    "Ian",
+    "Fred",
+    "Jed",
+    "Todd",
+    "Brandon",
+    "Hank",
+    "Wilbur",
+    "Sara",
+    "Amber",
+    "Crystal",
+    "Meredith",
+    "Shannon",
+    "Donna",
+    "Bobbie-Sue",
+    "Peggy",
+    "Sue-Ellen",
+    "Wendy"
+   ]
+  },
+  "second_target": {
+   "name": "African American names",
+   "words": [
+    "Alonzo",
+    "Jamel",
+    "Lerone",
+    "Percell",
+    "Theo",
+    "Alphonse",
+    "Jerome",
+    "Leroy",
+    "Rasaan",
+    "Torrance",
+    "Darnell",
+    "Lamar",
+    "Lionel",
+    "Rashaun",
+    "Tyree",
+    "Deion",
+    "Lamont",
+    "Malik",
+    "Terrence",
+    "Tyrone",
+    "Everol",
+    "Lavon",
+    "Marcellus",
+    "Terryl",
+    "Wardell",
+    "Aiesha",
+    "Lashelle",
+    "Nichelle",
+    "Shereen",
+    "Temeka",
+    "Ebony",
+    "Latisha",
+    "Shaniqua",
+    "Tameisha",
+    "Teretha",
+    "Jasmine",
+    "Latonya",
+    "Shanise",
+    "Tanisha",
+    "Tia",
+    "Lakisha",
+    "Latoya",
+    "Sharise",
+    "Tashika",
+    "Yolanda",
+    "Lashandra",
+    "Malika",
+    "Shavonn",
+    "Tawanda",
+    "Yvette"
+   ],
+   "remove": [
+    "Lerone",
+    "Percell",
+    "Rasaan",
+    "Rashaun",
+    "Everol",
+    "Terryl",
+    "Aiesha",
+    "Lashelle",
+    "Temeka",
+    "Tameisha",
+    "Teretha",
+    "Latonya",
+    "Shanise",
+    "Sharise",
+    "Tashika",
+    "Lashandra",
+    "Shavonn",
+    "Tawanda"
+   ]
+  },
+  "first_attribute": {
+   "name": "Pleasant",
+   "words": [
+    "caress",
+    "freedom",
+    "health",
+    "love",
+    "peace",
+    "cheer",
+    "friend",
+    "heaven",
+    "loyal",
+    "pleasure",
+    "diamond",
+    "gentle",
+    "honest",
+    "lucky",
+    "rainbow",
+    "diploma",
+    "gift",
+    "honor",
+    "miracle",
+    "sunrise",
+    "family",
+    "happy",
+    "laughter",
+    "paradise",
+    "vacation"
+   ]
+  },
+  "second_attribute": {
+   "name": "Unpleasant",
+   "words": [
+    "abuse",
+    "crash",
+    "filth",
+    "murder",
+    "sickness",
+    "accident",
+    "death",
+    "grief",
+    "poison",
+    "stink",
+    "assault",
+    "disaster",
+    "hatred",
+    "pollute",
+    "tragedy",
+    "bomb",
+    "divorce",
+    "jail",
+    "poverty",
+    "ugly",
+    "cancer",
+    "evil",
+    "kill",
+    "rotten",
+    "vomit"
+   ]
+  },
+  "original_finding": {
+   "Ref": "A. G. Greenwald, D. E. McGhee, J. L. Schwartz, Measuring individual differences in im- plicit cognition: the implicit association test., Journal of personality and social psychology 74, 1464 (1998).",
+   "N": "26",
+   "d": "1.17",
+   "p": "1e-5"
+  }
+ },
+ {
+  "first_target": {
+   "name": "European American names",
+   "words": [
+    "Brad",
+    "Brendan",
+    "Geoffrey",
+    "Greg",
+    "Brett",
+    "Jay",
+    "Matthew",
+    "Neil",
+    "Todd",
+    "Allison",
+    "Anne",
+    "Carrie",
+    "Emily",
+    "Jill",
+    "Laurie",
+    "Kristen",
+    "Meredith",
+    "Sarah"
+   ],
+   "remove": [
+    "Jay",
+    "Kristen"
+   ]
+  },
+  "second_target": {
+   "name": "African American names",
+   "words": [
+    "Darnell",
+    "Hakim",
+    "Jermaine",
+    "Kareem",
+    "Jamal",
+    "Leroy",
+    "Rasheed",
+    "Tremayne",
+    "Tyrone",
+    "Aisha",
+    "Ebony",
+    "Keisha",
+    "Kenya",
+    "Latonya",
+    "Lakisha",
+    "Latoya",
+    "Tamika",
+    "Tanisha"
+   ],
+   "remove": [
+    "Tremayne",
+    "Latonya"
+   ]
+  },
+  "first_attribute": {
+   "name": "Pleasant",
+   "words": [
+    "caress",
+    "freedom",
+    "health",
+    "love",
+    "peace",
+    "cheer",
+    "friend",
+    "heaven",
+    "loyal",
+    "pleasure",
+    "diamond",
+    "gentle",
+    "honest",
+    "lucky",
+    "rainbow",
+    "diploma",
+    "gift",
+    "honor",
+    "miracle",
+    "sunrise",
+    "family",
+    "happy",
+    "laughter",
+    "paradise",
+    "vacation"
+   ]
+  },
+  "second_attribute": {
+   "name": "Unpleasant",
+   "words": [
+    "abuse",
+    "crash",
+    "filth",
+    "murder",
+    "sickness",
+    "accident",
+    "death",
+    "grief",
+    "poison",
+    "stink",
+    "assault",
+    "disaster",
+    "hatred",
+    "pollute",
+    "tragedy",
+    "bomb",
+    "divorce",
+    "jail",
+    "poverty",
+    "ugly",
+    "cancer",
+    "evil",
+    "kill",
+    "rotten",
+    "vomit"
+   ]
+  },
+  "original_finding": {
+   "Ref": "M. Bertrand, S. Mullainathan, Are Emily and Greg more employable than Lakisha and Jamal? a field experiment on labor market discrimination, The American Economic Review 94, 991 (2004).",
+   "N": "",
+   "d": "",
+   "p": ""
+  }
+ },
+ {
+  "first_target": {
+   "name": "European American names",
+   "words": [
+    "Brad",
+    "Brendan",
+    "Geoffrey",
+    "Greg",
+    "Brett",
+    "Jay",
+    "Matthew",
+    "Neil",
+    "Todd",
+    "Allison",
+    "Anne",
+    "Carrie",
+    "Emily",
+    "Jill",
+    "Laurie",
+    "Kristen",
+    "Meredith",
+    "Sarah"
+   ],
+   "remove": [
+    "Jay",
+    "Kristen"
+   ]
+  },
+  "second_target": {
+   "name": "African American names",
+   "words": [
+    "Darnell",
+    "Hakim",
+    "Jermaine",
+    "Kareem",
+    "Jamal",
+    "Leroy",
+    "Rasheed",
+    "Tremayne",
+    "Tyrone",
+    "Aisha",
+    "Ebony",
+    "Keisha",
+    "Kenya",
+    "Latonya",
+    "Lakisha",
+    "Latoya",
+    "Tamika",
+    "Tanisha"
+   ],
+   "remove": [
+    "Tremayne",
+    "Latonya"
+   ]
+  },
+  "first_attribute": {
+   "name": "Pleasant",
+   "words": [
+    "joy",
+    "love",
+    "peace",
+    "wonderful",
+    "pleasure",
+    "friend",
+    "laughter",
+    "happy"
+   ]
+  },
+  "second_attribute": {
+   "name": "Unpleasant",
+   "words": [
+    "agony",
+    "terrible",
+    "horrible",
+    "nasty",
+    "evil",
+    "war",
+    "awful",
+    "failure"
+   ]
+  },
+  "original_finding": {
+   "Ref": "M. Bertrand, S. Mullainathan, Are Emily and Greg more employable than Lakisha and Jamal? a field experiment on labor market discrimination, The American Economic Review 94, 991 (2004).",
+   "N": "",
+   "d": "",
+   "p": ""
+  }
+ },
+ {
+  "first_target": {
+   "name": "Male names",
+   "words": [
+    "John",
+    "Paul",
+    "Mike",
+    "Kevin",
+    "Steve",
+    "Greg",
+    "Jeff",
+    "Bill"
+   ]
+  },
+  "second_target": {
+   "name": "Female names",
+   "words": [
+    "Amy",
+    "Joan",
+    "Lisa",
+    "Sarah",
+    "Diana",
+    "Kate",
+    "Ann",
+    "Donna"
+   ]
+  },
+  "first_attribute": {
+   "name": "Career",
+   "words": [
+    "executive",
+    "management",
+    "professional",
+    "corporation",
+    "salary",
+    "office",
+    "business",
+    "career"
+   ]
+  },
+  "second_attribute": {
+   "name": "Family",
+   "words": [
+    "home",
+    "parents",
+    "children",
+    "family",
+    "cousins",
+    "marriage",
+    "wedding",
+    "relatives"
+   ]
+  },
+  "original_finding": {
+   "Ref": "B. A. Nosek, M. Banaji, A. G. Greenwald, Harvesting implicit group attitudes and beliefs from a demonstration web site., Group Dynamics: Theory, Research, and Practice 6, 101 (2002).",
+   "N": "39k",
+   "d": "0.72",
+   "p": "< 1e-2"
+  }
+ },
+ {
+  "first_target": {
+   "name": "Math",
+   "words": [
+    "math",
+    "algebra",
+    "geometry",
+    "calculus",
+    "equations",
+    "computation",
+    "numbers",
+    "addition"
+   ]
+  },
+  "second_target": {
+   "name": "Arts",
+   "words": [
+    "poetry",
+    "art",
+    "dance",
+    "literature",
+    "novel",
+    "symphony",
+    "drama",
+    "sculpture"
+   ]
+  },
+  "first_attribute": {
+   "name": "Male terms",
+   "words": [
+    "male",
+    "man",
+    "boy",
+    "brother",
+    "he",
+    "him",
+    "his",
+    "son"
+   ]
+  },
+  "second_attribute": {
+   "name": "Female terms",
+   "words": [
+    "female",
+    "woman",
+    "girl",
+    "sister",
+    "she",
+    "her",
+    "hers",
+    "daughter"
+   ]
+  },
+  "original_finding": {
+   "Ref": "B. A. Nosek, M. Banaji, A. G. Greenwald, Harvesting implicit group attitudes and beliefs from a demonstration web site., Group Dynamics: Theory, Research, and Practice 6, 101 (2002).",
+   "N": "28k",
+   "d": "0.82",
+   "p": "< 1e-2"
+  }
+ },
+ {
+  "first_target": {
+   "name": "Science",
+   "words": [
+    "science",
+    "technology",
+    "physics",
+    "chemistry",
+    "Einstein",
+    "NASA",
+    "experiment",
+    "astronomy"
+   ]
+  },
+  "second_target": {
+   "name": "Arts",
+   "words": [
+    "poetry",
+    "art",
+    "Shakespeare",
+    "dance",
+    "literature",
+    "novel",
+    "symphony",
+    "drama"
+   ]
+  },
+  "first_attribute": {
+   "name": "Male terms",
+   "words": [
+    "brother",
+    "father",
+    "uncle",
+    "grandfather",
+    "son",
+    "he",
+    "his",
+    "him"
+   ]
+  },
+  "second_attribute": {
+   "name": "Female terms",
+   "words": [
+    "sister",
+    "mother",
+    "aunt",
+    "grandmother",
+    "daughter",
+    "she",
+    "hers",
+    "her"
+   ]
+  },
+  "original_finding": {
+   "Ref": "B. A. Nosek, M. R. Banaji, A. G. Greenwald, Math=male, me=female, therefore math\u0338=me., Journal of Personality and Social Psychology 83, 44 (2002).",
+   "N": "91",
+   "d": "1.47",
+   "p": "1e-24"
+  }
+ },
+ {
+  "first_target": {
+   "name": "Mental disease",
+   "words": [
+    "sad",
+    "hopeless",
+    "gloomy",
+    "tearful",
+    "miserable",
+    "depressed"
+   ]
+  },
+  "second_target": {
+   "name": "Physical disease",
+   "words": [
+    "sick",
+    "illness",
+    "influenza",
+    "disease",
+    "virus",
+    "cancer"
+   ]
+  },
+  "first_attribute": {
+   "name": "Temporary",
+   "words": [
+    "impermanent",
+    "unstable",
+    "variable",
+    "fleeting",
+    "short-term",
+    "brief",
+    "occasional"
+   ]
+  },
+  "second_attribute": {
+   "name": "Permanent",
+   "words": [
+    "stable",
+    "always",
+    "constant",
+    "persistent",
+    "chronic",
+    "prolonged",
+    "forever"
+   ]
+  },
+  "original_finding": {
+   "Ref": "P. D. Turney, P. Pantel, From frequency to meaning: Vector space models of semantics, Journal of Artificial Intelligence Research 37, 141 (2010).",
+   "N": "135",
+   "d": "1.01",
+   "p": "1e-3"
+  }
+ },
+ {
+  "first_target": {
+   "name": "Young people\u2019s names",
+   "words": [
+    "Tiffany",
+    "Michelle",
+    "Cindy",
+    "Kristy",
+    "Brad",
+    "Eric",
+    "Joey",
+    "Billy"
+   ]
+  },
+  "second_target": {
+   "name": "Old people\u2019s names",
+   "words": [
+    "Ethel",
+    "Bernice",
+    "Gertrude",
+    "Agnes",
+    "Cecil",
+    "Wilbert",
+    "Mortimer",
+    "Edgar"
+   ]
+  },
+  "first_attribute": {
+   "name": "Pleasant",
+   "words": [
+    "joy",
+    "love",
+    "peace",
+    "wonderful",
+    "pleasure",
+    "friend",
+    "laughter",
+    "happy"
+   ]
+  },
+  "second_attribute": {
+   "name": "Unpleasant",
+   "words": [
+    "agony",
+    "terrible",
+    "horrible",
+    "nasty",
+    "evil",
+    "war",
+    "awful",
+    "failur"
+   ]
+  },
+  "original_finding": {
+   "Ref": "B. A. Nosek, M. Banaji, A. G. Greenwald, Harvesting implicit group attitudes and beliefs from a demonstration web site., Group Dynamics: Theory, Research, and Practice 6, 101 (2002).",
+   "N": "43k",
+   "d": "1.42",
+   "p": "< 1e-2"
+  }
+ }
+]
