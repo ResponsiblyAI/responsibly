@@ -101,6 +101,11 @@ def _calc_weat_score(model,
 
 def _calc_weat_pvalue(first_associations, second_associations,
                       method='approximate'):
+
+    if method not in PVALUE_METHODS:
+        raise ValueError('method should be one of {}, {} was given'.format(
+            PVALUE_METHODS, method))
+
     pvalue = permutation_test(first_associations, second_associations,
                               func='x_mean > y_mean',
                               method=method,

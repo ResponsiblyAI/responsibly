@@ -10,7 +10,7 @@ Science, 356(6334), 183-186.
 
 WEAT in ``ethically`` is in a alpha version, and therefore it is not yet
 in the PyPI release. In order to use this coude, you should install
-``ethically`` from the ``feature_weat`` branch by:
+``ethically`` from the ``dev`` branch by:
 
 ``pip install --upgrade git+https://github.com/EthicallyAI/ethically.git@dev``
 
@@ -89,8 +89,8 @@ Word2Vec - Only Lowercase and Most Frequent Words
           <td>Pleasant vs. Unpleasant</td>
           <td>2x2</td>
           <td>24x2</td>
-          <td>0.079599</td>
-          <td>1.0885</td>
+          <td>0.0949031</td>
+          <td>1.23443</td>
           <td>1.6e-01</td>
           <td>32</td>
           <td>1.35</td>
@@ -102,8 +102,8 @@ Word2Vec - Only Lowercase and Most Frequent Words
           <td>Pleasant vs. Unpleasant</td>
           <td>16x2</td>
           <td>24x2</td>
-          <td>2.24091</td>
-          <td>1.59012</td>
+          <td>2.11433</td>
+          <td>1.58925</td>
           <td>0</td>
           <td>32</td>
           <td>1.66</td>
@@ -115,9 +115,9 @@ Word2Vec - Only Lowercase and Most Frequent Words
           <td>Pleasant vs. Unpleasant</td>
           <td>6x2</td>
           <td>24x2</td>
-          <td>0.256634</td>
-          <td>1.03854</td>
-          <td>4.0e-02</td>
+          <td>0.287312</td>
+          <td>1.10003</td>
+          <td>2.6e-02</td>
           <td>26</td>
           <td>1.17</td>
           <td>1e-5</td>
@@ -623,3 +623,35 @@ Download the Word2Vec model: https://code.google.com/archive/p/word2vec/
 Results from the paper: |image0|
 
 .. |image0| image:: weat_w2v.png
+
+Calculate WEAT on pleasant-unpleasant attributes with chosen targets (Experimental)
+-----------------------------------------------------------------------------------
+
+.. code:: ipython3
+
+    from ethically.we import calc_weat_pleasant_unpleasant_attribute
+
+.. code:: ipython3
+
+    targets = {'first_target': {'name': 'Citizen',
+                                'words': ['citizen', 'citizenship', 'nationality', 'native', 'national', 'countryman', 
+                                          'inhabitant', 'resident']},
+              'second_target': {'name': 'Immigrant',
+                                'words': ['immigrant', 'immigration', 'foreigner', 'nonnative', 'noncitizen',
+                                          'relocatee', 'newcomer']}}
+    calc_weat_pleasant_unpleasant_attribute(w2v_model, **targets)
+
+
+
+
+.. parsed-literal::
+
+    {'Attrib. words': 'Pleasant vs. Unpleasant',
+     'Na': '25x2',
+     'Nt': '6x2',
+     'Target words': 'Citizen vs. Immigrant',
+     'd': 0.71920586,
+     'p': 0.135,
+     's': 0.23210221529006958}
+
+
