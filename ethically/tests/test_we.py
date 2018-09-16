@@ -7,8 +7,10 @@ from math import isclose
 import numpy as np
 import pytest
 
-from ethically.we import GenderBiasWE, calc_all_weat
-from ethically.we.data import load_w2v_small
+from ethically.we import (
+    GenderBiasWE, calc_all_weat, calc_weat_pleasant_unpleasant_attribute,
+)
+from ethically.we.data import WEAT_DATA, load_w2v_small
 from ethically.we.utils import project_reject_vector, project_vector
 
 from ..consts import RANDOM_STATE
@@ -304,3 +306,15 @@ def test_learn_full_specific_words(gender_biased_w2v_small):
 def test_calc_all_weat(w2v_small):
     calc_all_weat(w2v_small, filter_by='model', with_original_finding=True,
                   with_pvalue=True, pvalue_kwargs={'method': 'approximate'})
+
+
+def test_calc_weat_pleasant_attribute(w2v_small):
+    result_v1 = calc_weat_pleasant_unpleasant_attribute(w2v_small,
+                                                        WEAT_DATA[1]['first_target'],  # pylint: disable=C0301
+                                                        WEAT_DATA[1]['second_target'])  # pylint: disable=C0301
+    result_v1['p'] = round(result_v1['p'], 2)
+
+    result_v2 = calc_all_weat(w2v_small).iloc[1].to_dict()
+    result_v2['p'] = float(result_v2['p'])
+
+    assert result_v1 == result_v2

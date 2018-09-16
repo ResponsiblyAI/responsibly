@@ -57,7 +57,7 @@ from .utils import assert_gensim_keyed_vectors
 FILTER_BY_OPTIONS = ['model', 'data']
 RESULTS_DF_COLUMNS = ['Target words', 'Attrib. words',
                       'Nt', 'Na', 's', 'd', 'p']
-
+PVALUE_METHODS = ['exact', 'approximate']
 ORIGINAL_DF_COLUMNS = ['original_' + key for key in ['N', 'd', 'p']]
 
 
@@ -100,7 +100,7 @@ def _calc_weat_score(model,
 
 
 def _calc_weat_pvalue(first_associations, second_associations,
-                      method='exact'):
+                      method='approximate'):
     pvalue = permutation_test(first_associations, second_associations,
                               func='x_mean > y_mean',
                               method=method,
@@ -138,6 +138,7 @@ def _filter_by_data_weat_stimuli(stimuli):
 
 
 def _sample_if_bigger(seq, length):
+    random.seed(RANDOM_STATE)
     if len(seq) > length:
         seq = random.sample(seq, length)
     return seq
@@ -145,7 +146,7 @@ def _sample_if_bigger(seq, length):
 
 def _filter_by_model_weat_stimuli(stimuli, model):
     """Inplace."""
-    random.seed(RANDOM_STATE)
+
     for group_category in ['target', 'attribute']:
         first_group = 'first_' + group_category
         second_group = 'second_' + group_category
@@ -235,11 +236,33 @@ def calc_single_weat(model,
             'Na': '{}x2'.format(len(first_attribute['words']))}
 
 
+def calc_weat_pleasant_unpleasant_attribute(model,
+                                            first_target, second_target,
+                                            with_pvalue=True, pvalue_kwargs=None):
+    weat_data = {'first_attribute': copy.deepcopy(WEAT_DATA[0]['first_attribute']),
+                 'second_attribute': copy.deepcopy(WEAT_DATA[0]['second_attribute']),
+                 'first_target': first_target,
+                 'second_target': second_target}
+
+    _filter_by_model_weat_stimuli(weat_data, model)
+
+    if pvalue_kwargs is None:
+        pvalue_kwargs = {}
+
+    return calc_single_weat(model,
+                            **weat_data,
+                            with_pvalue=with_pvalue, pvalue_kwargs=pvalue_kwargs)
+
+
 def calc_all_weat(model, weat_data='caliskan', filter_by='model',
                   with_original_finding=False,
                   with_pvalue=True, pvalue_kwargs=None):
     """
     Calc the WEAT results of a words embedding on multiple cases.
+
+    Note that for the effect size and pvalue in the WEAT have
+    entirely different meaning from those reported in IATs (original finding).
+    Refer to the paper for more details.
 
     :param model: Words embedding model of ``gensim.model.KeyedVectors``
     :param dict weat_data: WEAT cases data
