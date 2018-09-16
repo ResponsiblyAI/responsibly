@@ -45,8 +45,17 @@ def reject_vector(v, u):
 def project_reject_vector(v, u):
     """Projecting and rejecting the vector v onto direction u."""
     projected_vector = project_vector(v, u)
-    rejected_vector = v - project_vector(v, u)
+    rejected_vector = v - projected_vector
     return projected_vector, rejected_vector
+
+
+def project_params(u, v):
+    """Projecting and rejecting the vector v onto direction u with scalar."""
+    normalize_u = normalize(u)
+    projection = (v @ normalize_u)
+    projected_vector = projection * normalize_u
+    rejected_vector = v - projected_vector
+    return projection, projected_vector, rejected_vector
 
 
 def update_word_vector(model, word, new_vector):

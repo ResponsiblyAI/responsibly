@@ -9,7 +9,9 @@ import pytest
 
 from ethically.we import GenderBiasWE
 from ethically.we.data import load_w2v_small
-from ethically.we.utils import project_reject_vector, project_vector
+from ethically.we.utils import (
+    project_params, project_reject_vector, project_vector,
+)
 
 from ..consts import RANDOM_STATE
 
@@ -23,6 +25,20 @@ N_RANDOM_NEUTRAL_WORDS_DEBIAS_TO_TEST = 1000
 def gender_biased_w2v_small():
     model = load_w2v_small()
     return GenderBiasWE(model, only_lower=True, verbose=True)
+
+
+def test_project_params():
+    v = np.array([1, 2, 3])
+    u = np.array([-4, 5, -6])
+
+    (_,
+     projected_vector_v1,
+     rejected_vector_v1) = project_params(v, u)
+
+    projected_vector_v2, rejected_vector_v2 = project_reject_vector(u, v)
+
+    np.testing.assert_allclose(projected_vector_v1, projected_vector_v2)
+    np.testing.assert_allclose(rejected_vector_v1, rejected_vector_v2)
 
 
 def test_words_embbeding_loading(gender_biased_w2v_small):
