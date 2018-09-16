@@ -40,14 +40,14 @@
 <span class="kn">from</span> <span class="nn">pkg_resources</span> <span class="k">import</span> <span class="n">resource_filename</span><span class="p">,</span> <span class="n">resource_string</span>
 
 
-<div class="viewcode-block" id="load_w2v_small"><a class="viewcode-back" href="../../../api/ethically.we.data.html#ethically.we.data.load_w2v_small">[docs]</a><span class="k">def</span> <span class="nf">load_w2v_small</span><span class="p">():</span>
+<div class="viewcode-block" id="load_w2v_small"><a class="viewcode-back" href="../../../api/ethically.we.data.html#ethically.we.load_w2v_small">[docs]</a><span class="k">def</span> <span class="nf">load_w2v_small</span><span class="p">():</span>
     <span class="c1"># pylint: disable=C0301</span>
     <span class="k">return</span> <span class="n">KeyedVectors</span><span class="o">.</span><span class="n">load_word2vec_format</span><span class="p">(</span>
         <span class="n">resource_filename</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span> <span class="s1">&#39;GoogleNews-vectors-negative300-bolukbasi.bin&#39;</span><span class="p">),</span>
         <span class="n">binary</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="load_json_resource"><a class="viewcode-back" href="../../../api/ethically.we.data.html#ethically.we.data.load_json_resource">[docs]</a><span class="k">def</span> <span class="nf">load_json_resource</span><span class="p">(</span><span class="n">resource_name</span><span class="p">):</span>
+<div class="viewcode-block" id="load_json_resource"><a class="viewcode-back" href="../../../api/ethically.we.data.html#ethically.we.load_json_resource">[docs]</a><span class="k">def</span> <span class="nf">load_json_resource</span><span class="p">(</span><span class="n">resource_name</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span>
         <span class="n">resource_string</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">resource_name</span> <span class="o">+</span> <span class="s1">&#39;.json&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
 

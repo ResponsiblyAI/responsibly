@@ -248,7 +248,7 @@ and their names as keys.</li>
 <dt id="ethically.we.bias.GenderBiasWE.calc_direct_bias">
 <code class="descname">calc_direct_bias</code><span class="sig-paren">(</span><em>neutral_words='professions'</em>, <em>c=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/bias.html#GenderBiasWE.calc_direct_bias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.bias.GenderBiasWE.calc_direct_bias" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the direct bias.</p>
-<p>Based on the projection of neuteral words on the direction.</p>
+<p>Based on the projection of neutral words on the direction.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -269,7 +269,11 @@ and their names as keys.</li>
 <dl class="method">
 <dt id="ethically.we.bias.GenderBiasWE.generate_closest_words_indirect_bias">
 <code class="descname">generate_closest_words_indirect_bias</code><span class="sig-paren">(</span><em>neutral_positive_end</em>, <em>neutral_negative_end</em>, <em>words='professions'</em>, <em>n_extreme=5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/bias.html#GenderBiasWE.generate_closest_words_indirect_bias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.bias.GenderBiasWE.generate_closest_words_indirect_bias" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate closest words to a neutral direction and thier indirect bias.</p>
+<dd><p>Generate closest words to a neutral direction and their indirect bias.</p>
+<p>The direction of the neutral words is used to find
+the most extreme words.
+The indirect bias is calculated between the most extreme words
+and the closest end.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -387,6 +391,23 @@ only lower case words</li>
 </dd></dl>
 
 <dl class="method">
+<dt id="ethically.we.core.BiasWordsEmbedding.calc_projection_data">
+<code class="descname">calc_projection_data</code><span class="sig-paren">(</span><em>words</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.calc_projection_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.core.BiasWordsEmbedding.calc_projection_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate projection, projected and rejected vectors of a words list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>words</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of words</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">DataFrame of the projection, projected and rejected vectors
+of the words list</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="ethically.we.core.BiasWordsEmbedding.plot_projection_scores">
 <code class="descname">plot_projection_scores</code><span class="sig-paren">(</span><em>words</em>, <em>n_extreme=10</em>, <em>ax=None</em>, <em>axis_projection_step=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.plot_projection_scores"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.core.BiasWordsEmbedding.plot_projection_scores" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot the projection scalar of words on the direction.</p>
@@ -450,7 +471,7 @@ and their names as keys.</li>
 <dl class="method">
 <dt id="ethically.we.core.BiasWordsEmbedding.generate_analogies">
 <code class="descname">generate_analogies</code><span class="sig-paren">(</span><em>n_analogies=100</em>, <em>multiple=False</em>, <em>delta=1.0</em>, <em>restrict_vocab=30000</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.generate_analogies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.core.BiasWordsEmbedding.generate_analogies" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate anologies based on the bias directionself.</p>
+<dd><p>Generate analogies based on the bias directionself.</p>
 <p>x - y ~ direction.
 or a:x::b:y when a-b ~ direction.</p>
 <p><code class="docutils literal notranslate"><span class="pre">delta</span></code> is used for semantically coherent. Default vale of 1
@@ -461,7 +482,7 @@ corresponds to an angle &lt;= pi/3.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>n_analogies</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of analogies to generate.</li>
-<li><strong>multiple</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to allow multiple apprerences of a word
+<li><strong>multiple</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to allow multiple appearances of a word
 in the analogies.</li>
 <li><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Threshold for semantic similarity.
 The maximal distance between x and y.</li>
@@ -469,7 +490,7 @@ The maximal distance between x and y.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Data Frame of anologies (x, y), thier distances,
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Data Frame of analogies (x, y), their distances,
 and their cosine similarity scores</p>
 </td>
 </tr>
@@ -481,7 +502,7 @@ and their cosine similarity scores</p>
 <dt id="ethically.we.core.BiasWordsEmbedding.calc_direct_bias">
 <code class="descname">calc_direct_bias</code><span class="sig-paren">(</span><em>neutral_words</em>, <em>c=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.calc_direct_bias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.core.BiasWordsEmbedding.calc_direct_bias" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the direct bias.</p>
-<p>Based on the projection of neuteral words on the direction.</p>
+<p>Based on the projection of neutral words on the direction.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -514,7 +535,11 @@ and their cosine similarity scores</p>
 <dl class="method">
 <dt id="ethically.we.core.BiasWordsEmbedding.generate_closest_words_indirect_bias">
 <code class="descname">generate_closest_words_indirect_bias</code><span class="sig-paren">(</span><em>neutral_positive_end</em>, <em>neutral_negative_end</em>, <em>words=None</em>, <em>n_extreme=5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.generate_closest_words_indirect_bias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.core.BiasWordsEmbedding.generate_closest_words_indirect_bias" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate closest words to a neutral direction and thier indirect bias.</p>
+<dd><p>Generate closest words to a neutral direction and their indirect bias.</p>
+<p>The direction of the neutral words is used to find
+the most extreme words.
+The indirect bias is calculated between the most extreme words
+and the closest end.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -658,6 +683,12 @@ to sample for training</li>
 </dd></dl>
 
 <dl class="function">
+<dt id="ethically.we.utils.project_params">
+<code class="descclassname">ethically.we.utils.</code><code class="descname">project_params</code><span class="sig-paren">(</span><em>u</em>, <em>v</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/utils.html#project_params"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.utils.project_params" title="Permalink to this definition">¶</a></dt>
+<dd><p>Projecting and rejecting the vector v onto direction u with scalar.</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="ethically.we.utils.update_word_vector">
 <code class="descclassname">ethically.we.utils.</code><code class="descname">update_word_vector</code><span class="sig-paren">(</span><em>model</em>, <em>word</em>, <em>new_vector</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/utils.html#update_word_vector"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.utils.update_word_vector" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -715,6 +746,23 @@ only lower case words</li>
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>word</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – The word tor project</td>
 </tr>
 <tr class="field-even field"><th class="field-name">Return float:</th><td class="field-body">The projection scalar</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethically.we.BiasWordsEmbedding.calc_projection_data">
+<code class="descname">calc_projection_data</code><span class="sig-paren">(</span><em>words</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.calc_projection_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.BiasWordsEmbedding.calc_projection_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calculate projection, projected and rejected vectors of a words list.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>words</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#list" title="(in Python v3.7)"><em>list</em></a>) – List of words</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">DataFrame of the projection, projected and rejected vectors
+of the words list</td>
 </tr>
 </tbody>
 </table>
@@ -784,7 +832,7 @@ and their names as keys.</li>
 <dl class="method">
 <dt id="ethically.we.BiasWordsEmbedding.generate_analogies">
 <code class="descname">generate_analogies</code><span class="sig-paren">(</span><em>n_analogies=100</em>, <em>multiple=False</em>, <em>delta=1.0</em>, <em>restrict_vocab=30000</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.generate_analogies"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.BiasWordsEmbedding.generate_analogies" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate anologies based on the bias directionself.</p>
+<dd><p>Generate analogies based on the bias directionself.</p>
 <p>x - y ~ direction.
 or a:x::b:y when a-b ~ direction.</p>
 <p><code class="docutils literal notranslate"><span class="pre">delta</span></code> is used for semantically coherent. Default vale of 1
@@ -795,7 +843,7 @@ corresponds to an angle &lt;= pi/3.</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
 <li><strong>n_analogies</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Number of analogies to generate.</li>
-<li><strong>multiple</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to allow multiple apprerences of a word
+<li><strong>multiple</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to allow multiple appearances of a word
 in the analogies.</li>
 <li><strong>delta</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Threshold for semantic similarity.
 The maximal distance between x and y.</li>
@@ -803,7 +851,7 @@ The maximal distance between x and y.</li>
 </ul>
 </td>
 </tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Data Frame of anologies (x, y), thier distances,
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Data Frame of analogies (x, y), their distances,
 and their cosine similarity scores</p>
 </td>
 </tr>
@@ -815,7 +863,7 @@ and their cosine similarity scores</p>
 <dt id="ethically.we.BiasWordsEmbedding.calc_direct_bias">
 <code class="descname">calc_direct_bias</code><span class="sig-paren">(</span><em>neutral_words</em>, <em>c=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.calc_direct_bias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.BiasWordsEmbedding.calc_direct_bias" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the direct bias.</p>
-<p>Based on the projection of neuteral words on the direction.</p>
+<p>Based on the projection of neutral words on the direction.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -848,7 +896,11 @@ and their cosine similarity scores</p>
 <dl class="method">
 <dt id="ethically.we.BiasWordsEmbedding.generate_closest_words_indirect_bias">
 <code class="descname">generate_closest_words_indirect_bias</code><span class="sig-paren">(</span><em>neutral_positive_end</em>, <em>neutral_negative_end</em>, <em>words=None</em>, <em>n_extreme=5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/core.html#BiasWordsEmbedding.generate_closest_words_indirect_bias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.BiasWordsEmbedding.generate_closest_words_indirect_bias" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate closest words to a neutral direction and thier indirect bias.</p>
+<dd><p>Generate closest words to a neutral direction and their indirect bias.</p>
+<p>The direction of the neutral words is used to find
+the most extreme words.
+The indirect bias is calculated between the most extreme words
+and the closest end.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1037,7 +1089,7 @@ and their names as keys.</li>
 <dt id="ethically.we.GenderBiasWE.calc_direct_bias">
 <code class="descname">calc_direct_bias</code><span class="sig-paren">(</span><em>neutral_words='professions'</em>, <em>c=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/bias.html#GenderBiasWE.calc_direct_bias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.GenderBiasWE.calc_direct_bias" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate the direct bias.</p>
-<p>Based on the projection of neuteral words on the direction.</p>
+<p>Based on the projection of neutral words on the direction.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1058,7 +1110,11 @@ and their names as keys.</li>
 <dl class="method">
 <dt id="ethically.we.GenderBiasWE.generate_closest_words_indirect_bias">
 <code class="descname">generate_closest_words_indirect_bias</code><span class="sig-paren">(</span><em>neutral_positive_end</em>, <em>neutral_negative_end</em>, <em>words='professions'</em>, <em>n_extreme=5</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/bias.html#GenderBiasWE.generate_closest_words_indirect_bias"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.GenderBiasWE.generate_closest_words_indirect_bias" title="Permalink to this definition">¶</a></dt>
-<dd><p>Generate closest words to a neutral direction and thier indirect bias.</p>
+<dd><p>Generate closest words to a neutral direction and their indirect bias.</p>
+<p>The direction of the neutral words is used to find
+the most extreme words.
+The indirect bias is calculated between the most extreme words
+and the closest end.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1167,6 +1223,9 @@ WEAT score (might be computationally expensive)</li>
 <dt id="ethically.we.calc_all_weat">
 <code class="descclassname">ethically.we.</code><code class="descname">calc_all_weat</code><span class="sig-paren">(</span><em>model</em>, <em>weat_data='caliskan'</em>, <em>filter_by='model'</em>, <em>with_original_finding=False</em>, <em>with_pvalue=True</em>, <em>pvalue_kwargs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/weat.html#calc_all_weat"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.calc_all_weat" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calc the WEAT results of a words embedding on multiple cases.</p>
+<p>Note that for the effect size and pvalue in the WEAT have
+entirely different meaning from those reported in IATs (original finding).
+Refer to the paper for more details.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -1190,6 +1249,16 @@ WEAT results (might be computationally expensive)</li>
 </tbody>
 </table>
 </dd></dl>
+
+<dl class="function">
+<dt id="ethically.we.calc_weat_pleasant_unpleasant_attribute">
+<code class="descclassname">ethically.we.</code><code class="descname">calc_weat_pleasant_unpleasant_attribute</code><span class="sig-paren">(</span><em>model</em>, <em>first_target</em>, <em>second_target</em>, <em>with_pvalue=True</em>, <em>pvalue_kwargs=None</em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/weat.html#calc_weat_pleasant_unpleasant_attribute"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.calc_weat_pleasant_unpleasant_attribute" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="function">
+<dt id="ethically.we.load_w2v_small">
+<code class="descclassname">ethically.we.</code><code class="descname">load_w2v_small</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/ethically/we/data.html#load_w2v_small"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.load_w2v_small" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </div>
 </div>

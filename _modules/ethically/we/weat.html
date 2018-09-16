@@ -92,7 +92,7 @@
 <span class="n">FILTER_BY_OPTIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">]</span>
 <span class="n">RESULTS_DF_COLUMNS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Target words&#39;</span><span class="p">,</span> <span class="s1">&#39;Attrib. words&#39;</span><span class="p">,</span>
                       <span class="s1">&#39;Nt&#39;</span><span class="p">,</span> <span class="s1">&#39;Na&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">]</span>
-
+<span class="n">PVALUE_METHODS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;exact&#39;</span><span class="p">,</span> <span class="s1">&#39;approximate&#39;</span><span class="p">]</span>
 <span class="n">ORIGINAL_DF_COLUMNS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;original_&#39;</span> <span class="o">+</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">]]</span>
 
 
@@ -135,7 +135,7 @@
 
 
 <span class="k">def</span> <span class="nf">_calc_weat_pvalue</span><span class="p">(</span><span class="n">first_associations</span><span class="p">,</span> <span class="n">second_associations</span><span class="p">,</span>
-                      <span class="n">method</span><span class="o">=</span><span class="s1">&#39;exact&#39;</span><span class="p">):</span>
+                      <span class="n">method</span><span class="o">=</span><span class="s1">&#39;approximate&#39;</span><span class="p">):</span>
     <span class="n">pvalue</span> <span class="o">=</span> <span class="n">permutation_test</span><span class="p">(</span><span class="n">first_associations</span><span class="p">,</span> <span class="n">second_associations</span><span class="p">,</span>
                               <span class="n">func</span><span class="o">=</span><span class="s1">&#39;x_mean &gt; y_mean&#39;</span><span class="p">,</span>
                               <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span>
@@ -173,6 +173,7 @@
 
 
 <span class="k">def</span> <span class="nf">_sample_if_bigger</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">length</span><span class="p">):</span>
+    <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">RANDOM_STATE</span><span class="p">)</span>
     <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">seq</span><span class="p">)</span> <span class="o">&gt;</span> <span class="n">length</span><span class="p">:</span>
         <span class="n">seq</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">seq</span><span class="p">,</span> <span class="n">length</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">seq</span>
@@ -180,7 +181,7 @@
 
 <span class="k">def</span> <span class="nf">_filter_by_model_weat_stimuli</span><span class="p">(</span><span class="n">stimuli</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Inplace.&quot;&quot;&quot;</span>
-    <span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">RANDOM_STATE</span><span class="p">)</span>
+
     <span class="k">for</span> <span class="n">group_category</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">,</span> <span class="s1">&#39;attribute&#39;</span><span class="p">]:</span>
         <span class="n">first_group</span> <span class="o">=</span> <span class="s1">&#39;first_&#39;</span> <span class="o">+</span> <span class="n">group_category</span>
         <span class="n">second_group</span> <span class="o">=</span> <span class="s1">&#39;second_&#39;</span> <span class="o">+</span> <span class="n">group_category</span>
@@ -270,11 +271,33 @@
             <span class="s1">&#39;Na&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">x2&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">first_attribute</span><span class="p">[</span><span class="s1">&#39;words&#39;</span><span class="p">]))}</span></div>
 
 
+<div class="viewcode-block" id="calc_weat_pleasant_unpleasant_attribute"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.calc_weat_pleasant_unpleasant_attribute">[docs]</a><span class="k">def</span> <span class="nf">calc_weat_pleasant_unpleasant_attribute</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
+                                            <span class="n">first_target</span><span class="p">,</span> <span class="n">second_target</span><span class="p">,</span>
+                                            <span class="n">with_pvalue</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pvalue_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">weat_data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;first_attribute&#39;</span><span class="p">:</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">WEAT_DATA</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;first_attribute&#39;</span><span class="p">]),</span>
+                 <span class="s1">&#39;second_attribute&#39;</span><span class="p">:</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">WEAT_DATA</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;second_attribute&#39;</span><span class="p">]),</span>
+                 <span class="s1">&#39;first_target&#39;</span><span class="p">:</span> <span class="n">first_target</span><span class="p">,</span>
+                 <span class="s1">&#39;second_target&#39;</span><span class="p">:</span> <span class="n">second_target</span><span class="p">}</span>
+
+    <span class="n">_filter_by_model_weat_stimuli</span><span class="p">(</span><span class="n">weat_data</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">pvalue_kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">pvalue_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="k">return</span> <span class="n">calc_single_weat</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
+                            <span class="o">**</span><span class="n">weat_data</span><span class="p">,</span>
+                            <span class="n">with_pvalue</span><span class="o">=</span><span class="n">with_pvalue</span><span class="p">,</span> <span class="n">pvalue_kwargs</span><span class="o">=</span><span class="n">pvalue_kwargs</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="calc_all_weat"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.calc_all_weat">[docs]</a><span class="k">def</span> <span class="nf">calc_all_weat</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">weat_data</span><span class="o">=</span><span class="s1">&#39;caliskan&#39;</span><span class="p">,</span> <span class="n">filter_by</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
                   <span class="n">with_original_finding</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                   <span class="n">with_pvalue</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pvalue_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Calc the WEAT results of a words embedding on multiple cases.</span>
+
+<span class="sd">    Note that for the effect size and pvalue in the WEAT have</span>
+<span class="sd">    entirely different meaning from those reported in IATs (original finding).</span>
+<span class="sd">    Refer to the paper for more details.</span>
 
 <span class="sd">    :param model: Words embedding model of ``gensim.model.KeyedVectors``</span>
 <span class="sd">    :param dict weat_data: WEAT cases data</span>

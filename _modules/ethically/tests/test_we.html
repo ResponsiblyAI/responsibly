@@ -42,9 +42,13 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pytest</span>
 
-<span class="kn">from</span> <span class="nn">ethically.we</span> <span class="k">import</span> <span class="n">GenderBiasWE</span><span class="p">,</span> <span class="n">calc_all_weat</span>
-<span class="kn">from</span> <span class="nn">ethically.we.data</span> <span class="k">import</span> <span class="n">load_w2v_small</span>
-<span class="kn">from</span> <span class="nn">ethically.we.utils</span> <span class="k">import</span> <span class="n">project_reject_vector</span><span class="p">,</span> <span class="n">project_vector</span>
+<span class="kn">from</span> <span class="nn">ethically.we</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">GenderBiasWE</span><span class="p">,</span> <span class="n">calc_all_weat</span><span class="p">,</span> <span class="n">calc_weat_pleasant_unpleasant_attribute</span><span class="p">,</span>
+<span class="p">)</span>
+<span class="kn">from</span> <span class="nn">ethically.we.data</span> <span class="k">import</span> <span class="n">WEAT_DATA</span><span class="p">,</span> <span class="n">load_w2v_small</span>
+<span class="kn">from</span> <span class="nn">ethically.we.utils</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">project_params</span><span class="p">,</span> <span class="n">project_reject_vector</span><span class="p">,</span> <span class="n">project_vector</span><span class="p">,</span>
+<span class="p">)</span>
 
 <span class="kn">from</span> <span class="nn">..consts</span> <span class="k">import</span> <span class="n">RANDOM_STATE</span>
 
@@ -63,6 +67,20 @@
 <span class="k">def</span> <span class="nf">gender_biased_w2v_small</span><span class="p">():</span>
     <span class="n">model</span> <span class="o">=</span> <span class="n">load_w2v_small</span><span class="p">()</span>
     <span class="k">return</span> <span class="n">GenderBiasWE</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">only_lower</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="test_project_params"><a class="viewcode-back" href="../../../api/ethically.tests.html#ethically.tests.test_we.test_project_params">[docs]</a><span class="k">def</span> <span class="nf">test_project_params</span><span class="p">():</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+    <span class="n">u</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="o">-</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="o">-</span><span class="mi">6</span><span class="p">])</span>
+
+    <span class="p">(</span><span class="n">_</span><span class="p">,</span>
+     <span class="n">projected_vector_v1</span><span class="p">,</span>
+     <span class="n">rejected_vector_v1</span><span class="p">)</span> <span class="o">=</span> <span class="n">project_params</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
+
+    <span class="n">projected_vector_v2</span><span class="p">,</span> <span class="n">rejected_vector_v2</span> <span class="o">=</span> <span class="n">project_reject_vector</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+
+    <span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">projected_vector_v1</span><span class="p">,</span> <span class="n">projected_vector_v2</span><span class="p">)</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">testing</span><span class="o">.</span><span class="n">assert_allclose</span><span class="p">(</span><span class="n">rejected_vector_v1</span><span class="p">,</span> <span class="n">rejected_vector_v2</span><span class="p">)</span></div>
 
 
 <div class="viewcode-block" id="test_words_embbeding_loading"><a class="viewcode-back" href="../../../api/ethically.tests.html#ethically.tests.test_we.test_words_embbeding_loading">[docs]</a><span class="k">def</span> <span class="nf">test_words_embbeding_loading</span><span class="p">(</span><span class="n">gender_biased_w2v_small</span><span class="p">):</span>
@@ -339,6 +357,18 @@
 <div class="viewcode-block" id="test_calc_all_weat"><a class="viewcode-back" href="../../../api/ethically.tests.html#ethically.tests.test_we.test_calc_all_weat">[docs]</a><span class="k">def</span> <span class="nf">test_calc_all_weat</span><span class="p">(</span><span class="n">w2v_small</span><span class="p">):</span>
     <span class="n">calc_all_weat</span><span class="p">(</span><span class="n">w2v_small</span><span class="p">,</span> <span class="n">filter_by</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="n">with_original_finding</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                   <span class="n">with_pvalue</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pvalue_kwargs</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;method&#39;</span><span class="p">:</span> <span class="s1">&#39;approximate&#39;</span><span class="p">})</span></div>
+
+
+<div class="viewcode-block" id="test_calc_weat_pleasant_attribute"><a class="viewcode-back" href="../../../api/ethically.tests.html#ethically.tests.test_we.test_calc_weat_pleasant_attribute">[docs]</a><span class="k">def</span> <span class="nf">test_calc_weat_pleasant_attribute</span><span class="p">(</span><span class="n">w2v_small</span><span class="p">):</span>
+    <span class="n">result_v1</span> <span class="o">=</span> <span class="n">calc_weat_pleasant_unpleasant_attribute</span><span class="p">(</span><span class="n">w2v_small</span><span class="p">,</span>
+                                                        <span class="n">WEAT_DATA</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;first_target&#39;</span><span class="p">],</span>  <span class="c1"># pylint: disable=C0301</span>
+                                                        <span class="n">WEAT_DATA</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="s1">&#39;second_target&#39;</span><span class="p">])</span>  <span class="c1"># pylint: disable=C0301</span>
+    <span class="n">result_v1</span><span class="p">[</span><span class="s1">&#39;p&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">result_v1</span><span class="p">[</span><span class="s1">&#39;p&#39;</span><span class="p">],</span> <span class="mi">2</span><span class="p">)</span>
+
+    <span class="n">result_v2</span> <span class="o">=</span> <span class="n">calc_all_weat</span><span class="p">(</span><span class="n">w2v_small</span><span class="p">)</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+    <span class="n">result_v2</span><span class="p">[</span><span class="s1">&#39;p&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">result_v2</span><span class="p">[</span><span class="s1">&#39;p&#39;</span><span class="p">])</span>
+
+    <span class="k">assert</span> <span class="n">result_v1</span> <span class="o">==</span> <span class="n">result_v2</span></div>
 </pre></div>
 
           </div>

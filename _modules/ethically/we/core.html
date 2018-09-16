@@ -50,7 +50,7 @@
 <span class="kn">from</span> <span class="nn">..consts</span> <span class="k">import</span> <span class="n">RANDOM_STATE</span>
 <span class="kn">from</span> <span class="nn">.benchmark</span> <span class="k">import</span> <span class="n">evaluate_words_embedding</span>
 <span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="p">(</span>
-    <span class="n">assert_gensim_keyed_vectors</span><span class="p">,</span> <span class="n">cosine_similarity</span><span class="p">,</span> <span class="n">normalize</span><span class="p">,</span>
+    <span class="n">assert_gensim_keyed_vectors</span><span class="p">,</span> <span class="n">cosine_similarity</span><span class="p">,</span> <span class="n">normalize</span><span class="p">,</span> <span class="n">project_params</span><span class="p">,</span>
     <span class="n">project_reject_vector</span><span class="p">,</span> <span class="n">project_vector</span><span class="p">,</span> <span class="n">reject_vector</span><span class="p">,</span> <span class="n">round_to_extreme</span><span class="p">,</span>
     <span class="n">take_two_sides_extreme_sorted</span><span class="p">,</span> <span class="n">update_word_vector</span><span class="p">,</span>
 <span class="p">)</span>
@@ -235,6 +235,33 @@
 
         <span class="k">return</span> <span class="n">df</span>
 
+<div class="viewcode-block" id="BiasWordsEmbedding.calc_projection_data"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.core.BiasWordsEmbedding.calc_projection_data">[docs]</a>    <span class="k">def</span> <span class="nf">calc_projection_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">words</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Calculate projection, projected and rejected vectors of a words list.</span>
+
+<span class="sd">        :param list words: List of words</span>
+<span class="sd">        :return: DataFrame of the projection, projected and rejected vectors</span>
+<span class="sd">                 of the words list</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">projection_data</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">word</span> <span class="ow">in</span> <span class="n">words</span><span class="p">:</span>
+            <span class="n">vector</span> <span class="o">=</span> <span class="bp">self</span><span class="p">[</span><span class="n">word</span><span class="p">]</span>
+            <span class="n">projection</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_on_direction</span><span class="p">(</span><span class="n">word</span><span class="p">)</span>
+            <span class="n">normalized_vector</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">vector</span><span class="p">)</span>
+
+            <span class="p">(</span><span class="n">projection</span><span class="p">,</span>
+             <span class="n">projected_vector</span><span class="p">,</span>
+             <span class="n">rejected_vector</span><span class="p">)</span> <span class="o">=</span> <span class="n">project_params</span><span class="p">(</span><span class="n">normalized_vector</span><span class="p">,</span>
+                                               <span class="bp">self</span><span class="o">.</span><span class="n">direction</span><span class="p">)</span>
+
+            <span class="n">projection_data</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;word&#39;</span><span class="p">:</span> <span class="n">word</span><span class="p">,</span>
+                                    <span class="s1">&#39;vector&#39;</span><span class="p">:</span> <span class="n">vector</span><span class="p">,</span>
+                                    <span class="s1">&#39;projection&#39;</span><span class="p">:</span> <span class="n">projection</span><span class="p">,</span>
+                                    <span class="s1">&#39;projected_vector&#39;</span><span class="p">:</span> <span class="n">projected_vector</span><span class="p">,</span>
+                                    <span class="s1">&#39;rejected_vector&#39;</span><span class="p">:</span> <span class="n">rejected_vector</span><span class="p">})</span>
+
+        <span class="k">return</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">projection_data</span><span class="p">)</span></div>
+
 <div class="viewcode-block" id="BiasWordsEmbedding.plot_projection_scores"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.core.BiasWordsEmbedding.plot_projection_scores">[docs]</a>    <span class="k">def</span> <span class="nf">plot_projection_scores</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">words</span><span class="p">,</span> <span class="n">n_extreme</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span>
                                <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">axis_projection_step</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Plot the projection scalar of words on the direction.</span>
@@ -397,7 +424,7 @@
 <div class="viewcode-block" id="BiasWordsEmbedding.generate_analogies"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.core.BiasWordsEmbedding.generate_analogies">[docs]</a>    <span class="k">def</span> <span class="nf">generate_analogies</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_analogies</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">multiple</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                            <span class="n">delta</span><span class="o">=</span><span class="mf">1.</span><span class="p">,</span> <span class="n">restrict_vocab</span><span class="o">=</span><span class="mi">30000</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Generate anologies based on the bias directionself.</span>
+<span class="sd">        Generate analogies based on the bias directionself.</span>
 
 <span class="sd">        x - y ~ direction.</span>
 <span class="sd">        or a:x::b:y when a-b ~ direction.</span>
@@ -406,12 +433,12 @@
 <span class="sd">        corresponds to an angle &lt;= pi/3.</span>
 
 <span class="sd">        :param int n_analogies: Number of analogies to generate.</span>
-<span class="sd">        :param bool multiple: Whether to allow multiple apprerences of a word</span>
+<span class="sd">        :param bool multiple: Whether to allow multiple appearances of a word</span>
 <span class="sd">                              in the analogies.</span>
 <span class="sd">        :param float delta: Threshold for semantic similarity.</span>
 <span class="sd">                            The maximal distance between x and y.</span>
 <span class="sd">        :param int restrict_vocab: The vocabulary size to use.</span>
-<span class="sd">        :return: Data Frame of anologies (x, y), thier distances,</span>
+<span class="sd">        :return: Data Frame of analogies (x, y), their distances,</span>
 <span class="sd">                 and their cosine similarity scores</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -421,17 +448,17 @@
 
         <span class="n">restrict_vocab_vectors</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">vectors</span><span class="p">[:</span><span class="n">restrict_vocab</span><span class="p">]</span>
 
-        <span class="n">normalized_vectores</span> <span class="o">=</span> <span class="p">(</span><span class="n">restrict_vocab_vectors</span>
-                               <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">restrict_vocab_vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">])</span>
+        <span class="n">normalized_vectors</span> <span class="o">=</span> <span class="p">(</span><span class="n">restrict_vocab_vectors</span>
+                              <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">restrict_vocab_vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">])</span>
 
-        <span class="n">pairs_distances</span> <span class="o">=</span> <span class="n">euclidean_distances</span><span class="p">(</span><span class="n">normalized_vectores</span><span class="p">,</span> <span class="n">normalized_vectores</span><span class="p">)</span>
+        <span class="n">pairs_distances</span> <span class="o">=</span> <span class="n">euclidean_distances</span><span class="p">(</span><span class="n">normalized_vectors</span><span class="p">,</span> <span class="n">normalized_vectors</span><span class="p">)</span>
         <span class="n">pairs_indices</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nonzero</span><span class="p">(</span>
             <span class="p">((</span><span class="n">pairs_distances</span> <span class="o">&lt;</span> <span class="n">delta</span><span class="p">)</span>
              <span class="o">&amp;</span> <span class="p">(</span><span class="n">pairs_distances</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">))))</span><span class="o">.</span><span class="n">T</span>
-        <span class="n">x_vecores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">normalized_vectores</span><span class="p">,</span> <span class="n">pairs_indices</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
-        <span class="n">y_vecores</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">normalized_vectores</span><span class="p">,</span> <span class="n">pairs_indices</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">x_vectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">normalized_vectors</span><span class="p">,</span> <span class="n">pairs_indices</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">y_vectors</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="n">normalized_vectors</span><span class="p">,</span> <span class="n">pairs_indices</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-        <span class="n">x_minus_y_vectors</span> <span class="o">=</span> <span class="n">x_vecores</span> <span class="o">-</span> <span class="n">y_vecores</span>
+        <span class="n">x_minus_y_vectors</span> <span class="o">=</span> <span class="n">x_vectors</span> <span class="o">-</span> <span class="n">y_vectors</span>
         <span class="n">normalized_x_minus_y_vectors</span> <span class="o">=</span> <span class="p">(</span><span class="n">x_minus_y_vectors</span>
                                         <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x_minus_y_vectors</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)[:,</span> <span class="kc">None</span><span class="p">])</span>
 
@@ -442,7 +469,8 @@
         <span class="n">sorted_cos_distances_indices_iter</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">sorted_cos_distances_indices</span><span class="p">)</span>
 
         <span class="n">analogies</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="n">generated_words</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">generated_words_x</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
+        <span class="n">generated_words_y</span> <span class="o">=</span> <span class="nb">set</span><span class="p">()</span>
 
         <span class="k">while</span> <span class="nb">len</span><span class="p">(</span><span class="n">analogies</span><span class="p">)</span> <span class="o">&lt;</span> <span class="n">n_analogies</span><span class="p">:</span>
             <span class="n">cos_distance_index</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">sorted_cos_distances_indices_iter</span><span class="p">)</span>
@@ -451,14 +479,14 @@
                               <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">paris_index</span><span class="p">]</span>
 
             <span class="k">if</span> <span class="n">multiple</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">multiple</span>
-                            <span class="ow">and</span> <span class="p">(</span><span class="n">word_x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">generated_words</span>
-                                 <span class="ow">and</span> <span class="n">word_y</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">generated_words</span><span class="p">)):</span>
+                            <span class="ow">and</span> <span class="p">(</span><span class="n">word_x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">generated_words_x</span>
+                                 <span class="ow">and</span> <span class="n">word_y</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">generated_words_y</span><span class="p">)):</span>
                 <span class="n">analogies</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="n">word_x</span><span class="p">,</span>
                                   <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">word_y</span><span class="p">,</span>
                                   <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="n">cos_distances</span><span class="p">[</span><span class="n">cos_distance_index</span><span class="p">],</span>
                                   <span class="s1">&#39;distance&#39;</span><span class="p">:</span> <span class="n">pairs_distances</span><span class="p">[</span><span class="nb">tuple</span><span class="p">(</span><span class="n">paris_index</span><span class="p">)]})</span>
-            <span class="n">generated_words</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">word_x</span><span class="p">)</span>
-            <span class="n">generated_words</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">word_y</span><span class="p">)</span>
+            <span class="n">generated_words_x</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">word_x</span><span class="p">)</span>
+            <span class="n">generated_words_y</span><span class="o">.</span><span class="n">add</span><span class="p">(</span><span class="n">word_y</span><span class="p">)</span>
 
         <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">analogies</span><span class="p">)</span>
         <span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="p">[[</span><span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">,</span> <span class="s1">&#39;distance&#39;</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">]]</span>
@@ -467,7 +495,7 @@
 <div class="viewcode-block" id="BiasWordsEmbedding.calc_direct_bias"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.core.BiasWordsEmbedding.calc_direct_bias">[docs]</a>    <span class="k">def</span> <span class="nf">calc_direct_bias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">neutral_words</span><span class="p">,</span> <span class="n">c</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Calculate the direct bias.</span>
 
-<span class="sd">        Based on the projection of neuteral words on the direction.</span>
+<span class="sd">        Based on the projection of neutral words on the direction.</span>
 
 <span class="sd">        :param list neutral_words: List of neutral words</span>
 <span class="sd">        :param c: Strictness of bias measuring</span>
@@ -517,7 +545,12 @@
                                              <span class="n">neutral_negative_end</span><span class="p">,</span>
                                              <span class="n">words</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">n_extreme</span><span class="o">=</span><span class="mi">5</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Generate closest words to a neutral direction and thier indirect bias.</span>
+<span class="sd">        Generate closest words to a neutral direction and their indirect bias.</span>
+
+<span class="sd">        The direction of the neutral words is used to find</span>
+<span class="sd">        the most extreme words.</span>
+<span class="sd">        The indirect bias is calculated between the most extreme words</span>
+<span class="sd">        and the closest end.</span>
 
 <span class="sd">        :param str neutral_positive_end: A word that define the positive side</span>
 <span class="sd">                                         of the neutral direction.</span>

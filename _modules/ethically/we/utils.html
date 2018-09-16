@@ -81,8 +81,17 @@
 <div class="viewcode-block" id="project_reject_vector"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.utils.project_reject_vector">[docs]</a><span class="k">def</span> <span class="nf">project_reject_vector</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Projecting and rejecting the vector v onto direction u.&quot;&quot;&quot;</span>
     <span class="n">projected_vector</span> <span class="o">=</span> <span class="n">project_vector</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
-    <span class="n">rejected_vector</span> <span class="o">=</span> <span class="n">v</span> <span class="o">-</span> <span class="n">project_vector</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
+    <span class="n">rejected_vector</span> <span class="o">=</span> <span class="n">v</span> <span class="o">-</span> <span class="n">projected_vector</span>
     <span class="k">return</span> <span class="n">projected_vector</span><span class="p">,</span> <span class="n">rejected_vector</span></div>
+
+
+<div class="viewcode-block" id="project_params"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.utils.project_params">[docs]</a><span class="k">def</span> <span class="nf">project_params</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Projecting and rejecting the vector v onto direction u with scalar.&quot;&quot;&quot;</span>
+    <span class="n">normalize_u</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
+    <span class="n">projection</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span> <span class="o">@</span> <span class="n">normalize_u</span><span class="p">)</span>
+    <span class="n">projected_vector</span> <span class="o">=</span> <span class="n">projection</span> <span class="o">*</span> <span class="n">normalize_u</span>
+    <span class="n">rejected_vector</span> <span class="o">=</span> <span class="n">v</span> <span class="o">-</span> <span class="n">projected_vector</span>
+    <span class="k">return</span> <span class="n">projection</span><span class="p">,</span> <span class="n">projected_vector</span><span class="p">,</span> <span class="n">rejected_vector</span></div>
 
 
 <div class="viewcode-block" id="update_word_vector"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.utils.update_word_vector">[docs]</a><span class="k">def</span> <span class="nf">update_word_vector</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">new_vector</span><span class="p">):</span>

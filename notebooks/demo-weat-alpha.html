@@ -43,8 +43,8 @@ biases</a>.
 Science, 356(6334), 183-186.</p>
 <p>WEAT in <code class="docutils literal notranslate"><span class="pre">ethically</span></code> is in a alpha version, and therefore it is not yet
 in the PyPI release. In order to use this coude, you should install
-<code class="docutils literal notranslate"><span class="pre">ethically</span></code> from the <code class="docutils literal notranslate"><span class="pre">feature_weat</span></code> branch by:</p>
-<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--upgrade</span> <span class="pre">git+https://github.com/EthicallyAI/ethically.git&#64;feature_weat</span></code></p>
+<code class="docutils literal notranslate"><span class="pre">ethically</span></code> from the <code class="docutils literal notranslate"><span class="pre">dev</span></code> branch by:</p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">--upgrade</span> <span class="pre">git+https://github.com/EthicallyAI/ethically.git&#64;dev</span></code></p>
 <div class="section" id="imports">
 <h2>Imports<a class="headerlink" href="#imports" title="Permalink to this headline">¶</a></h2>
 <div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ethically.we</span> <span class="k">import</span> <span class="n">calc_all_weat</span>
@@ -109,8 +109,8 @@ in the PyPI release. In order to use this coude, you should install
       <td>Pleasant vs. Unpleasant</td>
       <td>2x2</td>
       <td>24x2</td>
-      <td>0.079599</td>
-      <td>1.0885</td>
+      <td>0.0949031</td>
+      <td>1.23443</td>
       <td>1.6e-01</td>
       <td>32</td>
       <td>1.35</td>
@@ -122,8 +122,8 @@ in the PyPI release. In order to use this coude, you should install
       <td>Pleasant vs. Unpleasant</td>
       <td>16x2</td>
       <td>24x2</td>
-      <td>2.24091</td>
-      <td>1.59012</td>
+      <td>2.11433</td>
+      <td>1.58925</td>
       <td>0</td>
       <td>32</td>
       <td>1.66</td>
@@ -135,9 +135,9 @@ in the PyPI release. In order to use this coude, you should install
       <td>Pleasant vs. Unpleasant</td>
       <td>6x2</td>
       <td>24x2</td>
-      <td>0.256634</td>
-      <td>1.03854</td>
-      <td>4.0e-02</td>
+      <td>0.287312</td>
+      <td>1.10003</td>
+      <td>2.6e-02</td>
       <td>26</td>
       <td>1.17</td>
       <td>1e-5</td>
@@ -608,6 +608,30 @@ in the PyPI release. In order to use this coude, you should install
   </tbody>
 </table>
 </div><p>Results from the paper: <img alt="image0" src="../_images/weat_w2v.png" /></p>
+</div>
+<div class="section" id="calculate-weat-on-pleasant-unpleasant-attributes-with-chosen-targets-experimental">
+<h2>Calculate WEAT on pleasant-unpleasant attributes with chosen targets (Experimental)<a class="headerlink" href="#calculate-weat-on-pleasant-unpleasant-attributes-with-chosen-targets-experimental" title="Permalink to this headline">¶</a></h2>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ethically.we</span> <span class="k">import</span> <span class="n">calc_weat_pleasant_unpleasant_attribute</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">targets</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;first_target&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Citizen&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;words&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;citizen&#39;</span><span class="p">,</span> <span class="s1">&#39;citizenship&#39;</span><span class="p">,</span> <span class="s1">&#39;nationality&#39;</span><span class="p">,</span> <span class="s1">&#39;native&#39;</span><span class="p">,</span> <span class="s1">&#39;national&#39;</span><span class="p">,</span> <span class="s1">&#39;countryman&#39;</span><span class="p">,</span>
+                                      <span class="s1">&#39;inhabitant&#39;</span><span class="p">,</span> <span class="s1">&#39;resident&#39;</span><span class="p">]},</span>
+          <span class="s1">&#39;second_target&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Immigrant&#39;</span><span class="p">,</span>
+                            <span class="s1">&#39;words&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;immigrant&#39;</span><span class="p">,</span> <span class="s1">&#39;immigration&#39;</span><span class="p">,</span> <span class="s1">&#39;foreigner&#39;</span><span class="p">,</span> <span class="s1">&#39;nonnative&#39;</span><span class="p">,</span> <span class="s1">&#39;noncitizen&#39;</span><span class="p">,</span>
+                                      <span class="s1">&#39;relocatee&#39;</span><span class="p">,</span> <span class="s1">&#39;newcomer&#39;</span><span class="p">]}}</span>
+<span class="n">calc_weat_pleasant_unpleasant_attribute</span><span class="p">(</span><span class="n">w2v_model</span><span class="p">,</span> <span class="o">**</span><span class="n">targets</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;Attrib. words&#39;</span><span class="p">:</span> <span class="s1">&#39;Pleasant vs. Unpleasant&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Na&#39;</span><span class="p">:</span> <span class="s1">&#39;25x2&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Nt&#39;</span><span class="p">:</span> <span class="s1">&#39;6x2&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;Target words&#39;</span><span class="p">:</span> <span class="s1">&#39;Citizen vs. Immigrant&#39;</span><span class="p">,</span>
+ <span class="s1">&#39;d&#39;</span><span class="p">:</span> <span class="mf">0.71920586</span><span class="p">,</span>
+ <span class="s1">&#39;p&#39;</span><span class="p">:</span> <span class="mf">0.135</span><span class="p">,</span>
+ <span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="mf">0.23210221529006958</span><span class="p">}</span>
+</pre></div>
+</div>
 </div>
 </div>
 
