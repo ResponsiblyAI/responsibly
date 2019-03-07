@@ -6,6 +6,7 @@ Subpackages
 
 .. toctree::
 
+    ethically.dataset
     ethically.tests
     ethically.we
 

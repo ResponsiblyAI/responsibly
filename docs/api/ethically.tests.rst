@@ -12,6 +12,14 @@ ethically.tests.conftest module
     :undoc-members:
     :show-inheritance:
 
+ethically.tests.test\_dataset module
+------------------------------------
+
+.. automodule:: ethically.tests.test_dataset
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 ethically.tests.test\_we module
 -------------------------------
 
