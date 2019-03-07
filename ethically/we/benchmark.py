@@ -39,14 +39,9 @@ Analogies Tasks
 """
 
 import os
-import warnings
 
 import pandas as pd
 from pkg_resources import resource_filename
-
-
-with warnings.catch_warnings():
-    warnings.simplefilter('ignore', category=FutureWarning)
 
 
 WORD_PAIRS_TASKS = {'WS353': 'wordsim353.tsv',

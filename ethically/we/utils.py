@@ -60,9 +60,9 @@ def project_params(u, v):
 
 
 def update_word_vector(model, word, new_vector):
-    model.syn0[model.vocab[word].index] = new_vector
-    if model.syn0norm is not None:
-        model.syn0norm[model.vocab[word].index] = normalize(new_vector)
+    model.vectors[model.vocab[word].index] = new_vector
+    if model.vectors_norm is not None:
+        model.vectors_norm[model.vocab[word].index] = normalize(new_vector)
 
 
 def generate_one_word_forms(word):
