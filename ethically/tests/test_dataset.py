@@ -11,7 +11,7 @@ def compas_ds():
     return COMPASDataset()
 
 
-def test_validate(compas_ds):
+def test_compas_validate(compas_ds):
     compas_ds._validate()   # pylint: disable=protected-access
 
 
