@@ -9,9 +9,9 @@ SENSITIVE_ATTRIBUTES = ['race', 'gender']
 
 class Dataset(abc.ABC):
     @abc.abstractmethod
-    def __init__(self, path, sensitive_attributes):
+    def __init__(self, sensitive_attributes):
 
-        p = Path(path)
+        self.df = self._load_data()
 
         self.df = pd.read_csv(path)
         self._preprocess()
@@ -28,7 +28,11 @@ class Dataset(abc.ABC):
                 .format(self._name,
                         len(self.df),
                         len(self.df.columns),
-                        self.sensitive_attributes))
+                        ', '.join(self.sensitive_attributes)))
+
+    @abc.abstractmethod
+    def _load_data(self):
+        pass
 
     @abc.abstractmethod
     def _preprocess(self):

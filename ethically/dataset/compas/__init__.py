@@ -19,8 +19,10 @@ class COMPASDataset(Dataset):
     """
 
     def __init__(self):
-        super().__init__(COMPAS_PATH,
-                         sensitive_attributes=['race'])
+        super().__init__(sensitive_attributes=['race'])
+
+    def _load_data(self):
+        return pd.read_csv(COMPAS_PATH)
 
     def _preprocess(self):
         """Perform the same preprocessing as the original analysis.
