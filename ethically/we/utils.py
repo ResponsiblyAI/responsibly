@@ -2,6 +2,7 @@ import math
 
 import numpy as np
 import pandas as pd
+from gensim.models.keyedvectors import KeyedVectors
 
 
 def round_to_extreme(value, digits=2):
@@ -45,8 +46,17 @@ def reject_vector(v, u):
 def project_reject_vector(v, u):
     """Projecting and rejecting the vector v onto direction u."""
     projected_vector = project_vector(v, u)
-    rejected_vector = v - project_vector(v, u)
+    rejected_vector = v - projected_vector
     return projected_vector, rejected_vector
+
+
+def project_params(u, v):
+    """Projecting and rejecting the vector v onto direction u with scalar."""
+    normalize_u = normalize(u)
+    projection = (v @ normalize_u)
+    projected_vector = projection * normalize_u
+    rejected_vector = v - projected_vector
+    return projection, projected_vector, rejected_vector
 
 
 def update_word_vector(model, word, new_vector):
@@ -77,3 +87,9 @@ def take_two_sides_extreme_sorted(df, n_extreme,
     return (pd.concat([head_df, tail_df])
             .drop_duplicates()
             .reset_index(drop=True))
+
+
+def assert_gensim_keyed_vectors(model):
+    if not isinstance(model, KeyedVectors):
+        raise TypeError('model should be of type KeyedVectors, not {}'
+                        .format(type(model)))

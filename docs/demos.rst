@@ -7,4 +7,5 @@ Demos
 
   notebooks/demo-gender-bias-words-embedding
   notebooks/exploratory-demo-race-bias-words-embedding
+  notebooks/demo-weat-alpha
   notebooks/demo-compas-analysis

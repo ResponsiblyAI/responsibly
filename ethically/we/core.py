@@ -4,7 +4,6 @@ import matplotlib.pylab as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from gensim.models.keyedvectors import KeyedVectors
 from scipy.stats import spearmanr
 from sklearn.decomposition import PCA
 from sklearn.metrics.pairwise import euclidean_distances
@@ -16,9 +15,9 @@ from tabulate import tabulate
 from ..consts import RANDOM_STATE
 from .benchmark import evaluate_words_embedding
 from .utils import (
-    cosine_similarity, normalize, project_reject_vector, project_vector,
-    reject_vector, round_to_extreme, take_two_sides_extreme_sorted,
-    update_word_vector,
+    assert_gensim_keyed_vectors, cosine_similarity, normalize, project_params,
+    project_reject_vector, project_vector, reject_vector, round_to_extreme,
+    take_two_sides_extreme_sorted, update_word_vector,
 )
 
 
@@ -39,9 +38,7 @@ class BiasWordsEmbedding:
 
     def __init__(self, model, only_lower=False, verbose=False,
                  identify_direction=False):
-        if not isinstance(model, KeyedVectors):
-            raise TypeError('model should be of type KeyedVectors, not {}'
-                            .format(type(model)))
+        assert_gensim_keyed_vectors(model)
 
         # TODO: this is bad Python, ask someone about it
         # probably should be a better design
@@ -202,6 +199,33 @@ class BiasWordsEmbedding:
         df = df.sort_values('projection', ascending=False)
 
         return df
+
+    def calc_projection_data(self, words):
+        """
+        Calculate projection, projected and rejected vectors of a words list.
+
+        :param list words: List of words
+        :return: DataFrame of the projection, projected and rejected vectors
+                 of the words list
+        """
+        projection_data = []
+        for word in words:
+            vector = self[word]
+            projection = self.project_on_direction(word)
+            normalized_vector = normalize(vector)
+
+            (projection,
+             projected_vector,
+             rejected_vector) = project_params(normalized_vector,
+                                               self.direction)
+
+            projection_data.append({'word': word,
+                                    'vector': vector,
+                                    'projection': projection,
+                                    'projected_vector': projected_vector,
+                                    'rejected_vector': rejected_vector})
+
+        return pd.DataFrame(projection_data)
 
     def plot_projection_scores(self, words, n_extreme=10,
                                ax=None, axis_projection_step=None):
@@ -365,7 +389,7 @@ class BiasWordsEmbedding:
     def generate_analogies(self, n_analogies=100, multiple=False,
                            delta=1., restrict_vocab=30000):
         """
-        Generate anologies based on the bias directionself.
+        Generate analogies based on the bias directionself.
 
         x - y ~ direction.
         or a:x::b:y when a-b ~ direction.
@@ -374,12 +398,12 @@ class BiasWordsEmbedding:
         corresponds to an angle <= pi/3.
 
         :param int n_analogies: Number of analogies to generate.
-        :param bool multiple: Whether to allow multiple apprerences of a word
+        :param bool multiple: Whether to allow multiple appearances of a word
                               in the analogies.
         :param float delta: Threshold for semantic similarity.
                             The maximal distance between x and y.
         :param int restrict_vocab: The vocabulary size to use.
-        :return: Data Frame of anologies (x, y), thier distances,
+        :return: Data Frame of analogies (x, y), their distances,
                  and their cosine similarity scores
         """
 
@@ -389,17 +413,17 @@ class BiasWordsEmbedding:
 
         restrict_vocab_vectors = self.model.vectors[:restrict_vocab]
 
-        normalized_vectores = (restrict_vocab_vectors
-                               / np.linalg.norm(restrict_vocab_vectors, axis=1)[:, None])
+        normalized_vectors = (restrict_vocab_vectors
+                              / np.linalg.norm(restrict_vocab_vectors, axis=1)[:, None])
 
-        pairs_distances = euclidean_distances(normalized_vectores, normalized_vectores)
+        pairs_distances = euclidean_distances(normalized_vectors, normalized_vectors)
         pairs_indices = np.array(np.nonzero(
             ((pairs_distances < delta)
              & (pairs_distances != 0)))).T
-        x_vecores = np.take(normalized_vectores, pairs_indices[:, 0], axis=0)
-        y_vecores = np.take(normalized_vectores, pairs_indices[:, 1], axis=0)
+        x_vectors = np.take(normalized_vectors, pairs_indices[:, 0], axis=0)
+        y_vectors = np.take(normalized_vectors, pairs_indices[:, 1], axis=0)
 
-        x_minus_y_vectors = x_vecores - y_vecores
+        x_minus_y_vectors = x_vectors - y_vectors
         normalized_x_minus_y_vectors = (x_minus_y_vectors
                                         / np.linalg.norm(x_minus_y_vectors, axis=1)[:, None])
 
@@ -410,7 +434,8 @@ class BiasWordsEmbedding:
         sorted_cos_distances_indices_iter = iter(sorted_cos_distances_indices)
 
         analogies = []
-        generated_words = set()
+        generated_words_x = set()
+        generated_words_y = set()
 
         while len(analogies) < n_analogies:
             cos_distance_index = next(sorted_cos_distances_indices_iter)
@@ -419,14 +444,14 @@ class BiasWordsEmbedding:
                               for index in paris_index]
 
             if multiple or (not multiple
-                            and (word_x not in generated_words
-                                 and word_y not in generated_words)):
+                            and (word_x not in generated_words_x
+                                 and word_y not in generated_words_y)):
                 analogies.append({'x': word_x,
                                   'y': word_y,
                                   'score': cos_distances[cos_distance_index],
                                   'distance': pairs_distances[tuple(paris_index)]})
-            generated_words.add(word_x)
-            generated_words.add(word_y)
+            generated_words_x.add(word_x)
+            generated_words_y.add(word_y)
 
         df = pd.DataFrame(analogies)
         df = df[['x', 'y', 'distance', 'score']]
@@ -435,7 +460,7 @@ class BiasWordsEmbedding:
     def calc_direct_bias(self, neutral_words, c=None):
         """Calculate the direct bias.
 
-        Based on the projection of neuteral words on the direction.
+        Based on the projection of neutral words on the direction.
 
         :param list neutral_words: List of neutral words
         :param c: Strictness of bias measuring
@@ -485,7 +510,12 @@ class BiasWordsEmbedding:
                                              neutral_negative_end,
                                              words=None, n_extreme=5):
         """
-        Generate closest words to a neutral direction and thier indirect bias.
+        Generate closest words to a neutral direction and their indirect bias.
+
+        The direction of the neutral words is used to find
+        the most extreme words.
+        The indirect bias is calculated between the most extreme words
+        and the closest end.
 
         :param str neutral_positive_end: A word that define the positive side
                                          of the neutral direction.
