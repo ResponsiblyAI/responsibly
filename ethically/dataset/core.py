@@ -13,7 +13,6 @@ class Dataset(abc.ABC):
 
         self.df = self._load_data()
 
-        self.df = pd.read_csv(path)
         self._preprocess()
 
         self._name = self.__doc__.splitlines()[0]

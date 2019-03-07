@@ -15,7 +15,6 @@ class COMPASDataset(Dataset):
     Source
     ------
     https://github.com/propublica/compas-analysis
-
     """
 
     def __init__(self):
