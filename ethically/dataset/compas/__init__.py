@@ -12,7 +12,8 @@ COMPAS_PATH = resource_filename(__name__,
 class COMPASDataset(Dataset):
     """ProPublica Recidivism/COMPAS.
 
-    ## Source
+    Source
+    ------
     https://github.com/propublica/compas-analysis
 
     """
