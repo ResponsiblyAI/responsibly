@@ -39,7 +39,6 @@ Analogies Tasks
 """
 
 import os
-import warnings
 
 import pandas as pd
 from pkg_resources import resource_filename

@@ -1,9 +1,9 @@
 # TODO how import files from a package
 import json
 import warnings
-from pkg_resources import resource_filename, resource_string
 
 from gensim.models.keyedvectors import KeyedVectors
+from pkg_resources import resource_filename, resource_string
 
 
 def load_w2v_small():
