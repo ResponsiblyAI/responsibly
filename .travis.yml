@@ -10,7 +10,7 @@ cache:
 env:
   global:
     - RANDOM_SEED=0
-    - BOTO_CONFIG=/dev/null
+    - BOTO_CONFIG=/dev/null  # https://github.com/travis-ci/travis-ci/issues/7940
 
 before_install:
   - pip install pipenv
