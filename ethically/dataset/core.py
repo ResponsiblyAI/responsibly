@@ -23,8 +23,8 @@ class Dataset(abc.ABC):
         self._validate()
 
     def __str__(self):
-        return ('<{}: {} rows, {} columns'
-                ' in which {} are sensitive attributes>'
+        return ('<{} {} rows, {} columns'
+                ' in which {{{}}} are sensitive attributes>'
                 .format(self._name,
                         len(self.df),
                         len(self.df.columns),

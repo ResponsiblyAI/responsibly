@@ -13,3 +13,10 @@ def compas_ds():
 
 def test_validate(compas_ds):
     compas_ds._validate()   # pylint: disable=protected-access
+
+
+def test_compas_str(compas_ds):
+    assert (str(compas_ds)
+            == '<ProPublica Recidivism/COMPAS.'
+            ' 6172 rows, 55 columns'
+            ' in which {race} are sensitive attributes>')
