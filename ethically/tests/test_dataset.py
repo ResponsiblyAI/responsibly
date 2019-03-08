@@ -3,7 +3,7 @@
 
 import pytest
 
-from ethically.dataset import COMPASDataset, GermanDataset
+from ethically.dataset import AdultDataset, COMPASDataset, GermanDataset
 
 
 @pytest.fixture
@@ -14,6 +14,11 @@ def compas_ds():
 @pytest.fixture
 def german_ds():
     return GermanDataset()
+
+
+@pytest.fixture
+def adult_ds():
+    return AdultDataset()
 
 
 def test_compas_validate(compas_ds):
@@ -36,3 +41,14 @@ def test_german_str(german_ds):
             == '<German Credit Dataset.'
             ' 1000 rows, 23 columns'
             ' in which {age_factor} are sensitive attributes>')
+
+
+def test_adult_validate(adult_ds):
+    adult_ds._validate()   # pylint: disable=protected-access
+
+
+def test_adult_str(adult_ds):
+    assert (str(adult_ds)
+            == '<Adult Dataset.'
+            ' 45222 rows, 15 columns'
+            ' in which {gender, race} are sensitive attributes>')
