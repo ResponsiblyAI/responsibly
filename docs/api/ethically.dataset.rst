@@ -6,7 +6,9 @@ Subpackages
 
 .. toctree::
 
+    ethically.dataset.adult
     ethically.dataset.compas
+    ethically.dataset.german
 
 Submodules
 ----------

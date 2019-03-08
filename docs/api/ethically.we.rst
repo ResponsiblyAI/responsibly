@@ -43,6 +43,14 @@ ethically.we.utils module
     :undoc-members:
     :show-inheritance:
 
+ethically.we.weat module
+------------------------
+
+.. automodule:: ethically.we.weat
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
 
 Module contents
 ---------------
