@@ -51,4 +51,4 @@ def test_adult_str(adult_ds):
     assert (str(adult_ds)
             == '<Adult Dataset.'
             ' 45222 rows, 15 columns'
-            ' in which {gender, race} are sensitive attributes>')
+            ' in which {sex, race} are sensitive attributes>')
