@@ -45,8 +45,9 @@ class COMPASDataset(Dataset):
                                            'HighScore', 'LowScore')
 
     def _validate(self):
+        # pylint: disable=line-too-long
         super()._validate()
         assert len(self.df) == 6172, 'the number of rows should be 6172,'\
                                      ' but it is {}.'.format(len(self.df))
         assert len(self.df.columns) == 55, 'the number of columns should be 55,'\
-                                     ' but it is {}.'.format(len(self.df.columns))
+                                           ' but it is {}.'.format(len(self.df.columns))
