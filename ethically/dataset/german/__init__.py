@@ -56,8 +56,7 @@ class GermanDataset(Dataset):
     than it is to class a customer as bad when they are good (1).
     """
 
-    def __init__(self, only_categorical=True):
-        self._only_categorical = only_categorical
+    def __init__(self):
         super().__init__(sensitive_attributes=['age_factor'])
 
     def _load_data(self):
