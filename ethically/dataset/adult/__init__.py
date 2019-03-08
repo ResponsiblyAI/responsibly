@@ -26,7 +26,8 @@ class AdultDataset(Dataset):
     """
 
     def __init__(self):
-        super().__init__(sensitive_attributes=['sex', 'race'])
+        super().__init__(target='income_per_year',
+                         sensitive_attributes=['sex', 'race'])
 
     def _load_data(self):
         train_df = pd.read_csv(ADULT_TRAIN_PATH, names=COLUMN_NAMES,

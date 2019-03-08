@@ -6,7 +6,7 @@ import abc
 
 class Dataset(abc.ABC):
     @abc.abstractmethod
-    def __init__(self, sensitive_attributes):
+    def __init__(self, target, sensitive_attributes):
 
         self.df = self._load_data()
 
@@ -14,6 +14,7 @@ class Dataset(abc.ABC):
 
         self._name = self.__doc__.splitlines()[0]
 
+        self.target = target
         self.sensitive_attributes = sensitive_attributes
 
         self._validate()
@@ -36,7 +37,18 @@ class Dataset(abc.ABC):
 
     @abc.abstractmethod
     def _validate(self):
-        pass
+        # pylint: disable=line-too-long
+
+        assert self.target in self.df.columns,\
+            ('the target label \'{}\' should be in the columns'
+             .format(self.target))
+
+        assert all(attr in self.df.columns
+                   for attr in self.sensitive_attributes),\
+            ('the sensitive attributes {{{}}} should be in the columns'
+             .format(','.join(attr for attr in self.sensitive_attributes
+                              if attr not in self.df.columns)))
+
         # assert all(attr in SENSITIVE_ATTRIBUTES
         #           for attr in self.sensitive_attributes),\
         # ('the sensitive attributes {} can be only from {}.'  # noqa

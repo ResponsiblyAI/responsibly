@@ -57,7 +57,8 @@ class GermanDataset(Dataset):
     """
 
     def __init__(self):
-        super().__init__(sensitive_attributes=['age_factor'])
+        super().__init__(target='credit',
+                         sensitive_attributes=['age_factor'])
 
     def _load_data(self):
         return pd.read_csv(GERMAN_PATH, sep=' ', names=COLUMN_NAMES,

@@ -18,7 +18,8 @@ class COMPASDataset(Dataset):
     """
 
     def __init__(self):
-        super().__init__(sensitive_attributes=['race'])
+        super().__init__(target='is_recid',
+                         sensitive_attributes=['race'])
 
     def _load_data(self):
         return pd.read_csv(COMPAS_PATH)
