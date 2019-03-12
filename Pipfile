@@ -6,11 +6,15 @@ name = "pypi"
 [requires]
 python_version = "3.5"
 
+[packages]
+ethically = {editable = true,path = "."}
+
 [dev-packages]
 # Linters
 isort = "*"
 pylint = "*"
 pycodestyle = "*"
+pep8 = "*"
 pydocstyle = "*"
 restructuredtext_lint = "*"
 # Testing
