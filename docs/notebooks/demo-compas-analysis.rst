@@ -426,3 +426,244 @@ decile scores as those scores increase for white defendants.
     </div>
 
 
+
+Fairness Demographic Classification Criteria
+--------------------------------------------
+
+Based on: https://fairmlbook.org/demographic.html
+
+.. code:: ipython3
+
+    from ethically.fairness.metrics import (independence_binary,
+                                            separation_binary,
+                                            sufficiency_binary)
+
+Independence
+~~~~~~~~~~~~
+
+.. code:: ipython3
+
+    indp, indp_cmp = independence_binary((df_race_focused['decile_score'] > 4),
+                                         df_race_focused['race'],
+                                         'Caucasian',
+                                         as_df=True)
+
+.. code:: ipython3
+
+    indp.plot(kind='bar')
+
+
+
+
+.. parsed-literal::
+
+    <matplotlib.axes._subplots.AxesSubplot at 0x1a26d69da0>
+
+
+
+
+.. image:: demo-compas-analysis_files/demo-compas-analysis_24_1.png
+
+
+.. code:: ipython3
+
+    indp_cmp
+
+
+
+
+.. raw:: html
+
+    <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
+    <table border="1" class="dataframe">
+      <thead>
+        <tr style="text-align: right;">
+          <th></th>
+          <th>acceptance_rate</th>
+        </tr>
+        <tr>
+          <th>African-American vs. Caucasian</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>diff</th>
+          <td>-0.245107</td>
+        </tr>
+        <tr>
+          <th>ratio</th>
+          <td>0.633646</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+
+
+Separation
+~~~~~~~~~~
+
+.. code:: ipython3
+
+    sep, sep_cmp = separation_binary(df_race_focused['two_year_recid'],
+                                     (df_race_focused['decile_score'] > 4),
+                                     df_race_focused['race'],
+                                     'Caucasian',
+                                    as_df=True)
+
+.. code:: ipython3
+
+    sep.plot(kind='bar');
+
+
+
+.. image:: demo-compas-analysis_files/demo-compas-analysis_28_0.png
+
+
+.. code:: ipython3
+
+    sep_cmp
+
+
+
+
+.. raw:: html
+
+    <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
+    <table border="1" class="dataframe">
+      <thead>
+        <tr style="text-align: right;">
+          <th></th>
+          <th>tpr</th>
+          <th>fpr</th>
+          <th>tnr</th>
+          <th>fnr</th>
+        </tr>
+        <tr>
+          <th>African-American vs. Caucasian</th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>diff</th>
+          <td>0.211582</td>
+          <td>0.203241</td>
+          <td>-0.203241</td>
+          <td>-0.211582</td>
+        </tr>
+        <tr>
+          <th>ratio</th>
+          <td>1.420098</td>
+          <td>1.923234</td>
+          <td>0.739387</td>
+          <td>0.573724</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+
+
+Sufficiency
+~~~~~~~~~~~
+
+.. code:: ipython3
+
+    suff, suff_cmp = sufficiency_binary(df_race_focused['two_year_recid'],
+                                       (df_race_focused['decile_score'] > 4),
+                                       df_race_focused['race'],
+                                       'Caucasian',
+                                       as_df=True)
+
+.. code:: ipython3
+
+    suff.plot(kind='bar');
+
+
+
+.. image:: demo-compas-analysis_files/demo-compas-analysis_32_0.png
+
+
+.. code:: ipython3
+
+    suff_cmp
+
+
+
+
+.. raw:: html
+
+    <div>
+    <style scoped>
+        .dataframe tbody tr th:only-of-type {
+            vertical-align: middle;
+        }
+    
+        .dataframe tbody tr th {
+            vertical-align: top;
+        }
+    
+        .dataframe thead th {
+            text-align: right;
+        }
+    </style>
+    <table border="1" class="dataframe">
+      <thead>
+        <tr style="text-align: right;">
+          <th></th>
+          <th>ppv</th>
+          <th>npv</th>
+        </tr>
+        <tr>
+          <th>African-American vs. Caucasian</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th>diff</th>
+          <td>0.054708</td>
+          <td>-0.061433</td>
+        </tr>
+        <tr>
+          <th>ratio</th>
+          <td>1.091972</td>
+          <td>0.913477</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+
+
