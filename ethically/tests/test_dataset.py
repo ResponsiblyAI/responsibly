@@ -27,9 +27,9 @@ def test_compas_validate(compas_ds):
 
 def test_compas_str(compas_ds):
     assert (str(compas_ds)
-            == '<ProPublica Recidivism/COMPAS.'
-            ' 6172 rows, 55 columns'
-            ' in which {race} are sensitive attributes>')
+            == '<ProPublica Recidivism/COMPAS Dataset.'
+            ' 6172 rows, 56 columns'
+            ' in which {race, sex} are sensitive attributes>')
 
 
 def test_german_validate(german_ds):
