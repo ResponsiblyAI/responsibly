@@ -1,12 +1,37 @@
 import abc
 
 
-# SENSITIVE_ATTRIBUTES = ['race', 'gender']
-
-
 class Dataset(abc.ABC):
+    """Base class for datasets.
+
+    Attributes
+        - `df` - `pandas.DataFrame` that holds the actual data.
+
+        - `target` - Column name of the variable to predict
+                    (ground truth)
+
+        - `sensitive_attributes` - Column name of the
+                                sensitive attributes
+
+        - `prediction` - Columns name of the
+                        prediction (optional)
+
+    """
+
     @abc.abstractmethod
-    def __init__(self, target, sensitive_attributes):
+    def __init__(self, target, sensitive_attributes, prediction=None):
+        """Load, preprocess and validate the dataset.
+
+        :param target: Column name of the variable
+                    to predict (ground truth)
+        :param sensitive_attributes: Column name of the
+                                    sensitive attributes
+        :param prediction: Columns name of the
+                           prediction (optional)
+        :type target: str
+        :type sensitive_attributes: list
+        :type prediction: str
+        """
 
         self.df = self._load_data()
 
@@ -16,6 +41,7 @@ class Dataset(abc.ABC):
 
         self.target = target
         self.sensitive_attributes = sensitive_attributes
+        self.prediction = prediction
 
         self._validate()
 
