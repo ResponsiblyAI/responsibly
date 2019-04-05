@@ -37,8 +37,8 @@ class GermanDataset(Dataset):
         - https://archive.ics.uci.edu/ml/datasets/statlog+(german+credit+data)
         - Kamiran, F., & Calders, T. (2009, February).
           Classifying without discriminating.
-          In 2009 2nd International Conference on Computer, Control and Communication
-          (pp. 1-6). IEEE.
+          In 2009 2nd International Conference on Computer, Control
+          and Communication (pp. 1-6). IEEE.
           http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.182.6067&rep=rep1&type=pdf
 
 

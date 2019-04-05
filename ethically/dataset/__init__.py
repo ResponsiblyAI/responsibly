@@ -1,6 +1,6 @@
 """
-:obj:`ethically.dataset` holds common benchmark datasets
-from the machine learning fairness research.
+Collection of common benchmark datasets from fairness research.
+
 Each dataset object contains a `pandas.DataFrame` as `df` attribute
 that holds the actual data.
 The dataset object will take care of loading, preprocessing
@@ -27,7 +27,8 @@ Usage
     >>> from ethically.dataset import COMPASDataset
     >>> compas_ds = COMPASDataset()
     >>> print(compas_ds)
-    <ProPublica Recidivism/COMPAS Dataset. 6172 rows, 56 columns in which {race, sex} are sensitive attributes>
+    <ProPublica Recidivism/COMPAS Dataset. 6172 rows, 56 columns in
+    which {race, sex} are sensitive attributes>
     >>> type(compas_ds.df)
     <class 'pandas.core.frame.DataFrame'>
     >>> compas_ds.df['race'].value_counts()

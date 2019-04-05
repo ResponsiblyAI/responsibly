@@ -27,6 +27,7 @@ class AdultDataset(Dataset):
 
     References:
         https://archive.ics.uci.edu/ml/datasets/adult
+
     """
 
     def __init__(self):
