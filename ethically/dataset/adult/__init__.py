@@ -1,3 +1,5 @@
+__all__ = ['AdultDataset']
+
 import numpy as np
 import pandas as pd
 from pkg_resources import resource_filename
@@ -20,9 +22,11 @@ COLUMN_NAMES = ['age', 'workclass', 'fnlwgt', 'education',
 class AdultDataset(Dataset):
     """Adult Dataset.
 
-    Source
-    ------
-    https://archive.ics.uci.edu/ml/datasets/adult
+    See :class:`~ethically.dataset.Dataset` for a description of
+    the arguments and attributes.
+
+    References:
+        https://archive.ics.uci.edu/ml/datasets/adult
     """
 
     def __init__(self):

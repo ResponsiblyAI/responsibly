@@ -1,3 +1,5 @@
+__all__ = ['COMPASDataset']
+
 import numpy as np
 import pandas as pd
 from pkg_resources import resource_filename
@@ -10,16 +12,20 @@ COMPAS_PATH = resource_filename(__name__,
 
 
 class COMPASDataset(Dataset):
-    """ProPublica Recidivism/COMPAS.
+    """ProPublica Recidivism/COMPAS Dataset.
 
-    Source
-    ------
-    https://github.com/propublica/compas-analysis
+    See :class:`~ethically.dataset.Dataset` for a description of
+    the arguments and attributes.
+
+    References:
+        https://github.com/propublica/compas-analysis
     """
 
     def __init__(self):
         super().__init__(target='is_recid',
-                         sensitive_attributes=['race'])
+                         sensitive_attributes=['race', 'sex'],
+                         prediction=['y_pred', 'score_factor',
+                                     'score_text'])
 
     def _load_data(self):
         return pd.read_csv(COMPAS_PATH)
@@ -44,6 +50,7 @@ class COMPASDataset(Dataset):
         self.df['score_factor'] = np.where(self.df['score_text']
                                            != 'Low',
                                            'HighScore', 'LowScore')
+        self.df['y_pred'] = (self.df['score_factor'] == 'HighScore')
 
     def _validate(self):
         # pylint: disable=line-too-long
@@ -51,5 +58,5 @@ class COMPASDataset(Dataset):
 
         assert len(self.df) == 6172, 'the number of rows should be 6172,'\
                                      ' but it is {}.'.format(len(self.df))
-        assert len(self.df.columns) == 55, 'the number of columns should be 55,'\
+        assert len(self.df.columns) == 56, 'the number of columns should be 56,'\
                                            ' but it is {}.'.format(len(self.df.columns))
