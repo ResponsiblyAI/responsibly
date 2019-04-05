@@ -41,10 +41,7 @@ class Dataset(abc.ABC):
 
         self.target = target
         self.sensitive_attributes = sensitive_attributes
-<<<<<<< HEAD
         self.prediction = prediction
-=======
->>>>>>> dev
 
         self._validate()
 
