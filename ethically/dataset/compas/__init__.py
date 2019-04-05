@@ -24,9 +24,13 @@ class COMPASDataset(Dataset):
 
     def __init__(self):
         super().__init__(target='is_recid',
+<<<<<<< HEAD
                          sensitive_attributes=['race', 'sex'],
                          prediction=['y_pred', 'score_factor',
                                      'score_text'])
+=======
+                         sensitive_attributes=['race'])
+>>>>>>> dev
 
     def _load_data(self):
         return pd.read_csv(COMPAS_PATH)
@@ -51,7 +55,10 @@ class COMPASDataset(Dataset):
         self.df['score_factor'] = np.where(self.df['score_text']
                                            != 'Low',
                                            'HighScore', 'LowScore')
+<<<<<<< HEAD
         self.df['y_pred'] = (self.df['score_factor'] == 'HighScore')
+=======
+>>>>>>> dev
 
     def _validate(self):
         # pylint: disable=line-too-long
@@ -59,5 +66,9 @@ class COMPASDataset(Dataset):
 
         assert len(self.df) == 6172, 'the number of rows should be 6172,'\
                                      ' but it is {}.'.format(len(self.df))
+<<<<<<< HEAD
         assert len(self.df.columns) == 56, 'the number of columns should be 56,'\
+=======
+        assert len(self.df.columns) == 55, 'the number of columns should be 55,'\
+>>>>>>> dev
                                            ' but it is {}.'.format(len(self.df.columns))

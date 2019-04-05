@@ -7,8 +7,11 @@ from pkg_resources import resource_filename, resource_stream
 from ethically.dataset.core import Dataset
 
 
+<<<<<<< HEAD
 __all__ = ['GermanDataset']
 
+=======
+>>>>>>> dev
 GERMAN_PATH = resource_filename(__name__,
                                 'german.data')
 
@@ -30,6 +33,7 @@ COLUMN_NAMES = ['status', 'duration', 'credit_history', 'purpose',
 class GermanDataset(Dataset):
     """German Credit Dataset.
 
+<<<<<<< HEAD
     See :class:`~ethically.dataset.Dataset` for a description of
     the arguments and attributes.
 
@@ -60,12 +64,43 @@ class GermanDataset(Dataset):
         It is worse to class a customer as good when they are bad (5),
         than it is to class a customer as bad when they are good (1).
 
+=======
+    Source
+    ------
+    https://archive.ics.uci.edu/ml/datasets/statlog+(german+credit+data)
+
+    Reference
+    ---------
+    Kamiran, F., & Calders, T. (2009, February).
+    Classifying without discriminating.
+    In 2009 2nd International Conference on Computer, Control and Communication
+    (pp. 1-6). IEEE.
+    http://citeseerx.ist.psu.edu/viewdoc/download?doi=10.1.1.182.6067&rep=rep1&type=pdf
+
+
+    Extra
+    -----
+    This dataset requires use of a cost matrix (see below)
+        1 2
+       ----
+    1 | 0 1
+      |----
+    2 | 5 0
+    (1 = Good, 2 = Bad)
+    The rows represent the actual classification
+    and the columns the predicted classification.
+    It is worse to class a customer as good when they are bad (5),
+    than it is to class a customer as bad when they are good (1).
+>>>>>>> dev
     """
 
     def __init__(self):
         super().__init__(target='credit',
                          sensitive_attributes=['age_factor'])
+<<<<<<< HEAD
         self.cost_matrix = [[0, 1], [5, 0]]
+=======
+>>>>>>> dev
 
     def _load_data(self):
         return pd.read_csv(GERMAN_PATH, sep=' ', names=COLUMN_NAMES,
