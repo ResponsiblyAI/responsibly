@@ -139,9 +139,9 @@ docs:
 	ln -sf `realpath CONTRIBUTING.rst --relative-to=docs/about` docs/about/contributing.rst
 	ln -sf `realpath LICENSE --relative-to=docs/about` docs/about/license.rst
 	cd docs/notebooks && find *.ipynb -exec jupyter nbconvert --to rst {} \;
-	cd docs && sphinx-apidoc  -o api ../ethically && make html
+	cd docs && make html
 	@echo "\033[95m\n\nBuild successful! View the docs homepage at docs/_build/html/index.html.\n\033[0m"
-
+	# && sphinx-apidoc  -o api ../ethically
 .PHONY: publish
 publish: docs
 	cd docs && sh ./gh-pages.sh

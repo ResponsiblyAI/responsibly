@@ -2,9 +2,6 @@ Datasets
 ========
 
 .. automodule:: ethically.dataset
-    :members:
-    :undoc-members:
-    :show-inheritance:
 
 General Datasets
 ----------------
@@ -29,5 +26,4 @@ Available Datasets
 FICO Dataset
 ------------
 
-.. autoclass:: ethically.dataset.build_FICO_dataset
-    :members:
+.. autofunction:: ethically.dataset.build_FICO_dataset
