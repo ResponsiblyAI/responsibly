@@ -8,8 +8,9 @@ from scipy.stats import spearmanr
 from sklearn.decomposition import PCA
 from sklearn.metrics.pairwise import euclidean_distances
 from sklearn.svm import LinearSVC
-from tabulate import tabulate
 from tqdm import tqdm
+
+from tabulate import tabulate
 
 from ..consts import RANDOM_STATE
 from .benchmark import evaluate_words_embedding
