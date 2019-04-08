@@ -40,4 +40,6 @@ setuptools = ">= 38.6.0"
 twine = ">= 1.11.0"
 # Tooling
 jupyter = "*"
+notebook = ">=5.7.8"
+requests = ">=2.20.0"
 sniffer = "*"
