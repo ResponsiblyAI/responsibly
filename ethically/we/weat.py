@@ -1,39 +1,50 @@
 """
-Calculate WEAT score of a Words Embedding.
+Compute WEAT score of a Words Embedding.
 
-WEAT = Word Embedding Association Test
+WEAT is a bias measurement method for words embedding,
+which is inspired by the `IAT <https://en.wikipedia.org/wiki/Implicit-association_test>`_
+(Implicit Association Test) for humans.
+It measures the similarity between two sets of *target words*
+(e.g., programmer, engineer, scientist, ... and nurse, teacher, librarian, ...)
+and two sets of *attribute words* (e.g., man, male, ... and woman, female ...).
+A p-value is calculated using a permutation-test.
 
-Based on:
-Caliskan, A., Bryson, J. J., & Narayanan, A. (2017).
-Semantics derived automatically
-from language corpora contain human-like biases.
-Science, 356(6334), 183-186.
+Reference:
+- Caliskan, A., Bryson, J. J., & Narayanan, A. (2017).
+  `Semantics derived automatically
+  from language corpora contain human-like biases
+  <http://opus.bath.ac.uk/55288/>`_.
+  Science, 356(6334), 183-186.
 
+.. important::
+    The effect size and pvalue in the WEAT have
+    entirely different meaning from those reported in IATs (original finding).
+    Refer to the paper for more details.
 
 Stimulus and original finding from:
 
-* [0, 1, 2]
+- [0, 1, 2]
   A. G. Greenwald, D. E. McGhee, J. L. Schwartz,
   Measuring individual differences in implicit cognition:
   the implicit association test.,
   Journal of personality and social psychology 74, 1464 (1998).
 
-* [3, 4]:
+- [3, 4]:
   M. Bertrand, S. Mullainathan, Are Emily and Greg more employable
   than Lakisha and Jamal? a field experiment on labor market discrimination,
   The American Economic Review 94, 991 (2004).
 
-* [5, 6, 9]:
+- [5, 6, 9]:
   B. A. Nosek, M. Banaji, A. G. Greenwald, Harvesting implicit group attitudes
   and beliefs from a demonstration web site.,
   Group Dynamics: Theory, Research, and Practice 6, 101 (2002).
 
-* [7]:
+- [7]:
   B. A. Nosek, M. R. Banaji, A. G. Greenwald, Math=male, me=female,
-  therefore math̸=me.,
+  therefore math≠me.,
   Journal of Personality and Social Psychology 83, 44 (2002).
 
-* [8]
+- [8]
   P. D. Turney, P. Pantel, From frequency to meaning:
   Vector space models of semantics,
   Journal of Artificial Intelligence Research 37, 141 (2010).
@@ -277,7 +288,7 @@ def calc_all_weat(model, weat_data='caliskan', filter_by='model',
     :param bool with_original_finding: Show the origina
     :param bool with_pvalue: Whether to calculate the p-value of the
                              WEAT results (might be computationally expensive)
-    :return: DataFrame of WEAT results
+    :return: :class:`pandas.DataFrame` of WEAT results
              (score, size effect, Nt, Na and p-value)
     """
 
