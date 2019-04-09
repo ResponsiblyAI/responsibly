@@ -3,7 +3,7 @@ Classification Fairness
 
 .. automodule:: ethically.fairness
 
-In the `demos section <demos.html>`_ contains two examples of measuring
+The `demos section <demos.html>`_ contains two examples of measuring
 the fairness of a classifier and applying intervention to adjust it:
 
 1. `COMPAS by ProPublica <notebooks/demo-compas-analysis.html>`_
