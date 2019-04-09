@@ -6,7 +6,8 @@ import pytest
 from ethically.dataset import COMPASDataset, build_FICO_dataset
 from ethically.fairness.interventions import threshold
 from ethically.fairness.metrics import (
-    independence_binary, separation_binary, sufficiency_binary,
+    independence_binary, plot_roc_by_attr, separation_binary,
+    sufficiency_binary,
 )
 from ethically.fairness.metrics.binary import compare_privileged
 from ethically.tests.utils import assert_deep_almost_equal
@@ -175,3 +176,14 @@ def test_thresholds(fico):
                                                COST_MATRIX)
 
     assert_deep_almost_equal(threshold_data, FICO_THRESHOLD_DATA)
+
+
+def test_plot_roc_by_attr_thresholds_exception(compas_ds):
+    df_missing_score = compas_ds.df[(((compas_ds.df['race'] == 'Caucasian')
+                                      & (compas_ds.df['decile_score'] != 5))
+                                     | (compas_ds.df['race'] == 'African-American'))]
+
+    with pytest.raises(NotImplementedError):
+        plot_roc_by_attr(df_missing_score['two_year_recid'],
+                         df_missing_score['decile_score'],
+                         df_missing_score['race'])
