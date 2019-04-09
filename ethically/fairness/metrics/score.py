@@ -137,6 +137,20 @@ def sufficiency_score(y_true, y_score, x_sens,
     return criterion
 
 
+def _all_equal(iterator):
+    iterator = iter(iterator)
+
+    try:
+        first = next(iterator)
+    except StopIteration:
+        return True
+
+    try:
+        return all(np.allclose(first, rest) for rest in iterator)
+    except ValueError:
+        return False
+
+
 def _groupby_y_x_sens(y_true, y_score, x_sens):
     return (pd.DataFrame({'y_true': y_true,
                           'y_score': y_score,
@@ -181,11 +195,23 @@ def roc_curve_by_attr(y_true, y_score, x_sens,
 
     grouped = _groupby_y_x_sens(y_true, y_score, x_sens)
 
-    return {x_sens_value: roc_curve(group['y_true'],
-                                    group['y_score'],
-                                    pos_label, sample_weight,
-                                    drop_intermediate)
-            for x_sens_value, group in grouped}
+    roc_curves = {x_sens_value: roc_curve(group['y_true'],
+                                          group['y_score'],
+                                          pos_label, sample_weight,
+                                          drop_intermediate)
+                  for x_sens_value, group in grouped}
+
+    if not _all_equal(thresholds
+                      for _, _, thresholds in roc_curves.values()):
+        raise NotImplementedError('All the scores values should'
+                                  ' appear for each sensitive'
+                                  ' attribute value.'
+                                  ' It will be implemented'
+                                  ' in the future.'
+                                  ' Please post your use-case in'
+                                  ' https://github.com/EthicallyAI/ethically/issues/15')  # pylint: disable=line-too-long
+
+    return roc_curves
 
 
 def roc_auc_score_by_attr(y_true, y_score, x_sens,
