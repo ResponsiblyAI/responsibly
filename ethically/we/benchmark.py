@@ -84,7 +84,7 @@ def evaluate_word_pairs(model, kwargs_word_pairs=None):
                               evaluate_word_pairs
                               method.
     :type kwargs_word_pairs: dict or None
-    :return: DataFrame of evaluation results.
+    :return: :class:`pandas.DataFrame` of evaluation results.
     """
 
     if kwargs_word_pairs is None:
@@ -122,7 +122,7 @@ def evaluate_word_analogies(model, kwargs_word_analogies=None):
                                   evaluate_word_analogies
                                   method.
     :type evaluate_word_analogies: dict or None
-    :return: DataFrame of evaluation results.
+    :return: :class:`pandas.DataFrame` of evaluation results.
     """
 
     if kwargs_word_analogies is None:

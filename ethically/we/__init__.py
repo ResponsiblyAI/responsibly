@@ -1,7 +1,7 @@
 """
 Metrics and debiasing for bias (such as gender and race) in words embedding.
 
-.. note::
+.. important::
     The following paper suggests that the current methods
     have an only superficial effect on the bias in words embedding:
 

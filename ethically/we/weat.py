@@ -16,7 +16,7 @@ Reference:
   <http://opus.bath.ac.uk/55288/>`_.
   Science, 356(6334), 183-186.
 
-.. note::
+.. important::
     The effect size and pvalue in the WEAT have
     entirely different meaning from those reported in IATs (original finding).
     Refer to the paper for more details.
@@ -288,7 +288,7 @@ def calc_all_weat(model, weat_data='caliskan', filter_by='model',
     :param bool with_original_finding: Show the origina
     :param bool with_pvalue: Whether to calculate the p-value of the
                              WEAT results (might be computationally expensive)
-    :return: DataFrame of WEAT results
+    :return: :class:`pandas.DataFrame` of WEAT results
              (score, size effect, Nt, Na and p-value)
     """
 

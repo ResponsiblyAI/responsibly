@@ -272,8 +272,8 @@ class BiasWordsEmbedding:
         Calculate projection, projected and rejected vectors of a words list.
 
         :param list words: List of words
-        :return: DataFrame of the projection, projected and rejected vectors
-                 of the words list
+        :return: :class:`pandas.DataFrame` of the projection,
+                 projected and rejected vectors of the words list
         """
         projection_data = []
         for word in words:
@@ -764,7 +764,8 @@ class BiasWordsEmbedding:
                                       evaluate_word_analogies
                                       method.
         :type evaluate_word_analogies: dict or None
-        :return: Tuple of DataFrame for the evaluation results.
+        :return: Tuple of :class:`pandas.DataFrame`
+                 for the evaluation results.
         """
 
         return evaluate_words_embedding(self.model,
