@@ -163,7 +163,7 @@ def independence_binary(y_pred, x_sens,
                    y_pred are used in sorted order; first is negative
                    and the second is positive.
     :param as_df: Whether to return the results as `dict` (if `False`)
-                  or as `pandas.DataFrame` (if `True`).
+                  or as :class:`pandas.DataFrame` (if `True`).
     :return: Independence criteria and comparision if there are
              only two values for the sensitive attribute.
     :rtype: tuple
@@ -203,7 +203,7 @@ def separation_binary(y_true, y_pred, x_sens,
                    y_pred are used in sorted order; first is negative
                    and the second is positive.
     :param as_df: Whether to return the results as `dict` (if `False`)
-                  or as `pandas.DataFrame` (if `True`).
+                  or as :class:`pandas.DataFrame` (if `True`).
     :return: Separation criteria and comparision if there are
              only two values for the sensitive attribute.
     :rtype: tuple
@@ -240,7 +240,7 @@ def sufficiency_binary(y_true, y_pred, x_sens,
                    y_pred are used in sorted order; first is negative
                    and the second is positive.
     :param as_df: Whether to return the results as `dict` (if `False`)
-                  or as `pandas.DataFrame` (if `True`).
+                  or as :class:`pandas.DataFrame` (if `True`).
     :return: Sufficiency criteria and comparision if there are
              only two values for the sensitive attribute.
     :rtype: tuple
@@ -280,7 +280,7 @@ def report_binary(y_true, y_pred, x_sens,
                    and the second is positive.
     :return: Classification statistics grouped by the
              sensitive attribute.
-    :rtype: `pandas.DataFrame`
+    :rtype: :class:`pandas.DataFrame`
     """
 
     stats = binary_stats_by_attr(y_true, y_pred, x_sens, labels)

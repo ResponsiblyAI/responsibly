@@ -52,9 +52,9 @@ def independence_score(y_score, x_sens,
     :param x_sens: Sensitive attribute values corresponded to each
                    estimated target.
     :param as_df: Whether to return the results as ``dict`` (if ``False``)
-                  or as :class:`pandas.DataFrame (if ``True``).
+                  or as :class:`pandas.DataFrame`(if ``True``).
     :return: Independence criteria.
-    :rtype: dict or pandas.DataFrame
+    :rtype: dict or :class:`pandas.DataFrame`
     """
     criterion = pd.crosstab(index=y_score,
                             columns=x_sens,
@@ -81,7 +81,7 @@ def separation_score(y_true, y_score, x_sens,
     :param as_df: Whether to return the results as ``dict`` (if ``False``)
                   or as :class:`pandas.DataFrame` (if ``True``).
     :return: Separation criteria.
-    :rtype: dict or pandas.DataFrame
+    :rtype: dict or :class:`pandas.DataFrame`
     """
 
     _assert_binary(y_true)
@@ -114,7 +114,7 @@ def sufficiency_score(y_true, y_score, x_sens,
     :param as_df: Whether to return the results as ``dict`` (if ``False``)
                   or as :class:`pandas.DataFrame` (if ``True``).
     :return: Sufficiency criteria.
-    :rtype: dict or pandas.DataFrame
+    :rtype: dict or :class:`pandas.DataFrame`
     """
 
     _assert_binary(y_true)

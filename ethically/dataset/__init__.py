@@ -13,12 +13,18 @@ See :class:`ethically.dataset.Dataset`
 for additional attribute and complete documentation.
 
 Currently these are the available datasets:
+
     - ProPublica recidivism/COMPAS dataset,
       see: :class:`~ethically.dataset.COMPASDataset`
 
-    - Adult dataset, see: :class:`~ethically.dataset.AdultDataset`
+    - Adult dataset,
+      see: :class:`~ethically.dataset.AdultDataset`
 
-    - German credit dataset, see: :class:`~ethically.dataset.GermanDataset`
+    - German credit dataset,
+      see: :class:`~ethically.dataset.GermanDataset`
+
+    - FICO credit score dataset,
+      see :func:`~ethically.dataset.build_FICO_dataset`
 
 Usage
 -----

@@ -32,7 +32,7 @@ Ethically
 *Ethically* is developed for **practitioners** and **researchers** in mind,
 but also for learners. Therefore, it is compatible with
 data science and machine learning tools of trade
-such as Numpy, Pandas, and scikit-learn.
+such as Numpy, Pandas, and especially **scikit-learn**.
 
 The primary goal is to be one-shop-stop for **auditing** bias
 and fairness of machine learning systems, and the secondary one

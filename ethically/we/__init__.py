@@ -14,7 +14,10 @@ Metrics and debiasing for bias (such as gender and race) in words embedding.
 Currently, two methods are supported:
 
 1. Bolukbasi et al. (2016) Bias Measure and Debiasing
+   - :mod:`ethically.we.bias`
+
 2. WEAT Measure
+   - :mod:`ethically.we.weat`
 
 Besides, some of the standard benchmarks for
 words embeddings are also available, primarily to check

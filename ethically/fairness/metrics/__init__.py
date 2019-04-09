@@ -4,6 +4,9 @@ Demographic Classification Fairness Criteria.
 The objectives of the demographic classification fairness criteria
 is to measure unfairness towards sensitive attribute valuse.
 
+The metrics have the same interface and behavior as the ones in
+:mod:`sklearn.metrics`
+(e.g., using ``y_true``, ``y_pred`` and ``y_score``).
 
 One should keep in mind that the criteria are intended
 to *measure unfairness, rather than to prove fairness*, as it stated in
@@ -19,7 +22,6 @@ by Hardt et al. (2016):
     further scrutiny. We believe that resolving fairness concerns is
     ultimately impossible without substantial domain-specific
     investigation.
-
 
 The output of binary classifiers can come in two forms, either giving
 a binary outcome prediction for input or producing

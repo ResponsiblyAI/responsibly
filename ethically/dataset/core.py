@@ -5,7 +5,7 @@ class Dataset(abc.ABC):
     """Base class for datasets.
 
     Attributes
-        - `df` - `pandas.DataFrame` that holds the actual data.
+        - `df` - :class:`pandas.DataFrame` that holds the actual data.
 
         - `target` - Column name of the variable to predict
                     (ground truth)
