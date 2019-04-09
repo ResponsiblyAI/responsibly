@@ -4,7 +4,7 @@ Words Embedding Bias
 .. automodule:: ethically.we
 
 Refer to the `Words Embedding demo <notebook/demo-words-embedding-bias.html>`_
-for a complete example.
+for a complete usage example.
 
 Bolukbasi Bias Measure and Debiasing
 ------------------------------------
