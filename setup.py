@@ -59,7 +59,7 @@ setuptools.setup(
     long_description_content_type='text/x-rst',
     license=read_package_variable('__license__'),
     classifiers=[
-        'Development Status :: 1 - Planning',
+        'Development Status :: 4 - Beta',
         'Intended Audience :: Science/Research',
         'Topic :: Scientific/Engineering :: Artificial Intelligence',
         'Topic :: Text Processing :: Linguistic',
