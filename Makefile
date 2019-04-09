@@ -61,9 +61,10 @@ ISORT := pipenv run isort
 PYLINT := pipenv run pylint
 PYCODESTYLE := pipenv run pycodestyle
 PYDOCSTYLE := pipenv run pydocstyle
+RSTLINT := pipenv run rst-lint
 
 .PHONY: check
-check: isort pylint pycodestyle pydocstyle ## Run linters and static analysis
+check: isort pylint pycodestyle pydocstyle rstlint ## Run linters and static analysis
 
 .PHONY: isort
 isort: install
@@ -83,9 +84,7 @@ pydocstyle: install
 
 .PHONY: rstlint
 rstlint: install
-	rst-lint README.rst
-	rst-lint CHANGELOG.rst
-	rst-lint CONTRIBUTING.rst
+	$(RSTLINT) README.rst CHANGELOG.rst CONTRIBUTING.rst
 
 # TESTS #######################################################################
 
