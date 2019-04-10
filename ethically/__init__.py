@@ -1,14 +1,12 @@
-from . import we
-
-
 __project__ = 'ethically'
-__description__ = 'Python Package for'
-' Designing, Auditing and Adjusting the Ethics of AI Systems.'
+__description__ = ('Toolkit for Auditing and Mitigating Bias'
+                   ' and Fairness of Machine Learning Systems'
+                   ' 🔎🤖🔧')
 __url__ = 'http://docs.ethically.ai'
-__version__ = '0.0.2'
+__version__ = '0.0.3'
 __author__ = 'Shlomi Hod'
 __author_email__ = 'shlomi.hod@gmail.com'
 __license__ = 'MIT'
-__copyright__ = 'Copyright 2018 Shlomi Hod'
+__copyright__ = 'Copyright 2019 Shlomi Hod'
 
 VERSION = "{0} v{1}".format(__project__, __version__)

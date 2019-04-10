@@ -1,9 +1,13 @@
 Demos
 =====
 
-
 .. toctree::
   :maxdepth: 1
 
-  notebooks/demo-gender-bias-words-embedding
-  notebooks/exploratory-demo-race-bias-words-embedding
+  notebooks/demo-compas-analysis
+  notebooks/demo-fico-analysis
+  notebooks/demo-words-embedding-bias
+
+The demos can also be accessible as Jupyter notebooks
+through the `GitHub repository
+<https://github.com/EthicallyAI/ethically/tree/master/docs/notebooks>`_.

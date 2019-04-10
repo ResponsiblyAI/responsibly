@@ -1,6 +1,28 @@
 Revision History
 ================
 
+0.0.3 (2019/04/10)
+------------------
+
+- Fairness in Classification
+  - Three demographic fairness criteria
+
+    - Independence
+    - Separation
+    - Sufficiency
+
+  - Equalized odds post-processing algorithmic interventions
+  - Complete two notebook demos (FICO and COMPAS)
+
+- Words embedding bias
+
+  - Measuring bias with WEAT method
+
+- Documentation improvements
+
+- Fixing security issues with dependencies
+
+
 0.0.2 (2018/09/01)
 ------------------
 
