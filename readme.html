@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Ethically &#8212; Ethically 0.0.2 documentation</title>
+    <title>Ethically &#8212; Ethically 0.0.3 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -34,7 +34,6 @@
             
   <div class="section" id="ethically">
 <h1>Ethically<a class="headerlink" href="#ethically" title="Permalink to this headline">¶</a></h1>
-<p><em>in active development</em></p>
 <a class="reference external image-reference" href="https://docs.ethically.ai"><img alt="https://img.shields.io/badge/docs-passing-brightgreen.svg" src="https://img.shields.io/badge/docs-passing-brightgreen.svg" /></a>
 <a class="reference external image-reference" href="https://gitter.im/EthicallyAI/ethically"><img alt="Join the chat at https://gitter.im/EthicallyAI/ethically" src="https://img.shields.io/gitter/room/nwjs/nw.js.svg" /></a>
 <a class="reference external image-reference" href="https://travis-ci.org/EthicallyAI/ethically"><img alt="https://img.shields.io/travis/EthicallyAI/ethically/master.svg" src="https://img.shields.io/travis/EthicallyAI/ethically/master.svg" /></a>
@@ -43,36 +42,45 @@
 <a class="reference external image-reference" href="https://scrutinizer-ci.com/g/EthicallyAI/ethically/?branch=master"><img alt="https://img.shields.io/scrutinizer/g/EthicallyAI/ethically.svg" src="https://img.shields.io/scrutinizer/g/EthicallyAI/ethically.svg" /></a>
 <a class="reference external image-reference" href="https://pypi.org/project/ethically"><img alt="https://img.shields.io/pypi/v/ethically.svg" src="https://img.shields.io/pypi/v/ethically.svg" /></a>
 <a class="reference external image-reference" href="http://docs.ethically.ai/about/license.html"><img alt="https://img.shields.io/github/license/EthicallyAI/ethically.svg" src="https://img.shields.io/github/license/EthicallyAI/ethically.svg" /></a>
-<p>Toolbox for Auditing, Designing and Adjusting the Ethics of AI
-Systems.</p>
-<dl class="docutils">
-<dt>Auditing</dt>
-<dd>Mesuring the ethics of a trained model.
-For example, binary classification fariness mesures
-(demographic parity, …), WEAT score of a words embedding.</dd>
-<dt>Designing (Pre-Mitigation)</dt>
-<dd>Improving the ethics of a model or data before or while the training.
-For example, fairness regularization, data preprocessing.</dd>
-<dt>Adjusting (Post-Mitigation)</dt>
-<dd>Improving the ethics of a trained model.
-For example, gender debiasing of a words embedding.</dd>
+<p><strong>Toolkit for Auditing and Mitigating Bias and Fairness</strong>
+<strong>of Machine Learning Systems 🔎🤖🔧</strong></p>
+<p><em>Ethically</em> is developed for <strong>practitioners</strong> and <strong>researchers</strong> in mind,
+but also for learners. Therefore, it is compatible with
+data science and machine learning tools of trade in Python,
+such as Numpy, Pandas, and especially <strong>scikit-learn</strong>.</p>
+<p>The primary goal is to be one-shop-stop for <strong>auditing</strong> bias
+and fairness of machine learning systems, and the secondary one
+is to mitigate bias and adjust fairness through
+<strong>algorithmic interventions</strong>.
+Besides, there is a particular focus on <strong>NLP</strong> models.</p>
+<p><em>Ethically</em> consists of three sub-packages:</p>
+<ol class="arabic simple">
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">ethically.dataset</span></code></dt>
+<dd>Collection of common benchmark datasets from fairness research.</dd>
 </dl>
-<div class="section" id="usage">
-<h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
-<p>After installation, the package can be imported:</p>
-<div class="code sh highlight-default notranslate"><div class="highlight"><pre><span></span>$ python
-&gt;&gt;&gt; from ethically.we import GenderBiasWE
-&gt;&gt;&gt; from ethically.we.data import load_w2v_small
-&gt;&gt;&gt; w2v_small_model = load_w2v_small()
-&gt;&gt;&gt; w2v_gender_bias_we = GenderBiasWE(w2v_small_model, only_lower=True)
-&gt;&gt;&gt; w2v_gender_bias_we.calc_direct_bias()
-0.07307905390764366
-&gt;&gt;&gt; w2v_gender_bias_we.debias()
-&gt;&gt;&gt; w2v_gender_bias_we.calc_direct_bias()
-1.8275163172819303e-09
-</pre></div>
-</div>
-</div>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">ethically.fairness</span></code></dt>
+<dd>Demographic fairness in binary classification,
+including metrics and algorithmic interventions.</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt><code class="docutils literal notranslate"><span class="pre">ethically.we</span></code></dt>
+<dd>Metrics and debiasing methods for bias (such as gender and race)
+in words embedding.</dd>
+</dl>
+</li>
+</ol>
+<p>For fairness, <em>Ethically</em>’s functionality is aligned with the book
+<a class="reference external" href="https://fairmlbook.org">Fairness and Machine Learning
+- Limitations and Opportunities</a>
+by Solon Barocas, Moritz Hardt and Arvind Narayanan.</p>
+<p>If you would like to ask for a feature or report a bug,
+please open a
+<a class="reference external" href="https://github.com/EthicallyAI/ethically/issues/new">new issue</a>
+or write us in <a class="reference external" href="https://gitter.im/EthicallyAI/ethically">Gitter</a>.</p>
 <div class="section" id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h2>
 <ul class="simple">
@@ -92,24 +100,19 @@ $ python setup.py install
 </pre></div>
 </div>
 </div>
-<div class="section" id="development-roadmap">
-<h2>Development Roadmap<a class="headerlink" href="#development-roadmap" title="Permalink to this headline">¶</a></h2>
-<ol class="arabic simple">
-<li>Words Embedding<ol class="arabic">
-<li>Bolukbasi et al. Debiasing (Gender, Race, Citizens-Immigrants/Refugees)</li>
-<li>Word Embedding Association Test (WEAT)</li>
-<li>Adding support for the German language</li>
-</ol>
-</li>
-<li>Fairness in Binary Classification<ol class="arabic">
-<li>Loading of common datasets in ML fairness research</li>
-<li>Auditing (e.g demographic parity)</li>
-<li>Designing (e.g. fairness regularization)</li>
-<li>Adjusting (e.g.  reject option classification)</li>
-</ol>
-</li>
-<li>Web Auditing Tool (for non-programmers)</li>
-</ol>
+<div class="section" id="citation">
+<h2>Citation<a class="headerlink" href="#citation" title="Permalink to this headline">¶</a></h2>
+<p>If you have used <em>Ethically</em> in a scientific publication,
+we would appreciate citations to the following:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nd">@Misc</span><span class="p">{,</span>
+  <span class="n">author</span> <span class="o">=</span>    <span class="p">{</span><span class="n">Shlomi</span> <span class="n">Hod</span><span class="p">},</span>
+  <span class="n">title</span> <span class="o">=</span>     <span class="p">{{</span><span class="n">Ethically</span><span class="p">}:</span> <span class="n">Toolkit</span> <span class="k">for</span> <span class="n">Auditing</span> <span class="ow">and</span> <span class="n">Mitigating</span> <span class="n">Bias</span> <span class="ow">and</span> <span class="n">Fairness</span> <span class="n">of</span> <span class="n">Machine</span> <span class="n">Learning</span> <span class="n">Systems</span><span class="p">},</span>
+  <span class="n">year</span> <span class="o">=</span>      <span class="p">{</span><span class="mi">2018</span><span class="o">--</span><span class="p">},</span>
+  <span class="n">url</span> <span class="o">=</span> <span class="s2">&quot;http://docs.ethically.ai/&quot;</span><span class="p">,</span>
+  <span class="n">note</span> <span class="o">=</span> <span class="p">{[</span><span class="n">Online</span><span class="p">;</span> <span class="n">accessed</span> <span class="o">&lt;</span><span class="n">today</span><span class="o">&gt;</span><span class="p">]}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </div>
 </div>
 
@@ -138,9 +141,10 @@ $ python setup.py install
 
 <h3>Navigation</h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="demos.html">Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="dataset.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fairness.html">Classification Fairness</a></li>
 <li class="toctree-l1"><a class="reference internal" href="words-embedding-bias.html">Words Embedding Bias</a></li>
-<li class="toctree-l1"><a class="reference internal" href="api/modules.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demos.html">Demos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about/contributing.html">For Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about/changelog.html">Revision History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about/license.html">License</a></li>
@@ -170,10 +174,10 @@ $ python setup.py install
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2018, Shlomi Hod.
+      &copy;2019, Shlomi Hod.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.8</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
       
       |

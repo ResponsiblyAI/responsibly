@@ -1,0 +1,275 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>ethically.dataset.fico &#8212; Ethically 0.0.3 documentation</title>
+    <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ethically.dataset.fico</h1><div class="highlight"><pre>
+<span></span><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;build_FICO_dataset&#39;</span><span class="p">]</span>
+
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">pkg_resources</span> <span class="k">import</span> <span class="n">resource_filename</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">auc</span>
+
+
+<span class="n">CDF_BY_RACE_PATH</span> <span class="o">=</span> <span class="n">resource_filename</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span>
+                                     <span class="s1">&#39;transrisk_cdf_by_race_ssa.csv&#39;</span><span class="p">)</span>
+
+
+<span class="n">PERFORMANCE_BY_RACE_PATH</span> <span class="o">=</span> <span class="n">resource_filename</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span>
+                                             <span class="s1">&#39;transrisk_performance_by_race_ssa.csv&#39;</span><span class="p">)</span>  <span class="c1"># pylint: disable=line-too-long</span>
+
+<span class="n">TOTAL_BY_RACE_PATH</span> <span class="o">=</span> <span class="n">resource_filename</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span>
+                                       <span class="s1">&#39;totals.csv&#39;</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_cleanup_frame</span><span class="p">(</span><span class="n">frame</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Rename and re-order columns.&quot;&quot;&quot;</span>
+    <span class="n">frame</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;Non- Hispanic white&#39;</span><span class="p">:</span> <span class="s1">&#39;White&#39;</span><span class="p">})</span>
+    <span class="n">frame</span> <span class="o">=</span> <span class="n">frame</span><span class="o">.</span><span class="n">reindex</span><span class="p">([</span><span class="s1">&#39;Asian&#39;</span><span class="p">,</span> <span class="s1">&#39;Black&#39;</span><span class="p">,</span> <span class="s1">&#39;Hispanic&#39;</span><span class="p">,</span> <span class="s1">&#39;White&#39;</span><span class="p">],</span>
+                          <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">frame</span>
+
+
+<span class="k">def</span> <span class="nf">_read_totals</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Read the total number of people of each race.&quot;&quot;&quot;</span>
+    <span class="n">frame</span> <span class="o">=</span> <span class="n">_cleanup_frame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">TOTAL_BY_RACE_PATH</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+    <span class="k">return</span> <span class="p">{</span><span class="n">r</span><span class="p">:</span> <span class="n">frame</span><span class="p">[</span><span class="n">r</span><span class="p">][</span><span class="s1">&#39;SSA&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">frame</span><span class="o">.</span><span class="n">columns</span><span class="p">}</span>
+
+
+<span class="k">def</span> <span class="nf">_parse_data</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Parse sqf data set.&quot;&quot;&quot;</span>
+    <span class="n">cdfs</span> <span class="o">=</span> <span class="n">_cleanup_frame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">CDF_BY_RACE_PATH</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">))</span>
+    <span class="n">performance</span> <span class="o">=</span> <span class="p">(</span><span class="mi">100</span>
+                   <span class="o">-</span> <span class="n">_cleanup_frame</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">PERFORMANCE_BY_RACE_PATH</span><span class="p">,</span>
+                                                <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)))</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">cdfs</span> <span class="o">/</span> <span class="mi">100</span><span class="p">,</span> <span class="n">performance</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">_load_data</span><span class="p">():</span>
+    <span class="n">totals</span> <span class="o">=</span> <span class="n">_read_totals</span><span class="p">()</span>
+    <span class="n">cdfs_df</span><span class="p">,</span> <span class="n">performance_df</span> <span class="o">=</span> <span class="n">_parse_data</span><span class="p">()</span>
+    <span class="k">return</span> <span class="n">totals</span><span class="p">,</span> <span class="n">cdfs_df</span><span class="p">,</span> <span class="n">performance_df</span>
+
+
+<span class="k">def</span> <span class="nf">_get_pdfs</span><span class="p">(</span><span class="n">cdfs_df</span><span class="p">):</span>
+    <span class="n">cdf_vs</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([[</span><span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">cdfs_df</span><span class="o">.</span><span class="n">values</span><span class="p">[</span><span class="mi">0</span><span class="p">])],</span>
+                             <span class="n">cdfs_df</span><span class="o">.</span><span class="n">values</span><span class="p">])</span>
+    <span class="n">pdf_vs</span> <span class="o">=</span> <span class="p">(</span><span class="n">cdf_vs</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">-</span> <span class="n">cdf_vs</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">pdfs_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">pdf_vs</span><span class="p">,</span>
+                           <span class="n">columns</span><span class="o">=</span><span class="n">cdfs_df</span><span class="o">.</span><span class="n">columns</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="n">cdfs_df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">pdfs_df</span>
+
+
+<span class="k">def</span> <span class="nf">_calc_tpr_fpr</span><span class="p">(</span><span class="n">pdfs_df</span><span class="p">,</span> <span class="n">performance_df</span><span class="p">):</span>
+    <span class="n">dfs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="p">[</span><span class="n">performance_df</span><span class="p">,</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">performance_df</span><span class="p">]:</span>
+        <span class="n">proportion_per_score</span> <span class="o">=</span> <span class="n">value</span> <span class="o">*</span> <span class="n">pdfs_df</span>
+
+        <span class="n">proportion_over_all_scores</span> <span class="o">=</span> <span class="n">proportion_per_score</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">cum_prop_per_score</span> <span class="o">=</span> <span class="n">proportion_per_score</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">rate</span> <span class="o">=</span> <span class="n">cum_prop_per_score</span> <span class="o">/</span> <span class="n">proportion_over_all_scores</span>
+
+        <span class="n">dfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">rate</span><span class="p">,</span>
+                                <span class="n">index</span><span class="o">=</span><span class="n">pdfs_df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
+                                <span class="n">columns</span><span class="o">=</span><span class="n">pdfs_df</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
+
+    <span class="n">tpr_df</span><span class="p">,</span> <span class="n">fpr_df</span> <span class="o">=</span> <span class="n">dfs</span>  <span class="c1"># pylint: disable=unbalanced-tuple-unpacking</span>
+    <span class="k">return</span> <span class="n">tpr_df</span><span class="p">,</span> <span class="n">fpr_df</span>
+
+
+<span class="k">def</span> <span class="nf">_build_rocs</span><span class="p">(</span><span class="n">fpr_df</span><span class="p">,</span> <span class="n">tpr_df</span><span class="p">):</span>
+    <span class="n">rocs</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">fpr_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="n">rocs</span><span class="p">[</span><span class="n">group</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">fpr_df</span><span class="p">[</span><span class="n">group</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+                       <span class="n">tpr_df</span><span class="p">[</span><span class="n">group</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
+                       <span class="n">fpr_df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">rocs</span>
+
+
+<div class="viewcode-block" id="build_FICO_dataset"><a class="viewcode-back" href="../../../dataset.html#ethically.dataset.build_FICO_dataset">[docs]</a><span class="k">def</span> <span class="nf">build_FICO_dataset</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Build the FICO dataset.</span>
+
+<span class="sd">    Dataset of the credit score of TransUnion (called TransRisk).</span>
+<span class="sd">    The TransRisk score is in turn based on</span>
+<span class="sd">    a proprietary model created by FICO,</span>
+<span class="sd">    hence often referred to as FICO scores.</span>
+
+<span class="sd">    The data is *aggregated*, i.e., there is no outcome</span>
+<span class="sd">    and prediction information per individual,</span>
+<span class="sd">    but summarized statistics for each FICO score</span>
+<span class="sd">    and race/race/ethnicity group.</span>
+
+<span class="sd">    +---------------+------------------------------------------------------+</span>
+<span class="sd">    | FICO key      | Meaning                                              |</span>
+<span class="sd">    +===============+======================================================+</span>
+<span class="sd">    | `totals`      | Number of individuals per group                      |</span>
+<span class="sd">    +---------------+------------------------------------------------------+</span>
+<span class="sd">    | `cdf`         | Cumulative distribution function of score per group  |</span>
+<span class="sd">    +---------------+------------------------------------------------------+</span>
+<span class="sd">    | `pdf`         | Probability distribution function of score per group |</span>
+<span class="sd">    +---------------+------------------------------------------------------+</span>
+<span class="sd">    | `performance` | Fraction of non-defaulters per score and group       |</span>
+<span class="sd">    +---------------+------------------------------------------------------+</span>
+<span class="sd">    | `base_rates`  | Base rate of non-defaulters per group                |</span>
+<span class="sd">    +---------------+------------------------------------------------------+</span>
+<span class="sd">    | `base_rate`   | The overall base rate non-defaulters                 |</span>
+<span class="sd">    +---------------+------------------------------------------------------+</span>
+<span class="sd">    | `proportions` | Fraction of individuals per group                    |</span>
+<span class="sd">    +---------------+------------------------------------------------------+</span>
+<span class="sd">    | `fpr`         | True Positive Rate by score as threshold per group   |</span>
+<span class="sd">    +---------------+------------------------------------------------------+</span>
+<span class="sd">    | `tpr`         | False Positive Rate by score as threshold per group  |</span>
+<span class="sd">    +---------------+------------------------------------------------------+</span>
+<span class="sd">    | `rocs`        | ROC per group                                        |</span>
+<span class="sd">    +---------------+------------------------------------------------------+</span>
+<span class="sd">    | `aucs`        | ROC AUC per group                                    |</span>
+<span class="sd">    +---------------+------------------------------------------------------+</span>
+
+<span class="sd">    :return: Dictionary of various aggregated statics</span>
+<span class="sd">             of the FICO credit score.</span>
+<span class="sd">    :rtype: dict</span>
+
+<span class="sd">    References:</span>
+<span class="sd">        - Based on code (MIT License) by Moritz Hardt</span>
+<span class="sd">          from https://github.com/fairmlbook/fairmlbook.github.io</span>
+<span class="sd">        - https://fairmlbook.org/demographic.html#case-study-credit-scoring</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">totals</span><span class="p">,</span> <span class="n">cdfs_df</span><span class="p">,</span> <span class="n">performance_df</span> <span class="o">=</span> <span class="n">_load_data</span><span class="p">()</span>
+    <span class="n">pdfs_df</span> <span class="o">=</span> <span class="n">_get_pdfs</span><span class="p">(</span><span class="n">cdfs_df</span><span class="p">)</span>
+
+    <span class="n">proportions</span> <span class="o">=</span> <span class="p">{</span><span class="n">group</span><span class="p">:</span> <span class="n">total</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">totals</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+                   <span class="k">for</span> <span class="n">group</span><span class="p">,</span> <span class="n">total</span> <span class="ow">in</span> <span class="n">totals</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+    <span class="n">base_rates</span> <span class="o">=</span> <span class="p">(</span><span class="n">pdfs_df</span> <span class="o">*</span> <span class="n">performance_df</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+    <span class="n">base_rate</span> <span class="o">=</span> <span class="p">(</span><span class="n">base_rates</span> <span class="o">*</span> <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">proportions</span><span class="p">))</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
+
+    <span class="n">tpr_df</span><span class="p">,</span> <span class="n">fpr_df</span> <span class="o">=</span> <span class="n">_calc_tpr_fpr</span><span class="p">(</span><span class="n">pdfs_df</span><span class="p">,</span> <span class="n">performance_df</span><span class="p">)</span>
+    <span class="n">rocs</span> <span class="o">=</span> <span class="n">_build_rocs</span><span class="p">(</span><span class="n">fpr_df</span><span class="p">,</span> <span class="n">tpr_df</span><span class="p">)</span>
+
+    <span class="n">aucs</span> <span class="o">=</span> <span class="p">{</span><span class="n">group</span><span class="p">:</span> <span class="n">auc</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">)</span> <span class="k">for</span> <span class="n">group</span><span class="p">,</span> <span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span>
+            <span class="ow">in</span> <span class="n">rocs</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;totals&#39;</span><span class="p">:</span> <span class="n">totals</span><span class="p">,</span>
+            <span class="s1">&#39;cdf&#39;</span><span class="p">:</span> <span class="n">cdfs_df</span><span class="p">,</span>
+            <span class="s1">&#39;pdf&#39;</span><span class="p">:</span> <span class="n">pdfs_df</span><span class="p">,</span>
+            <span class="s1">&#39;performance&#39;</span><span class="p">:</span> <span class="n">performance_df</span><span class="p">,</span>
+            <span class="s1">&#39;base_rates&#39;</span><span class="p">:</span> <span class="n">base_rates</span><span class="p">,</span>
+            <span class="s1">&#39;base_rate&#39;</span><span class="p">:</span> <span class="n">base_rate</span><span class="p">,</span>
+            <span class="s1">&#39;proportions&#39;</span><span class="p">:</span> <span class="n">proportions</span><span class="p">,</span>
+            <span class="s1">&#39;fpr&#39;</span><span class="p">:</span> <span class="n">fpr_df</span><span class="p">,</span>
+            <span class="s1">&#39;tpr&#39;</span><span class="p">:</span> <span class="n">tpr_df</span><span class="p">,</span>
+            <span class="s1">&#39;rocs&#39;</span><span class="p">:</span> <span class="n">rocs</span><span class="p">,</span>
+            <span class="s1">&#39;aucs&#39;</span><span class="p">:</span> <span class="n">aucs</span><span class="p">}</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">Ethically</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=EthicallyAI&repo=ethically&type=star&v=2&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataset.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fairness.html">Classification Fairness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../words-embedding-bias.html">Words Embedding Bias</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../demos.html">Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/contributing.html">For Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/changelog.html">Revision History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../about/license.html">License</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Shlomi Hod.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/EthicallyAI/ethically" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

@@ -1,0 +1,350 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>ethically.fairness.metrics.score &#8212; Ethically 0.0.3 documentation</title>
+    <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../../../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for ethically.fairness.metrics.score</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Counter</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics</span> <span class="k">import</span> <span class="n">roc_auc_score</span><span class="p">,</span> <span class="n">roc_curve</span>
+<span class="kn">from</span> <span class="nn">sklearn.utils.multiclass</span> <span class="k">import</span> <span class="n">unique_labels</span>
+
+<span class="kn">from</span> <span class="nn">ethically.fairness.metrics.utils</span> <span class="k">import</span> <span class="n">_assert_binary</span>
+
+
+<span class="k">def</span> <span class="nf">_proportion</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+    <span class="n">counts</span> <span class="o">=</span> <span class="n">Counter</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">set</span><span class="p">(</span><span class="n">counts</span><span class="o">.</span><span class="n">keys</span><span class="p">())</span><span class="o">.</span><span class="n">issubset</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="n">labels</span><span class="p">[</span><span class="mi">1</span><span class="p">]]</span>
+            <span class="o">/</span> <span class="p">(</span><span class="n">counts</span><span class="p">[</span><span class="n">labels</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span> <span class="o">+</span> <span class="n">counts</span><span class="p">[</span><span class="n">labels</span><span class="p">[</span><span class="mi">1</span><span class="p">]]))</span>
+
+
+<span class="k">def</span> <span class="nf">_get_labels</span><span class="p">(</span><span class="n">ys</span><span class="p">,</span> <span class="n">labels</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="n">labels</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">unique_labels</span><span class="p">(</span><span class="n">ys</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asarray</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">([</span><span class="n">l</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ys</span> <span class="k">for</span> <span class="n">l</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">]):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;At least one label specified must be in y.&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">labels</span>
+
+
+<span class="k">def</span> <span class="nf">_normalize_by_attr</span><span class="p">(</span><span class="n">y_score</span><span class="p">,</span> <span class="n">x_sens</span><span class="p">,</span> <span class="n">ndigits</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">y_score_within</span> <span class="o">=</span> <span class="n">y_score</span><span class="p">[:]</span>
+
+    <span class="k">for</span> <span class="n">indices</span> <span class="ow">in</span> <span class="n">x_sens</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">x_sens</span><span class="p">)</span><span class="o">.</span><span class="n">groups</span><span class="o">.</span><span class="n">values</span><span class="p">():</span>
+        <span class="n">y_score_within</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">y_score_within</span><span class="p">[</span><span class="n">indices</span><span class="p">]</span>
+                                   <span class="o">.</span><span class="n">rank</span><span class="p">(</span><span class="n">pct</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+
+    <span class="n">y_score_within</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">y_score_within</span> <span class="o">*</span> <span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">ndigits</span><span class="p">))</span>
+                      <span class="o">/</span> <span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="n">ndigits</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">y_score_within</span>
+
+
+<span class="k">def</span> <span class="nf">independence_score</span><span class="p">(</span><span class="n">y_score</span><span class="p">,</span> <span class="n">x_sens</span><span class="p">,</span>
+                       <span class="n">as_df</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the independence criteria for score prediction.</span>
+
+<span class="sd">    In classification terminology, it is the **acceptance rate**</span>
+<span class="sd">    grouped by the score and the sensitive attribute.</span>
+
+<span class="sd">    :param y_score: Estimated target score as returned by a classifier.</span>
+<span class="sd">    :param x_sens: Sensitive attribute values corresponded to each</span>
+<span class="sd">                   estimated target.</span>
+<span class="sd">    :param as_df: Whether to return the results as ``dict`` (if ``False``)</span>
+<span class="sd">                  or as :class:`pandas.DataFrame`(if ``True``).</span>
+<span class="sd">    :return: Independence criteria.</span>
+<span class="sd">    :rtype: dict or :class:`pandas.DataFrame`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">criterion</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">y_score</span><span class="p">,</span>
+                            <span class="n">columns</span><span class="o">=</span><span class="n">x_sens</span><span class="p">,</span>
+                            <span class="n">normalize</span><span class="o">=</span><span class="s1">&#39;columns&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">as_df</span><span class="p">:</span>
+        <span class="n">criterion</span> <span class="o">=</span> <span class="n">criterion</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">criterion</span>
+
+
+<div class="viewcode-block" id="separation_score"><a class="viewcode-back" href="../../../../fairness.html#ethically.fairness.metrics.separation_score">[docs]</a><span class="k">def</span> <span class="nf">separation_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_score</span><span class="p">,</span> <span class="n">x_sens</span><span class="p">,</span>
+                     <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                     <span class="n">as_df</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the separation criteria for score prediction.</span>
+
+<span class="sd">    In classification terminology, it is the **FPR** and **TPR**</span>
+<span class="sd">    grouped by the score and the sensitive attribute.</span>
+
+<span class="sd">    :param y_true: Binary ground truth (correct) target values.</span>
+<span class="sd">    :param y_score: Estimated target score as returned by a classifier.</span>
+<span class="sd">    :param x_sens: Sensitive attribute values corresponded to each</span>
+<span class="sd">                   estimated target.</span>
+<span class="sd">    :param as_df: Whether to return the results as ``dict`` (if ``False``)</span>
+<span class="sd">                  or as :class:`pandas.DataFrame` (if ``True``).</span>
+<span class="sd">    :return: Separation criteria.</span>
+<span class="sd">    :rtype: dict or :class:`pandas.DataFrame`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_assert_binary</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span>
+
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">_get_labels</span><span class="p">(</span><span class="n">y_score</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+
+    <span class="n">criterion</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">y_score</span><span class="p">,</span>
+                            <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">y_true</span><span class="p">,</span> <span class="n">x_sens</span><span class="p">],</span>
+                            <span class="n">normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">as_df</span><span class="p">:</span>
+        <span class="n">criterion</span> <span class="o">=</span> <span class="n">criterion</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">criterion</span></div>
+
+
+<div class="viewcode-block" id="sufficiency_score"><a class="viewcode-back" href="../../../../fairness.html#ethically.fairness.metrics.sufficiency_score">[docs]</a><span class="k">def</span> <span class="nf">sufficiency_score</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_score</span><span class="p">,</span> <span class="n">x_sens</span><span class="p">,</span>
+                      <span class="n">labels</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">within_score_percentile</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                      <span class="n">as_df</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute the sufficiency criteria for score prediction.</span>
+
+<span class="sd">    In classification terminology, it is the **PPV** and the **NPV**</span>
+<span class="sd">    grouped by the score and the sensitive attribute.</span>
+
+<span class="sd">    :param y_true: Binary ground truth (correct) target values.</span>
+<span class="sd">    :param y_score: Estimated target score as returned by a classifier.</span>
+<span class="sd">    :param x_sens: Sensitive attribute values corresponded to each</span>
+<span class="sd">                   target.</span>
+<span class="sd">    :param as_df: Whether to return the results as ``dict`` (if ``False``)</span>
+<span class="sd">                  or as :class:`pandas.DataFrame` (if ``True``).</span>
+<span class="sd">    :return: Sufficiency criteria.</span>
+<span class="sd">    :rtype: dict or :class:`pandas.DataFrame`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">_assert_binary</span><span class="p">(</span><span class="n">y_true</span><span class="p">)</span>
+
+    <span class="n">labels</span> <span class="o">=</span> <span class="n">_get_labels</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">labels</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">within_score_percentile</span><span class="p">:</span>
+        <span class="n">y_score</span> <span class="o">=</span> <span class="n">_normalize_by_attr</span><span class="p">(</span><span class="n">y_score</span><span class="p">,</span> <span class="n">x_sens</span><span class="p">,</span>
+                                     <span class="n">within_score_percentile</span><span class="p">)</span>
+
+    <span class="n">criterion</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="n">y_score</span><span class="p">,</span>
+                            <span class="n">columns</span><span class="o">=</span><span class="n">x_sens</span><span class="p">,</span>
+                            <span class="n">values</span><span class="o">=</span><span class="n">y_true</span><span class="p">,</span>
+                            <span class="n">aggfunc</span><span class="o">=</span><span class="n">partial</span><span class="p">(</span><span class="n">_proportion</span><span class="p">,</span>
+                                            <span class="n">labels</span><span class="o">=</span><span class="n">labels</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">as_df</span><span class="p">:</span>
+        <span class="n">criterion</span> <span class="o">=</span> <span class="n">criterion</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="n">criterion</span></div>
+
+
+<span class="k">def</span> <span class="nf">_all_equal</span><span class="p">(</span><span class="n">iterator</span><span class="p">):</span>
+    <span class="n">iterator</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">first</span> <span class="o">=</span> <span class="nb">next</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">allclose</span><span class="p">(</span><span class="n">first</span><span class="p">,</span> <span class="n">rest</span><span class="p">)</span> <span class="k">for</span> <span class="n">rest</span> <span class="ow">in</span> <span class="n">iterator</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">False</span>
+
+
+<span class="k">def</span> <span class="nf">_groupby_y_x_sens</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_score</span><span class="p">,</span> <span class="n">x_sens</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;y_true&#39;</span><span class="p">:</span> <span class="n">y_true</span><span class="p">,</span>
+                          <span class="s1">&#39;y_score&#39;</span><span class="p">:</span> <span class="n">y_score</span><span class="p">,</span>
+                          <span class="s1">&#39;x_sens&#39;</span><span class="p">:</span> <span class="n">x_sens</span><span class="p">})</span>
+            <span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="s1">&#39;x_sens&#39;</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="roc_curve_by_attr"><a class="viewcode-back" href="../../../../fairness.html#ethically.fairness.metrics.roc_curve_by_attr">[docs]</a><span class="k">def</span> <span class="nf">roc_curve_by_attr</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_score</span><span class="p">,</span> <span class="n">x_sens</span><span class="p">,</span>
+                      <span class="n">pos_label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                      <span class="n">drop_intermediate</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute Receiver operating characteristic (ROC) by attribute.</span>
+
+<span class="sd">    Based on :func:`sklearn.metrics.roc_curve`</span>
+
+<span class="sd">    :param y_true: Binary ground truth (correct) target values.</span>
+<span class="sd">    :param y_score: Estimated target score as returned by a classifier.</span>
+<span class="sd">    :param x_sens: Sensitive attribute values corresponded to each</span>
+<span class="sd">                   estimated target.</span>
+<span class="sd">    :param pos_label: Label considered as positive and others</span>
+<span class="sd">                      are considered negative.</span>
+<span class="sd">    :param sample_weight: Sample weights.</span>
+<span class="sd">    :param drop_intermediate: Whether to drop some suboptimal</span>
+<span class="sd">                              thresholds which would not appear on</span>
+<span class="sd">                              a plotted ROC curve.</span>
+<span class="sd">                              This is useful in order to create</span>
+<span class="sd">                              lighter ROC curves.</span>
+<span class="sd">    :return: For each value of sensitive attribute:</span>
+<span class="sd">             - fpr - Increasing false positive rates such</span>
+<span class="sd">               that element i is the false positive rate</span>
+<span class="sd">               of predictions with score &gt;= thresholds[i].</span>
+<span class="sd">             - fpr - Increasing true positive rates such</span>
+<span class="sd">               that element i is the true positive rate</span>
+<span class="sd">               of predictions with score &gt;= thresholds[i].</span>
+<span class="sd">             - thresholds -</span>
+<span class="sd">               Decreasing thresholds on the decision function</span>
+<span class="sd">               used to compute fpr and tpr. thresholds[0] represents</span>
+<span class="sd">               no instances being predicted and is arbitrarily set</span>
+<span class="sd">               to max(y_score) + 1.</span>
+<span class="sd">    :rtype: dict</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">grouped</span> <span class="o">=</span> <span class="n">_groupby_y_x_sens</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_score</span><span class="p">,</span> <span class="n">x_sens</span><span class="p">)</span>
+
+    <span class="n">roc_curves</span> <span class="o">=</span> <span class="p">{</span><span class="n">x_sens_value</span><span class="p">:</span> <span class="n">roc_curve</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="s1">&#39;y_true&#39;</span><span class="p">],</span>
+                                          <span class="n">group</span><span class="p">[</span><span class="s1">&#39;y_score&#39;</span><span class="p">],</span>
+                                          <span class="n">pos_label</span><span class="p">,</span> <span class="n">sample_weight</span><span class="p">,</span>
+                                          <span class="n">drop_intermediate</span><span class="p">)</span>
+                  <span class="k">for</span> <span class="n">x_sens_value</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">grouped</span><span class="p">}</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">_all_equal</span><span class="p">(</span><span class="n">thresholds</span>
+                      <span class="k">for</span> <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">thresholds</span> <span class="ow">in</span> <span class="n">roc_curves</span><span class="o">.</span><span class="n">values</span><span class="p">()):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span><span class="p">(</span><span class="s1">&#39;All the scores values should&#39;</span>
+                                  <span class="s1">&#39; appear for each sensitive&#39;</span>
+                                  <span class="s1">&#39; attribute value.&#39;</span>
+                                  <span class="s1">&#39; It will be implemented&#39;</span>
+                                  <span class="s1">&#39; in the future.&#39;</span>
+                                  <span class="s1">&#39; Please post your use-case in&#39;</span>
+                                  <span class="s1">&#39; https://github.com/EthicallyAI/ethically/issues/15&#39;</span><span class="p">)</span>  <span class="c1"># pylint: disable=line-too-long</span>
+
+    <span class="k">return</span> <span class="n">roc_curves</span></div>
+
+
+<div class="viewcode-block" id="roc_auc_score_by_attr"><a class="viewcode-back" href="../../../../fairness.html#ethically.fairness.metrics.roc_auc_score_by_attr">[docs]</a><span class="k">def</span> <span class="nf">roc_auc_score_by_attr</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_score</span><span class="p">,</span> <span class="n">x_sens</span><span class="p">,</span>
+                          <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute Area Under the ROC (AUC) by attribute.</span>
+
+<span class="sd">    Based on function:`sklearn.metrics.roc_auc_score`</span>
+
+<span class="sd">    :param y_true: Binary ground truth (correct) target values.</span>
+<span class="sd">    :param y_score: Estimated target score as returned by a classifier.</span>
+<span class="sd">    :param x_sens: Sensitive attribute values corresponded to each</span>
+<span class="sd">                   estimated target.</span>
+<span class="sd">    :param sample_weight: Sample weights.</span>
+<span class="sd">    :return: ROC AUC grouped by the sensitive attribute.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">grouped</span> <span class="o">=</span> <span class="n">_groupby_y_x_sens</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_score</span><span class="p">,</span> <span class="n">x_sens</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="p">{</span><span class="n">x_sens_value</span><span class="p">:</span> <span class="n">roc_auc_score</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="s1">&#39;y_true&#39;</span><span class="p">],</span>
+                                        <span class="n">group</span><span class="p">[</span><span class="s1">&#39;y_score&#39;</span><span class="p">],</span>
+                                        <span class="n">sample_weight</span><span class="o">=</span><span class="n">sample_weight</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">x_sens_value</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">grouped</span><span class="p">}</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../../index.html">Ethically</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=EthicallyAI&repo=ethically&type=star&v=2&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../../dataset.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../fairness.html">Classification Fairness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../words-embedding-bias.html">Words Embedding Bias</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../demos.html">Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/contributing.html">For Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/changelog.html">Revision History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../about/license.html">License</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Shlomi Hod.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+    </div>
+
+    
+    <a href="https://github.com/EthicallyAI/ethically" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

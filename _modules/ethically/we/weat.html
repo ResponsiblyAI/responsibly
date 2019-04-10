@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ethically.we.weat &#8212; Ethically 0.0.2 documentation</title>
+    <title>ethically.we.weat &#8212; Ethically 0.0.3 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -34,41 +34,52 @@
             
   <h1>Source code for ethically.we.weat</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Calculate WEAT score of a Words Embedding.</span>
+<span class="sd">Compute WEAT score of a Words Embedding.</span>
 
-<span class="sd">WEAT = Word Embedding Association Test</span>
+<span class="sd">WEAT is a bias measurement method for words embedding,</span>
+<span class="sd">which is inspired by the `IAT &lt;https://en.wikipedia.org/wiki/Implicit-association_test&gt;`_</span>
+<span class="sd">(Implicit Association Test) for humans.</span>
+<span class="sd">It measures the similarity between two sets of *target words*</span>
+<span class="sd">(e.g., programmer, engineer, scientist, ... and nurse, teacher, librarian, ...)</span>
+<span class="sd">and two sets of *attribute words* (e.g., man, male, ... and woman, female ...).</span>
+<span class="sd">A p-value is calculated using a permutation-test.</span>
 
-<span class="sd">Based on:</span>
-<span class="sd">Caliskan, A., Bryson, J. J., &amp; Narayanan, A. (2017).</span>
-<span class="sd">Semantics derived automatically</span>
-<span class="sd">from language corpora contain human-like biases.</span>
-<span class="sd">Science, 356(6334), 183-186.</span>
+<span class="sd">Reference:</span>
+<span class="sd">    - Caliskan, A., Bryson, J. J., &amp; Narayanan, A. (2017).</span>
+<span class="sd">      `Semantics derived automatically</span>
+<span class="sd">      from language corpora contain human-like biases</span>
+<span class="sd">      &lt;http://opus.bath.ac.uk/55288/&gt;`_.</span>
+<span class="sd">      Science, 356(6334), 183-186.</span>
 
+<span class="sd">.. important::</span>
+<span class="sd">    The effect size and pvalue in the WEAT have</span>
+<span class="sd">    entirely different meaning from those reported in IATs (original finding).</span>
+<span class="sd">    Refer to the paper for more details.</span>
 
 <span class="sd">Stimulus and original finding from:</span>
 
-<span class="sd">* [0, 1, 2]</span>
+<span class="sd">- [0, 1, 2]</span>
 <span class="sd">  A. G. Greenwald, D. E. McGhee, J. L. Schwartz,</span>
 <span class="sd">  Measuring individual differences in implicit cognition:</span>
 <span class="sd">  the implicit association test.,</span>
 <span class="sd">  Journal of personality and social psychology 74, 1464 (1998).</span>
 
-<span class="sd">* [3, 4]:</span>
+<span class="sd">- [3, 4]:</span>
 <span class="sd">  M. Bertrand, S. Mullainathan, Are Emily and Greg more employable</span>
 <span class="sd">  than Lakisha and Jamal? a field experiment on labor market discrimination,</span>
 <span class="sd">  The American Economic Review 94, 991 (2004).</span>
 
-<span class="sd">* [5, 6, 9]:</span>
+<span class="sd">- [5, 6, 9]:</span>
 <span class="sd">  B. A. Nosek, M. Banaji, A. G. Greenwald, Harvesting implicit group attitudes</span>
 <span class="sd">  and beliefs from a demonstration web site.,</span>
 <span class="sd">  Group Dynamics: Theory, Research, and Practice 6, 101 (2002).</span>
 
-<span class="sd">* [7]:</span>
+<span class="sd">- [7]:</span>
 <span class="sd">  B. A. Nosek, M. R. Banaji, A. G. Greenwald, Math=male, me=female,</span>
-<span class="sd">  therefore math̸=me.,</span>
+<span class="sd">  therefore math≠me.,</span>
 <span class="sd">  Journal of Personality and Social Psychology 83, 44 (2002).</span>
 
-<span class="sd">* [8]</span>
+<span class="sd">- [8]</span>
 <span class="sd">  P. D. Turney, P. Pantel, From frequency to meaning:</span>
 <span class="sd">  Vector space models of semantics,</span>
 <span class="sd">  Journal of Artificial Intelligence Research 37, 141 (2010).</span>
@@ -136,6 +147,11 @@
 
 <span class="k">def</span> <span class="nf">_calc_weat_pvalue</span><span class="p">(</span><span class="n">first_associations</span><span class="p">,</span> <span class="n">second_associations</span><span class="p">,</span>
                       <span class="n">method</span><span class="o">=</span><span class="s1">&#39;approximate&#39;</span><span class="p">):</span>
+
+    <span class="k">if</span> <span class="n">method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">PVALUE_METHODS</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;method should be one of </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1"> was given&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
+            <span class="n">PVALUE_METHODS</span><span class="p">,</span> <span class="n">method</span><span class="p">))</span>
+
     <span class="n">pvalue</span> <span class="o">=</span> <span class="n">permutation_test</span><span class="p">(</span><span class="n">first_associations</span><span class="p">,</span> <span class="n">second_associations</span><span class="p">,</span>
                               <span class="n">func</span><span class="o">=</span><span class="s1">&#39;x_mean &gt; y_mean&#39;</span><span class="p">,</span>
                               <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span>
@@ -219,7 +235,7 @@
             <span class="n">_filter_by_model_weat_stimuli</span><span class="p">(</span><span class="n">stimuli</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="calc_single_weat"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.calc_single_weat">[docs]</a><span class="k">def</span> <span class="nf">calc_single_weat</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
+<div class="viewcode-block" id="calc_single_weat"><a class="viewcode-back" href="../../../words-embedding-bias.html#ethically.we.weat.calc_single_weat">[docs]</a><span class="k">def</span> <span class="nf">calc_single_weat</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
                      <span class="n">first_target</span><span class="p">,</span> <span class="n">second_target</span><span class="p">,</span>
                      <span class="n">first_attribute</span><span class="p">,</span> <span class="n">second_attribute</span><span class="p">,</span>
                      <span class="n">with_pvalue</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pvalue_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
@@ -271,7 +287,7 @@
             <span class="s1">&#39;Na&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">x2&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">first_attribute</span><span class="p">[</span><span class="s1">&#39;words&#39;</span><span class="p">]))}</span></div>
 
 
-<div class="viewcode-block" id="calc_weat_pleasant_unpleasant_attribute"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.calc_weat_pleasant_unpleasant_attribute">[docs]</a><span class="k">def</span> <span class="nf">calc_weat_pleasant_unpleasant_attribute</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
+<span class="k">def</span> <span class="nf">calc_weat_pleasant_unpleasant_attribute</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
                                             <span class="n">first_target</span><span class="p">,</span> <span class="n">second_target</span><span class="p">,</span>
                                             <span class="n">with_pvalue</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pvalue_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="n">weat_data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;first_attribute&#39;</span><span class="p">:</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">WEAT_DATA</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;first_attribute&#39;</span><span class="p">]),</span>
@@ -286,10 +302,10 @@
 
     <span class="k">return</span> <span class="n">calc_single_weat</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
                             <span class="o">**</span><span class="n">weat_data</span><span class="p">,</span>
-                            <span class="n">with_pvalue</span><span class="o">=</span><span class="n">with_pvalue</span><span class="p">,</span> <span class="n">pvalue_kwargs</span><span class="o">=</span><span class="n">pvalue_kwargs</span><span class="p">)</span></div>
+                            <span class="n">with_pvalue</span><span class="o">=</span><span class="n">with_pvalue</span><span class="p">,</span> <span class="n">pvalue_kwargs</span><span class="o">=</span><span class="n">pvalue_kwargs</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="calc_all_weat"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.calc_all_weat">[docs]</a><span class="k">def</span> <span class="nf">calc_all_weat</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">weat_data</span><span class="o">=</span><span class="s1">&#39;caliskan&#39;</span><span class="p">,</span> <span class="n">filter_by</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+<div class="viewcode-block" id="calc_all_weat"><a class="viewcode-back" href="../../../words-embedding-bias.html#ethically.we.weat.calc_all_weat">[docs]</a><span class="k">def</span> <span class="nf">calc_all_weat</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">weat_data</span><span class="o">=</span><span class="s1">&#39;caliskan&#39;</span><span class="p">,</span> <span class="n">filter_by</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
                   <span class="n">with_original_finding</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                   <span class="n">with_pvalue</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pvalue_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -307,7 +323,7 @@
 <span class="sd">    :param bool with_original_finding: Show the origina</span>
 <span class="sd">    :param bool with_pvalue: Whether to calculate the p-value of the</span>
 <span class="sd">                             WEAT results (might be computationally expensive)</span>
-<span class="sd">    :return: DataFrame of WEAT results</span>
+<span class="sd">    :return: :class:`pandas.DataFrame` of WEAT results</span>
 <span class="sd">             (score, size effect, Nt, Na and p-value)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -391,9 +407,10 @@
 
 <h3>Navigation</h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../demos.html">Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataset.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fairness.html">Classification Fairness</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../words-embedding-bias.html">Words Embedding Bias</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../demos.html">Demos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../about/contributing.html">For Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../about/changelog.html">Revision History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../about/license.html">License</a></li>
@@ -425,7 +442,7 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2018, Shlomi Hod.
+      &copy;2019, Shlomi Hod.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>

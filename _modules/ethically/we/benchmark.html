@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ethically.we.benchmark &#8212; Ethically 0.0.2 documentation</title>
+    <title>ethically.we.benchmark &#8212; Ethically 0.0.3 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -34,12 +34,14 @@
             
   <h1>Source code for ethically.we.benchmark</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Evaluate words embeedings by standard benchmarks.</span>
+<span class="sd">Evaluate words embedding by standard benchmarks.</span>
 
-<span class="sd">Reference: https://github.com/kudkudak/word-embeddings-benchmarks</span>
+<span class="sd">Reference:</span>
+<span class="sd">    - https://github.com/kudkudak/word-embeddings-benchmarks</span>
 
 
 <span class="sd">Word Pairs Tasks</span>
+<span class="sd">~~~~~~~~~~~~~~~~</span>
 
 <span class="sd">1. The WordSimilarity-353 Test Collection</span>
 <span class="sd">   http://www.cs.technion.ac.il/~gabr/resources/data/wordsim353/</span>
@@ -64,6 +66,7 @@
 
 
 <span class="sd">Analogies Tasks</span>
+<span class="sd">~~~~~~~~~~~~~~~</span>
 
 <span class="sd">1. Google Analogies (subset of WordRep)</span>
 <span class="sd">   https://code.google.com/archive/p/word2vec/source</span>
@@ -74,14 +77,9 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">os</span>
-<span class="kn">import</span> <span class="nn">warnings</span>
 
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">pkg_resources</span> <span class="k">import</span> <span class="n">resource_filename</span>
-
-
-<span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
-    <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="n">category</span><span class="o">=</span><span class="ne">FutureWarning</span><span class="p">)</span>
 
 
 <span class="n">WORD_PAIRS_TASKS</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;WS353&#39;</span><span class="p">:</span> <span class="s1">&#39;wordsim353.tsv&#39;</span><span class="p">,</span>
@@ -100,19 +98,19 @@
                                 <span class="s1">&#39;ratio_unkonwn_words&#39;</span><span class="p">]</span>
 
 
-<div class="viewcode-block" id="get_data_resource_path"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.benchmark.get_data_resource_path">[docs]</a><span class="k">def</span> <span class="nf">get_data_resource_path</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_get_data_resource_path</span><span class="p">(</span><span class="n">filename</span><span class="p">):</span>
     <span class="k">return</span> <span class="n">resource_filename</span><span class="p">(</span><span class="vm">__name__</span><span class="p">,</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="s1">&#39;data&#39;</span><span class="p">,</span>
                                                     <span class="s1">&#39;benchmark&#39;</span><span class="p">,</span>
-                                                    <span class="n">filename</span><span class="p">))</span></div>
+                                                    <span class="n">filename</span><span class="p">))</span>
 
 
-<div class="viewcode-block" id="prepare_word_pairs_file"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.benchmark.prepare_word_pairs_file">[docs]</a><span class="k">def</span> <span class="nf">prepare_word_pairs_file</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_prepare_word_pairs_file</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;</span><span class="se">\t</span><span class="s1">&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Transform formats of word pairs files to tsv.&quot;&quot;&quot;</span>
     <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="n">delimiter</span><span class="p">)</span>
-    <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">delimiter</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></div>
+    <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="p">:</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="n">dst</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">delimiter</span><span class="p">,</span> <span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">header</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="evaluate_word_pairs"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.benchmark.evaluate_word_pairs">[docs]</a><span class="k">def</span> <span class="nf">evaluate_word_pairs</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">kwargs_word_pairs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="evaluate_word_pairs"><a class="viewcode-back" href="../../../words-embedding-bias.html#ethically.we.benchmark.evaluate_word_pairs">[docs]</a><span class="k">def</span> <span class="nf">evaluate_word_pairs</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">kwargs_word_pairs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Evaluate word pairs tasks.</span>
 
@@ -121,7 +119,7 @@
 <span class="sd">                              evaluate_word_pairs</span>
 <span class="sd">                              method.</span>
 <span class="sd">    :type kwargs_word_pairs: dict or None</span>
-<span class="sd">    :return: DataFrame of evaluation results.</span>
+<span class="sd">    :return: :class:`pandas.DataFrame` of evaluation results.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">kwargs_word_pairs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -130,7 +128,7 @@
     <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">WORD_PAIRS_TASKS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="n">get_data_resource_path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">_get_data_resource_path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="p">(</span><span class="n">pearson</span><span class="p">,</span>
          <span class="n">spearman</span><span class="p">,</span>
          <span class="n">ratio_unknown_words</span><span class="p">)</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate_word_pairs</span><span class="p">(</span><span class="n">path</span><span class="p">,</span>
@@ -150,7 +148,7 @@
     <span class="k">return</span> <span class="n">df</span></div>
 
 
-<div class="viewcode-block" id="evaluate_word_analogies"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.benchmark.evaluate_word_analogies">[docs]</a><span class="k">def</span> <span class="nf">evaluate_word_analogies</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">kwargs_word_analogies</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="evaluate_word_analogies"><a class="viewcode-back" href="../../../words-embedding-bias.html#ethically.we.benchmark.evaluate_word_analogies">[docs]</a><span class="k">def</span> <span class="nf">evaluate_word_analogies</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">kwargs_word_analogies</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Evaluate word analogies tasks.</span>
 
@@ -159,7 +157,7 @@
 <span class="sd">                                  evaluate_word_analogies</span>
 <span class="sd">                                  method.</span>
 <span class="sd">    :type evaluate_word_analogies: dict or None</span>
-<span class="sd">    :return: DataFrame of evaluation results.</span>
+<span class="sd">    :return: :class:`pandas.DataFrame` of evaluation results.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">kwargs_word_analogies</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -168,7 +166,7 @@
     <span class="n">results</span> <span class="o">=</span> <span class="p">{}</span>
 
     <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">ANALOGIES_TASKS</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
-        <span class="n">path</span> <span class="o">=</span> <span class="n">get_data_resource_path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
+        <span class="n">path</span> <span class="o">=</span> <span class="n">_get_data_resource_path</span><span class="p">(</span><span class="n">filename</span><span class="p">)</span>
         <span class="n">overall_score</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">evaluate_word_analogies</span><span class="p">(</span><span class="n">path</span><span class="p">,</span>
                                                          <span class="o">**</span><span class="n">kwargs_word_analogies</span><span class="p">)</span>  <span class="c1"># pylint: disable=C0301</span>
 
@@ -181,7 +179,7 @@
     <span class="k">return</span> <span class="n">df</span></div>
 
 
-<div class="viewcode-block" id="evaluate_words_embedding"><a class="viewcode-back" href="../../../api/ethically.we.html#ethically.we.benchmark.evaluate_words_embedding">[docs]</a><span class="k">def</span> <span class="nf">evaluate_words_embedding</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
+<div class="viewcode-block" id="evaluate_words_embedding"><a class="viewcode-back" href="../../../words-embedding-bias.html#ethically.we.benchmark.evaluate_words_embedding">[docs]</a><span class="k">def</span> <span class="nf">evaluate_words_embedding</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
                              <span class="n">kwargs_word_pairs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                              <span class="n">kwargs_word_analogies</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -226,9 +224,10 @@
 
 <h3>Navigation</h3>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../../../demos.html">Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../dataset.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../fairness.html">Classification Fairness</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../words-embedding-bias.html">Words Embedding Bias</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../demos.html">Demos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../about/contributing.html">For Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../about/changelog.html">Revision History</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../about/license.html">License</a></li>
@@ -260,7 +259,7 @@
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2018, Shlomi Hod.
+      &copy;2019, Shlomi Hod.
       
       |
       Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>

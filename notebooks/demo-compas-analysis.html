@@ -1,0 +1,865 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Demo - Fairness Analysis of COMPAS by ProPublica &#8212; Ethically 0.0.3 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Demo - Fairness Analysis of FICO" href="demo-fico-analysis.html" />
+    <link rel="prev" title="Demos" href="../demos.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="demo-fairness-analysis-of-compas-by-propublica">
+<h1>Demo - Fairness Analysis of COMPAS by ProPublica<a class="headerlink" href="#demo-fairness-analysis-of-compas-by-propublica" title="Permalink to this headline">¶</a></h1>
+<p>Based on: <a class="reference external" href="https://github.com/propublica/compas-analysis">https://github.com/propublica/compas-analysis</a></p>
+<p>What follows are the calculations performed for ProPublica’s analaysis
+of the COMPAS Recidivism Risk Scores. It might be helpful to open <a class="reference external" href="https://www.propublica.org/article/how-we-analyzed-the-compas-recidivism-algorithm/">the
+methodology</a>
+in another tab to understand the following.</p>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">stats</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pylab</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+
+<span class="kn">from</span> <span class="nn">ethically.dataset</span> <span class="k">import</span> <span class="n">COMPASDataset</span>
+<span class="kn">from</span> <span class="nn">ethically.fairness.metrics</span> <span class="k">import</span> <span class="n">distplot_by</span>
+</pre></div>
+</div>
+<div class="section" id="loading-the-data">
+<h2>Loading the Data<a class="headerlink" href="#loading-the-data" title="Permalink to this headline">¶</a></h2>
+<p>We select fields for severity of charge, number of priors, demographics,
+age, sex, compas scores, and whether each person was accused of a crime
+within two years.</p>
+<p>There are a number of reasons remove rows because of missing data:</p>
+<ul class="simple">
+<li>If the charge date of a defendants Compas scored crime was not within
+30 days from when the person was arrested, we assume that because of
+data quality reasons, that we do not have the right offense.</li>
+<li>We coded the recidivist flag – <code class="docutils literal notranslate"><span class="pre">is_recid</span></code> – to be -1 if we could
+not find a compas case at all.</li>
+<li>In a similar vein, ordinary traffic offenses – those with a
+<code class="docutils literal notranslate"><span class="pre">c_charge_degree</span></code> of ‘O’ – will not result in Jail time are removed
+(only two of them).</li>
+<li>We filtered the underlying data from Broward county to include only
+those rows representing people who had either recidivated in two
+years, or had at least two years outside of a correctional facility.</li>
+</ul>
+<p>All of this is already done by instantiating a <code class="docutils literal notranslate"><span class="pre">COMPASDataset</span></code> object
+from <code class="docutils literal notranslate"><span class="pre">ethically</span></code>.</p>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">compas_ds</span> <span class="o">=</span> <span class="n">COMPASDataset</span><span class="p">()</span>
+<span class="n">df</span> <span class="o">=</span> <span class="n">compas_ds</span><span class="o">.</span><span class="n">df</span>
+
+<span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">6172</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="eda">
+<h2>EDA<a class="headerlink" href="#eda" title="Permalink to this headline">¶</a></h2>
+<p>Higher COMPAS scores are slightly correlated with a longer length of
+stay.</p>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stats</span><span class="o">.</span><span class="n">pearsonr</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;length_of_stay&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mf">0.20741201943031592</span><span class="p">,</span> <span class="mf">5.943991686932148e-61</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>After filtering we have the following demographic breakdown:</p>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;age_cat&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">25</span> <span class="o">-</span> <span class="mi">45</span>            <span class="mi">3532</span>
+<span class="n">Less</span> <span class="n">than</span> <span class="mi">25</span>       <span class="mi">1347</span>
+<span class="n">Greater</span> <span class="n">than</span> <span class="mi">45</span>    <span class="mi">1293</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">age_cat</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">African</span><span class="o">-</span><span class="n">American</span>    <span class="mi">3175</span>
+<span class="n">Caucasian</span>           <span class="mi">2103</span>
+<span class="n">Hispanic</span>             <span class="mi">509</span>
+<span class="n">Other</span>                <span class="mi">343</span>
+<span class="n">Asian</span>                 <span class="mi">31</span>
+<span class="n">Native</span> <span class="n">American</span>       <span class="mi">11</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">race</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(((</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+  <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">African</span><span class="o">-</span><span class="n">American</span>    <span class="mf">51.44</span>
+<span class="n">Caucasian</span>           <span class="mf">34.07</span>
+<span class="n">Hispanic</span>             <span class="mf">8.25</span>
+<span class="n">Other</span>                <span class="mf">5.56</span>
+<span class="n">Asian</span>                <span class="mf">0.50</span>
+<span class="n">Native</span> <span class="n">American</span>      <span class="mf">0.18</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">race</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;score_text&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Low</span>       <span class="mi">3421</span>
+<span class="n">Medium</span>    <span class="mi">1607</span>
+<span class="n">High</span>      <span class="mi">1144</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">score_text</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;sex&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>race</th>
+      <th>African-American</th>
+      <th>Asian</th>
+      <th>Caucasian</th>
+      <th>Hispanic</th>
+      <th>Native American</th>
+      <th>Other</th>
+    </tr>
+    <tr>
+      <th>sex</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>Female</th>
+      <td>549</td>
+      <td>2</td>
+      <td>482</td>
+      <td>82</td>
+      <td>2</td>
+      <td>58</td>
+    </tr>
+    <tr>
+      <th>Male</th>
+      <td>2626</td>
+      <td>29</td>
+      <td>1621</td>
+      <td>427</td>
+      <td>9</td>
+      <td>285</td>
+    </tr>
+  </tbody>
+</table>
+</div><div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(((</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;sex&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+  <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Male</span>      <span class="mf">80.96</span>
+<span class="n">Female</span>    <span class="mf">19.04</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">sex</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">0</span>    <span class="mi">3363</span>
+<span class="mi">1</span>    <span class="mi">2809</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">two_year_recid</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(((</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+  <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+ <span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">0</span>    <span class="mf">54.49</span>
+<span class="mi">1</span>    <span class="mf">45.51</span>
+<span class="n">Name</span><span class="p">:</span> <span class="n">two_year_recid</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
+</pre></div>
+</div>
+<p>Judges are often presented with two sets of scores from the Compas
+system – one that classifies people into High, Medium and Low risk, and
+a corresponding decile score. There is a clear downward trend in the
+decile scores as those scores increase for white defendants.</p>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">RACE_IN_FOCUS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;African-American&#39;</span><span class="p">,</span> <span class="s1">&#39;Caucasian&#39;</span><span class="p">]</span>
+<span class="n">df_race_focused</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">RACE_IN_FOCUS</span><span class="p">)]</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s1">&#39;race&#39;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span><span class="c1">#, aspect=4,)</span>
+<span class="n">g</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">,</span> <span class="s1">&#39;decile_score&#39;</span><span class="p">,</span> <span class="n">rwidth</span><span class="o">=</span><span class="mf">0.9</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="../_images/demo-compas-analysis_18_0.png" src="../_images/demo-compas-analysis_18_0.png" />
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">distplot_by</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">],</span> <span class="n">hist</span><span class="o">=</span><span class="kc">False</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="../_images/demo-compas-analysis_19_0.png" src="../_images/demo-compas-analysis_19_0.png" />
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>race</th>
+      <th>African-American</th>
+      <th>Asian</th>
+      <th>Caucasian</th>
+      <th>Hispanic</th>
+      <th>Native American</th>
+      <th>Other</th>
+    </tr>
+    <tr>
+      <th>decile_score</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>1</th>
+      <td>365</td>
+      <td>15</td>
+      <td>605</td>
+      <td>159</td>
+      <td>0</td>
+      <td>142</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>346</td>
+      <td>4</td>
+      <td>321</td>
+      <td>89</td>
+      <td>2</td>
+      <td>60</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>298</td>
+      <td>5</td>
+      <td>238</td>
+      <td>73</td>
+      <td>1</td>
+      <td>32</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>337</td>
+      <td>0</td>
+      <td>243</td>
+      <td>47</td>
+      <td>0</td>
+      <td>39</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>323</td>
+      <td>1</td>
+      <td>200</td>
+      <td>39</td>
+      <td>0</td>
+      <td>19</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>318</td>
+      <td>2</td>
+      <td>160</td>
+      <td>27</td>
+      <td>2</td>
+      <td>20</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>343</td>
+      <td>1</td>
+      <td>113</td>
+      <td>28</td>
+      <td>2</td>
+      <td>9</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>301</td>
+      <td>2</td>
+      <td>96</td>
+      <td>14</td>
+      <td>0</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>317</td>
+      <td>0</td>
+      <td>77</td>
+      <td>17</td>
+      <td>2</td>
+      <td>7</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>227</td>
+      <td>1</td>
+      <td>50</td>
+      <td>16</td>
+      <td>2</td>
+      <td>8</td>
+    </tr>
+  </tbody>
+</table>
+</div><div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">],</span> <span class="n">normalize</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>race</th>
+      <th>African-American</th>
+      <th>Asian</th>
+      <th>Caucasian</th>
+      <th>Hispanic</th>
+      <th>Native American</th>
+      <th>Other</th>
+    </tr>
+    <tr>
+      <th>two_year_recid</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.450193</td>
+      <td>0.006839</td>
+      <td>0.380910</td>
+      <td>0.095153</td>
+      <td>0.001784</td>
+      <td>0.065120</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.591314</td>
+      <td>0.002848</td>
+      <td>0.292631</td>
+      <td>0.067284</td>
+      <td>0.001780</td>
+      <td>0.044144</td>
+    </tr>
+  </tbody>
+</table>
+</div><div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">],</span>
+            <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">],</span>
+            <span class="n">normalize</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th>race</th>
+      <th>African-American</th>
+      <th>Caucasian</th>
+    </tr>
+    <tr>
+      <th>two_year_recid</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>0.541682</td>
+      <td>0.458318</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>0.668949</td>
+      <td>0.331051</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+<div class="section" id="fairness-demographic-classification-criteria">
+<h2>Fairness Demographic Classification Criteria<a class="headerlink" href="#fairness-demographic-classification-criteria" title="Permalink to this headline">¶</a></h2>
+<p>Based on: <a class="reference external" href="https://fairmlbook.org/demographic.html">https://fairmlbook.org/demographic.html</a></p>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ethically.fairness.metrics</span> <span class="k">import</span> <span class="p">(</span><span class="n">independence_binary</span><span class="p">,</span>
+                                        <span class="n">separation_binary</span><span class="p">,</span>
+                                        <span class="n">sufficiency_binary</span><span class="p">,</span>
+                                        <span class="n">independence_score</span><span class="p">,</span>
+                                        <span class="n">separation_score</span><span class="p">,</span>
+                                        <span class="n">sufficiency_score</span><span class="p">,</span>
+                                        <span class="n">report_binary</span><span class="p">,</span>
+                                        <span class="n">plot_roc_by_attr</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="section" id="independence">
+<h3>Independence<a class="headerlink" href="#independence" title="Permalink to this headline">¶</a></h3>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">indp</span><span class="p">,</span> <span class="n">indp_cmp</span> <span class="o">=</span> <span class="n">independence_binary</span><span class="p">((</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">),</span>
+                                     <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">],</span>
+                                     <span class="s1">&#39;Caucasian&#39;</span><span class="p">,</span>
+                                     <span class="n">as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">indp</span><span class="p">,</span> <span class="n">indp_cmp</span> <span class="o">=</span> <span class="n">independence_binary</span><span class="p">((</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">),</span>
+                                     <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">],</span>
+                                     <span class="s1">&#39;Caucasian&#39;</span><span class="p">,</span>
+                                     <span class="n">as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">indp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="../_images/demo-compas-analysis_28_0.png" src="../_images/demo-compas-analysis_28_0.png" />
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">indp_cmp</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>acceptance_rate</th>
+    </tr>
+    <tr>
+      <th>African-American vs. Caucasian</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>diff</th>
+      <td>0.245107</td>
+    </tr>
+    <tr>
+      <th>ratio</th>
+      <td>1.740604</td>
+    </tr>
+  </tbody>
+</table>
+</div><div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">independence_score</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">],</span>
+                   <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">],</span> <span class="n">as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+<img alt="../_images/demo-compas-analysis_30_0.png" src="../_images/demo-compas-analysis_30_0.png" />
+</div>
+<div class="section" id="separation">
+<h3>Separation<a class="headerlink" href="#separation" title="Permalink to this headline">¶</a></h3>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sep</span><span class="p">,</span> <span class="n">sep_cmp</span> <span class="o">=</span> <span class="n">separation_binary</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">],</span>
+                                 <span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">),</span>
+                                 <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">],</span>
+                                 <span class="s1">&#39;Caucasian&#39;</span><span class="p">,</span>
+                                <span class="n">as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sep</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="../_images/demo-compas-analysis_33_0.png" src="../_images/demo-compas-analysis_33_0.png" />
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sep_cmp</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>fnr</th>
+      <th>fpr</th>
+      <th>tnr</th>
+      <th>tpr</th>
+    </tr>
+    <tr>
+      <th>African-American vs. Caucasian</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>diff</th>
+      <td>-0.211582</td>
+      <td>0.203241</td>
+      <td>-0.203241</td>
+      <td>0.211582</td>
+    </tr>
+    <tr>
+      <th>ratio</th>
+      <td>0.573724</td>
+      <td>1.923234</td>
+      <td>0.739387</td>
+      <td>1.420098</td>
+    </tr>
+  </tbody>
+</table>
+</div><div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_roc_by_attr</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">],</span>
+                 <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">],</span>
+                 <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">],</span>
+                 <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">));</span>
+</pre></div>
+</div>
+<img alt="../_images/demo-compas-analysis_35_0.png" src="../_images/demo-compas-analysis_35_0.png" />
+</div>
+<div class="section" id="sufficiency">
+<h3>Sufficiency<a class="headerlink" href="#sufficiency" title="Permalink to this headline">¶</a></h3>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">suff</span><span class="p">,</span> <span class="n">suff_cmp</span> <span class="o">=</span> <span class="n">sufficiency_binary</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">],</span>
+                                   <span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">),</span>
+                                   <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">],</span>
+                                   <span class="s1">&#39;Caucasian&#39;</span><span class="p">,</span>
+                                   <span class="n">as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">suff</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="../_images/demo-compas-analysis_38_0.png" src="../_images/demo-compas-analysis_38_0.png" />
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">suff_cmp</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>npv</th>
+      <th>ppv</th>
+    </tr>
+    <tr>
+      <th>African-American vs. Caucasian</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>diff</th>
+      <td>-0.061433</td>
+      <td>0.054708</td>
+    </tr>
+    <tr>
+      <th>ratio</th>
+      <td>0.913477</td>
+      <td>1.091972</td>
+    </tr>
+  </tbody>
+</table>
+</div><div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sufficiency_score</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">],</span>
+                  <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">],</span>
+                  <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">],</span>
+                  <span class="n">as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+<img alt="../_images/demo-compas-analysis_40_0.png" src="../_images/demo-compas-analysis_40_0.png" />
+<div class="section" id="transforming-the-score-to-percentiles-by-group">
+<h4>Transforming the score to percentiles by group<a class="headerlink" href="#transforming-the-score-to-percentiles-by-group" title="Permalink to this headline">¶</a></h4>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sufficiency_score</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">],</span>
+                  <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">],</span>
+                  <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">],</span>
+                  <span class="n">within_score_percentile</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                  <span class="n">as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
+</pre></div>
+</div>
+<img alt="../_images/demo-compas-analysis_42_0.png" src="../_images/demo-compas-analysis_42_0.png" />
+</div>
+</div>
+<div class="section" id="generating-all-the-relevant-statistics-for-a-binary-prediction">
+<h3>Generating all the relevant statistics for a binary prediction<a class="headerlink" href="#generating-all-the-relevant-statistics-for-a-binary-prediction" title="Permalink to this headline">¶</a></h3>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">report_binary</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">],</span>
+              <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">,</span>
+              <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>African-American</th>
+      <th>Caucasian</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>total</th>
+      <td>3175.000000</td>
+      <td>2103.000000</td>
+    </tr>
+    <tr>
+      <th>proportion</th>
+      <td>0.601554</td>
+      <td>0.398446</td>
+    </tr>
+    <tr>
+      <th>base_rate</th>
+      <td>0.523150</td>
+      <td>0.390870</td>
+    </tr>
+    <tr>
+      <th>acceptance_rate</th>
+      <td>0.576063</td>
+      <td>0.330956</td>
+    </tr>
+    <tr>
+      <th>accuracy</th>
+      <td>0.649134</td>
+      <td>0.671897</td>
+    </tr>
+    <tr>
+      <th>fnr</th>
+      <td>0.284768</td>
+      <td>0.496350</td>
+    </tr>
+    <tr>
+      <th>fpr</th>
+      <td>0.423382</td>
+      <td>0.220141</td>
+    </tr>
+    <tr>
+      <th>ppv</th>
+      <td>0.649535</td>
+      <td>0.594828</td>
+    </tr>
+    <tr>
+      <th>npv</th>
+      <td>0.648588</td>
+      <td>0.710021</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Ethically</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=EthicallyAI&repo=ethically&type=star&v=2&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../dataset.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fairness.html">Classification Fairness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../words-embedding-bias.html">Words Embedding Bias</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../demos.html">Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/contributing.html">For Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/changelog.html">Revision History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/license.html">License</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../demos.html">Demos</a><ul>
+      <li>Previous: <a href="../demos.html" title="previous chapter">Demos</a></li>
+      <li>Next: <a href="demo-fico-analysis.html" title="next chapter">Demo - Fairness Analysis of FICO</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Shlomi Hod.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="../_sources/notebooks/demo-compas-analysis.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/EthicallyAI/ethically" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

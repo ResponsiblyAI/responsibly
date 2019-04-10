@@ -1,0 +1,685 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Demo - Fairness Analysis of FICO &#8212; Ethically 0.0.3 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Demo - Bias in Words Embedding" href="demo-words-embedding-bias.html" />
+    <link rel="prev" title="Demo - Fairness Analysis of COMPAS by ProPublica" href="demo-compas-analysis.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="demo-fairness-analysis-of-fico">
+<h1>Demo - Fairness Analysis of FICO<a class="headerlink" href="#demo-fairness-analysis-of-fico" title="Permalink to this headline">¶</a></h1>
+<p>Adapted version of:</p>
+<ol class="arabic simple">
+<li>Fairness and machine learning book - <a class="reference external" href="https://fairmlbook.org/demographic.html">Chapter
+2</a> and <a class="reference external" href="https://github.com/fairmlbook/fairmlbook.github.io">code
+repository</a>.</li>
+<li>Hardt, M., Price, E., &amp; Srebro, N. (2016). <a class="reference external" href="https://arxiv.org/abs/1610.02413">Equality of opportunity
+in supervised learning</a>. In
+Advances in neural information processing systems (pp.&nbsp;3315-3323).</li>
+<li><a class="reference external" href="https://research.google.com/bigpicture/attacking-discrimination-in-ml/">Attacking discrimination with smarter machine
+learning</a>
+by Google</li>
+</ol>
+<div class="line-block">
+<div class="line">From
+<a class="reference external" href="https://en.wikipedia.org/wiki/Credit_score_in_the_United_States">Wikipeida</a>:
+&gt; Credit score in the United States is a number representing the
+creditworthiness of a person, the likelihood that person will pay his
+or her debts.</div>
+<div class="line">Lenders, such as banks and credit card companies, use credit scores to
+evaluate the potential risk posed by lending money to consumers.
+Lenders allege that widespread use of credit scores has made credit
+more widely available and less expensive for many consumers</div>
+</div>
+<p>The analysis is based on data from <a class="reference external" href="https://federalreserve.gov/boarddocs/rptcongress/creditscore/">Report to the Congress on Credit
+Scoring and Its Effects on the Availability and Affordability of
+Credit</a>
+by the Federal Reserve. The data set provides aggregate statistics from
+2003 about a credit score, demographic information (race or ethnicity,
+gender, marital status), and outcomes (to be defined shortly).</p>
+<p>In the USA there are three majour creding agencies, which are for-profit
+organizations. They offer risk score based on the data they collected.
+Wre are going to look into <strong>FICO</strong> score of TransUnion (called
+TransRisk). The TransRisk score is in turn based on a proprietary model
+created by FICO, hence often referred to as FICO scores.</p>
+<p><img alt="Factors contributing to someone’s credit score" src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Credit-score-chart.svg/640px-Credit-score-chart.svg.png" /> Source: Wikipedia</p>
+<p>From Fairness and Machine Learning - Limitations and Opportunities: &gt;
+Regulation of credit agencies in the United States started with the Fair
+Credit Reporting Act, first passed in 1970, that aims to promote the
+accuracy, fairness, and privacy of consumer of information collected by
+the reporting agencies. The Equal Credit Opportunity Act, a United
+States law enacted in 1974, makes it unlawful for any creditor to
+discriminate against any applicant the basis of race, color, religion,
+national origin, sex, marital status, or age.</p>
+<div class="section" id="in-our-analysis-well-use-on-the-joint-statistics-of-score-race-and-outcome">
+<h2>In our analysis we’ll use on the joint statistics of score, race, and outcome.<a class="headerlink" href="#in-our-analysis-well-use-on-the-joint-statistics-of-score-race-and-outcome" title="Permalink to this headline">¶</a></h2>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pylab</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">ethically.fairness.metrics</span> <span class="k">import</span> <span class="n">plot_roc_curves</span>
+<span class="kn">from</span> <span class="nn">ethically.fairness.interventions.threshold</span> <span class="k">import</span> <span class="p">(</span><span class="n">find_thresholds</span><span class="p">,</span>
+                                                        <span class="n">plot_fpt_tpr</span><span class="p">,</span>
+                                                        <span class="n">plot_roc_curves_thresholds</span><span class="p">,</span>
+                                                        <span class="n">plot_costs</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="fico-dataset">
+<h2>FICO Dataset<a class="headerlink" href="#fico-dataset" title="Permalink to this headline">¶</a></h2>
+<p>FICO dataset can be loaded directly from <code class="docutils literal notranslate"><span class="pre">ethically</span></code>. The dataset, in
+this case, is <em>aggregate</em>, i.e., there is no outcome and prediction
+information per individual, but summarized statistics for each FICO
+score and race/race/ethnicity group.</p>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ethically.dataset</span> <span class="k">import</span> <span class="n">build_FICO_dataset</span>
+
+<span class="n">FICO</span> <span class="o">=</span> <span class="n">build_FICO_dataset</span><span class="p">()</span>
+</pre></div>
+</div>
+<p><code class="docutils literal notranslate"><span class="pre">FICO</span></code> is a dictionary that holds variaty of data:</p>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">FICO</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">dict_keys</span><span class="p">([</span><span class="s1">&#39;rocs&#39;</span><span class="p">,</span> <span class="s1">&#39;pdf&#39;</span><span class="p">,</span> <span class="s1">&#39;totals&#39;</span><span class="p">,</span> <span class="s1">&#39;proportions&#39;</span><span class="p">,</span> <span class="s1">&#39;cdf&#39;</span><span class="p">,</span> <span class="s1">&#39;tpr&#39;</span><span class="p">,</span> <span class="s1">&#39;aucs&#39;</span><span class="p">,</span> <span class="s1">&#39;base_rate&#39;</span><span class="p">,</span> <span class="s1">&#39;performance&#39;</span><span class="p">,</span> <span class="s1">&#39;fpr&#39;</span><span class="p">,</span> <span class="s1">&#39;base_rates&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<table border="1" class="docutils">
+<colgroup>
+<col width="19%" />
+<col width="81%" />
+</colgroup>
+<thead valign="bottom">
+<tr class="row-odd"><th class="head">FICO key</th>
+<th class="head">Meaning</th>
+</tr>
+</thead>
+<tbody valign="top">
+<tr class="row-even"><td>totals</td>
+<td>Number of individuals per group</td>
+</tr>
+<tr class="row-odd"><td>cdf</td>
+<td>Cumulative distribution function of score per group</td>
+</tr>
+<tr class="row-even"><td>pdf</td>
+<td>Probability distribution function of score per group</td>
+</tr>
+<tr class="row-odd"><td>performance</td>
+<td>Fraction of non-defaulters per score and group</td>
+</tr>
+<tr class="row-even"><td>base_rates</td>
+<td>Base rate of non-defaulters per group</td>
+</tr>
+<tr class="row-odd"><td>base_rate</td>
+<td>The overall base rate non-defaulters</td>
+</tr>
+<tr class="row-even"><td>proportions</td>
+<td>Fraction of individuals per group</td>
+</tr>
+<tr class="row-odd"><td>fpr</td>
+<td>True Positive Rate by score as threshold per group</td>
+</tr>
+<tr class="row-even"><td>tpr</td>
+<td>False Positive Rate by score as threshold per group</td>
+</tr>
+<tr class="row-odd"><td>rocs</td>
+<td>ROC per group</td>
+</tr>
+<tr class="row-even"><td>aucs</td>
+<td>ROC AUC per group</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="section" id="counts-by-race-or-ethnicity">
+<h2>Counts by Race or Ethnicity<a class="headerlink" href="#counts-by-race-or-ethnicity" title="Permalink to this headline">¶</a></h2>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="nb">sum</span><span class="p">(</span><span class="n">FICO</span><span class="p">[</span><span class="s1">&#39;totals&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">174047</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">FICO</span><span class="p">[</span><span class="s1">&#39;totals&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;barh&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="../_images/demo-fico-analysis_10_0.png" src="../_images/demo-fico-analysis_10_0.png" />
+</div>
+<div class="section" id="score-distribution">
+<h2>Score Distribution<a class="headerlink" href="#score-distribution" title="Permalink to this headline">¶</a></h2>
+<p>The score used in the study is based on the TransUnion TransRisk score.
+TransUnion is a US credit-reporting agency. The TransRisk score is in
+turn based on a proprietary model created by FICO, hence often referred
+to as FICO scores. The Federal Reserve renormalized the scores for the
+study to vary from 0 to 100, with 0 being least creditworthy.</p>
+<p>The information on race was provided by the Social Security
+Administration, thus relying on self-reported values.</p>
+<p>The cumulative distribution of these credit scores strongly depends on
+the group as the next figure reveals.</p>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">FICO</span><span class="p">[</span><span class="s1">&#39;cdf&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Asian</th>
+      <th>Black</th>
+      <th>Hispanic</th>
+      <th>White</th>
+    </tr>
+    <tr>
+      <th>Score</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0.0</th>
+      <td>0.0000</td>
+      <td>0.0007</td>
+      <td>0.0001</td>
+      <td>0.0001</td>
+    </tr>
+    <tr>
+      <th>0.5</th>
+      <td>0.0013</td>
+      <td>0.0119</td>
+      <td>0.0047</td>
+      <td>0.0026</td>
+    </tr>
+    <tr>
+      <th>1.0</th>
+      <td>0.0088</td>
+      <td>0.0533</td>
+      <td>0.0222</td>
+      <td>0.0116</td>
+    </tr>
+    <tr>
+      <th>1.5</th>
+      <td>0.0107</td>
+      <td>0.0647</td>
+      <td>0.0274</td>
+      <td>0.0143</td>
+    </tr>
+    <tr>
+      <th>2.0</th>
+      <td>0.0132</td>
+      <td>0.0789</td>
+      <td>0.0349</td>
+      <td>0.0180</td>
+    </tr>
+  </tbody>
+</table>
+</div><div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">FICO</span><span class="p">[</span><span class="s1">&#39;cdf&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Asian</th>
+      <th>Black</th>
+      <th>Hispanic</th>
+      <th>White</th>
+    </tr>
+    <tr>
+      <th>Score</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>98.0</th>
+      <td>0.9894</td>
+      <td>0.9989</td>
+      <td>0.9966</td>
+      <td>0.9894</td>
+    </tr>
+    <tr>
+      <th>98.5</th>
+      <td>0.9961</td>
+      <td>0.9995</td>
+      <td>0.9988</td>
+      <td>0.9962</td>
+    </tr>
+    <tr>
+      <th>99.0</th>
+      <td>0.9989</td>
+      <td>0.9999</td>
+      <td>0.9998</td>
+      <td>0.9991</td>
+    </tr>
+    <tr>
+      <th>99.5</th>
+      <td>0.9994</td>
+      <td>1.0000</td>
+      <td>1.0000</td>
+      <td>0.9998</td>
+    </tr>
+    <tr>
+      <th>100.0</th>
+      <td>1.0000</td>
+      <td>1.0000</td>
+      <td>1.0000</td>
+      <td>1.0000</td>
+    </tr>
+  </tbody>
+</table>
+</div><div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+
+<span class="n">FICO</span><span class="p">[</span><span class="s1">&#39;cdf&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;CDF by Group&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Cumulative Probability&#39;</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="../_images/demo-fico-analysis_14_0.png" src="../_images/demo-fico-analysis_14_0.png" />
+</div>
+<div class="section" id="outcome-variable">
+<h2>Outcome Variable<a class="headerlink" href="#outcome-variable" title="Permalink to this headline">¶</a></h2>
+<p><strong>Performance variable</strong> that measures a serious delinquency in at least
+one credit line of a certain time period:</p>
+<blockquote>
+<div>“(the) measure is based on the performance of new or existing
+accounts and measures whether individuals have been late 90 days or
+more on one or more of their accounts or had a public record item or
+a new collection agency account during the performance period.” -
+<em>from the Federal Reserve report</em></div></blockquote>
+<p>The <code class="docutils literal notranslate"><span class="pre">FICO['performance']</span></code> holds the percentage of non-defaulters for
+every score value (rows) and race/ethnicity group (columns):</p>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">FICO</span><span class="p">[</span><span class="s1">&#39;performance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">head</span><span class="p">()</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Asian</th>
+      <th>Black</th>
+      <th>Hispanic</th>
+      <th>White</th>
+    </tr>
+    <tr>
+      <th>Score</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0.0</th>
+      <td>0.0523</td>
+      <td>0.0033</td>
+      <td>0.0095</td>
+      <td>0.0146</td>
+    </tr>
+    <tr>
+      <th>0.5</th>
+      <td>0.0552</td>
+      <td>0.0077</td>
+      <td>0.0151</td>
+      <td>0.0205</td>
+    </tr>
+    <tr>
+      <th>1.0</th>
+      <td>0.0581</td>
+      <td>0.0120</td>
+      <td>0.0207</td>
+      <td>0.0264</td>
+    </tr>
+    <tr>
+      <th>1.5</th>
+      <td>0.0610</td>
+      <td>0.0164</td>
+      <td>0.0262</td>
+      <td>0.0323</td>
+    </tr>
+    <tr>
+      <th>2.0</th>
+      <td>0.0639</td>
+      <td>0.0207</td>
+      <td>0.0318</td>
+      <td>0.0382</td>
+    </tr>
+  </tbody>
+</table>
+</div><div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">FICO</span><span class="p">[</span><span class="s1">&#39;performance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">tail</span><span class="p">()</span>
+</pre></div>
+</div>
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Asian</th>
+      <th>Black</th>
+      <th>Hispanic</th>
+      <th>White</th>
+    </tr>
+    <tr>
+      <th>Score</th>
+      <th></th>
+      <th></th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>98.0</th>
+      <td>0.9916</td>
+      <td>0.9818</td>
+      <td>0.9891</td>
+      <td>0.9899</td>
+    </tr>
+    <tr>
+      <th>98.5</th>
+      <td>0.9917</td>
+      <td>0.9840</td>
+      <td>0.9897</td>
+      <td>0.9902</td>
+    </tr>
+    <tr>
+      <th>99.0</th>
+      <td>0.9918</td>
+      <td>0.9861</td>
+      <td>0.9902</td>
+      <td>0.9905</td>
+    </tr>
+    <tr>
+      <th>99.5</th>
+      <td>0.9920</td>
+      <td>0.9882</td>
+      <td>0.9908</td>
+      <td>0.9907</td>
+    </tr>
+    <tr>
+      <th>100.0</th>
+      <td>0.9921</td>
+      <td>0.9904</td>
+      <td>0.9913</td>
+      <td>0.9910</td>
+    </tr>
+  </tbody>
+</table>
+</div></div>
+<div class="section" id="separation-fairness-criterion">
+<h2>Separation Fairness Criterion<a class="headerlink" href="#separation-fairness-criterion" title="Permalink to this headline">¶</a></h2>
+<p>By the separation criterion of a binary classifier, the <em>FPR</em> and <em>TPR</em>
+should be equal across the groups.</p>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_roc_curves</span><span class="p">(</span><span class="n">FICO</span><span class="p">[</span><span class="s1">&#39;rocs&#39;</span><span class="p">],</span> <span class="n">FICO</span><span class="p">[</span><span class="s1">&#39;aucs&#39;</span><span class="p">],</span>
+                <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">));</span>
+</pre></div>
+</div>
+<img alt="../_images/demo-fico-analysis_19_0.png" src="../_images/demo-fico-analysis_19_0.png" />
+<p>The meaning of true positive rate is the rate of predicted positive
+performance given positive performance. Similarly, false positive rate
+is the rate of predicted negative performance given a positive
+performance.</p>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_roc_curves</span><span class="p">(</span><span class="n">FICO</span><span class="p">[</span><span class="s1">&#39;rocs&#39;</span><span class="p">],</span> <span class="n">FICO</span><span class="p">[</span><span class="s1">&#39;aucs&#39;</span><span class="p">],</span>
+                <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">));</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="../_images/demo-fico-analysis_21_0.png" src="../_images/demo-fico-analysis_21_0.png" />
+</div>
+<div class="section" id="thresholds-vs-fpr-and-tpr">
+<h2>Thresholds vs.&nbsp;FPR and TPR<a class="headerlink" href="#thresholds-vs-fpr-and-tpr" title="Permalink to this headline">¶</a></h2>
+<p>The ROC is paramaritazied over the thershold, so the same threshold
+might be related to different (FPR, TPR) pairs for each group. We can
+observe it by plotting the FPR and the TPR as a function of the
+threshold by the groups.</p>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_fpt_tpr</span><span class="p">(</span><span class="n">FICO</span><span class="p">[</span><span class="s1">&#39;rocs&#39;</span><span class="p">],</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
+             <span class="n">title_fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span> <span class="n">text_fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="../_images/demo-fico-analysis_23_0.png" src="../_images/demo-fico-analysis_23_0.png" />
+<p>Therefore, a naive choice of a single threshold will cause to a
+violation of the separation fairness criterion, as there will be
+different in FPR and TPR between the groups.</p>
+</div>
+<div class="section" id="comparison-of-different-criteria">
+<h2>Comparison of Different Criteria<a class="headerlink" href="#comparison-of-different-criteria" title="Permalink to this headline">¶</a></h2>
+<ul class="simple">
+<li>Single threshold (Group Unaware)</li>
+<li>Minimum Cost</li>
+<li>Independence (Demographic Parity)</li>
+<li>FNR (Equality of opportunity)</li>
+<li>Separation (Equalized odds)</li>
+</ul>
+<div class="section" id="cost">
+<h3>Cost: <span class="math notranslate nohighlight">\(FP = - 5 \cdot TP\)</span><a class="headerlink" href="#cost" title="Permalink to this headline">¶</a></h3>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">COST_MATRIX</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">5</span><span class="o">/</span><span class="mi">6</span><span class="p">],</span>
+               <span class="p">[</span><span class="mi">0</span><span class="p">,</span>  <span class="mi">1</span><span class="o">/</span><span class="mi">6</span><span class="p">]]</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">fico</span> <span class="o">=</span> <span class="n">FICO</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">thresholds_data</span> <span class="o">=</span> <span class="n">find_thresholds</span><span class="p">(</span><span class="n">FICO</span><span class="p">[</span><span class="s1">&#39;rocs&#39;</span><span class="p">],</span>
+                                  <span class="n">FICO</span><span class="p">[</span><span class="s1">&#39;proportions&#39;</span><span class="p">],</span>
+                                  <span class="n">FICO</span><span class="p">[</span><span class="s1">&#39;base_rate&#39;</span><span class="p">],</span>
+                                  <span class="n">FICO</span><span class="p">[</span><span class="s1">&#39;base_rates&#39;</span><span class="p">],</span>
+                                  <span class="n">COST_MATRIX</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_roc_curves_thresholds</span><span class="p">(</span><span class="n">FICO</span><span class="p">[</span><span class="s1">&#39;rocs&#39;</span><span class="p">],</span> <span class="n">thresholds_data</span><span class="p">,</span>
+                           <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
+                           <span class="n">title_fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">text_fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="../_images/demo-fico-analysis_29_0.png" src="../_images/demo-fico-analysis_29_0.png" />
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_roc_curves_thresholds</span><span class="p">(</span><span class="n">FICO</span><span class="p">[</span><span class="s1">&#39;rocs&#39;</span><span class="p">],</span> <span class="n">thresholds_data</span><span class="p">,</span>
+                           <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
+                           <span class="n">title_fontsize</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span> <span class="n">text_fontsize</span><span class="o">=</span><span class="mi">15</span><span class="p">)</span>
+
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.3</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mf">0.4</span><span class="p">,</span> <span class="mi">1</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="../_images/demo-fico-analysis_30_0.png" src="../_images/demo-fico-analysis_30_0.png" />
+</div>
+</div>
+<div class="section" id="cost-by-threshold-strategy">
+<h2>Cost by Threshold Strategy<a class="headerlink" href="#cost-by-threshold-strategy" title="Permalink to this headline">¶</a></h2>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_costs</span><span class="p">(</span><span class="n">thresholds_data</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="../_images/demo-fico-analysis_32_0.png" src="../_images/demo-fico-analysis_32_0.png" />
+</div>
+<div class="section" id="sufficiency-fairness-criterion-calibration">
+<h2>Sufficiency Fairness Criterion - Calibration<a class="headerlink" href="#sufficiency-fairness-criterion-calibration" title="Permalink to this headline">¶</a></h2>
+<div class="code ipython3 highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">f</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+
+<span class="n">FICO</span><span class="p">[</span><span class="s1">&#39;performance&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">ax</span><span class="o">=</span><span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Non-default rate&#39;</span><span class="p">)</span>
+
+<span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">FICO</span><span class="p">[</span><span class="s1">&#39;cdf&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+    <span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">FICO</span><span class="p">[</span><span class="s1">&#39;cdf&#39;</span><span class="p">][</span><span class="n">group</span><span class="p">],</span> <span class="n">FICO</span><span class="p">[</span><span class="s1">&#39;performance&#39;</span><span class="p">][</span><span class="n">group</span><span class="p">],</span>
+             <span class="n">label</span><span class="o">=</span><span class="n">group</span><span class="p">)</span>
+
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Non-default rate&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Score&#39;</span><span class="p">)</span>
+<span class="n">axes</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">();</span>
+</pre></div>
+</div>
+<img alt="../_images/demo-fico-analysis_34_0.png" src="../_images/demo-fico-analysis_34_0.png" />
+<p>Due to the differences in score distribution by group, it could
+nonetheless be the case that thresholding the score leads to a
+classifier with different positive predictive values in each group.</p>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Ethically</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=EthicallyAI&repo=ethically&type=star&v=2&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../dataset.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../fairness.html">Classification Fairness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../words-embedding-bias.html">Words Embedding Bias</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../demos.html">Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/contributing.html">For Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/changelog.html">Revision History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../about/license.html">License</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="../demos.html">Demos</a><ul>
+      <li>Previous: <a href="demo-compas-analysis.html" title="previous chapter">Demo - Fairness Analysis of COMPAS by ProPublica</a></li>
+      <li>Next: <a href="demo-words-embedding-bias.html" title="next chapter">Demo - Bias in Words Embedding</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Shlomi Hod.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="../_sources/notebooks/demo-fico-analysis.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/EthicallyAI/ethically" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>
