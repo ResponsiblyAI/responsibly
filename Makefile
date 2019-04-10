@@ -45,7 +45,7 @@ DEPENDENCIES = $(VENV)/.pipenv-$(shell bin/checksum Pipfile* setup.py)
 install: $(DEPENDENCIES)
 
 $(DEPENDENCIES):
-	pipenv run python setup.py develop
+	$(SETUP) develop
 	pipenv install --dev
 	@ touch $@
 
@@ -195,9 +195,11 @@ build: dist
 dist: install $(DIST_FILES)
 $(DIST_FILES): $(MODULES)
 	rm -f $(DIST_FILES)
-	pipenv run python setup.py check --strict --metadata --restructuredtext
-	pipenv run python setup.py sdist
-	pipenv run python setup.py bdist_wheel
+	$(SETUP) check --strict --metadata --restructuredtext
+	$(SETUP) sdist
+	$(SETUP) bdist_wheel
+	$(TWINE) check dist/*
+
 
 .PHONY: exe
 exe: install $(EXE_FILES)
@@ -210,6 +212,7 @@ $(PROJECT).spec:
 
 # RELEASE #####################################################################
 
+SETUP := pipenv run python setup.py
 TWINE := pipenv run twine
 
 .PHONY: upload
