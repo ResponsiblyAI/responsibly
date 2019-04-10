@@ -1,5 +1,7 @@
 Ethically
 =========
+*in active development*
+
 
 .. image:: https://img.shields.io/badge/docs-passing-brightgreen.svg
     :target: https://docs.ethically.ai
@@ -26,42 +28,41 @@ Ethically
 .. image::  https://img.shields.io/github/license/EthicallyAI/ethically.svg
     :target: http://docs.ethically.ai/about/license.html
 
-**Toolkit for Auditing and Mitigating Bias and Fairness**
-**of Machine Learning Systems 🔎🤖🔧**
+Toolbox for Auditing, Designing and Adjusting the Ethics of AI
+Systems.
 
-*Ethically* is developed for **practitioners** and **researchers** in mind,
-but also for learners. Therefore, it is compatible with
-data science and machine learning tools of trade in Python,
-such as Numpy, Pandas, and especially **scikit-learn**.
 
-The primary goal is to be one-shop-stop for **auditing** bias
-and fairness of machine learning systems, and the secondary one
-is to mitigate bias and adjust fairness through
-**algorithmic interventions**.
-Besides, there is a particular focus on **NLP** models.
+Auditing
+  Mesuring the ethics of a trained model.
+  For example, binary classification fariness mesures
+  (demographic parity, ...), WEAT score of a words embedding.
 
-*Ethically* consists of three sub-packages:
+Designing (Pre-Mitigation)
+  Improving the ethics of a model or data before or while the training.
+  For example, fairness regularization, data preprocessing.
 
-1. ``ethically.dataset``
-     Collection of common benchmark datasets from fairness research.
+Adjusting (Post-Mitigation)
+  Improving the ethics of a trained model.
+  For example, gender debiasing of a words embedding.
 
-2. ``ethically.fairness``
-     Demographic fairness in binary classification,
-     including metrics and algorithmic interventions.
 
-3. ``ethically.we``
-     Metrics and debiasing methods for bias (such as gender and race)
-     in words embedding.
+Usage
+-----
 
-For fairness, *Ethically*'s functionality is aligned with the book
-`Fairness and Machine Learning
-- Limitations and Opportunities <https://fairmlbook.org>`_
-by Solon Barocas, Moritz Hardt and Arvind Narayanan.
+After installation, the package can be imported:
 
-If you would like to ask for a feature or report a bug,
-please open a
-`new issue <https://github.com/EthicallyAI/ethically/issues/new>`_
-or write us in `Gitter <https://gitter.im/EthicallyAI/ethically>`_.
+.. code:: sh
+
+   $ python
+   >>> from ethically.we import GenderBiasWE
+   >>> from ethically.we.data import load_w2v_small
+   >>> w2v_small_model = load_w2v_small()
+   >>> w2v_gender_bias_we = GenderBiasWE(w2v_small_model, only_lower=True)
+   >>> w2v_gender_bias_we.calc_direct_bias()
+   0.07307905390764366
+   >>> w2v_gender_bias_we.debias()
+   >>> w2v_gender_bias_we.calc_direct_bias()
+   1.8275163172819303e-09
 
 Requirements
 ------------
@@ -85,18 +86,20 @@ or directly from the source code:
    $ cd ethically
    $ python setup.py install
 
-Citation
---------
 
-If you have used *Ethically* in a scientific publication,
-we would appreciate citations to the following:
+Development Roadmap
+-------------------
+1. Words Embedding
 
-::
+   1. Bolukbasi et al. Debiasing (Gender, Race, Citizens-Immigrants/Refugees)
+   2. Word Embedding Association Test (WEAT)
+   3. Adding support for the German language
 
-  @Misc{,
-    author =    {Shlomi Hod},
-    title =     {{Ethically}: Toolkit for Auditing and Mitigating Bias and Fairness of Machine Learning Systems},
-    year =      {2018--},
-    url = "http://docs.ethically.ai/",
-    note = {[Online; accessed <today>]}
-  }
+2. Fairness in Binary Classification
+
+   1. Loading of common datasets in ML fairness research
+   2. Auditing (e.g demographic parity)
+   3. Designing (e.g. fairness regularization)
+   4. Adjusting (e.g.  reject option classification)
+
+3. Web Auditing Tool (for non-programmers)
