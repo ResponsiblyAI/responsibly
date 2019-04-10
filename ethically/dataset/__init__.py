@@ -1,7 +1,7 @@
 """
 Collection of common benchmark datasets from fairness research.
 
-Each dataset object contains a `pandas.DataFrame` as `df` attribute
+Each dataset object contains a :class:`pandas.DataFrame` as `df` attribute
 that holds the actual data.
 The dataset object will take care of loading, preprocessing
 and validating the data.

@@ -3,7 +3,7 @@ Metrics and debiasing for bias (such as gender and race) in words embedding.
 
 .. important::
     The following paper suggests that the current methods
-    have an only superficial effect on the bias in words embedding:
+    have an only superficial effect on the bias in words embeddings:
 
     Gonen, H., & Goldberg, Y. (2019).
     `Lipstick on a Pig:
