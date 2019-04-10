@@ -142,6 +142,11 @@ docs:
 	@echo "\033[95m\n\nBuild successful! View the docs homepage at docs/_build/html/index.html.\n\033[0m"
 	# && sphinx-apidoc  -o api ../ethically
 
+.PHONY: show
+show: docs
+	sleep 5 && open http://localhost:8000/docs/_build/html &
+	pipenv run python -m "http.server"
+
 .PHONY: publish
 publish: docs
 	cd docs && sh ./gh-pages.sh
