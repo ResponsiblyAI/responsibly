@@ -18,7 +18,8 @@ The code is based on `fairmlbook repository <https://github.com/fairmlbook/fairm
 
 References:
     - Hardt, M., Price, E., & Srebro, N. (2016).
-      Equality of opportunity in supervised learning.
+      `Equality of opportunity in supervised learning
+      <https://arxiv.org/abs/1610.02413>`_
       In Advances in neural information processing systems
       (pp. 3315-3323).
     - `Attacking discrimination with

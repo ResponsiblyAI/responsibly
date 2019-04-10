@@ -10,11 +10,11 @@ and two sets of *attribute words* (e.g., man, male, ... and woman, female ...).
 A p-value is calculated using a permutation-test.
 
 Reference:
-- Caliskan, A., Bryson, J. J., & Narayanan, A. (2017).
-  `Semantics derived automatically
-  from language corpora contain human-like biases
-  <http://opus.bath.ac.uk/55288/>`_.
-  Science, 356(6334), 183-186.
+    - Caliskan, A., Bryson, J. J., & Narayanan, A. (2017).
+      `Semantics derived automatically
+      from language corpora contain human-like biases
+      <http://opus.bath.ac.uk/55288/>`_.
+      Science, 356(6334), 183-186.
 
 .. important::
     The effect size and pvalue in the WEAT have

@@ -2,15 +2,15 @@
 Measuring and adjusting bias in words embedding by Bolukbasi (2016).
 
 References:
-- Bolukbasi, T., Chang, K. W., Zou, J. Y., Saligrama, V.,
-  & Kalai, A. T. (2016).
-  `Man is to computer programmer as woman is to homemaker?
-  debiasing word embeddings <https://arxiv.org/abs/1607.06520>`_.
-  In Advances in neural information processing systems
-  (pp. 4349-4357).
+    - Bolukbasi, T., Chang, K. W., Zou, J. Y., Saligrama, V.,
+      & Kalai, A. T. (2016).
+      `Man is to computer programmer as woman is to homemaker?
+      debiasing word embeddings <https://arxiv.org/abs/1607.06520>`_.
+      In Advances in neural information processing systems
+      (pp. 4349-4357).
 
-- The code and data is based on the GitHub repository:
-  https://github.com/tolga-b/debiaswe (MIT License).
+    - The code and data is based on the GitHub repository:
+      https://github.com/tolga-b/debiaswe (MIT License).
 
 
 Usage

@@ -1,5 +1,5 @@
 """
-Intervensions for satisfying fairness criteria.
+Algorithmic intervensions for satisfying fairness criteria.
 
 There are three families of techniques:
 

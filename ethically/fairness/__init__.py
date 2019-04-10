@@ -1,7 +1,7 @@
 """
 Demographic fairness in binary classification.
 
-The common and simples setting, but not the one, of fairness
+The common and simples setting, but not the only one, of fairness
 of a binary classifier is the demographic one.
 It is assume that there is one sensitive attribute or more
 that represents one or more demographic groups
@@ -21,7 +21,7 @@ should be fair.
 Currently, the :mod:`ethically.fairness` module has two components:
 
 1. **Metrics** (:mod:`ethically.fairness.metrics`) for measuring unfairness.
-2. **Interventions** (:mod:`ethically.fairness.interventions`) for satisfying
-   fairness criteria.
+2. **Algorithmic interventions** (:mod:`ethically.fairness.interventions`)
+   for satisfying fairness criteria.
 
 """

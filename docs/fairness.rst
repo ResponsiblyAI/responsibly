@@ -65,9 +65,8 @@ A Dictionary of criteria
 https://fairmlbook.org/demographic.html#a-dictionary-of-criteria
 
 
-
-Interventions
--------------
+Algorithmic Interventions
+-------------------------
 
 .. automodule:: ethically.fairness.interventions
 

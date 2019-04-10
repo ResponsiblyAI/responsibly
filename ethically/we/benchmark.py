@@ -2,7 +2,7 @@
 Evaluate words embedding by standard benchmarks.
 
 Reference:
-- https://github.com/kudkudak/word-embeddings-benchmarks
+    - https://github.com/kudkudak/word-embeddings-benchmarks
 
 
 Word Pairs Tasks

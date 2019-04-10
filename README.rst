@@ -36,7 +36,8 @@ such as Numpy, Pandas, and especially **scikit-learn**.
 
 The primary goal is to be one-shop-stop for **auditing** bias
 and fairness of machine learning systems, and the secondary one
-is to mitigate bias and adjust fairness through **interventions**.
+is to mitigate bias and adjust fairness through
+**algorithmic interventions**.
 Besides, there is a particular focus on **NLP** models.
 
 *Ethically* consists of three sub-packages:
@@ -46,7 +47,7 @@ Besides, there is a particular focus on **NLP** models.
 
 2. ``ethically.fairness``
      Demographic fairness in binary classification,
-     including metrics and interventions.
+     including metrics and algorithmic interventions.
 
 3. ``ethically.we``
      Metrics and debiasing methods for bias (such as gender and race)

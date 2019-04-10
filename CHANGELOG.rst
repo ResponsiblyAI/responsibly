@@ -11,7 +11,7 @@ Revision History
     - Separation
     - Sufficiency
 
-  - Equalized odds post-processing interventions
+  - Equalized odds post-processing algorithmic interventions
   - Complete two notebook demos (FICO and COMPAS)
 
 - Words embedding bias
