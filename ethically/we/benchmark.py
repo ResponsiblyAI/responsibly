@@ -1,12 +1,10 @@
 """
-Evaluate words embedding by standard benchmarks.
+Evaluate words embeedings by standard benchmarks.
 
-Reference:
-    - https://github.com/kudkudak/word-embeddings-benchmarks
+Reference: https://github.com/kudkudak/word-embeddings-benchmarks
 
 
 Word Pairs Tasks
-~~~~~~~~~~~~~~~~
 
 1. The WordSimilarity-353 Test Collection
    http://www.cs.technion.ac.il/~gabr/resources/data/wordsim353/
@@ -31,7 +29,6 @@ Word Pairs Tasks
 
 
 Analogies Tasks
-~~~~~~~~~~~~~~~
 
 1. Google Analogies (subset of WordRep)
    https://code.google.com/archive/p/word2vec/source
@@ -42,9 +39,14 @@ Analogies Tasks
 """
 
 import os
+import warnings
 
 import pandas as pd
 from pkg_resources import resource_filename
+
+
+with warnings.catch_warnings():
+    warnings.simplefilter('ignore', category=FutureWarning)
 
 
 WORD_PAIRS_TASKS = {'WS353': 'wordsim353.tsv',
@@ -63,13 +65,13 @@ PAIR_WORDS_EVALUATION_FIELDS = ['pearson_r', 'pearson_pvalue',
                                 'ratio_unkonwn_words']
 
 
-def _get_data_resource_path(filename):
+def get_data_resource_path(filename):
     return resource_filename(__name__, os.path.join('data',
                                                     'benchmark',
                                                     filename))
 
 
-def _prepare_word_pairs_file(src, dst, delimiter='\t'):
+def prepare_word_pairs_file(src, dst, delimiter='\t'):
     """Transform formats of word pairs files to tsv."""
     df = pd.read_csv(src, header=None, delimiter=delimiter)
     df.loc[:, :2].to_csv(dst, sep=delimiter, index=False, header=False)
@@ -84,7 +86,7 @@ def evaluate_word_pairs(model, kwargs_word_pairs=None):
                               evaluate_word_pairs
                               method.
     :type kwargs_word_pairs: dict or None
-    :return: :class:`pandas.DataFrame` of evaluation results.
+    :return: DataFrame of evaluation results.
     """
 
     if kwargs_word_pairs is None:
@@ -93,7 +95,7 @@ def evaluate_word_pairs(model, kwargs_word_pairs=None):
     results = {}
 
     for name, filename in WORD_PAIRS_TASKS.items():
-        path = _get_data_resource_path(filename)
+        path = get_data_resource_path(filename)
         (pearson,
          spearman,
          ratio_unknown_words) = model.evaluate_word_pairs(path,
@@ -122,7 +124,7 @@ def evaluate_word_analogies(model, kwargs_word_analogies=None):
                                   evaluate_word_analogies
                                   method.
     :type evaluate_word_analogies: dict or None
-    :return: :class:`pandas.DataFrame` of evaluation results.
+    :return: DataFrame of evaluation results.
     """
 
     if kwargs_word_analogies is None:
@@ -131,7 +133,7 @@ def evaluate_word_analogies(model, kwargs_word_analogies=None):
     results = {}
 
     for name, filename in ANALOGIES_TASKS.items():
-        path = _get_data_resource_path(filename)
+        path = get_data_resource_path(filename)
         overall_score, _ = model.evaluate_word_analogies(path,
                                                          **kwargs_word_analogies)  # pylint: disable=C0301
 

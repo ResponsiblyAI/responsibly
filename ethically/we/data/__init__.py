@@ -1,6 +1,5 @@
 # TODO how import files from a package
 import json
-import warnings
 
 from gensim.models.keyedvectors import KeyedVectors
 from pkg_resources import resource_filename, resource_string
@@ -8,14 +7,9 @@ from pkg_resources import resource_filename, resource_string
 
 def load_w2v_small():
     # pylint: disable=C0301
-
-    with warnings.catch_warnings():
-        warnings.simplefilter('ignore', DeprecationWarning)
-        model = KeyedVectors.load_word2vec_format(
-            resource_filename(__name__, 'GoogleNews-vectors-negative300-bolukbasi.bin'),
-            binary=True)
-
-    return model
+    return KeyedVectors.load_word2vec_format(
+        resource_filename(__name__, 'GoogleNews-vectors-negative300-bolukbasi.bin'),
+        binary=True)
 
 
 def load_json_resource(resource_name):
@@ -53,6 +47,3 @@ BOLUKBASI_DATA['gender']['word_group_keys'] = ['profession_names',
                                                'specific_seed',
                                                'specific_full',
                                                'specific_full_with_definitional']  # pylint: disable=C0301
-
-
-WEAT_DATA = load_json_resource('weat')
