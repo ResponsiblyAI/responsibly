@@ -5,6 +5,7 @@ Revision History
 ------------------
 
 - Fairness in Classification
+
   - Three demographic fairness criteria
 
     - Independence
