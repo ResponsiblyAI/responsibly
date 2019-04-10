@@ -31,13 +31,26 @@ Ethically
 
 *Ethically* is developed for **practitioners** and **researchers** in mind,
 but also for learners. Therefore, it is compatible with
-data science and machine learning tools of trade
+data science and machine learning tools of trade in Python,
 such as Numpy, Pandas, and especially **scikit-learn**.
 
 The primary goal is to be one-shop-stop for **auditing** bias
 and fairness of machine learning systems, and the secondary one
 is to mitigate bias and adjust fairness through **interventions**.
 Besides, there is a particular focus on **NLP** models.
+
+*Ethically* consists of three sub-packages:
+
+1. :mod:`ethically.dataset`
+     Collection of common benchmark datasets from fairness research.
+
+2. :mod:`ethically.fairness`
+     Demographic fairness in binary classification,
+     including metrics and interventions.
+
+3. :mod:`ethically.we`
+     Metrics and debiasing methods for bias (such as gender and race)
+     in words embedding.
 
 For fairness, *Ethically*'s functionality is aligned with the book
 `Fairness and Machine Learning
@@ -71,8 +84,11 @@ or directly from the source code:
    $ cd ethically
    $ python setup.py install
 
-Citing
--------
+Citation
+--------
+
+If you have used *Ethically* in a scientific publication,
+we would appreciate citations to the following:
 
 ::
 

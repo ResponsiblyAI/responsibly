@@ -1,6 +1,3 @@
-from . import we
-
-
 __project__ = 'ethically'
 __description__ = 'Toolkit for Auditing and Mitigating Bias'
 ' and Fairness of Machine Learning Systems 🔎🤖🔧'

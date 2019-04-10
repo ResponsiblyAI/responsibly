@@ -12,8 +12,8 @@ Contents
 .. toctree::
   :maxdepth: 1
 
-  fairness
   dataset
+  fairness
   words-embedding-bias
   demos
   about/contributing

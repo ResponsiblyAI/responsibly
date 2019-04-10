@@ -1,5 +1,5 @@
 """
-Demographic Fairness in Binary Classification.
+Demographic fairness in binary classification.
 
 The common and simples setting, but not the one, of fairness
 of a binary classifier is the demographic one.
