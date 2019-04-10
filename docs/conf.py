@@ -22,7 +22,7 @@ import ethically
 # -- Project information -----------------------------------------------------
 
 project = 'Ethically'
-copyright = '2018, Shlomi Hod'
+copyright = '2019, Shlomi Hod'
 author = 'Shlomi Hod'
 
 # The short X.Y version
