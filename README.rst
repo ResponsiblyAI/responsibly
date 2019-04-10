@@ -41,14 +41,14 @@ Besides, there is a particular focus on **NLP** models.
 
 *Ethically* consists of three sub-packages:
 
-1. :mod:`ethically.dataset`
+1. ``ethically.dataset``
      Collection of common benchmark datasets from fairness research.
 
-2. :mod:`ethically.fairness`
+2. ``ethically.fairness``
      Demographic fairness in binary classification,
      including metrics and interventions.
 
-3. :mod:`ethically.we`
+3. ``ethically.we``
      Metrics and debiasing methods for bias (such as gender and race)
      in words embedding.
 
