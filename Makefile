@@ -45,7 +45,7 @@ DEPENDENCIES = $(VENV)/.pipenv-$(shell bin/checksum Pipfile* setup.py)
 install: $(DEPENDENCIES)
 
 $(DEPENDENCIES):
-	pipenv run python setup.py develop
+	$(SETUP) develop
 	pipenv install --dev
 	@ touch $@
 
@@ -61,9 +61,10 @@ ISORT := pipenv run isort
 PYLINT := pipenv run pylint
 PYCODESTYLE := pipenv run pycodestyle
 PYDOCSTYLE := pipenv run pydocstyle
+RSTLINT := pipenv run rst-lint
 
 .PHONY: check
-check: isort pylint pycodestyle pydocstyle ## Run linters and static analysis
+check: isort pylint pycodestyle pydocstyle rstlint ## Run linters and static analysis
 
 .PHONY: isort
 isort: install
@@ -83,9 +84,7 @@ pydocstyle: install
 
 .PHONY: rstlint
 rstlint: install
-	rst-lint README.rst
-	rst-lint CHANGELOG.rst
-	rst-lint CONTRIBUTING.rst
+	$(RSTLINT) README.rst CHANGELOG.rst CONTRIBUTING.rst
 
 # TESTS #######################################################################
 
@@ -139,8 +138,14 @@ docs:
 	ln -sf `realpath CONTRIBUTING.rst --relative-to=docs/about` docs/about/contributing.rst
 	ln -sf `realpath LICENSE --relative-to=docs/about` docs/about/license.rst
 	cd docs/notebooks && find *.ipynb -exec jupyter nbconvert --to rst {} \;
-	cd docs && sphinx-apidoc  -o api ../ethically && make html
+	cd docs && make html
 	@echo "\033[95m\n\nBuild successful! View the docs homepage at docs/_build/html/index.html.\n\033[0m"
+	# && sphinx-apidoc  -o api ../ethically
+
+.PHONY: show
+show: docs
+	sleep 5 && open http://localhost:8000/docs/_build/html &
+	pipenv run python -m "http.server"
 
 .PHONY: publish
 publish: docs
@@ -190,9 +195,11 @@ build: dist
 dist: install $(DIST_FILES)
 $(DIST_FILES): $(MODULES)
 	rm -f $(DIST_FILES)
-	pipenv run python setup.py check --strict --metadata --restructuredtext
-	pipenv run python setup.py sdist
-	pipenv run python setup.py bdist_wheel
+	$(SETUP) check --strict --metadata --restructuredtext
+	$(SETUP) sdist
+	$(SETUP) bdist_wheel
+	$(TWINE) check dist/*
+
 
 .PHONY: exe
 exe: install $(EXE_FILES)
@@ -205,6 +212,7 @@ $(PROJECT).spec:
 
 # RELEASE #####################################################################
 
+SETUP := pipenv run python setup.py
 TWINE := pipenv run twine
 
 .PHONY: upload
@@ -242,7 +250,8 @@ clean-all: clean
 .PHONY: .clean-docs
 .clean-docs:
 	# rm -rf *.rst docs/apidocs *.html docs/*.png site
-	cd docs && make clean && rm -rf api
+	cd docs && make clean
+	cd docs/notebooks && find . ! -name '*.ipynb' -type f -exec rm -rf {} + && rm -rf -- ./*/
 
 .PHONY: .clean-build
 .clean-build:

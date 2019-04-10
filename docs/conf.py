@@ -22,7 +22,7 @@ import ethically
 # -- Project information -----------------------------------------------------
 
 project = 'Ethically'
-copyright = '2018, Shlomi Hod'
+copyright = '2019, Shlomi Hod'
 author = 'Shlomi Hod'
 
 # The short X.Y version
@@ -214,7 +214,17 @@ epub_exclude_files = ['search.html']
 # -- Options for intersphinx extension ---------------------------------------
 
 # Example configuration for intersphinx: refer to the Python standard library.
-intersphinx_mapping = {'https://docs.python.org/': None}
+# Configuration for intersphinx
+intersphinx_mapping = {
+    'python': ('https://docs.python.org/3/', None),
+    'numpy': ('https://docs.scipy.org/doc/numpy', None),
+    'scipy': ('https://docs.scipy.org/doc/scipy/reference', None),
+    'matplotlib': ('https://matplotlib.org/', None),
+    'sklearn': ('https://scikit-learn.org/stable', None),
+    'statsmodels': ('http://www.statsmodels.org/stable/', None),
+    'pandas': ('http://pandas.pydata.org/pandas-docs/stable/', None),
+    'seaborn': ('http://seaborn.pydata.org/', None),
+}
 
 # -- Options for todo extension ----------------------------------------------
 

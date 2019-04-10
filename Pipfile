@@ -1,22 +1,22 @@
 [[source]]
-
 url = "https://pypi.org/simple"
 verify_ssl = true
 name = "pypi"
 
 [requires]
-
 python_version = "3.5"
 
-[dev-packages]
+[packages]
+ethically = {editable = true,path = "."}
 
+[dev-packages]
 # Linters
 isort = "*"
 pylint = "*"
 pycodestyle = "*"
+pep8 = "*"
 pydocstyle = "*"
 restructuredtext_lint = "*"
-
 # Testing
 pytest = "~= 3.3"
 pytest-describe = "*"
@@ -24,27 +24,22 @@ pytest-expecter = "*"
 pytest-random = "*"
 pytest-cov = "*"
 freezegun = "*"
-
 # Reports
 coverage-space = "*"
-
 # Documentation
 sphinx = "*"
 nbconvert = "*"
 docutils = "*"
 pygments = "*"
-
 # Build
 wheel = "*"
 pyinstaller = "*"
 readme_renderer = "*"
-
 # Release
 setuptools = ">= 38.6.0"
 twine = ">= 1.11.0"
-
 # Tooling
 jupyter = "*"
+notebook = ">=5.7.8"
+requests = ">=2.20.0"
 sniffer = "*"
-MacFSEvents = { version = "*", sys_platform = "== 'darwin'" }
-pync = { version = "*", sys_platform = "== 'darwin'" }

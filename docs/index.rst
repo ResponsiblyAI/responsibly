@@ -12,9 +12,10 @@ Contents
 .. toctree::
   :maxdepth: 1
 
-  demos
+  dataset
+  fairness
   words-embedding-bias
-  API Reference <api/modules>
+  demos
   about/contributing
   about/changelog
   License <about/license>
