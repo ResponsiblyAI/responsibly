@@ -1,8 +1,15 @@
 import math
 
+import gensim
 import numpy as np
 import pandas as pd
-from gensim.models.keyedvectors import KeyedVectors
+
+
+WORD_EMBEDDING_MODEL_TYPES = (gensim.models.keyedvectors.KeyedVectors,
+                              gensim.models.keyedvectors.BaseKeyedVectors,
+                              gensim.models.fasttext.FastText,
+                              gensim.models.word2vec.Word2Vec,
+                              gensim.models.base_any2vec.BaseWordEmbeddingsModel,)  # pylint: disable=line-too-long
 
 
 def round_to_extreme(value, digits=2):
@@ -90,6 +97,7 @@ def take_two_sides_extreme_sorted(df, n_extreme,
 
 
 def assert_gensim_keyed_vectors(model):
-    if not isinstance(model, KeyedVectors):
-        raise TypeError('model should be of type KeyedVectors, not {}'
-                        .format(type(model)))
+    if not isinstance(model, WORD_EMBEDDING_MODEL_TYPES):
+        raise TypeError('model should be of type {}, not {}'
+                        .format(''.join(WORD_EMBEDDING_MODEL_TYPES),
+                                type(model)))
