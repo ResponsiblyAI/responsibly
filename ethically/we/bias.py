@@ -100,7 +100,7 @@ class BiasWordsEmbedding:
     :param model: Words embedding model of ``gensim.model.KeyedVectors``
     :param bool only_lower: Whether the words embedding contrains
                             only lower case words
-    :param bool verbose: Set vebosity
+    :param bool verbose: Set verbosity
     """
 
     def __init__(self, model, only_lower=False, verbose=False,
@@ -110,7 +110,7 @@ class BiasWordsEmbedding:
         # TODO: this is bad Python, ask someone about it
         # probably should be a better design
         # identify_direction doesn't have any meaning
-        # for the calss BiasWordsEmbedding
+        # for the class BiasWordsEmbedding
         if self.__class__ == __class__ and identify_direction is not False:
             raise ValueError('identify_direction must be False'
                              ' for an instance of {}'
@@ -188,7 +188,7 @@ class BiasWordsEmbedding:
 
     # TODO: add the SVD method from section 6 step 1
     # It seems there is a mistake there, I think it is the same as PCA
-    # just with repleacing it with SVD
+    # just with replacing it with SVD
     def _identify_direction(self, positive_end, negative_end,
                             definitional, method='pca'):
         if method not in DIRECTION_METHODS:
@@ -229,7 +229,7 @@ class BiasWordsEmbedding:
                                            pca.explained_variance_ratio_[0]))
             direction = pca.components_[0]
 
-            # if direction is oposite (e.g. we cannot control
+            # if direction is opposite (e.g. we cannot control
             # what the PCA will return)
             ends_diff_projection = cosine_similarity((self[positive_end]
                                                       - self[negative_end]),
@@ -779,7 +779,7 @@ class BiasWordsEmbedding:
         Using Linear SVM.
 
         :param list seed_specific_words: List of seed specific words
-        :param int max_non_specific_examples: The number of non-specifc words
+        :param int max_non_specific_examples: The number of non-specific words
                                               to sample for training
         :return: List of learned specific words and the classifier object
         """
@@ -836,7 +836,7 @@ class GenderBiasWE(BiasWordsEmbedding):
     :param model: Words embedding model of ``gensim.model.KeyedVectors``
     :param bool only_lower: Whether the words embedding contrains
                             only lower case words
-    :param bool verbose: Set vebosity
+    :param bool verbose: Set verbosity
     """
 
     def __init__(self, model, only_lower=False, verbose=False,
@@ -886,7 +886,7 @@ class GenderBiasWE(BiasWordsEmbedding):
                                           ax=None, scatter_kwargs=None):
         # pylint: disable=W0221
         words = BOLUKBASI_DATA['gender']['neutral_profession_names']
-        # TODO: is it correct for inhertence of class method?
+        # TODO: is it correct for inheritance of class method?
         super(cls, cls).plot_bias_across_words_embeddings(words_embedding_bias_dict,  # pylint: disable=C0301
                                                           words,
                                                           ax,
