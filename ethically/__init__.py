@@ -1,5 +1,5 @@
 __project__ = 'ethically'
-__description__ = 'Toolkit for Auditing and Mitigating Bias and Fairness of Machine Learning Systems 🔎🤖🧰'
+__description__ = 'Toolkit for Auditing and Mitigating Bias and Fairness of Machine Learning Systems 🔎🤖🧰'  # pylint: disable=line-too-long
 __url__ = 'http://docs.ethically.ai'
 __version__ = '0.0.3'
 __author__ = 'Shlomi Hod'
