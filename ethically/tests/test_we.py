@@ -34,6 +34,11 @@ def gender_biased_w2v_small():
     return GenderBiasWE(model, only_lower=True, verbose=True)
 
 
+def test_assert_gensim_keyed_vectors():
+    with pytest.raises(TypeError):
+        GenderBiasWE(['one', 'two'], only_lower=True, verbose=True)
+
+
 def test_project_params():
     v = np.array([1, 2, 3])
     u = np.array([-4, 5, -6])
@@ -58,7 +63,7 @@ def test_contains(gender_biased_w2v_small):
 
 
 def test_data_is_sorted_list(gender_biased_w2v_small):
-    # otherwise 'specific_full_with_definitional' is not sorted
+    # otherwise 'specific_full_with_definitional_equalize' is not sorted
     assert gender_biased_w2v_small.only_lower
 
     for key in gender_biased_w2v_small._data['word_group_keys']:

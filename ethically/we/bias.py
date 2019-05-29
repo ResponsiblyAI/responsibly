@@ -852,16 +852,16 @@ class GenderBiasWE(BiasWordsEmbedding):
         self._data = copy.deepcopy(BOLUKBASI_DATA['gender'])
 
         if not self.only_lower:
-            self._data['specific_full_with_definitional'] = \
+            self._data['specific_full_with_definitional_equalize'] = \
                 generate_words_forms(self
-                                     ._data['specific_full_with_definitional'])  # pylint: disable=C0301
+                                     ._data['specific_full_with_definitional_equalize'])  # pylint: disable=C0301
 
         for key in self._data['word_group_keys']:
             self._data[key] = (self._filter_words_by_model(self
                                                            ._data[key]))
 
         self._data['neutral_words'] = self._extract_neutral_words(self
-                                                                  ._data['specific_full_with_definitional'])  # pylint: disable=C0301
+                                                                  ._data['specific_full_with_definitional_equalize'])  # pylint: disable=C0301
         self._data['neutral_words'].sort()
         self._data['word_group_keys'].append('neutral_words')
 
