@@ -453,17 +453,24 @@ class BiasWordsEmbedding:
         return ax
 
     # TODO: refactor for speed and clarity
-    def generate_analogies(self, n_analogies=100, multiple=False,
+    def generate_analogies(self, seed='ends', n_analogies=100, multiple=False,
                            delta=1., restrict_vocab=30000):
         """
-        Generate analogies based on the bias directionself.
+        Generate analogies based on a seed vector.
 
-        x - y ~ direction.
-        or a:x::b:y when a-b ~ direction.
+        x - y ~ seed vector.
+        or a:x::b:y when a-b ~ seed vector.
+        
+        The seed vector can be defined by two word ends,
+        or by the bias direction.
 
         ``delta`` is used for semantically coherent. Default vale of 1
         corresponds to an angle <= pi/3.
 
+        :param seed: The definition of the seed vector.
+                     Either by a tuple of two word ends,
+                     or by `'ends` for the pre-defined ends
+                     or by `'direction'` for the pre-defined direction vector.
         :param int n_analogies: Number of analogies to generate.
         :param bool multiple: Whether to allow multiple appearances of a word
                               in the analogies.
@@ -476,7 +483,21 @@ class BiasWordsEmbedding:
 
         # pylint: disable=C0301,R0914
 
-        self._is_direction_identified()
+        if seed == 'direction':
+            positive_end = self.positive_end
+            negative_end = self.negative_end
+            self._is_direction_identified()
+            seed_vector = self.direction
+        else:
+            if seed == 'ends':
+                positive_end = self.positive_end
+                negative_end = self.negative_end
+
+            else:
+                positive_end, negative_end = seed
+
+            seed_vector = normalize(self.model[positive_end]
+                                    - self.model[negative_end])
 
         restrict_vocab_vectors = self.model.vectors[:restrict_vocab]
 
@@ -494,7 +515,7 @@ class BiasWordsEmbedding:
         normalized_x_minus_y_vectors = (x_minus_y_vectors
                                         / np.linalg.norm(x_minus_y_vectors, axis=1)[:, None])
 
-        cos_distances = normalized_x_minus_y_vectors @ self.direction
+        cos_distances = normalized_x_minus_y_vectors @ seed_vector
 
         sorted_cos_distances_indices = np.argsort(cos_distances)[::-1]
 
@@ -513,15 +534,15 @@ class BiasWordsEmbedding:
             if multiple or (not multiple
                             and (word_x not in generated_words_x
                                  and word_y not in generated_words_y)):
-                analogies.append({'x': word_x,
-                                  'y': word_y,
+                analogies.append({positive_end: word_x,
+                                  negative_end: word_y,
                                   'score': cos_distances[cos_distance_index],
                                   'distance': pairs_distances[tuple(paris_index)]})
             generated_words_x.add(word_x)
             generated_words_y.add(word_y)
 
         df = pd.DataFrame(analogies)
-        df = df[['x', 'y', 'distance', 'score']]
+        df = df[[positive_end, negative_end, 'distance', 'score']]
         return df
 
     def calc_direct_bias(self, neutral_words, c=None):
