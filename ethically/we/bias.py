@@ -12,6 +12,9 @@ References:
     - The code and data is based on the GitHub repository:
       https://github.com/tolga-b/debiaswe (MIT License).
 
+    - Nissim, M., van Noord, R., van der Goot, R. (2019).
+      `Fair is Better than Sensational: Man is to Doctor
+      as Woman is to Doctor <https://arxiv.org/abs/1905.09866>`_.
 
 Usage
 ~~~~~
@@ -83,6 +86,7 @@ from .utils import (
     generate_words_forms, normalize, project_params, project_reject_vector,
     project_vector, reject_vector, round_to_extreme,
     take_two_sides_extreme_sorted, update_word_vector,
+    most_similar,
 )
 
 
@@ -90,6 +94,7 @@ DIRECTION_METHODS = ['single', 'sum', 'pca']
 DEBIAS_METHODS = ['neutralize', 'hard', 'soft']
 FIRST_PC_THRESHOLD = 0.5
 MAX_NON_SPECIFIC_EXAMPLES = 1000
+MAX_ANALOGY_TRIES = 1000
 
 __all__ = ['GenderBiasWE', 'BiasWordsEmbedding']
 
@@ -454,7 +459,8 @@ class BiasWordsEmbedding:
 
     # TODO: refactor for speed and clarity
     def generate_analogies(self, seed='ends', n_analogies=100, multiple=False,
-                           delta=1., restrict_vocab=30000):
+                           delta=1., restrict_vocab=30000,
+                           unrestricted=True):
         """
         Generate analogies based on a seed vector.
 
@@ -467,6 +473,13 @@ class BiasWordsEmbedding:
         ``delta`` is used for semantically coherent. Default vale of 1
         corresponds to an angle <= pi/3.
 
+
+        There is criticism regarding generating analogies
+        when used with `unstricted=False`:
+        - Nissim, M., van Noord, R., van der Goot, R. (2019).
+          `Fair is Better than Sensational: Man is to Doctor
+          as Woman is to Doctor <https://arxiv.org/abs/1905.09866>`_.
+      
         :param seed: The definition of the seed vector.
                      Either by a tuple of two word ends,
                      or by `'ends` for the pre-defined ends
@@ -477,6 +490,9 @@ class BiasWordsEmbedding:
         :param float delta: Threshold for semantic similarity.
                             The maximal distance between x and y.
         :param int restrict_vocab: The vocabulary size to use.
+        :param bool unrestricted: Whether to remove analogies
+                                  that doesn't macth to unrestricted
+                                  most similar.
         :return: Data Frame of analogies (x, y), their distances,
                  and their cosine similarity scores
         """
@@ -525,11 +541,29 @@ class BiasWordsEmbedding:
         generated_words_x = set()
         generated_words_y = set()
 
+        n_analogy_tries = 0
+
         while len(analogies) < n_analogies:
             cos_distance_index = next(sorted_cos_distances_indices_iter)
             paris_index = pairs_indices[cos_distance_index]
             word_x, word_y = [self.model.index2word[index]
                               for index in paris_index]
+
+            if unrestricted:
+                if n_analogy_tries > MAX_ANALOGY_TRIES:
+                    break
+                
+                most_x = most_similar(self.model,
+                                      [word_y, positive_end],
+                                      negative_end)[0][0]
+                most_y = most_similar(self.model,
+                                      [word_x, negative_end],
+                                      positive_end)[0][0]
+
+                if most_x != word_x or most_y != word_y:
+                    n_analogy_tries += 1
+                    continue
+                    
 
             if multiple or (not multiple
                             and (word_x not in generated_words_x
@@ -543,6 +577,7 @@ class BiasWordsEmbedding:
 
         df = pd.DataFrame(analogies)
         df = df[[positive_end, negative_end, 'distance', 'score']]
+        
         return df
 
     def calc_direct_bias(self, neutral_words, c=None):

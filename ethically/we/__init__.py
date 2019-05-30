@@ -11,6 +11,14 @@ Metrics and debiasing for bias (such as gender and race) in words embedding.
     in Word Embeddings But do not Remove Them <https://arxiv.org/abs/1903.03862>`_.
     arXiv preprint arXiv:1903.03862.
 
+.. important::
+   The following paper criticize the generating analogies process
+   when used with `unstricted=False`:
+   
+   Nissim, M., van Noord, R., van der Goot, R. (2019).
+   `Fair is Better than Sensational: Man is to Doctor
+   as Woman is to Doctor <https://arxiv.org/abs/1905.09866>`_.
+
 Currently, two methods are supported:
 
 1. Bolukbasi et al. (2016) bias measure and debiasing
