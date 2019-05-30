@@ -14,7 +14,7 @@ Metrics and debiasing for bias (such as gender and race) in words embedding.
 .. important::
    The following paper criticize the generating analogies process
    when used with `unstricted=False`:
-   
+
    Nissim, M., van Noord, R., van der Goot, R. (2019).
    `Fair is Better than Sensational: Man is to Doctor
    as Woman is to Doctor <https://arxiv.org/abs/1905.09866>`_.

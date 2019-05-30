@@ -1,3 +1,4 @@
+# pylint: disable=too-many-lines
 """
 Measuring and adjusting bias in words embedding by Bolukbasi (2016).
 
@@ -83,10 +84,9 @@ from .benchmark import evaluate_words_embedding
 from .data import BOLUKBASI_DATA
 from .utils import (
     assert_gensim_keyed_vectors, cosine_similarity, generate_one_word_forms,
-    generate_words_forms, normalize, project_params, project_reject_vector,
-    project_vector, reject_vector, round_to_extreme,
+    generate_words_forms, most_similar, normalize, project_params,
+    project_reject_vector, project_vector, reject_vector, round_to_extreme,
     take_two_sides_extreme_sorted, update_word_vector,
-    most_similar,
 )
 
 
@@ -466,7 +466,7 @@ class BiasWordsEmbedding:
 
         x - y ~ seed vector.
         or a:x::b:y when a-b ~ seed vector.
-        
+
         The seed vector can be defined by two word ends,
         or by the bias direction.
 
@@ -479,7 +479,7 @@ class BiasWordsEmbedding:
         - Nissim, M., van Noord, R., van der Goot, R. (2019).
           `Fair is Better than Sensational: Man is to Doctor
           as Woman is to Doctor <https://arxiv.org/abs/1905.09866>`_.
-      
+
         :param seed: The definition of the seed vector.
                      Either by a tuple of two word ends,
                      or by `'ends` for the pre-defined ends
@@ -552,7 +552,7 @@ class BiasWordsEmbedding:
             if unrestricted:
                 if n_analogy_tries > MAX_ANALOGY_TRIES:
                     break
-                
+
                 most_x = most_similar(self.model,
                                       [word_y, positive_end],
                                       negative_end)[0][0]
@@ -563,7 +563,6 @@ class BiasWordsEmbedding:
                 if most_x != word_x or most_y != word_y:
                     n_analogy_tries += 1
                     continue
-                    
 
             if multiple or (not multiple
                             and (word_x not in generated_words_x
@@ -577,7 +576,7 @@ class BiasWordsEmbedding:
 
         df = pd.DataFrame(analogies)
         df = df[[positive_end, negative_end, 'distance', 'score']]
-        
+
         return df
 
     def calc_direct_bias(self, neutral_words, c=None):
