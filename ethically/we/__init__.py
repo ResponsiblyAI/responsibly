@@ -33,7 +33,7 @@ the impact of debiasing performance.
 
 """
 
-from .bias import BiasWordsEmbedding, GenderBiasWE
+from .bias import BiasWordEmbedding, GenderBiasWE
 from .data import load_w2v_small
 from .utils import most_similar
 from .weat import (
