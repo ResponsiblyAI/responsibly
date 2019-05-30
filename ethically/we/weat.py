@@ -255,6 +255,17 @@ def calc_single_weat(model,
 def calc_weat_pleasant_unpleasant_attribute(model,
                                             first_target, second_target,
                                             with_pvalue=True, pvalue_kwargs=None):
+    """
+    Calc the WEAT result with pleasent vs. unpleasant attributes.
+
+    :param model: Words embedding model of ``gensim.model.KeyedVectors``
+    :param dict first_target: First target words list and its name
+    :param dict second_target: Second target words list and its name
+    :param bool with_pvalue: Whether to calculate the p-value of the
+                             WEAT score (might be computationally expensive)
+    :return: WEAT result (score, size effect, Nt, Na and p-value)
+    """
+
     weat_data = {'first_attribute': copy.deepcopy(WEAT_DATA[0]['first_attribute']),
                  'second_attribute': copy.deepcopy(WEAT_DATA[0]['second_attribute']),
                  'first_target': first_target,
