@@ -14,6 +14,7 @@ from ethically.we.data import WEAT_DATA, load_w2v_small
 from ethically.we.utils import (
     project_params, project_reject_vector, project_vector,
 )
+from ethically.tests.utils import assert_deep_almost_equal
 
 from ..consts import RANDOM_STATE
 
@@ -327,6 +328,44 @@ def test_learn_full_specific_words(gender_biased_w2v_small):
 def test_calc_all_weat(w2v_small):
     calc_all_weat(w2v_small, filter_by='model', with_original_finding=True,
                   with_pvalue=True, pvalue_kwargs={'method': 'approximate'})
+
+
+def test_calc_all_weat_index(w2v_small):
+    all_weat = calc_all_weat(w2v_small, filter_by='model',
+                             with_original_finding=True,
+                             with_pvalue=True,
+                             pvalue_kwargs={'method': 'approximate'})
+    
+    for index in range(len(WEAT_DATA)):
+        single_weat = calc_all_weat(w2v_small, weat_data=index,
+                                    filter_by='model',
+                                    with_original_finding=True,
+                                    with_pvalue=True,
+                                    pvalue_kwargs={'method':
+                                                   'approximate'})
+
+        assert_deep_almost_equal(single_weat.iloc[0].to_dict(),
+                                 all_weat.iloc[index].to_dict(),
+                                 atol=0.01)
+
+def test_calc_all_weat_indices(w2v_small):
+    all_weat = calc_all_weat(w2v_small, filter_by='model',
+                             with_original_finding=True,
+                             with_pvalue=True,
+                             pvalue_kwargs={'method': 'approximate'})
+    
+    for index in range(1, len(WEAT_DATA)):
+        indices = tuple(range(index))
+        singles_weat = calc_all_weat(w2v_small, weat_data=indices,
+                                     filter_by='model',
+                                     with_original_finding=True,
+                                     with_pvalue=True,
+                                     pvalue_kwargs={'method':
+                                                    'approximate'})
+
+        assert_deep_almost_equal(singles_weat.to_dict(),
+                                 all_weat.iloc[:index].to_dict(),
+                                 atol=0.01)
 
 
 def test_calc_weat_pleasant_attribute(w2v_small):

@@ -7,6 +7,11 @@ from pkg_resources import resource_filename, resource_string
 
 
 def load_w2v_small():
+    """Load reduced Word2Vec model as `KeyedVectors` object.
+
+    Based on the pre-trained embedding on the Google News corpus:
+    https://code.google.com/archive/p/word2vec/
+    """
     # pylint: disable=C0301
 
     with warnings.catch_warnings():

@@ -281,7 +281,14 @@ def calc_all_weat(model, weat_data='caliskan', filter_by='model',
     Refer to the paper for more details.
 
     :param model: Words embedding model of ``gensim.model.KeyedVectors``
-    :param dict weat_data: WEAT cases data
+    :param dict weat_data: WEAT cases data.
+                           - If `'caliskan'` (default) then all
+                              the experiments from the original will be used.
+                           - If an interger, then the specific experiment by index
+                             from the original paper will be used.
+                           - If a interger, then tje specific experiments by indices
+                             from the original paper will be used.
+
     :param bool filter_by: Whether to filter the word lists
                            by the `model` (`'model'`)
                            or by the `remove` key in `weat_data` (`'data'`).
@@ -294,6 +301,11 @@ def calc_all_weat(model, weat_data='caliskan', filter_by='model',
 
     if weat_data == 'caliskan':
         weat_data = WEAT_DATA
+    elif isinstance(weat_data, int):
+        index = weat_data
+        weat_data = WEAT_DATA[index:index + 1]
+    elif isinstance(weat_data, tuple):
+        weat_data = [WEAT_DATA[index] for index in weat_data]
 
     if pvalue_kwargs is None:
         pvalue_kwargs = {}
