@@ -27,6 +27,7 @@ the impact of debiasing performance.
 
 from .bias import BiasWordsEmbedding, GenderBiasWE
 from .data import load_w2v_small
+from .utils import most_similar
 from .weat import (
     calc_all_weat, calc_single_weat, calc_weat_pleasant_unpleasant_attribute,
 )

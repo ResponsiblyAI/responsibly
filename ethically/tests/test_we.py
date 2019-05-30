@@ -7,14 +7,14 @@ from math import isclose
 import numpy as np
 import pytest
 
+from ethically.tests.utils import assert_deep_almost_equal
 from ethically.we import (
     GenderBiasWE, calc_all_weat, calc_weat_pleasant_unpleasant_attribute,
 )
 from ethically.we.data import WEAT_DATA, load_w2v_small
 from ethically.we.utils import (
-    project_params, project_reject_vector, project_vector,
+    most_similar, project_params, project_reject_vector, project_vector,
 )
-from ethically.tests.utils import assert_deep_almost_equal
 
 from ..consts import RANDOM_STATE
 
@@ -335,7 +335,7 @@ def test_calc_all_weat_index(w2v_small):
                              with_original_finding=True,
                              with_pvalue=True,
                              pvalue_kwargs={'method': 'approximate'})
-    
+
     for index in range(len(WEAT_DATA)):
         single_weat = calc_all_weat(w2v_small, weat_data=index,
                                     filter_by='model',
@@ -348,12 +348,13 @@ def test_calc_all_weat_index(w2v_small):
                                  all_weat.iloc[index].to_dict(),
                                  atol=0.01)
 
+
 def test_calc_all_weat_indices(w2v_small):
     all_weat = calc_all_weat(w2v_small, filter_by='model',
                              with_original_finding=True,
                              with_pvalue=True,
                              pvalue_kwargs={'method': 'approximate'})
-    
+
     for index in range(1, len(WEAT_DATA)):
         indices = tuple(range(index))
         singles_weat = calc_all_weat(w2v_small, weat_data=indices,
@@ -378,3 +379,17 @@ def test_calc_weat_pleasant_attribute(w2v_small):
     result_v2['p'] = float(result_v2['p'])
 
     assert result_v1 == result_v2
+
+
+def test_most_similar(w2v_small):
+    POSITIVE, NEGATIVE = ('doctor', 'she'), ('he',)
+
+    ethically_results = most_similar(w2v_small, POSITIVE, NEGATIVE,
+                                     topn=10)
+    gensim_results = w2v_small.most_similar(POSITIVE, NEGATIVE,
+                                            topn=9)
+
+    assert ethically_results[0][0] == 'doctor'
+
+    assert_deep_almost_equal(ethically_results[1:], gensim_results,
+                             atol=0.01)

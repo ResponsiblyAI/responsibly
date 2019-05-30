@@ -1,3 +1,4 @@
+import itertools
 import math
 
 import gensim
@@ -101,3 +102,70 @@ def assert_gensim_keyed_vectors(model):
         raise TypeError('model should be of type {}, not {}'
                         .format(''.join(WORD_EMBEDDING_MODEL_TYPES),
                                 type(model)))
+
+
+def most_similar(model, positive=None, negative=None,
+                 topn=10, unrestricted=True):
+    """
+    Find the top-N most similar words.
+
+    Positive words contribute positively towards the similarity,
+    negative words negatively.
+
+    This function computes cosine similarity between a simple mean
+    of the projection weight vectors of the given words and
+    the vectors for each word in the model.
+    The function corresponds to the `word-analogy` and `distance`
+    scripts in the original word2vec implementation.
+
+    Based on Gensim implementation.
+
+    :param model: Words embedding model of ``gensim.model.KeyedVectors``.
+    :param list positive: List of words that contribute positively.
+    :param list negative: List of words that contribute negatively.
+    :param int topn: Number of top-N similar words to return.
+    :param bool unrestricted: Whether to restricted the most
+                              similar words to be not from
+                              the positive or negative word list.
+    :return: Sequence of (word, similarity).
+    """
+
+    assert positive is not None or negative is not None, \
+           ('At least one of positive or negative arguments'
+            ' should be not None.')
+
+    if positive is None:
+        positive = []
+    elif isinstance(positive, str):
+        positive = [positive]
+
+    if negative is None:
+        negative = []
+    elif isinstance(negative, str):
+        negative = [negative]
+
+    positive_vectors = [model[word] for word in positive]
+    negative_vectors = [model[word] for word in negative]
+
+    mean_vector = (np.sum(positive_vectors, axis=0)
+                   - np.sum(negative_vectors, axis=0))
+    mean_vector = normalize(mean_vector)
+
+    cos_distances = model.vectors @ mean_vector
+
+    most_similar_indices = np.argsort(cos_distances)[::-1]
+
+    most_similar_words = (model.index2word[index]
+                          for index in most_similar_indices)
+    most_similar_distances = (float(cos_distances[index])
+                              for index in most_similar_indices)
+
+    most_similar_results = zip(most_similar_words, most_similar_distances)
+
+    if not unrestricted:
+        most_similar_results = ((word, distance)
+                                for word, distance in most_similar_results
+                                if word not in positive
+                                and word not in negative)
+
+    return list(itertools.islice(most_similar_results, topn))
