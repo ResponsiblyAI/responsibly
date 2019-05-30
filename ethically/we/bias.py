@@ -84,9 +84,9 @@ from .benchmark import evaluate_words_embedding
 from .data import BOLUKBASI_DATA
 from .utils import (
     assert_gensim_keyed_vectors, cosine_similarity, generate_one_word_forms,
-    generate_words_forms, most_similar, normalize, project_params,
-    project_reject_vector, project_vector, reject_vector, round_to_extreme,
-    take_two_sides_extreme_sorted, update_word_vector,
+    generate_words_forms, get_seed_vector, most_similar, normalize,
+    project_params, project_reject_vector, project_vector, reject_vector,
+    round_to_extreme, take_two_sides_extreme_sorted, update_word_vector,
 )
 
 
@@ -499,22 +499,9 @@ class BiasWordEmbedding:
         """
 
         # pylint: disable=C0301,R0914
-
-        if seed == 'direction':
-            positive_end = self.positive_end
-            negative_end = self.negative_end
-            self._is_direction_identified()
-            seed_vector = self.direction
-        else:
-            if seed == 'ends':
-                positive_end = self.positive_end
-                negative_end = self.negative_end
-
-            else:
-                positive_end, negative_end = seed
-
-            seed_vector = normalize(self.model[positive_end]
-                                    - self.model[negative_end])
+        (seed_vector,
+         positive_end,
+         negative_end) = get_seed_vector(seed, self)
 
         restrict_vocab_vectors = self.model.vectors[:restrict_vocab]
 

@@ -169,3 +169,24 @@ def most_similar(model, positive=None, negative=None,
                                 and word not in negative)
 
     return list(itertools.islice(most_similar_results, topn))
+
+
+def get_seed_vector(seed, bias_words_embedding):
+
+    if seed == 'direction':
+        positive_end = bias_words_embedding.positive_end
+        negative_end = bias_words_embedding.negative_end
+        bias_words_embedding._is_direction_identified()  # pylint: disable=protected-access
+        seed_vector = bias_words_embedding.direction
+    else:
+        if seed == 'ends':
+            positive_end = bias_words_embedding.positive_end
+            negative_end = bias_words_embedding.negative_end
+
+        else:
+            positive_end, negative_end = seed
+
+        seed_vector = normalize(bias_words_embedding.model[positive_end]
+                                - bias_words_embedding.model[negative_end])
+
+    return seed_vector, positive_end, negative_end
