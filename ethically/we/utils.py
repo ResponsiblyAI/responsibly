@@ -120,7 +120,7 @@ def most_similar(model, positive=None, negative=None,
 
     Based on Gensim implementation.
 
-    :param model: Words embedding model of ``gensim.model.KeyedVectors``.
+    :param model: Word embedding model of ``gensim.model.KeyedVectors``.
     :param list positive: List of words that contribute positively.
     :param list negative: List of words that contribute negatively.
     :param int topn: Number of top-N similar words to return.

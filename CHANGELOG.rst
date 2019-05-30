@@ -15,7 +15,7 @@ Revision History
   - Equalized odds post-processing algorithmic interventions
   - Complete two notebook demos (FICO and COMPAS)
 
-- Words embedding bias
+- Word embedding bias
 
   - Measuring bias with WEAT method
 
@@ -27,16 +27,16 @@ Revision History
 0.0.2 (2018/09/01)
 ------------------
 
-- Words embedding bias
+- Word embedding bias
 
   - Generating analogies along the bias direction
-  - Standard evaluations of words embedding (word pairs and analogies)
+  - Standard evaluations of word embedding (word pairs and analogies)
   - Plotting indirect bias
-  - Scatter plot of bias direction projections between two words embedding
+  - Scatter plot of bias direction projections between two word embedding
   - Improved verbose mode
 
 
 0.0.1 (2018/08/17)
 ------------------
 
--  Gender debiasing for words embedding based on Bolukbasi et al.
+-  Gender debiasing for word embedding based on Bolukbasi et al.

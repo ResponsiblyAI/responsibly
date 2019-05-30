@@ -51,7 +51,7 @@ Besides, there is a particular focus on **NLP** models.
 
 3. ``ethically.we``
      Metrics and debiasing methods for bias (such as gender and race)
-     in words embedding.
+     in word embedding.
 
 For fairness, *Ethically*'s functionality is aligned with the book
 `Fairness and Machine Learning

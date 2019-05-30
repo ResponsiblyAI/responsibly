@@ -1,9 +1,9 @@
 """
-Metrics and debiasing for bias (such as gender and race) in words embedding.
+Metrics and debiasing for bias (such as gender and race) in word embedding.
 
 .. important::
     The following paper suggests that the current methods
-    have an only superficial effect on the bias in words embeddings:
+    have an only superficial effect on the bias in word embeddings:
 
     Gonen, H., & Goldberg, Y. (2019).
     `Lipstick on a Pig:
@@ -28,7 +28,7 @@ Currently, two methods are supported:
    - :mod:`ethically.we.weat`
 
 Besides, some of the standard benchmarks for
-words embeddings are also available, primarily to check
+word embeddings are also available, primarily to check
 the impact of debiasing performance.
 
 """

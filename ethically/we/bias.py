@@ -1,6 +1,6 @@
 # pylint: disable=too-many-lines
 """
-Measuring and adjusting bias in words embedding by Bolukbasi (2016).
+Measuring and adjusting bias in word embedding by Bolukbasi (2016).
 
 References:
     - Bolukbasi, T., Chang, K. W., Zou, J. Y., Saligrama, V.,
@@ -100,10 +100,10 @@ __all__ = ['GenderBiasWE', 'BiasWordsEmbedding']
 
 
 class BiasWordsEmbedding:
-    """Measure and adjust a bias in English words embedding.
+    """Measure and adjust a bias in English word embedding.
 
-    :param model: Words embedding model of ``gensim.model.KeyedVectors``
-    :param bool only_lower: Whether the words embedding contrains
+    :param model: Word embedding model of ``gensim.model.KeyedVectors``
+    :param bool only_lower: Whether the word embedding contrains
                             only lower case words
     :param bool verbose: Set verbosity
     """
@@ -383,7 +383,7 @@ class BiasWordsEmbedding:
                                            words_embedding_bias_dict,
                                            words):
         """
-        Calculate to projections and rho of words for two words embeddings.
+        Calculate to projections and rho of words for two word embeddings.
 
         :param dict words_embedding_bias_dict: ``WordsEmbeddingBias`` objects
                                                as values,
@@ -393,7 +393,7 @@ class BiasWordsEmbedding:
         """
         # pylint: disable=W0212
         assert len(words_embedding_bias_dict) == 2, 'Support only in two'\
-                                                    'words embeddings'
+                                                    'word embeddings'
 
         intersection_words = [word for word in words
                               if all(word in web
@@ -677,7 +677,7 @@ class BiasWordsEmbedding:
     def _extract_neutral_words(self, specific_words):
         extended_specific_words = set()
 
-        # because or specific_full data was trained on partial words embedding
+        # because or specific_full data was trained on partial word embedding
         for word in specific_words:
             extended_specific_words.add(word)
             extended_specific_words.add(word.lower())
@@ -760,7 +760,7 @@ class BiasWordsEmbedding:
 
     def debias(self, method='hard', neutral_words=None, equality_sets=None,
                inplace=True):
-        """Debias the words embedding.
+        """Debias the word embedding.
 
         :param str method: The method of debiasing.
         :param list neutral_words: List of neutral words
@@ -774,7 +774,7 @@ class BiasWordsEmbedding:
         .. warning::
 
           After calling `debias`,
-          all the vectors of the words embedding
+          all the vectors of the word embedding
           will be normalized to unit length.
 
         """
@@ -810,7 +810,7 @@ class BiasWordsEmbedding:
         """
         Evaluate word pairs tasks and word analogies tasks.
 
-        :param model: Words embedding.
+        :param model: Word embedding.
         :param kwargs_word_pairs: Kwargs for
                                   evaluate_word_pairs
                                   method.
@@ -888,8 +888,8 @@ class BiasWordsEmbedding:
 class GenderBiasWE(BiasWordsEmbedding):
     """Measure and adjust the Gender Bias in English Words Embedding.
 
-    :param model: Words embedding model of ``gensim.model.KeyedVectors``
-    :param bool only_lower: Whether the words embedding contrains
+    :param model: Word embedding model of ``gensim.model.KeyedVectors``
+    :param bool only_lower: Whether the word embedding contrains
                             only lower case words
     :param bool verbose: Set verbosity
     """
