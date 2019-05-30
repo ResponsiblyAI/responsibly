@@ -458,7 +458,8 @@ class BiasWordsEmbedding:
         return ax
 
     # TODO: refactor for speed and clarity
-    def generate_analogies(self, seed='ends', n_analogies=100, multiple=False,
+    def generate_analogies(self, n_analogies=100, seed='ends',
+                           multiple=False,
                            delta=1., restrict_vocab=30000,
                            unrestricted=True):
         """
