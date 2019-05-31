@@ -13,6 +13,13 @@ References:
     - The code and data is based on the GitHub repository:
       https://github.com/tolga-b/debiaswe (MIT License).
 
+    - Gonen, H., & Goldberg, Y. (2019).
+      `Lipstick on a Pig:
+      Debiasing Methods Cover up Systematic Gender Biases
+      in Word Embeddings But do not Remove Them
+      <https://arxiv.org/abs/1903.03862>`_.
+      arXiv preprint arXiv:1903.03862.
+
     - Nissim, M., van Noord, R., van der Goot, R. (2019).
       `Fair is Better than Sensational: Man is to Doctor
       as Woman is to Doctor <https://arxiv.org/abs/1905.09866>`_.
@@ -908,11 +915,11 @@ class BiasWordEmbedding:
         Based on:
 
         - Gonen, H., & Goldberg, Y. (2019).
-        `Lipstick on a Pig:
-        Debiasing Methods Cover up Systematic Gender Biases
-        in Word Embeddings But do not Remove Them
-        <https://arxiv.org/abs/1903.03862>`_.
-        arXiv preprint arXiv:1903.03862.
+          `Lipstick on a Pig:
+           Debiasing Methods Cover up Systematic Gender Biases
+           in Word Embeddings But do not Remove Them
+           <https://arxiv.org/abs/1903.03862>`_.
+           arXiv preprint arXiv:1903.03862.
 
         - https://github.com/gonenhila/gender_bias_lipstick
         """
