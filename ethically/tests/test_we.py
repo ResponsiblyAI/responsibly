@@ -297,11 +297,11 @@ def test_deepcopy(gender_biased_w2v_small):
             is not gender_biased_w2v_small_copy.model)
 
 
-def test_evaluate_words_embedding(gender_biased_w2v_small):
-    """Test evaluate_words_embedding method in GenderBiasWE."""
+def test_evaluate_word_embedding(gender_biased_w2v_small):
+    """Test evaluate_word_embedding method in GenderBiasWE."""
     # pylint: disable=C0301
     (word_pairs_evaluation,
-     word_analogies_evaluation) = gender_biased_w2v_small.evaluate_words_embedding()
+     word_analogies_evaluation) = gender_biased_w2v_small.evaluate_word_embedding()
 
     assert (word_pairs_evaluation.to_dict()
             == {'pearson_r': {'WS353': 0.645, 'RG65': 0.576, 'RW': 0.611, 'Mturk': 0.65, 'MEN': 0.766, 'SimLex999': 0.456, 'TR9856': 0.666},

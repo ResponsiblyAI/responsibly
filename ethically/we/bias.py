@@ -87,7 +87,7 @@ from tqdm import tqdm
 from tabulate import tabulate
 
 from ..consts import RANDOM_STATE
-from .benchmark import evaluate_words_embedding
+from .benchmark import evaluate_word_embedding
 from .data import BOLUKBASI_DATA
 from .utils import (
     assert_gensim_keyed_vectors, cosine_similarity, generate_one_word_forms,
@@ -141,19 +141,19 @@ class BiasWordEmbedding:
         self.negative_end = None
 
     def __copy__(self):
-        bias_words_embedding = self.__class__(self.model,
-                                              self.only_lower,
-                                              self._verbose,
-                                              identify_direction=False)
-        bias_words_embedding.direction = copy.deepcopy(self.direction)
-        bias_words_embedding.positive_end = copy.deepcopy(self.positive_end)
-        bias_words_embedding.negative_end = copy.deepcopy(self.negative_end)
-        return bias_words_embedding
+        bias_word_embedding = self.__class__(self.model,
+                                             self.only_lower,
+                                             self._verbose,
+                                             identify_direction=False)
+        bias_word_embedding.direction = copy.deepcopy(self.direction)
+        bias_word_embedding.positive_end = copy.deepcopy(self.positive_end)
+        bias_word_embedding.negative_end = copy.deepcopy(self.negative_end)
+        return bias_word_embedding
 
     def __deepcopy__(self, memo):
-        bias_words_embedding = copy.copy(self)
-        bias_words_embedding.model = copy.deepcopy(bias_words_embedding.model)
-        return bias_words_embedding
+        bias_word_embedding = copy.copy(self)
+        bias_word_embedding.model = copy.deepcopy(bias_word_embedding.model)
+        return bias_word_embedding
 
     def __getitem__(self, key):
         return self.model[key]
@@ -387,29 +387,29 @@ class BiasWordEmbedding:
         return ax
 
     @classmethod
-    def _calc_bias_across_words_embeddings(cls,
-                                           words_embedding_bias_dict,
-                                           words):
+    def _calc_bias_across_word_embeddings(cls,
+                                          word_embedding_bias_dict,
+                                          words):
         """
         Calculate to projections and rho of words for two word embeddings.
 
-        :param dict words_embedding_bias_dict: ``WordsEmbeddingBias`` objects
+        :param dict word_embedding_bias_dict: ``WordsEmbeddingBias`` objects
                                                as values,
                                                and their names as keys.
         :param list words: Words to be projected.
         :return tuple: Projections and spearman rho.
         """
         # pylint: disable=W0212
-        assert len(words_embedding_bias_dict) == 2, 'Support only in two'\
+        assert len(word_embedding_bias_dict) == 2, 'Support only in two'\
                                                     'word embeddings'
 
         intersection_words = [word for word in words
                               if all(word in web
-                                     for web in (words_embedding_bias_dict
+                                     for web in (word_embedding_bias_dict
                                                  .values()))]
 
         projections = {name: web._calc_projection_scores(intersection_words)['projection']  # pylint: disable=C0301
-                       for name, web in words_embedding_bias_dict.items()}
+                       for name, web in word_embedding_bias_dict.items()}
 
         df = pd.DataFrame(projections)
         df.index = intersection_words
@@ -418,12 +418,12 @@ class BiasWordEmbedding:
         return df, rho
 
     @classmethod
-    def plot_bias_across_words_embeddings(cls, words_embedding_bias_dict,
-                                          words, ax=None, scatter_kwargs=None):
+    def plot_bias_across_word_embeddings(cls, word_embedding_bias_dict,
+                                         words, ax=None, scatter_kwargs=None):
         """
         Plot the projections of same words of two words Embeddings.
 
-        :param dict words_embedding_bias_dict: ``WordsEmbeddingBias`` objects
+        :param dict word_embedding_bias_dict: ``WordsEmbeddingBias`` objects
                                                as values,
                                                and their names as keys.
         :param list words: Words to be projected.
@@ -433,8 +433,8 @@ class BiasWordEmbedding:
         """
         # pylint: disable=W0212
 
-        df, rho = cls._calc_bias_across_words_embeddings(words_embedding_bias_dict,  # pylint: disable=C0301
-                                                         words)
+        df, rho = cls._calc_bias_across_word_embeddings(word_embedding_bias_dict,  # pylint: disable=C0301
+                                                        words)
 
         if ax is None:
             _, ax = plt.subplots(1)
@@ -442,15 +442,15 @@ class BiasWordEmbedding:
         if scatter_kwargs is None:
             scatter_kwargs = {}
 
-        name1, name2 = words_embedding_bias_dict.keys()
+        name1, name2 = word_embedding_bias_dict.keys()
 
         ax.scatter(x=name1, y=name2, data=df, **scatter_kwargs)
 
         plt.title('Bias Across Words Embeddings'
                   '(Spearman Rho = {:0.2f})'.format(rho))
 
-        negative_end = words_embedding_bias_dict[name1].negative_end
-        positive_end = words_embedding_bias_dict[name1].positive_end
+        negative_end = word_embedding_bias_dict[name1].negative_end
+        positive_end = word_embedding_bias_dict[name1].positive_end
         plt.xlabel('← {}     {}     {} →'.format(negative_end,
                                                  name1,
                                                  positive_end))
@@ -777,9 +777,9 @@ class BiasWordEmbedding:
 
         # pylint: disable=W0212
         if inplace:
-            bias_words_embedding = self
+            bias_word_embedding = self
         else:
-            bias_words_embedding = copy.deepcopy(self)
+            bias_word_embedding = copy.deepcopy(self)
 
         if method not in DEBIAS_METHODS:
             raise ValueError('method should be one of {}, {} was given'.format(
@@ -788,21 +788,21 @@ class BiasWordEmbedding:
         if method in ['hard', 'neutralize']:
             if self._verbose:
                 print('Neutralize...')
-            bias_words_embedding._neutralize(neutral_words)
+            bias_word_embedding._neutralize(neutral_words)
 
         if method == 'hard':
             if self._verbose:
                 print('Equalize...')
-            bias_words_embedding._equalize(equality_sets)
+            bias_word_embedding._equalize(equality_sets)
 
         if inplace:
             return None
         else:
-            return bias_words_embedding
+            return bias_word_embedding
 
-    def evaluate_words_embedding(self,
-                                 kwargs_word_pairs=None,
-                                 kwargs_word_analogies=None):
+    def evaluate_word_embedding(self,
+                                kwargs_word_pairs=None,
+                                kwargs_word_analogies=None):
         """
         Evaluate word pairs tasks and word analogies tasks.
 
@@ -819,9 +819,9 @@ class BiasWordEmbedding:
                  for the evaluation results.
         """
 
-        return evaluate_words_embedding(self.model,
-                                        kwargs_word_pairs,
-                                        kwargs_word_analogies)
+        return evaluate_word_embedding(self.model,
+                                       kwargs_word_pairs,
+                                       kwargs_word_analogies)
 
     def learn_full_specific_words(self, seed_specific_words,
                                   max_non_specific_examples=None, debug=None):
@@ -1018,15 +1018,15 @@ class GenderBiasWE(BiasWordEmbedding):
         return super().plot_dist_projections_on_direction(word_groups, ax)
 
     @classmethod
-    def plot_bias_across_words_embeddings(cls, words_embedding_bias_dict,
-                                          ax=None, scatter_kwargs=None):
+    def plot_bias_across_word_embeddings(cls, word_embedding_bias_dict,
+                                         ax=None, scatter_kwargs=None):
         # pylint: disable=W0221
         words = BOLUKBASI_DATA['gender']['neutral_profession_names']
         # TODO: is it correct for inheritance of class method?
-        super(cls, cls).plot_bias_across_words_embeddings(words_embedding_bias_dict,  # pylint: disable=C0301
-                                                          words,
-                                                          ax,
-                                                          scatter_kwargs)
+        super(cls, cls).plot_bias_across_word_embeddings(word_embedding_bias_dict,  # pylint: disable=C0301
+                                                         words,
+                                                         ax,
+                                                         scatter_kwargs)
 
     def calc_direct_bias(self, neutral_words='professions', c=None):
         if isinstance(neutral_words, str) and neutral_words == 'professions':

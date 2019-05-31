@@ -144,9 +144,9 @@ def evaluate_word_analogies(model, kwargs_word_analogies=None):
     return df
 
 
-def evaluate_words_embedding(model,
-                             kwargs_word_pairs=None,
-                             kwargs_word_analogies=None):
+def evaluate_word_embedding(model,
+                            kwargs_word_pairs=None,
+                            kwargs_word_analogies=None):
     """
     Evaluate word pairs tasks and word analogies tasks.
 
