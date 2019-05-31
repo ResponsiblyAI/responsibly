@@ -85,8 +85,9 @@ from .data import BOLUKBASI_DATA
 from .utils import (
     assert_gensim_keyed_vectors, cosine_similarity, generate_one_word_forms,
     generate_words_forms, get_seed_vector, most_similar, normalize,
-    project_params, project_reject_vector, project_vector, reject_vector,
-    round_to_extreme, take_two_sides_extreme_sorted, update_word_vector,
+    plot_clustering_as_classification, project_params, project_reject_vector,
+    project_vector, reject_vector, round_to_extreme,
+    take_two_sides_extreme_sorted, update_word_vector,
 )
 
 
@@ -871,6 +872,91 @@ class BiasWordEmbedding:
             return full_specific_words, clf
 
         return full_specific_words, clf, X, y
+
+    def _plot_most_biased_one_cluster(self,
+                                      most_biased_neutral_words, y_bias,
+                                      random_state=1, ax=None):
+        most_biased_vectors = [self.model[word]
+                               for word in most_biased_neutral_words]
+
+        return plot_clustering_as_classification(most_biased_vectors,
+                                                 y_bias,
+                                                 random_state=random_state,
+                                                 ax=ax)
+
+    @staticmethod
+    def plot_most_biased_clustering(biased, debiased,
+                                    seed='ends', n_extreme=500,
+                                    random_state=1):
+        """Plot clustering as classification of biased neutral words.
+
+        :param biased: Biased word embedding of
+                       :class:`~ethically.we.bias.BiasWordEmbedding`.
+        :param debiased: Debiased word embedding of
+                         :class:`~ethically.we.bias.BiasWordEmbedding`.
+        :param seed: The definition of the seed vector.
+                    Either by a tuple of two word ends,
+                    or by `'ends` for the pre-defined ends
+                    or by `'direction'` for
+                    the pre-defined direction vector.
+        :param n_extrem: The number of extreme biased
+                         neutral words to use.
+        :return: Tuple of list of ax objects of the plot,
+                 and a dictionary with the most positive
+                 and negative words.
+
+        Based on:
+
+        - Gonen, H., & Goldberg, Y. (2019).
+        `Lipstick on a Pig:
+        Debiasing Methods Cover up Systematic Gender Biases
+        in Word Embeddings But do not Remove Them
+        <https://arxiv.org/abs/1903.03862>`_.
+        arXiv preprint arXiv:1903.03862.
+
+        - https://github.com/gonenhila/gender_bias_lipstick
+        """
+        # pylint: disable=protected-access,too-many-locals,line-too-long
+
+        assert biased.positive_end == debiased.positive_end, \
+            'Postive ends should be the same.'
+        assert biased.negative_end == debiased.negative_end, \
+            'Negative ends should be the same.'
+
+        seed_vector, _, _ = get_seed_vector(seed, biased)
+
+        neutral_words = biased._data['neutral_words']
+        neutral_word_vectors = (biased[word] for word in neutral_words)
+        neutral_word_projections = [(normalize(vector) @ seed_vector, word)
+                                    for word, vector
+                                    in zip(neutral_words,
+                                           neutral_word_vectors)]
+
+        neutral_word_projections.sort()
+
+        _, most_negative_words = zip(*neutral_word_projections[:n_extreme])
+        _, most_positive_words = zip(*neutral_word_projections[-n_extreme:])
+
+        most_biased_neutral_words = most_negative_words + most_positive_words
+
+        y_bias = [False] * n_extreme + [True] * n_extreme
+
+        _, axes = plt.subplots(1, 2, figsize=(20, 5))
+
+        acc_biased = biased._plot_most_biased_one_cluster(most_biased_neutral_words,
+                                                          y_bias,
+                                                          random_state=random_state,
+                                                          ax=axes[0])
+        axes[0].set_title('Biased - Accuracy={}'.format(acc_biased))
+
+        acc_debiased = debiased._plot_most_biased_one_cluster(most_biased_neutral_words,
+                                                              y_bias,
+                                                              random_state=random_state,
+                                                              ax=axes[1])
+        axes[1].set_title('Debiased - Accuracy={}'.format(acc_debiased))
+
+        return axes, {biased.positive_end: most_positive_words,
+                      biased.negative_end: most_negative_words}
 
 
 class GenderBiasWE(BiasWordEmbedding):

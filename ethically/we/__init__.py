@@ -19,13 +19,17 @@ Metrics and debiasing for bias (such as gender and race) in word embedding.
    `Fair is Better than Sensational: Man is to Doctor
    as Woman is to Doctor <https://arxiv.org/abs/1905.09866>`_.
 
-Currently, two methods are supported:
+Currently, three methods are supported:
 
 1. Bolukbasi et al. (2016) bias measure and debiasing
    - :mod:`ethically.we.bias`
 
 2. WEAT measure
    - :mod:`ethically.we.weat`
+
+3. Gonen et al. (2019) clustering as classification
+   of biased neutral words
+   - :mod:`ethically.we.bias`
 
 Besides, some of the standard benchmarks for
 word embeddings are also available, primarily to check

@@ -2,8 +2,12 @@ import itertools
 import math
 
 import gensim
+import matplotlib.pylab as plt
 import numpy as np
 import pandas as pd
+from sklearn.cluster import KMeans
+from sklearn.manifold import TSNE
+from sklearn.metrics import accuracy_score
 
 
 WORD_EMBEDDING_MODEL_TYPES = (gensim.models.keyedvectors.KeyedVectors,
@@ -190,3 +194,28 @@ def get_seed_vector(seed, bias_words_embedding):
                                 - bias_words_embedding.model[negative_end])
 
     return seed_vector, positive_end, negative_end
+
+
+def plot_clustering_as_classification(X, y_true, random_state=1, ax=None):
+
+    if ax is None:
+        _, ax = plt.subplots(figsize=(10, 5))
+
+    y_cluster = (KMeans(n_clusters=2, random_state=random_state)
+                 .fit_predict(X))
+
+    embedded_vectors = (TSNE(n_components=2, random_state=random_state)
+                        .fit_transform(X))
+
+    for y_value in np.unique(y_cluster):
+        mask = (y_cluster == y_value)
+        label = 'Positive' if y_value else 'Negative'
+        ax.scatter(embedded_vectors[mask, 0],
+                   embedded_vectors[mask, 1],
+                   label=label)
+
+    ax.legend()
+
+    acc = accuracy_score(y_true, y_cluster)
+
+    return max(acc, 1 - acc)
