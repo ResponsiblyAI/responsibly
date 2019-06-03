@@ -83,6 +83,7 @@ setuptools.setup(
         "scikit-learn >= 0.19",
         "gensim == 3.7.1",
         "tabulate >= 0.8",
+        "six >= 1.10",
         "click >= 6.0",
         "tqdm >= 4.24",
         "mlxtend >= 0.13",
