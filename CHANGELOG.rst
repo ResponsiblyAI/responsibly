@@ -1,6 +1,21 @@
 Revision History
 ================
 
+0.0.4 (2019/06/03)
+------------------
+
+- Word embedding bias
+
+  - Unrestricted ``most_similar``
+
+  - Unrestricted ``generate_analogies``
+
+  - Running specific experiments with ``calc_all_weat``
+
+  - Plotting clustering by classification
+    of biased neutral words
+
+
 0.0.3 (2019/04/10)
 ------------------
 
