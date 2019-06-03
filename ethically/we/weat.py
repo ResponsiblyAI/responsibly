@@ -1,7 +1,7 @@
 """
-Compute WEAT score of a Words Embedding.
+Compute WEAT score of a Word Embedding.
 
-WEAT is a bias measurement method for words embedding,
+WEAT is a bias measurement method for word embedding,
 which is inspired by the `IAT <https://en.wikipedia.org/wiki/Implicit-association_test>`_
 (Implicit Association Test) for humans.
 It measures the similarity between two sets of *target words*
@@ -205,9 +205,9 @@ def calc_single_weat(model,
                      first_attribute, second_attribute,
                      with_pvalue=True, pvalue_kwargs=None):
     """
-    Calc the WEAT result of a words embedding.
+    Calc the WEAT result of a word embedding.
 
-    :param model: Words embedding model of ``gensim.model.KeyedVectors``
+    :param model: Word embedding model of ``gensim.model.KeyedVectors``
     :param dict first_target: First target words list and its name
     :param dict second_target: Second target words list and its name
     :param dict first_attribute: First attribute words list and its name
@@ -255,6 +255,17 @@ def calc_single_weat(model,
 def calc_weat_pleasant_unpleasant_attribute(model,
                                             first_target, second_target,
                                             with_pvalue=True, pvalue_kwargs=None):
+    """
+    Calc the WEAT result with pleasent vs. unpleasant attributes.
+
+    :param model: Word embedding model of ``gensim.model.KeyedVectors``
+    :param dict first_target: First target words list and its name
+    :param dict second_target: Second target words list and its name
+    :param bool with_pvalue: Whether to calculate the p-value of the
+                             WEAT score (might be computationally expensive)
+    :return: WEAT result (score, size effect, Nt, Na and p-value)
+    """
+
     weat_data = {'first_attribute': copy.deepcopy(WEAT_DATA[0]['first_attribute']),
                  'second_attribute': copy.deepcopy(WEAT_DATA[0]['second_attribute']),
                  'first_target': first_target,
@@ -274,14 +285,21 @@ def calc_all_weat(model, weat_data='caliskan', filter_by='model',
                   with_original_finding=False,
                   with_pvalue=True, pvalue_kwargs=None):
     """
-    Calc the WEAT results of a words embedding on multiple cases.
+    Calc the WEAT results of a word embedding on multiple cases.
 
     Note that for the effect size and pvalue in the WEAT have
     entirely different meaning from those reported in IATs (original finding).
     Refer to the paper for more details.
 
-    :param model: Words embedding model of ``gensim.model.KeyedVectors``
-    :param dict weat_data: WEAT cases data
+    :param model: Word embedding model of ``gensim.model.KeyedVectors``
+    :param dict weat_data: WEAT cases data.
+                           - If `'caliskan'` (default) then all
+                              the experiments from the original will be used.
+                           - If an interger, then the specific experiment by index
+                             from the original paper will be used.
+                           - If a interger, then tje specific experiments by indices
+                             from the original paper will be used.
+
     :param bool filter_by: Whether to filter the word lists
                            by the `model` (`'model'`)
                            or by the `remove` key in `weat_data` (`'data'`).
@@ -294,6 +312,11 @@ def calc_all_weat(model, weat_data='caliskan', filter_by='model',
 
     if weat_data == 'caliskan':
         weat_data = WEAT_DATA
+    elif isinstance(weat_data, int):
+        index = weat_data
+        weat_data = WEAT_DATA[index:index + 1]
+    elif isinstance(weat_data, tuple):
+        weat_data = [WEAT_DATA[index] for index in weat_data]
 
     if pvalue_kwargs is None:
         pvalue_kwargs = {}
