@@ -568,6 +568,14 @@ class BiasWordEmbedding:
                             and (word_x not in generated_words_x
                                  and word_y not in generated_words_y)):
 
+                analogy = ({positive_end: word_x,
+                            negative_end: word_y,
+                            'score': cos_distances[cos_distance_index],
+                            'distance': pairs_distances[tuple(paris_index)]})
+
+                generated_words_x.add(word_x)
+                generated_words_y.add(word_y)
+
                 if unrestricted:
                     most_x = next(word
                                   for word, _ in most_similar(self.model,
@@ -582,14 +590,6 @@ class BiasWordEmbedding:
                     analogy['most_y'] = most_y
                     analogy['match'] = ((word_x == most_x)
                                         and (word_y == most_y))
-
-                analogy = ({positive_end: word_x,
-                            negative_end: word_y,
-                            'score': cos_distances[cos_distance_index],
-                            'distance': pairs_distances[tuple(paris_index)]})
-
-                generated_words_x.add(word_x)
-                generated_words_y.add(word_y)
 
                 analogies.append(analogy)
 
