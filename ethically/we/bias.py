@@ -520,7 +520,8 @@ class BiasWordEmbedding:
 
         if not unrestricted:
             warnings.warn('Not Using unrestricted most_similar may introduce'
-                          'fake biased analogies.')
+                          'fake biased analogies.',
+                          stacklevel=0)
 
         (seed_vector,
          positive_end,
