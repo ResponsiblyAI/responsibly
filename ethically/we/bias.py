@@ -106,6 +106,12 @@ MAX_NON_SPECIFIC_EXAMPLES = 1000
 
 __all__ = ['GenderBiasWE', 'BiasWordEmbedding']
 
+# https://stackoverflow.com/questions/2187269/print-only-the-message-on-warnings
+formatwarning_orig = warnings.formatwarning
+# pylint: disable=line-too-long
+warnings.formatwarning = lambda message, category, filename, lineno, line=None: \
+    formatwarning_orig(message, category, filename, lineno, line='')
+
 
 class BiasWordEmbedding:
     """Measure and adjust a bias in English word embedding.
@@ -519,9 +525,8 @@ class BiasWordEmbedding:
         # pylint: disable=C0301,R0914
 
         if not unrestricted:
-            warnings.warn('Not Using unrestricted most_similar may introduce'
-                          'fake biased analogies.',
-                          stacklevel=0)
+            warnings.warn('Not Using unrestricted most_similar '
+                          'may introduce fake biased analogies.')
 
         (seed_vector,
          positive_end,
