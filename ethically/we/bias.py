@@ -72,8 +72,8 @@ and
 
 """
 
-import warnings
 import copy
+import warnings
 
 import matplotlib.pylab as plt
 import numpy as np
@@ -114,12 +114,12 @@ class BiasWordEmbedding:
     :param bool only_lower: Whether the word embedding contrains
                             only lower case words
     :param bool verbose: Set verbosity
-    :param bool normalize: Whether to normalize all the vectors
-                           (recommended!)
+    :param bool to_normalize: Whether to normalize all the vectors
+                              (recommended!)
     """
 
     def __init__(self, model, only_lower=False, verbose=False,
-                 identify_direction=False, normalize=True):
+                 identify_direction=False, to_normalize=True):
         assert_gensim_keyed_vectors(model)
 
         # TODO: this is bad Python, ask someone about it
@@ -142,7 +142,7 @@ class BiasWordEmbedding:
         self.positive_end = None
         self.negative_end = None
 
-        if normalize:
+        if to_normalize:
             self.model.init_sims(replace=True)
 
     def __copy__(self):
@@ -489,12 +489,12 @@ class BiasWordEmbedding:
 
 
         There is criticism regarding generating analogies
-        when used with `unstricted=False` and not ignoring analogies 
+        when used with `unstricted=False` and not ignoring analogies
         with `match` column equal to `False`.
         Tolga's technique of generating analogies, as implemented in this
         method, is limited inherently to analogies with x != y, which may
         be force "fake" bias analogies.
-        
+
         See:
         - Nissim, M., van Noord, R., van der Goot, R. (2019).
           `Fair is Better than Sensational: Man is to Doctor
@@ -516,7 +516,7 @@ class BiasWordEmbedding:
                  and their cosine similarity scores
         """
         # pylint: disable=C0301,R0914
-        
+
         if not unrestricted:
             warnings.warn('Not Using unrestricted most_similar may introduce'
                           'fake biased analogies.')
@@ -557,7 +557,6 @@ class BiasWordEmbedding:
         generated_words_x = set()
         generated_words_y = set()
 
-        n_analogy_tries = 0
         while len(analogies) < n_analogies:
             cos_distance_index = next(sorted_cos_distances_indices_iter)
             paris_index = pairs_indices[cos_distance_index]
@@ -567,8 +566,7 @@ class BiasWordEmbedding:
             if multiple or (not multiple
                             and (word_x not in generated_words_x
                                  and word_y not in generated_words_y)):
-                
-                
+
                 if unrestricted:
                     most_x = next(word
                                   for word, _ in most_similar(self.model,
@@ -585,24 +583,24 @@ class BiasWordEmbedding:
                                         and (word_y == most_y))
 
                 analogy = ({positive_end: word_x,
-                                  negative_end: word_y,
-                                  'score': cos_distances[cos_distance_index],
-                                  'distance': pairs_distances[tuple(paris_index)]})
-                
+                            negative_end: word_y,
+                            'score': cos_distances[cos_distance_index],
+                            'distance': pairs_distances[tuple(paris_index)]})
+
                 generated_words_x.add(word_x)
                 generated_words_y.add(word_y)
-                
+
                 analogies.append(analogy)
 
         df = pd.DataFrame(analogies)
 
         columns = [positive_end, negative_end, 'distance', 'score']
-        
+
         if unrestricted:
             columns.extend(['most_x', 'most_y', 'match'])
 
         df = df[columns]
-    
+
         return df
 
     def calc_direct_bias(self, neutral_words, c=None):
@@ -1003,16 +1001,16 @@ class GenderBiasWE(BiasWordEmbedding):
     :param bool only_lower: Whether the word embedding contrains
                             only lower case words
     :param bool verbose: Set verbosity
-    :param bool normalize: Whether to normalize all the vectors
-                           (recommended!)
+    :param bool to_normalize: Whether to normalize all the vectors
+                              (recommended!)
     """
 
     def __init__(self, model, only_lower=False, verbose=False,
-                 identify_direction=True, normalize=True):
+                 identify_direction=True, to_normalize=True):
         super().__init__(model=model,
                          only_lower=only_lower,
                          verbose=verbose,
-                         normalize=True)
+                         to_normalize=True)
         self._initialize_data()
         if identify_direction:
             self._identify_direction('she', 'he',

@@ -1,15 +1,14 @@
-import itertools
 import math
 
 import gensim
 import matplotlib.pylab as plt
 import numpy as np
 import pandas as pd
+from six import string_types
 from sklearn.cluster import KMeans
 from sklearn.manifold import TSNE
 from sklearn.metrics import accuracy_score
-from gensim import matutils
-from six import string_types
+
 
 WORD_EMBEDDING_MODEL_TYPES = (gensim.models.keyedvectors.KeyedVectors,
                               gensim.models.keyedvectors.BaseKeyedVectors,
@@ -130,7 +129,8 @@ def most_similar(model, positive=None, negative=None,
     :param list positive: List of words that contribute positively.
     :param list negative: List of words that contribute negatively.
     :param int topn: Number of top-N similar words to return.
-    :param int restrict_vocab: Optional integer which limits the range of vectors
+    :param int restrict_vocab: Optional integer which limits the
+                               range of vectors
                                which are searched for most-similar values.
                                For example, restrict_vocab=10000 would
                                only check the first 10000 word vectors
@@ -152,21 +152,27 @@ def most_similar(model, positive=None, negative=None,
 
     model.init_sims()
 
-    if isinstance(positive, string_types) and not negative:
-        # allow calls like most_similar('dog'), as a shorthand for most_similar(['dog'])
+    if (isinstance(positive, string_types)
+            and not negative):
+        # allow calls like most_similar('dog'),
+        # as a shorthand for most_similar(['dog'])
         positive = [positive]
 
     if ((isinstance(positive, string_types) and negative)
-        or (isinstance(negative, string_types) and positive)):
-        raise ValueError('If positives and negatives are given, both should be lists!')
+            or (isinstance(negative, string_types) and positive)):
+        raise ValueError('If positives and negatives are given, '
+                         'both should be lists!')
 
-    # add weights for each word, if not already present; default to 1.0 for positive and -1.0 for negative words
+    # add weights for each word, if not already present;
+    # default to 1.0 for positive and -1.0 for negative words
     positive = [
-        (word, 1.0) if isinstance(word, string_types + (np.ndarray,)) else word
+        (word, 1.0) if isinstance(word, string_types + (np.ndarray,))
+        else word
         for word in positive
     ]
     negative = [
-        (word, -1.0) if isinstance(word, string_types + (np.ndarray,)) else word
+        (word, -1.0) if isinstance(word, string_types + (np.ndarray,))
+        else word
         for word in negative
     ]
 
@@ -182,21 +188,27 @@ def most_similar(model, positive=None, negative=None,
 
     if not mean:
         raise ValueError("Cannot compute similarity with no input.")
-    mean = matutils.unitvec(np.array(mean).mean(axis=0)).astype(float)
+    mean = gensim.matutils.unitvec(np.array(mean)
+                                   .mean(axis=0)).astype(float)
 
     if indexer is not None:
         return indexer.most_similar(mean, topn)
 
-    limited = model.vectors_norm if restrict_vocab is None else model.vectors_norm[:restrict_vocab]
+    limited = (model.vectors_norm if restrict_vocab is None
+               else model.vectors_norm[:restrict_vocab])
     dists = limited @ mean
-    
+
     if topn is None:
         return dists
 
-    best = matutils.argsort(dists, topn=topn + len(all_words), reverse=True)
+    best = gensim.matutils.argsort(dists,
+                                   topn=topn + len(all_words),
+                                   reverse=True)
 
-    # if not unrestricted, then ignore (don't return) words from the input
-    result = [(model.index2word[sim], float(dists[sim])) for sim in best
+    # if not unrestricted, then ignore (don't return)
+    # words from the input
+    result = [(model.index2word[sim], float(dists[sim]))
+              for sim in best
               if unrestricted or sim not in all_words]
 
     return result[:topn]

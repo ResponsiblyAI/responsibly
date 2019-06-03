@@ -7,8 +7,8 @@ from math import isclose
 import numpy as np
 import pytest
 
-from ethically.tests.utils import assert_deep_almost_equal
 from ethically.tests.data import TOLGA_GENDER_ANALOGIES
+from ethically.tests.utils import assert_deep_almost_equal
 from ethically.we import (
     GenderBiasWE, calc_all_weat, calc_weat_pleasant_unpleasant_attribute,
 )
@@ -314,7 +314,7 @@ def test_evaluate_word_embedding(gender_biased_w2v_small):
     assert (word_analogies_evaluation.to_dict()
             == {'score': {'MSR-syntax': 0.75, 'Google': 0.729}})
 
-    
+
 def test_generate_analogies(gender_biased_w2v_small):
     """Test generate_analogies method in GenderBiasWE.
 
@@ -322,9 +322,11 @@ def test_generate_analogies(gender_biased_w2v_small):
     https://github.com/tolga-b/debiaswe/blob/master/tutorial_example1.ipynb
     """
 
-    analogies_df = gender_biased_w2v_small.generate_analogies(500, unrestricted=False)
+    analogies_df = (gender_biased_w2v_small
+                    .generate_analogies(500, unrestricted=False))
     analogies_df = analogies_df[['she', 'he']]
     assert_deep_almost_equal(analogies_df.values, TOLGA_GENDER_ANALOGIES)
+
 
 # TODO deeper testing, this is barely checking it runs
 # TODO not all full_specific_words are lower case - why? maybe just names?
