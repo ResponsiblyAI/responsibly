@@ -18,6 +18,11 @@ WEAT
 .. automodule:: ethically.we.weat
     :members:
 
+Utilities
+---------
+
+.. automodule:: ethically.we.utils
+    :members:
 
 Words Embedding Benchmarks
 --------------------------

@@ -496,6 +496,7 @@ class BiasWordEmbedding:
         be force "fake" bias analogies.
 
         See:
+        
         - Nissim, M., van Noord, R., van der Goot, R. (2019).
           `Fair is Better than Sensational: Man is to Doctor
           as Woman is to Doctor <https://arxiv.org/abs/1905.09866>`_.
