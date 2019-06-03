@@ -432,7 +432,7 @@ class BiasWordEmbedding:
     def plot_bias_across_word_embeddings(cls, word_embedding_bias_dict,
                                          words, ax=None, scatter_kwargs=None):
         """
-        Plot the projections of same words of two words Embeddings.
+        Plot the projections of same words of two word mbeddings.
 
         :param dict word_embedding_bias_dict: ``WordsEmbeddingBias`` objects
                                                as values,
@@ -457,7 +457,7 @@ class BiasWordEmbedding:
 
         ax.scatter(x=name1, y=name2, data=df, **scatter_kwargs)
 
-        plt.title('Bias Across Words Embeddings'
+        plt.title('Bias Across Word Embeddings'
                   '(Spearman Rho = {:0.2f})'.format(rho))
 
         negative_end = word_embedding_bias_dict[name1].negative_end
@@ -1002,7 +1002,7 @@ class BiasWordEmbedding:
 
 
 class GenderBiasWE(BiasWordEmbedding):
-    """Measure and adjust the Gender Bias in English Words Embedding.
+    """Measure and adjust the Gender Bias in English Word Embedding.
 
     :param model: Word embedding model of ``gensim.model.KeyedVectors``
     :param bool only_lower: Whether the word embedding contrains

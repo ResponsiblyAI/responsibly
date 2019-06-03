@@ -1,5 +1,5 @@
 """
-Compute WEAT score of a Words Embedding.
+Compute WEAT score of a Word Embedding.
 
 WEAT is a bias measurement method for word embedding,
 which is inspired by the `IAT <https://en.wikipedia.org/wiki/Implicit-association_test>`_
