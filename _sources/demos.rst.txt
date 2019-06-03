@@ -6,7 +6,7 @@ Demos
 
   notebooks/demo-compas-analysis
   notebooks/demo-fico-analysis
-  notebooks/demo-words-embedding-bias
+  notebooks/demo-word-embedding-bias
 
 The demos can also be accessible as Jupyter notebooks
 through the `GitHub repository

@@ -1,22 +1,21 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Classification Fairness &#8212; Ethically 0.0.3 documentation</title>
+    <meta charset="utf-8" />
+    <title>Classification Fairness &#8212; Ethically 0.0.4 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script type="text/javascript" src="_static/jquery.js"></script>
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Words Embedding Bias" href="words-embedding-bias.html" />
+    <link rel="next" title="Word Embedding Bias" href="word-embedding-bias.html" />
     <link rel="prev" title="Datasets" href="dataset.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -44,8 +43,8 @@ that represents one or more demographic groups
 (e.g., by gender, race or age), for which a classifier
 should be fair.</p>
 <div class="admonition important">
-<p class="first admonition-title">Important</p>
-<p class="last">The terminology and functionality is aligned with the
+<p class="admonition-title">Important</p>
+<p>The terminology and functionality is aligned with the
 book <a class="reference external" href="https://fairmlbook.org">Fairness and Machine Learning
 - Limitations and Opportunities</a>
 by Solon Barocas, Moritz Hardt and Arvind Narayanan.
@@ -56,15 +55,15 @@ in classification.</p>
 </div>
 <p>Currently, the <a class="reference internal" href="#module-ethically.fairness" title="ethically.fairness"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethically.fairness</span></code></a> module has two components:</p>
 <ol class="arabic simple">
-<li><strong>Metrics</strong> (<a class="reference internal" href="#module-ethically.fairness.metrics" title="ethically.fairness.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethically.fairness.metrics</span></code></a>) for measuring unfairness.</li>
-<li><strong>Algorithmic interventions</strong> (<a class="reference internal" href="#module-ethically.fairness.interventions" title="ethically.fairness.interventions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethically.fairness.interventions</span></code></a>)
-for satisfying fairness criteria.</li>
+<li><p><strong>Metrics</strong> (<a class="reference internal" href="#module-ethically.fairness.metrics" title="ethically.fairness.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethically.fairness.metrics</span></code></a>) for measuring unfairness.</p></li>
+<li><p><strong>Algorithmic interventions</strong> (<a class="reference internal" href="#module-ethically.fairness.interventions" title="ethically.fairness.interventions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethically.fairness.interventions</span></code></a>)
+for satisfying fairness criteria.</p></li>
 </ol>
 <p>The <a class="reference external" href="demos.html">demos section</a> contains two examples of measuring
 the fairness of a classifier and applying intervention to adjust it:</p>
 <ol class="arabic simple">
-<li><a class="reference external" href="notebooks/demo-compas-analysis.html">COMPAS by ProPublica</a></li>
-<li><a class="reference external" href="notebooks/demo-fico-analysis.html">FICO credit score</a></li>
+<li><p><a class="reference external" href="notebooks/demo-compas-analysis.html">COMPAS by ProPublica</a></p></li>
+<li><p><a class="reference external" href="notebooks/demo-fico-analysis.html">FICO credit score</a></p></li>
 </ol>
 <div class="section" id="module-ethically.fairness.metrics">
 <span id="metrics"></span><h2>Metrics<a class="headerlink" href="#module-ethically.fairness.metrics" title="Permalink to this headline">¶</a></h2>
@@ -72,14 +71,14 @@ the fairness of a classifier and applying intervention to adjust it:</p>
 <p>The objectives of the demographic classification fairness criteria
 is to measure unfairness towards sensitive attribute valuse.</p>
 <p>The metrics have the same interface and behavior as the ones in
-<a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics" title="(in scikit-learn v0.20.3)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.metrics</span></code></a>
+<a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics" title="(in scikit-learn v0.21.2)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.metrics</span></code></a>
 (e.g., using <code class="docutils literal notranslate"><span class="pre">y_true</span></code>, <code class="docutils literal notranslate"><span class="pre">y_pred</span></code> and <code class="docutils literal notranslate"><span class="pre">y_score</span></code>).</p>
 <p>One should keep in mind that the criteria are intended
 to <em>measure unfairness, rather than to prove fairness</em>, as it stated in
 the paper <a class="reference external" href="https://arxiv.org/abs/1610.02413">Equality of opportunity in supervised learning</a>
 by Hardt et al. (2016):</p>
 <blockquote>
-<div>… satisfying [the demographic criteria] should not be
+<div><p>… satisfying [the demographic criteria] should not be
 considered a conclusive proof of fairness.
 Similarly, violations of our condition are not meant
 to be a proof of unfairness.
@@ -87,7 +86,8 @@ Rather we envision our framework as providing a reasonable way
 of discovering and measuring potential concerns that require
 further scrutiny. We believe that resolving fairness concerns is
 ultimately impossible without substantial domain-specific
-investigation.</div></blockquote>
+investigation.</p>
+</div></blockquote>
 <p>The output of binary classifiers can come in two forms, either giving
 a binary outcome prediction for input or producing
 a real number score, which the common one is the probability
@@ -99,15 +99,15 @@ and the second for <strong>score</strong> output.</p>
 is <a class="reference external" href="https://en.wikipedia.org/wiki/Conditional_independence">conditional independence</a>.
 Using <em>Machine Learning and Fairness</em> book’s notions:</p>
 <ul class="simple">
-<li><code class="docutils literal notranslate"><span class="pre">A</span></code> - Sensitive attribute</li>
-<li><code class="docutils literal notranslate"><span class="pre">Y</span></code> - Binary ground truth (correct) target</li>
-<li><code class="docutils literal notranslate"><span class="pre">R</span></code> - Estimated binary targets or score as returned by a classifier</li>
+<li><p><code class="docutils literal notranslate"><span class="pre">A</span></code> - Sensitive attribute</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">Y</span></code> - Binary ground truth (correct) target</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">R</span></code> - Estimated binary targets or score as returned by a classifier</p></li>
 </ul>
 <p>There are three demographic fairness criteria for classification:</p>
 <ol class="arabic simple">
-<li>Independence - R⊥A</li>
-<li>Separation - R⊥A∣Y</li>
-<li>Sufficiency - Y⊥A∣R</li>
+<li><p>Independence - R⊥A</p></li>
+<li><p>Separation - R⊥A∣Y</p></li>
+<li><p>Sufficiency - Y⊥A∣R</p></li>
 </ol>
 <div class="section" id="independence">
 <h3>Independence<a class="headerlink" href="#independence" title="Permalink to this headline">¶</a></h3>
@@ -117,37 +117,33 @@ Using <em>Machine Learning and Fairness</em> book’s notions:</p>
 <dd><p>Compute the independence criteria for binary prediction.</p>
 <p>In classification terminology, it is the <strong>acceptance rate</strong>
 grouped by the sensitive attribute.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>y_pred</strong> – Estimated targets as returned by a classifier.</li>
-<li><strong>x_sens</strong> – Sensitive attribute values corresponded to each
-target.</li>
-<li><strong>x_sens_privileged</strong> – The privileged value in the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_pred</strong> – Estimated targets as returned by a classifier.</p></li>
+<li><p><strong>x_sens</strong> – Sensitive attribute values corresponded to each
+target.</p></li>
+<li><p><strong>x_sens_privileged</strong> – The privileged value in the
 sensitive attribute. Relevent only
 if there are only two values for
-the sensitive attribute.</li>
-<li><strong>labels</strong> – List of labels to choose the negative and positive target.
+the sensitive attribute.</p></li>
+<li><p><strong>labels</strong> – List of labels to choose the negative and positive target.
 This may be used to reorder or select a subset of labels.
 If none is given, those that appear at least once in
 y_pred are used in sorted order; first is negative
-and the second is positive.</li>
-<li><strong>as_df</strong> – Whether to return the results as <cite>dict</cite> (if <cite>False</cite>)
-or as <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <cite>True</cite>).</li>
+and the second is positive.</p></li>
+<li><p><strong>as_df</strong> – Whether to return the results as <cite>dict</cite> (if <cite>False</cite>)
+or as <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <cite>True</cite>).</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Independence criteria and comparision if there are
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Independence criteria and comparision if there are
 only two values for the sensitive attribute.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -156,39 +152,35 @@ only two values for the sensitive attribute.</p>
 <dd><p>Compute the separation criteria for binary prediction.</p>
 <p>In classification terminology, it is the <strong>TPR</strong>, <strong>FPR</strong>,
 <strong>TNR</strong> and <strong>FNR</strong> grouped by the sensitive attribute.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>y_true</strong> – Binary ground truth (correct) target values.</li>
-<li><strong>y_pred</strong> – Estimated binary targets as returned
-by a classifier.</li>
-<li><strong>x_sens</strong> – Sensitive attribute values corresponded to each
-target.</li>
-<li><strong>x_sens_privileged</strong> – The privileged value in the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> – Binary ground truth (correct) target values.</p></li>
+<li><p><strong>y_pred</strong> – Estimated binary targets as returned
+by a classifier.</p></li>
+<li><p><strong>x_sens</strong> – Sensitive attribute values corresponded to each
+target.</p></li>
+<li><p><strong>x_sens_privileged</strong> – The privileged value in the
 sensitive attribute. Relevent only
 if there are only two values for
-the sensitive attribute.</li>
-<li><strong>labels</strong> – List of labels to choose the negative and positive target.
+the sensitive attribute.</p></li>
+<li><p><strong>labels</strong> – List of labels to choose the negative and positive target.
 This may be used to reorder or select a subset of labels.
 If none is given, those that appear at least once in
 y_pred are used in sorted order; first is negative
-and the second is positive.</li>
-<li><strong>as_df</strong> – Whether to return the results as <cite>dict</cite> (if <cite>False</cite>)
-or as <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <cite>True</cite>).</li>
+and the second is positive.</p></li>
+<li><p><strong>as_df</strong> – Whether to return the results as <cite>dict</cite> (if <cite>False</cite>)
+or as <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <cite>True</cite>).</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Separation criteria and comparision if there are
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Separation criteria and comparision if there are
 only two values for the sensitive attribute.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -200,39 +192,35 @@ only two values for the sensitive attribute.</p>
 <dd><p>Compute the separation criteria for binary prediction.</p>
 <p>In classification terminology, it is the <strong>TPR</strong>, <strong>FPR</strong>,
 <strong>TNR</strong> and <strong>FNR</strong> grouped by the sensitive attribute.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>y_true</strong> – Binary ground truth (correct) target values.</li>
-<li><strong>y_pred</strong> – Estimated binary targets as returned
-by a classifier.</li>
-<li><strong>x_sens</strong> – Sensitive attribute values corresponded to each
-target.</li>
-<li><strong>x_sens_privileged</strong> – The privileged value in the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> – Binary ground truth (correct) target values.</p></li>
+<li><p><strong>y_pred</strong> – Estimated binary targets as returned
+by a classifier.</p></li>
+<li><p><strong>x_sens</strong> – Sensitive attribute values corresponded to each
+target.</p></li>
+<li><p><strong>x_sens_privileged</strong> – The privileged value in the
 sensitive attribute. Relevent only
 if there are only two values for
-the sensitive attribute.</li>
-<li><strong>labels</strong> – List of labels to choose the negative and positive target.
+the sensitive attribute.</p></li>
+<li><p><strong>labels</strong> – List of labels to choose the negative and positive target.
 This may be used to reorder or select a subset of labels.
 If none is given, those that appear at least once in
 y_pred are used in sorted order; first is negative
-and the second is positive.</li>
-<li><strong>as_df</strong> – Whether to return the results as <cite>dict</cite> (if <cite>False</cite>)
-or as <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <cite>True</cite>).</li>
+and the second is positive.</p></li>
+<li><p><strong>as_df</strong> – Whether to return the results as <cite>dict</cite> (if <cite>False</cite>)
+or as <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <cite>True</cite>).</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Separation criteria and comparision if there are
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Separation criteria and comparision if there are
 only two values for the sensitive attribute.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -241,28 +229,24 @@ only two values for the sensitive attribute.</p>
 <dd><p>Compute the separation criteria for score prediction.</p>
 <p>In classification terminology, it is the <strong>FPR</strong> and <strong>TPR</strong>
 grouped by the score and the sensitive attribute.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>y_true</strong> – Binary ground truth (correct) target values.</li>
-<li><strong>y_score</strong> – Estimated target score as returned by a classifier.</li>
-<li><strong>x_sens</strong> – Sensitive attribute values corresponded to each
-estimated target.</li>
-<li><strong>as_df</strong> – Whether to return the results as <code class="docutils literal notranslate"><span class="pre">dict</span></code> (if <code class="docutils literal notranslate"><span class="pre">False</span></code>)
-or as <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <code class="docutils literal notranslate"><span class="pre">True</span></code>).</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> – Binary ground truth (correct) target values.</p></li>
+<li><p><strong>y_score</strong> – Estimated target score as returned by a classifier.</p></li>
+<li><p><strong>x_sens</strong> – Sensitive attribute values corresponded to each
+estimated target.</p></li>
+<li><p><strong>as_df</strong> – Whether to return the results as <code class="docutils literal notranslate"><span class="pre">dict</span></code> (if <code class="docutils literal notranslate"><span class="pre">False</span></code>)
+or as <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <code class="docutils literal notranslate"><span class="pre">True</span></code>).</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Separation criteria.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict or <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Separation criteria.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict or <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <div class="section" id="roc">
@@ -275,78 +259,70 @@ sensitive attribute values:</p>
 <code class="descclassname">ethically.fairness.metrics.</code><code class="descname">roc_auc_score_by_attr</code><span class="sig-paren">(</span><em>y_true</em>, <em>y_score</em>, <em>x_sens</em>, <em>sample_weight=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/metrics/score.html#roc_auc_score_by_attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.metrics.roc_auc_score_by_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute Area Under the ROC (AUC) by attribute.</p>
 <p>Based on function:<cite>sklearn.metrics.roc_auc_score</cite></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>y_true</strong> – Binary ground truth (correct) target values.</li>
-<li><strong>y_score</strong> – Estimated target score as returned by a classifier.</li>
-<li><strong>x_sens</strong> – Sensitive attribute values corresponded to each
-estimated target.</li>
-<li><strong>sample_weight</strong> – Sample weights.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> – Binary ground truth (correct) target values.</p></li>
+<li><p><strong>y_score</strong> – Estimated target score as returned by a classifier.</p></li>
+<li><p><strong>x_sens</strong> – Sensitive attribute values corresponded to each
+estimated target.</p></li>
+<li><p><strong>sample_weight</strong> – Sample weights.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">ROC AUC grouped by the sensitive attribute.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>ROC AUC grouped by the sensitive attribute.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="ethically.fairness.metrics.roc_curve_by_attr">
 <code class="descclassname">ethically.fairness.metrics.</code><code class="descname">roc_curve_by_attr</code><span class="sig-paren">(</span><em>y_true</em>, <em>y_score</em>, <em>x_sens</em>, <em>pos_label=None</em>, <em>sample_weight=None</em>, <em>drop_intermediate=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/metrics/score.html#roc_curve_by_attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.metrics.roc_curve_by_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute Receiver operating characteristic (ROC) by attribute.</p>
-<p>Based on <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_curve.html#sklearn.metrics.roc_curve" title="(in scikit-learn v0.20.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.metrics.roc_curve()</span></code></a></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>y_true</strong> – Binary ground truth (correct) target values.</li>
-<li><strong>y_score</strong> – Estimated target score as returned by a classifier.</li>
-<li><strong>x_sens</strong> – Sensitive attribute values corresponded to each
-estimated target.</li>
-<li><strong>pos_label</strong> – Label considered as positive and others
-are considered negative.</li>
-<li><strong>sample_weight</strong> – Sample weights.</li>
-<li><strong>drop_intermediate</strong> – Whether to drop some suboptimal
+<p>Based on <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_curve.html#sklearn.metrics.roc_curve" title="(in scikit-learn v0.21.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.metrics.roc_curve()</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> – Binary ground truth (correct) target values.</p></li>
+<li><p><strong>y_score</strong> – Estimated target score as returned by a classifier.</p></li>
+<li><p><strong>x_sens</strong> – Sensitive attribute values corresponded to each
+estimated target.</p></li>
+<li><p><strong>pos_label</strong> – Label considered as positive and others
+are considered negative.</p></li>
+<li><p><strong>sample_weight</strong> – Sample weights.</p></li>
+<li><p><strong>drop_intermediate</strong> – Whether to drop some suboptimal
 thresholds which would not appear on
 a plotted ROC curve.
 This is useful in order to create
-lighter ROC curves.</li>
+lighter ROC curves.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first"><p>For each value of sensitive attribute:
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><p>For each value of sensitive attribute:
 - fpr - Increasing false positive rates such</p>
 <blockquote>
 <div><p>that element i is the false positive rate
 of predictions with score &gt;= thresholds[i].</p>
 </div></blockquote>
 <ul class="simple">
-<li>fpr - Increasing true positive rates such
+<li><p>fpr - Increasing true positive rates such
 that element i is the true positive rate
-of predictions with score &gt;= thresholds[i].</li>
-<li>thresholds -
+of predictions with score &gt;= thresholds[i].</p></li>
+<li><p>thresholds -
 Decreasing thresholds on the decision function
 used to compute fpr and tpr. thresholds[0] represents
 no instances being predicted and is arbitrarily set
-to max(y_score) + 1.</li>
+to max(y_score) + 1.</p></li>
 </ul>
 </p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -357,37 +333,33 @@ to max(y_score) + 1.</li>
 <code class="descclassname">ethically.fairness.metrics.</code><code class="descname">plot_roc_by_attr</code><span class="sig-paren">(</span><em>y_true</em>, <em>y_score</em>, <em>x_sens</em>, <em>title='ROC Curves by Attribute'</em>, <em>ax=None</em>, <em>figsize=None</em>, <em>title_fontsize='large'</em>, <em>text_fontsize='medium'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/metrics/visualization.html#plot_roc_by_attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.metrics.plot_roc_by_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate the ROC curves by attribute from targets and scores.</p>
 <p>Based on <code class="xref py py-func docutils literal notranslate"><span class="pre">skplt.metrics.plot_roc()</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>y_true</strong> – Binary ground truth (correct) target values.</li>
-<li><strong>y_score</strong> – Estimated target score as returned by a classifier.</li>
-<li><strong>x_sens</strong> – Sensitive attribute values corresponded to each
-estimated target.</li>
-<li><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Title of the generated plot.</li>
-<li><strong>ax</strong> – The axes upon which to plot the curve.
-If <cite>None</cite>, the plot is drawn on a new set of axes.</li>
-<li><strong>figsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a>) – Tuple denoting figure size of the plot
-e.g. (6, 6).</li>
-<li><strong>title_fontsize</strong> – Matplotlib-style fontsizes.
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> – Binary ground truth (correct) target values.</p></li>
+<li><p><strong>y_score</strong> – Estimated target score as returned by a classifier.</p></li>
+<li><p><strong>x_sens</strong> – Sensitive attribute values corresponded to each
+estimated target.</p></li>
+<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Title of the generated plot.</p></li>
+<li><p><strong>ax</strong> – The axes upon which to plot the curve.
+If <cite>None</cite>, the plot is drawn on a new set of axes.</p></li>
+<li><p><strong>figsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a>) – Tuple denoting figure size of the plot
+e.g. (6, 6).</p></li>
+<li><p><strong>title_fontsize</strong> – Matplotlib-style fontsizes.
 Use e.g. ‘small’, ‘medium’, ‘large’
-or integer-values.</li>
-<li><strong>text_fontsize</strong> – Matplotlib-style fontsizes.
+or integer-values.</p></li>
+<li><p><strong>text_fontsize</strong> – Matplotlib-style fontsizes.
 Use e.g. ‘small’, ‘medium’, ‘large’
-or integer-values.</li>
+or integer-values.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The axes on which the plot was drawn.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The axes on which the plot was drawn.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.1.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -395,36 +367,32 @@ or integer-values.</li>
 <code class="descclassname">ethically.fairness.metrics.</code><code class="descname">plot_roc_curves</code><span class="sig-paren">(</span><em>roc_curves</em>, <em>aucs=None</em>, <em>title='ROC Curves by Attribute'</em>, <em>ax=None</em>, <em>figsize=None</em>, <em>title_fontsize='large'</em>, <em>text_fontsize='medium'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/metrics/visualization.html#plot_roc_curves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.metrics.plot_roc_curves" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate the ROC curves by attribute from (fpr, tpr, thresholds).</p>
 <p>Based on <code class="xref py py-func docutils literal notranslate"><span class="pre">skplt.metrics.plot_roc()</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
-by attribute.</li>
-<li><strong>aucs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Area Under the ROC (AUC) by attribute.</li>
-<li><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Title of the generated plot.</li>
-<li><strong>ax</strong> – The axes upon which to plot the curve.
-If <cite>None</cite>, the plot is drawn on a new set of axes.</li>
-<li><strong>figsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a>) – Tuple denoting figure size of the plot
-e.g. (6, 6).</li>
-<li><strong>title_fontsize</strong> – Matplotlib-style fontsizes.
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
+by attribute.</p></li>
+<li><p><strong>aucs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Area Under the ROC (AUC) by attribute.</p></li>
+<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Title of the generated plot.</p></li>
+<li><p><strong>ax</strong> – The axes upon which to plot the curve.
+If <cite>None</cite>, the plot is drawn on a new set of axes.</p></li>
+<li><p><strong>figsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a>) – Tuple denoting figure size of the plot
+e.g. (6, 6).</p></li>
+<li><p><strong>title_fontsize</strong> – Matplotlib-style fontsizes.
 Use e.g. ‘small’, ‘medium’, ‘large’
-or integer-values.</li>
-<li><strong>text_fontsize</strong> – Matplotlib-style fontsizes.
+or integer-values.</p></li>
+<li><p><strong>text_fontsize</strong> – Matplotlib-style fontsizes.
 Use e.g. ‘small’, ‘medium’, ‘large’
-or integer-values.</li>
+or integer-values.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The axes on which the plot was drawn.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The axes on which the plot was drawn.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.1.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -437,39 +405,35 @@ or integer-values.</li>
 <dd><p>Compute the sufficiency criteria for binary prediction.</p>
 <p>In classification terminology, it is the <strong>PPV</strong> and <strong>NPV</strong>
 grouped by the sensitive attribute.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>y_true</strong> – Binary ground truth (correct) target values.</li>
-<li><strong>y_pred</strong> – Binary estimated targets as returned by
-a classifier.</li>
-<li><strong>x_sens</strong> – Sensitive attribute values corresponded to each
-target.</li>
-<li><strong>x_sens_privileged</strong> – The privileged value in the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> – Binary ground truth (correct) target values.</p></li>
+<li><p><strong>y_pred</strong> – Binary estimated targets as returned by
+a classifier.</p></li>
+<li><p><strong>x_sens</strong> – Sensitive attribute values corresponded to each
+target.</p></li>
+<li><p><strong>x_sens_privileged</strong> – The privileged value in the
 sensitive attribute. Relevent only
 if there are only two values for
-the sensitive attribute.</li>
-<li><strong>labels</strong> – List of labels to choose the negative and positive target.
+the sensitive attribute.</p></li>
+<li><p><strong>labels</strong> – List of labels to choose the negative and positive target.
 This may be used to reorder or select a subset of labels.
 If none is given, those that appear at least once in
 y_pred are used in sorted order; first is negative
-and the second is positive.</li>
-<li><strong>as_df</strong> – Whether to return the results as <cite>dict</cite> (if <cite>False</cite>)
-or as <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <cite>True</cite>).</li>
+and the second is positive.</p></li>
+<li><p><strong>as_df</strong> – Whether to return the results as <cite>dict</cite> (if <cite>False</cite>)
+or as <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <cite>True</cite>).</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Sufficiency criteria and comparision if there are
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Sufficiency criteria and comparision if there are
 only two values for the sensitive attribute.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -478,28 +442,24 @@ only two values for the sensitive attribute.</p>
 <dd><p>Compute the sufficiency criteria for score prediction.</p>
 <p>In classification terminology, it is the <strong>PPV</strong> and the <strong>NPV</strong>
 grouped by the score and the sensitive attribute.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>y_true</strong> – Binary ground truth (correct) target values.</li>
-<li><strong>y_score</strong> – Estimated target score as returned by a classifier.</li>
-<li><strong>x_sens</strong> – Sensitive attribute values corresponded to each
-target.</li>
-<li><strong>as_df</strong> – Whether to return the results as <code class="docutils literal notranslate"><span class="pre">dict</span></code> (if <code class="docutils literal notranslate"><span class="pre">False</span></code>)
-or as <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <code class="docutils literal notranslate"><span class="pre">True</span></code>).</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> – Binary ground truth (correct) target values.</p></li>
+<li><p><strong>y_score</strong> – Estimated target score as returned by a classifier.</p></li>
+<li><p><strong>x_sens</strong> – Sensitive attribute values corresponded to each
+target.</p></li>
+<li><p><strong>as_df</strong> – Whether to return the results as <code class="docutils literal notranslate"><span class="pre">dict</span></code> (if <code class="docutils literal notranslate"><span class="pre">False</span></code>)
+or as <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <code class="docutils literal notranslate"><span class="pre">True</span></code>).</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Sufficiency criteria.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">dict or <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Sufficiency criteria.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict or <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -519,33 +479,29 @@ grouped by the sensitive attribute:
 - TPR
 - PPV
 - NPV</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>y_true</strong> – Binary ground truth (correct) target values.</li>
-<li><strong>y_pred</strong> – Binary estimated targets as returned by
-a classifier.</li>
-<li><strong>x_sens</strong> – Sensitive attribute values corresponded to each
-target.</li>
-<li><strong>labels</strong> – List of labels to choose the negative and positive target.
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> – Binary ground truth (correct) target values.</p></li>
+<li><p><strong>y_pred</strong> – Binary estimated targets as returned by
+a classifier.</p></li>
+<li><p><strong>x_sens</strong> – Sensitive attribute values corresponded to each
+target.</p></li>
+<li><p><strong>labels</strong> – List of labels to choose the negative and positive target.
 This may be used to reorder or select a subset of labels.
 If none is given, those that appear at least once in
 y_pred are used in sorted order; first is negative
-and the second is positive.</li>
+and the second is positive.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Classification statistics grouped by the
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Classification statistics grouped by the
 sensitive attribute.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -559,36 +515,35 @@ sensitive attribute.</p>
 <p>Algorithmic intervensions for satisfying fairness criteria.</p>
 <p>There are three families of techniques:</p>
 <ol class="arabic simple">
-<li><strong>Pre-processing</strong> - Adjust features in the dataset.</li>
-<li><strong>In-processing</strong> - Adjust the learning algorithm.</li>
-<li><strong>Post-processing</strong> - Adjust the learned classifier.</li>
+<li><p><strong>Pre-processing</strong> - Adjust features in the dataset.</p></li>
+<li><p><strong>In-processing</strong> - Adjust the learning algorithm.</p></li>
+<li><p><strong>Post-processing</strong> - Adjust the learned classifier.</p></li>
 </ol>
 <div class="section" id="module-ethically.fairness.interventions.threshold">
 <span id="threshold-post-processing"></span><h3>Threshold - Post-processing<a class="headerlink" href="#module-ethically.fairness.interventions.threshold" title="Permalink to this headline">¶</a></h3>
 <p>Post-processing fairness intervension by choosing thresholds.</p>
 <p>There are multiple definitions for choosing the thresholds:</p>
 <ol class="arabic simple">
-<li>Single threshold for all the sensitive attribute values
-that minimizes cost.</li>
-<li>A threshold for each sensitive attribute value
-that minimize cost.</li>
-<li>A threshold for each sensitive attribute value
-that achieve independence and minimize cost.</li>
-<li>A threshold for each sensitive attribute value
-that achieve equal FNR (equal opportunity) and minimize cost.</li>
-<li>A threshold for each sensitive attribute value
-that achieve seperation (equalized odds) and minimize cost.</li>
+<li><p>Single threshold for all the sensitive attribute values
+that minimizes cost.</p></li>
+<li><p>A threshold for each sensitive attribute value
+that minimize cost.</p></li>
+<li><p>A threshold for each sensitive attribute value
+that achieve independence and minimize cost.</p></li>
+<li><p>A threshold for each sensitive attribute value
+that achieve equal FNR (equal opportunity) and minimize cost.</p></li>
+<li><p>A threshold for each sensitive attribute value
+that achieve seperation (equalized odds) and minimize cost.</p></li>
 </ol>
 <p>The code is based on <a class="reference external" href="https://github.com/fairmlbook/fairmlbook.github.io">fairmlbook repository</a>.</p>
-<dl class="docutils">
-<dt>References:</dt>
-<dd><ul class="first last simple">
-<li>Hardt, M., Price, E., &amp; Srebro, N. (2016).
+<dl class="simple">
+<dt>References:</dt><dd><ul class="simple">
+<li><p>Hardt, M., Price, E., &amp; Srebro, N. (2016).
 <a class="reference external" href="https://arxiv.org/abs/1610.02413">Equality of opportunity in supervised learning</a>
 In Advances in neural information processing systems
-(pp. 3315-3323).</li>
-<li><a class="reference external" href="https://research.google.com/bigpicture/attacking-discrimination-in-ml/">Attacking discrimination with
-smarter machine learning by Google</a>.</li>
+(pp. 3315-3323).</p></li>
+<li><p><a class="reference external" href="https://research.google.com/bigpicture/attacking-discrimination-in-ml/">Attacking discrimination with
+smarter machine learning by Google</a>.</p></li>
 </ul>
 </dd>
 </dl>
@@ -596,80 +551,68 @@ smarter machine learning by Google</a>.</li>
 <dt id="ethically.fairness.interventions.threshold.find_single_threshold">
 <code class="descclassname">ethically.fairness.interventions.threshold.</code><code class="descname">find_single_threshold</code><span class="sig-paren">(</span><em>roc_curves</em>, <em>base_rates</em>, <em>proportions</em>, <em>cost_matrix</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/interventions/threshold.html#find_single_threshold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.interventions.threshold.find_single_threshold" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute single threshold that minimizes cost.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
-by attribute.</li>
-<li><strong>base_rates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Base rate by attribute.</li>
-<li><strong>proportions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Proportion of each attribute value.</li>
-<li><strong>cost_matrix</strong> (<em>sequence</em>) – Cost matrix by [[tn, fp], [fn, tp]].</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
+by attribute.</p></li>
+<li><p><strong>base_rates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Base rate by attribute.</p></li>
+<li><p><strong>proportions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Proportion of each attribute value.</p></li>
+<li><p><strong>cost_matrix</strong> (<em>sequence</em>) – Cost matrix by [[tn, fp], [fn, tp]].</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Threshold, FPR and TPR by attribute and cost value.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Threshold, FPR and TPR by attribute and cost value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="ethically.fairness.interventions.threshold.find_min_cost_thresholds">
 <code class="descclassname">ethically.fairness.interventions.threshold.</code><code class="descname">find_min_cost_thresholds</code><span class="sig-paren">(</span><em>roc_curves</em>, <em>base_rates</em>, <em>cost_matrix</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/interventions/threshold.html#find_min_cost_thresholds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.interventions.threshold.find_min_cost_thresholds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute thresholds by attribute values that minimize cost.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
-by attribute.</li>
-<li><strong>base_rates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Base rate by attribute.</li>
-<li><strong>cost_matrix</strong> (<em>sequence</em>) – Cost matrix by [[tn, fp], [fn, tp]].</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
+by attribute.</p></li>
+<li><p><strong>base_rates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Base rate by attribute.</p></li>
+<li><p><strong>cost_matrix</strong> (<em>sequence</em>) – Cost matrix by [[tn, fp], [fn, tp]].</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Thresholds, FPR and TPR by attribute and cost value.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Thresholds, FPR and TPR by attribute and cost value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="ethically.fairness.interventions.threshold.find_independence_thresholds">
 <code class="descclassname">ethically.fairness.interventions.threshold.</code><code class="descname">find_independence_thresholds</code><span class="sig-paren">(</span><em>roc_curves</em>, <em>base_rates</em>, <em>proportions</em>, <em>cost_matrix</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/interventions/threshold.html#find_independence_thresholds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.interventions.threshold.find_independence_thresholds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute thresholds that achieve independence and minimize cost.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
-by attribute.</li>
-<li><strong>base_rates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Base rate by attribute.</li>
-<li><strong>proportions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Proportion of each attribute value.</li>
-<li><strong>cost_matrix</strong> (<em>sequence</em>) – Cost matrix by [[tn, fp], [fn, tp]].</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
+by attribute.</p></li>
+<li><p><strong>base_rates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Base rate by attribute.</p></li>
+<li><p><strong>proportions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Proportion of each attribute value.</p></li>
+<li><p><strong>cost_matrix</strong> (<em>sequence</em>) – Cost matrix by [[tn, fp], [fn, tp]].</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Thresholds, FPR and TPR by attribute and cost value.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Thresholds, FPR and TPR by attribute and cost value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -677,27 +620,23 @@ by attribute.</li>
 <code class="descclassname">ethically.fairness.interventions.threshold.</code><code class="descname">find_fnr_thresholds</code><span class="sig-paren">(</span><em>roc_curves</em>, <em>base_rates</em>, <em>proportions</em>, <em>cost_matrix</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/interventions/threshold.html#find_fnr_thresholds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.interventions.threshold.find_fnr_thresholds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute thresholds that achieve equal FNRs and minimize cost.</p>
 <p>Also known as <strong>equal opportunity</strong>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
-by attribute.</li>
-<li><strong>base_rates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Base rate by attribute.</li>
-<li><strong>proportions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Proportion of each attribute value.</li>
-<li><strong>cost_matrix</strong> (<em>sequence</em>) – Cost matrix by [[tn, fp], [fn, tp]].</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
+by attribute.</p></li>
+<li><p><strong>base_rates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Base rate by attribute.</p></li>
+<li><p><strong>proportions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Proportion of each attribute value.</p></li>
+<li><p><strong>cost_matrix</strong> (<em>sequence</em>) – Cost matrix by [[tn, fp], [fn, tp]].</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Thresholds, FPR and TPR by attribute and cost value.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Thresholds, FPR and TPR by attribute and cost value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -705,61 +644,53 @@ by attribute.</li>
 <code class="descclassname">ethically.fairness.interventions.threshold.</code><code class="descname">find_separation_thresholds</code><span class="sig-paren">(</span><em>roc_curves</em>, <em>base_rate</em>, <em>cost_matrix</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/interventions/threshold.html#find_separation_thresholds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.interventions.threshold.find_separation_thresholds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute thresholds that achieve separation and minimize cost.</p>
 <p>Also known as <strong>equalized odds</strong>.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
-by attribute.</li>
-<li><strong>base_rate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Overall base rate.</li>
-<li><strong>cost_matrix</strong> (<em>sequence</em>) – Cost matrix by [[tn, fp], [fn, tp]].</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
+by attribute.</p></li>
+<li><p><strong>base_rate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Overall base rate.</p></li>
+<li><p><strong>cost_matrix</strong> (<em>sequence</em>) – Cost matrix by [[tn, fp], [fn, tp]].</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Thresholds, FPR and TPR by attribute and cost value.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Thresholds, FPR and TPR by attribute and cost value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)">tuple</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="ethically.fairness.interventions.threshold.find_thresholds">
 <code class="descclassname">ethically.fairness.interventions.threshold.</code><code class="descname">find_thresholds</code><span class="sig-paren">(</span><em>roc_curves</em>, <em>proportions</em>, <em>base_rate</em>, <em>base_rates</em>, <em>cost_matrix</em>, <em>with_single=True</em>, <em>with_min_cost=True</em>, <em>with_independence=True</em>, <em>with_fnr=True</em>, <em>with_separation=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/interventions/threshold.html#find_thresholds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.interventions.threshold.find_thresholds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute thresholds that achieve various criteria and minimize cost.</p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
-by attribute.</li>
-<li><strong>proportions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Proportion of each attribute value.</li>
-<li><strong>base_rate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Overall base rate.</li>
-<li><strong>base_rates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Base rate by attribute.</li>
-<li><strong>cost_matrix</strong> (<em>sequence</em>) – Cost matrix by [[tn, fp], [fn, tp]].</li>
-<li><strong>with_single</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Compute single threshold.</li>
-<li><strong>with_min_cost</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Compute minimum cost thresholds.</li>
-<li><strong>with_independence</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Compute independence thresholds.</li>
-<li><strong>with_fnr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Compute FNR thresholds.</li>
-<li><strong>with_separation</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Compute separation thresholds.</li>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
+by attribute.</p></li>
+<li><p><strong>proportions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Proportion of each attribute value.</p></li>
+<li><p><strong>base_rate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.7)"><em>float</em></a>) – Overall base rate.</p></li>
+<li><p><strong>base_rates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Base rate by attribute.</p></li>
+<li><p><strong>cost_matrix</strong> (<em>sequence</em>) – Cost matrix by [[tn, fp], [fn, tp]].</p></li>
+<li><p><strong>with_single</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Compute single threshold.</p></li>
+<li><p><strong>with_min_cost</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Compute minimum cost thresholds.</p></li>
+<li><p><strong>with_independence</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Compute independence thresholds.</p></li>
+<li><p><strong>with_fnr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Compute FNR thresholds.</p></li>
+<li><p><strong>with_separation</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Compute separation thresholds.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">Dictionary of threshold criteria,
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary of threshold criteria,
 and for each criterion:
 thresholds, FPR and TPR by attribute and cost value.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -767,39 +698,35 @@ thresholds, FPR and TPR by attribute and cost value.</p>
 <code class="descclassname">ethically.fairness.interventions.threshold.</code><code class="descname">plot_roc_curves_thresholds</code><span class="sig-paren">(</span><em>roc_curves</em>, <em>thresholds_data</em>, <em>aucs=None</em>, <em>title='ROC Curves by Attribute'</em>, <em>ax=None</em>, <em>figsize=None</em>, <em>title_fontsize='large'</em>, <em>text_fontsize='medium'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/interventions/threshold.html#plot_roc_curves_thresholds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.interventions.threshold.plot_roc_curves_thresholds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate the ROC curves by attribute with thresholds.</p>
 <p>Based on <code class="xref py py-func docutils literal notranslate"><span class="pre">skplt.metrics.plot_roc()</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
-by attribute.</li>
-<li><strong>thresholds_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Thresholds by attribute from the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
+by attribute.</p></li>
+<li><p><strong>thresholds_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Thresholds by attribute from the
 function
-<code class="xref py py-func docutils literal notranslate"><span class="pre">find_thresholds()</span></code>.</li>
-<li><strong>aucs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Area Under the ROC (AUC) by attribute.</li>
-<li><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Title of the generated plot.</li>
-<li><strong>ax</strong> – The axes upon which to plot the curve.
-If <cite>None</cite>, the plot is drawn on a new set of axes.</li>
-<li><strong>figsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a>) – Tuple denoting figure size of the plot
-e.g. (6, 6).</li>
-<li><strong>title_fontsize</strong> – Matplotlib-style fontsizes.
+<code class="xref py py-func docutils literal notranslate"><span class="pre">find_thresholds()</span></code>.</p></li>
+<li><p><strong>aucs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Area Under the ROC (AUC) by attribute.</p></li>
+<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Title of the generated plot.</p></li>
+<li><p><strong>ax</strong> – The axes upon which to plot the curve.
+If <cite>None</cite>, the plot is drawn on a new set of axes.</p></li>
+<li><p><strong>figsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a>) – Tuple denoting figure size of the plot
+e.g. (6, 6).</p></li>
+<li><p><strong>title_fontsize</strong> – Matplotlib-style fontsizes.
 Use e.g. ‘small’, ‘medium’, ‘large’
-or integer-values.</li>
-<li><strong>text_fontsize</strong> – Matplotlib-style fontsizes.
+or integer-values.</p></li>
+<li><p><strong>text_fontsize</strong> – Matplotlib-style fontsizes.
 Use e.g. ‘small’, ‘medium’, ‘large’
-or integer-values.</li>
+or integer-values.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The axes on which the plot was drawn.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The axes on which the plot was drawn.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.1.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -807,35 +734,31 @@ or integer-values.</li>
 <code class="descclassname">ethically.fairness.interventions.threshold.</code><code class="descname">plot_fpt_tpr</code><span class="sig-paren">(</span><em>roc_curves</em>, <em>title='FPR-TPR Curves by Attribute'</em>, <em>ax=None</em>, <em>figsize=None</em>, <em>title_fontsize='large'</em>, <em>text_fontsize='medium'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/interventions/threshold.html#plot_fpt_tpr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.interventions.threshold.plot_fpt_tpr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate FPR and TPR curves by thresholds and by attribute.</p>
 <p>Based on <code class="xref py py-func docutils literal notranslate"><span class="pre">skplt.metrics.plot_roc()</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
-by attribute.</li>
-<li><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Title of the generated plot.</li>
-<li><strong>ax</strong> – The axes upon which to plot the curve.
-If <cite>None</cite>, the plot is drawn on a new set of axes.</li>
-<li><strong>figsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a>) – Tuple denoting figure size of the plot
-e.g. (6, 6).</li>
-<li><strong>title_fontsize</strong> – Matplotlib-style fontsizes.
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
+by attribute.</p></li>
+<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Title of the generated plot.</p></li>
+<li><p><strong>ax</strong> – The axes upon which to plot the curve.
+If <cite>None</cite>, the plot is drawn on a new set of axes.</p></li>
+<li><p><strong>figsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a>) – Tuple denoting figure size of the plot
+e.g. (6, 6).</p></li>
+<li><p><strong>title_fontsize</strong> – Matplotlib-style fontsizes.
 Use e.g. ‘small’, ‘medium’, ‘large’
-or integer-values.</li>
-<li><strong>text_fontsize</strong> – Matplotlib-style fontsizes.
+or integer-values.</p></li>
+<li><p><strong>text_fontsize</strong> – Matplotlib-style fontsizes.
 Use e.g. ‘small’, ‘medium’, ‘large’
-or integer-values.</li>
+or integer-values.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The axes on which the plot was drawn.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The axes on which the plot was drawn.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.1.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -843,36 +766,32 @@ or integer-values.</li>
 <code class="descclassname">ethically.fairness.interventions.threshold.</code><code class="descname">plot_costs</code><span class="sig-paren">(</span><em>thresholds_data</em>, <em>title='Cost by Threshold'</em>, <em>ax=None</em>, <em>figsize=None</em>, <em>title_fontsize='large'</em>, <em>text_fontsize='medium'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/interventions/threshold.html#plot_costs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.interventions.threshold.plot_costs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot cost by threshold definition and by attribute.</p>
 <p>Based on <code class="xref py py-func docutils literal notranslate"><span class="pre">skplt.metrics.plot_roc()</span></code></p>
-<table class="docutils field-list" frame="void" rules="none">
-<col class="field-name" />
-<col class="field-body" />
-<tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
-<li><strong>thresholds_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Thresholds by attribute from the
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>thresholds_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Thresholds by attribute from the
 function
-<code class="xref py py-func docutils literal notranslate"><span class="pre">find_thresholds()</span></code>.</li>
-<li><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Title of the generated plot.</li>
-<li><strong>ax</strong> – The axes upon which to plot the curve.
-If <cite>None</cite>, the plot is drawn on a new set of axes.</li>
-<li><strong>figsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a>) – Tuple denoting figure size of the plot
-e.g. (6, 6).</li>
-<li><strong>title_fontsize</strong> – Matplotlib-style fontsizes.
+<code class="xref py py-func docutils literal notranslate"><span class="pre">find_thresholds()</span></code>.</p></li>
+<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Title of the generated plot.</p></li>
+<li><p><strong>ax</strong> – The axes upon which to plot the curve.
+If <cite>None</cite>, the plot is drawn on a new set of axes.</p></li>
+<li><p><strong>figsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a>) – Tuple denoting figure size of the plot
+e.g. (6, 6).</p></li>
+<li><p><strong>title_fontsize</strong> – Matplotlib-style fontsizes.
 Use e.g. ‘small’, ‘medium’, ‘large’
-or integer-values.</li>
-<li><strong>text_fontsize</strong> – Matplotlib-style fontsizes.
+or integer-values.</p></li>
+<li><p><strong>text_fontsize</strong> – Matplotlib-style fontsizes.
 Use e.g. ‘small’, ‘medium’, ‘large’
-or integer-values.</li>
+or integer-values.</p></li>
 </ul>
-</td>
-</tr>
-<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">The axes on which the plot was drawn.</p>
-</td>
-</tr>
-<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last"><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.0.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
-</td>
-</tr>
-</tbody>
-</table>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The axes on which the plot was drawn.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.1.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -906,7 +825,7 @@ or integer-values.</li>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="dataset.html">Datasets</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Classification Fairness</a></li>
-<li class="toctree-l1"><a class="reference internal" href="words-embedding-bias.html">Words Embedding Bias</a></li>
+<li class="toctree-l1"><a class="reference internal" href="word-embedding-bias.html">Word Embedding Bias</a></li>
 <li class="toctree-l1"><a class="reference internal" href="demos.html">Demos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about/contributing.html">For Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about/changelog.html">Revision History</a></li>
@@ -918,7 +837,7 @@ or integer-values.</li>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="dataset.html" title="previous chapter">Datasets</a></li>
-      <li>Next: <a href="words-embedding-bias.html" title="next chapter">Words Embedding Bias</a></li>
+      <li>Next: <a href="word-embedding-bias.html" title="next chapter">Word Embedding Bias</a></li>
   </ul></li>
 </ul>
 </div>
@@ -928,12 +847,18 @@ or integer-values.</li>
     <form class="search" action="search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
@@ -942,8 +867,8 @@ or integer-values.</li>
       &copy;2019, Shlomi Hod.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
       <a href="_sources/fairness.rst.txt"

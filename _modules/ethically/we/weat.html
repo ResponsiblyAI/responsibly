@@ -1,19 +1,18 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ethically.we.weat &#8212; Ethically 0.0.3 documentation</title>
+    <meta charset="utf-8" />
+    <title>ethically.we.weat &#8212; Ethically 0.0.4 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../../../_static/jquery.js"></script>
     <script type="text/javascript" src="../../../_static/underscore.js"></script>
     <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../../../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
    
@@ -34,9 +33,9 @@
             
   <h1>Source code for ethically.we.weat</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Compute WEAT score of a Words Embedding.</span>
+<span class="sd">Compute WEAT score of a Word Embedding.</span>
 
-<span class="sd">WEAT is a bias measurement method for words embedding,</span>
+<span class="sd">WEAT is a bias measurement method for word embedding,</span>
 <span class="sd">which is inspired by the `IAT &lt;https://en.wikipedia.org/wiki/Implicit-association_test&gt;`_</span>
 <span class="sd">(Implicit Association Test) for humans.</span>
 <span class="sd">It measures the similarity between two sets of *target words*</span>
@@ -235,14 +234,14 @@
             <span class="n">_filter_by_model_weat_stimuli</span><span class="p">(</span><span class="n">stimuli</span><span class="p">,</span> <span class="n">model</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="calc_single_weat"><a class="viewcode-back" href="../../../words-embedding-bias.html#ethically.we.weat.calc_single_weat">[docs]</a><span class="k">def</span> <span class="nf">calc_single_weat</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
+<div class="viewcode-block" id="calc_single_weat"><a class="viewcode-back" href="../../../word-embedding-bias.html#ethically.we.weat.calc_single_weat">[docs]</a><span class="k">def</span> <span class="nf">calc_single_weat</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
                      <span class="n">first_target</span><span class="p">,</span> <span class="n">second_target</span><span class="p">,</span>
                      <span class="n">first_attribute</span><span class="p">,</span> <span class="n">second_attribute</span><span class="p">,</span>
                      <span class="n">with_pvalue</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pvalue_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calc the WEAT result of a words embedding.</span>
+<span class="sd">    Calc the WEAT result of a word embedding.</span>
 
-<span class="sd">    :param model: Words embedding model of ``gensim.model.KeyedVectors``</span>
+<span class="sd">    :param model: Word embedding model of ``gensim.model.KeyedVectors``</span>
 <span class="sd">    :param dict first_target: First target words list and its name</span>
 <span class="sd">    :param dict second_target: Second target words list and its name</span>
 <span class="sd">    :param dict first_attribute: First attribute words list and its name</span>
@@ -287,9 +286,20 @@
             <span class="s1">&#39;Na&#39;</span><span class="p">:</span> <span class="s1">&#39;</span><span class="si">{}</span><span class="s1">x2&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">first_attribute</span><span class="p">[</span><span class="s1">&#39;words&#39;</span><span class="p">]))}</span></div>
 
 
-<span class="k">def</span> <span class="nf">calc_weat_pleasant_unpleasant_attribute</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
+<div class="viewcode-block" id="calc_weat_pleasant_unpleasant_attribute"><a class="viewcode-back" href="../../../word-embedding-bias.html#ethically.we.weat.calc_weat_pleasant_unpleasant_attribute">[docs]</a><span class="k">def</span> <span class="nf">calc_weat_pleasant_unpleasant_attribute</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
                                             <span class="n">first_target</span><span class="p">,</span> <span class="n">second_target</span><span class="p">,</span>
                                             <span class="n">with_pvalue</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pvalue_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Calc the WEAT result with pleasent vs. unpleasant attributes.</span>
+
+<span class="sd">    :param model: Word embedding model of ``gensim.model.KeyedVectors``</span>
+<span class="sd">    :param dict first_target: First target words list and its name</span>
+<span class="sd">    :param dict second_target: Second target words list and its name</span>
+<span class="sd">    :param bool with_pvalue: Whether to calculate the p-value of the</span>
+<span class="sd">                             WEAT score (might be computationally expensive)</span>
+<span class="sd">    :return: WEAT result (score, size effect, Nt, Na and p-value)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">weat_data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;first_attribute&#39;</span><span class="p">:</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">WEAT_DATA</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;first_attribute&#39;</span><span class="p">]),</span>
                  <span class="s1">&#39;second_attribute&#39;</span><span class="p">:</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">WEAT_DATA</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s1">&#39;second_attribute&#39;</span><span class="p">]),</span>
                  <span class="s1">&#39;first_target&#39;</span><span class="p">:</span> <span class="n">first_target</span><span class="p">,</span>
@@ -302,21 +312,28 @@
 
     <span class="k">return</span> <span class="n">calc_single_weat</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
                             <span class="o">**</span><span class="n">weat_data</span><span class="p">,</span>
-                            <span class="n">with_pvalue</span><span class="o">=</span><span class="n">with_pvalue</span><span class="p">,</span> <span class="n">pvalue_kwargs</span><span class="o">=</span><span class="n">pvalue_kwargs</span><span class="p">)</span>
+                            <span class="n">with_pvalue</span><span class="o">=</span><span class="n">with_pvalue</span><span class="p">,</span> <span class="n">pvalue_kwargs</span><span class="o">=</span><span class="n">pvalue_kwargs</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="calc_all_weat"><a class="viewcode-back" href="../../../words-embedding-bias.html#ethically.we.weat.calc_all_weat">[docs]</a><span class="k">def</span> <span class="nf">calc_all_weat</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">weat_data</span><span class="o">=</span><span class="s1">&#39;caliskan&#39;</span><span class="p">,</span> <span class="n">filter_by</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
+<div class="viewcode-block" id="calc_all_weat"><a class="viewcode-back" href="../../../word-embedding-bias.html#ethically.we.weat.calc_all_weat">[docs]</a><span class="k">def</span> <span class="nf">calc_all_weat</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">weat_data</span><span class="o">=</span><span class="s1">&#39;caliskan&#39;</span><span class="p">,</span> <span class="n">filter_by</span><span class="o">=</span><span class="s1">&#39;model&#39;</span><span class="p">,</span>
                   <span class="n">with_original_finding</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                   <span class="n">with_pvalue</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">pvalue_kwargs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Calc the WEAT results of a words embedding on multiple cases.</span>
+<span class="sd">    Calc the WEAT results of a word embedding on multiple cases.</span>
 
 <span class="sd">    Note that for the effect size and pvalue in the WEAT have</span>
 <span class="sd">    entirely different meaning from those reported in IATs (original finding).</span>
 <span class="sd">    Refer to the paper for more details.</span>
 
-<span class="sd">    :param model: Words embedding model of ``gensim.model.KeyedVectors``</span>
-<span class="sd">    :param dict weat_data: WEAT cases data</span>
+<span class="sd">    :param model: Word embedding model of ``gensim.model.KeyedVectors``</span>
+<span class="sd">    :param dict weat_data: WEAT cases data.</span>
+<span class="sd">                           - If `&#39;caliskan&#39;` (default) then all</span>
+<span class="sd">                              the experiments from the original will be used.</span>
+<span class="sd">                           - If an interger, then the specific experiment by index</span>
+<span class="sd">                             from the original paper will be used.</span>
+<span class="sd">                           - If a interger, then tje specific experiments by indices</span>
+<span class="sd">                             from the original paper will be used.</span>
+
 <span class="sd">    :param bool filter_by: Whether to filter the word lists</span>
 <span class="sd">                           by the `model` (`&#39;model&#39;`)</span>
 <span class="sd">                           or by the `remove` key in `weat_data` (`&#39;data&#39;`).</span>
@@ -329,6 +346,11 @@
 
     <span class="k">if</span> <span class="n">weat_data</span> <span class="o">==</span> <span class="s1">&#39;caliskan&#39;</span><span class="p">:</span>
         <span class="n">weat_data</span> <span class="o">=</span> <span class="n">WEAT_DATA</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">weat_data</span><span class="p">,</span> <span class="nb">int</span><span class="p">):</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="n">weat_data</span>
+        <span class="n">weat_data</span> <span class="o">=</span> <span class="n">WEAT_DATA</span><span class="p">[</span><span class="n">index</span><span class="p">:</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+    <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">weat_data</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
+        <span class="n">weat_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">WEAT_DATA</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">weat_data</span><span class="p">]</span>
 
     <span class="k">if</span> <span class="n">pvalue_kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">pvalue_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
@@ -409,7 +431,7 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../dataset.html">Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../fairness.html">Classification Fairness</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../words-embedding-bias.html">Words Embedding Bias</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../word-embedding-bias.html">Word Embedding Bias</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../demos.html">Demos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../about/contributing.html">For Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../about/changelog.html">Revision History</a></li>
@@ -431,12 +453,18 @@
     <form class="search" action="../../../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
@@ -445,8 +473,8 @@
       &copy;2019, Shlomi Hod.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
 

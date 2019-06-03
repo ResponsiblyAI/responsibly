@@ -1,23 +1,22 @@
 
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html>
 
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>For Contributors &#8212; Ethically 0.0.3 documentation</title>
+    <meta charset="utf-8" />
+    <title>For Contributors &#8212; Ethically 0.0.4 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
     <script type="text/javascript" src="../_static/jquery.js"></script>
     <script type="text/javascript" src="../_static/underscore.js"></script>
     <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Revision History" href="changelog.html" />
-    <link rel="prev" title="Demo - Bias in Words Embedding" href="../notebooks/demo-words-embedding-bias.html" />
+    <link rel="prev" title="Demo - Bias in Word Embedding" href="../notebooks/demo-word-embedding-bias.html" />
    
   <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
   
@@ -41,24 +40,25 @@
 <div class="section" id="requirements">
 <h3>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h3>
 <ul class="simple">
-<li>Make:<ul>
-<li>Windows: <a class="reference external" href="http://mingw.org/download/installer">http://mingw.org/download/installer</a></li>
-<li>Mac: <a class="reference external" href="http://developer.apple.com/xcode">http://developer.apple.com/xcode</a></li>
-<li>Linux: <a class="reference external" href="http://www.gnu.org/software/make">http://www.gnu.org/software/make</a></li>
+<li><p>Make:</p>
+<ul>
+<li><p>Windows: <a class="reference external" href="http://mingw.org/download/installer">http://mingw.org/download/installer</a></p></li>
+<li><p>Mac: <a class="reference external" href="http://developer.apple.com/xcode">http://developer.apple.com/xcode</a></p></li>
+<li><p>Linux: <a class="reference external" href="http://www.gnu.org/software/make">http://www.gnu.org/software/make</a></p></li>
 </ul>
 </li>
-<li>pipenv: <a class="reference external" href="http://docs.pipenv.org">http://docs.pipenv.org</a></li>
-<li>Graphviz: <a class="reference external" href="http://www.graphviz.org/Download.php">http://www.graphviz.org/Download.php</a></li>
+<li><p>pipenv: <a class="reference external" href="http://docs.pipenv.org">http://docs.pipenv.org</a></p></li>
+<li><p>Graphviz: <a class="reference external" href="http://www.graphviz.org/Download.php">http://www.graphviz.org/Download.php</a></p></li>
 </ul>
 <p>To confirm these system dependencies are configured correctly:</p>
-<div class="code sh highlight-default notranslate"><div class="highlight"><pre><span></span>$ make doctor
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ make doctor
 </pre></div>
 </div>
 </div>
 <div class="section" id="installation">
 <h3>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h3>
 <p>Install project dependencies into a virtual environment:</p>
-<div class="code sh highlight-default notranslate"><div class="highlight"><pre><span></span>$ make install
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ make install
 </pre></div>
 </div>
 </div>
@@ -68,31 +68,32 @@
 <div class="section" id="testing">
 <h3>Testing<a class="headerlink" href="#testing" title="Permalink to this headline">¶</a></h3>
 <p>Manually run the tests:</p>
-<div class="code sh highlight-default notranslate"><div class="highlight"><pre><span></span>$ make test
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ make <span class="nb">test</span>
 </pre></div>
 </div>
 <p>or keep them running on change:</p>
-<div class="code sh highlight-default notranslate"><div class="highlight"><pre><span></span>$ make watch
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ make watch
 </pre></div>
 </div>
 <blockquote>
-<div>In order to have OS X notifications,
-<code class="docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">terminal-notifier</span></code>.</div></blockquote>
+<div><p>In order to have OS X notifications,
+<code class="docutils literal notranslate"><span class="pre">brew</span> <span class="pre">install</span> <span class="pre">terminal-notifier</span></code>.</p>
+</div></blockquote>
 </div>
 <div class="section" id="documentation">
 <h3>Documentation<a class="headerlink" href="#documentation" title="Permalink to this headline">¶</a></h3>
 <p>Build the documentation:</p>
-<div class="code sh highlight-default notranslate"><div class="highlight"><pre><span></span>$ make docs
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ make docs
 </pre></div>
 </div>
 </div>
 <div class="section" id="static-analysis">
 <h3>Static Analysis<a class="headerlink" href="#static-analysis" title="Permalink to this headline">¶</a></h3>
 <p>Run linters and static analyzers:</p>
-<div class="code sh highlight-default notranslate"><div class="highlight"><pre><span></span>$ make pylint
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ make pylint
 $ make pycodestyle
 $ make pydocstyle
-$ make check  # includes all checks
+$ make check  <span class="c1"># includes all checks</span>
 </pre></div>
 </div>
 </div>
@@ -100,14 +101,14 @@ $ make check  # includes all checks
 <div class="section" id="continuous-integration">
 <h2>Continuous Integration<a class="headerlink" href="#continuous-integration" title="Permalink to this headline">¶</a></h2>
 <p>The CI server will report overall build status:</p>
-<div class="code sh highlight-default notranslate"><div class="highlight"><pre><span></span>$ make ci
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ make ci
 </pre></div>
 </div>
 </div>
 <div class="section" id="release-tasks">
 <h2>Release Tasks<a class="headerlink" href="#release-tasks" title="Permalink to this headline">¶</a></h2>
 <p>Release to PyPI:</p>
-<div class="code sh highlight-default notranslate"><div class="highlight"><pre><span></span>$ make upload
+<div class="highlight-sh notranslate"><div class="highlight"><pre><span></span>$ make upload
 </pre></div>
 </div>
 </div>
@@ -140,7 +141,7 @@ $ make check  # includes all checks
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../dataset.html">Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../fairness.html">Classification Fairness</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../words-embedding-bias.html">Words Embedding Bias</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../word-embedding-bias.html">Word Embedding Bias</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../demos.html">Demos</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">For Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Revision History</a></li>
@@ -151,7 +152,7 @@ $ make check  # includes all checks
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="../notebooks/demo-words-embedding-bias.html" title="previous chapter">Demo - Bias in Words Embedding</a></li>
+      <li>Previous: <a href="../notebooks/demo-word-embedding-bias.html" title="previous chapter">Demo - Bias in Word Embedding</a></li>
       <li>Next: <a href="changelog.html" title="next chapter">Revision History</a></li>
   </ul></li>
 </ul>
@@ -162,12 +163,18 @@ $ make check  # includes all checks
     <form class="search" action="../search.html" method="get">
       <input type="text" name="q" />
       <input type="submit" value="Go" />
-      <input type="hidden" name="check_keywords" value="yes" />
-      <input type="hidden" name="area" value="default" />
     </form>
     </div>
 </div>
 <script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
         </div>
       </div>
       <div class="clearer"></div>
@@ -176,8 +183,8 @@ $ make check  # includes all checks
       &copy;2019, Shlomi Hod.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.6</a>
-      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
       <a href="../_sources/about/contributing.rst.txt"

@@ -27,7 +27,7 @@ Ethically
     :target: http://docs.ethically.ai/about/license.html
 
 **Toolkit for Auditing and Mitigating Bias and Fairness**
-**of Machine Learning Systems 🔎🤖🔧**
+**of Machine Learning Systems 🔎🤖🧰**
 
 *Ethically* is developed for **practitioners** and **researchers** in mind,
 but also for learners. Therefore, it is compatible with
@@ -51,7 +51,7 @@ Besides, there is a particular focus on **NLP** models.
 
 3. ``ethically.we``
      Metrics and debiasing methods for bias (such as gender and race)
-     in words embedding.
+     in word embedding.
 
 For fairness, *Ethically*'s functionality is aligned with the book
 `Fairness and Machine Learning
