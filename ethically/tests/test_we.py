@@ -7,12 +7,14 @@ from math import isclose
 import numpy as np
 import pytest
 
+from ethically.tests.data import TOLGA_GENDER_ANALOGIES
+from ethically.tests.utils import assert_deep_almost_equal
 from ethically.we import (
     GenderBiasWE, calc_all_weat, calc_weat_pleasant_unpleasant_attribute,
 )
 from ethically.we.data import WEAT_DATA, load_w2v_small
 from ethically.we.utils import (
-    project_params, project_reject_vector, project_vector,
+    most_similar, project_params, project_reject_vector, project_vector,
 )
 
 from ..consts import RANDOM_STATE
@@ -32,6 +34,11 @@ def w2v_small():
 def gender_biased_w2v_small():
     model = load_w2v_small()
     return GenderBiasWE(model, only_lower=True, verbose=True)
+
+
+def test_assert_gensim_keyed_vectors():
+    with pytest.raises(TypeError):
+        GenderBiasWE(['one', 'two'], only_lower=True, verbose=True)
 
 
 def test_project_params():
@@ -58,7 +65,7 @@ def test_contains(gender_biased_w2v_small):
 
 
 def test_data_is_sorted_list(gender_biased_w2v_small):
-    # otherwise 'specific_full_with_definitional' is not sorted
+    # otherwise 'specific_full_with_definitional_equalize' is not sorted
     assert gender_biased_w2v_small.only_lower
 
     for key in gender_biased_w2v_small._data['word_group_keys']:
@@ -291,11 +298,11 @@ def test_deepcopy(gender_biased_w2v_small):
             is not gender_biased_w2v_small_copy.model)
 
 
-def test_evaluate_words_embedding(gender_biased_w2v_small):
-    """Test evaluate_words_embedding method in GenderBiasWE."""
+def test_evaluate_word_embedding(gender_biased_w2v_small):
+    """Test evaluate_word_embedding method in GenderBiasWE."""
     # pylint: disable=C0301
     (word_pairs_evaluation,
-     word_analogies_evaluation) = gender_biased_w2v_small.evaluate_words_embedding()
+     word_analogies_evaluation) = gender_biased_w2v_small.evaluate_word_embedding()
 
     assert (word_pairs_evaluation.to_dict()
             == {'pearson_r': {'WS353': 0.645, 'RG65': 0.576, 'RW': 0.611, 'Mturk': 0.65, 'MEN': 0.766, 'SimLex999': 0.456, 'TR9856': 0.666},
@@ -306,6 +313,19 @@ def test_evaluate_words_embedding(gender_biased_w2v_small):
 
     assert (word_analogies_evaluation.to_dict()
             == {'score': {'MSR-syntax': 0.75, 'Google': 0.729}})
+
+
+def test_generate_analogies(gender_biased_w2v_small):
+    """Test generate_analogies method in GenderBiasWE.
+
+    Based on:
+    https://github.com/tolga-b/debiaswe/blob/master/tutorial_example1.ipynb
+    """
+
+    analogies_df = (gender_biased_w2v_small
+                    .generate_analogies(500, unrestricted=False))
+    analogies_df = analogies_df[['she', 'he']]
+    assert_deep_almost_equal(analogies_df.values, TOLGA_GENDER_ANALOGIES)
 
 
 # TODO deeper testing, this is barely checking it runs
@@ -324,6 +344,45 @@ def test_calc_all_weat(w2v_small):
                   with_pvalue=True, pvalue_kwargs={'method': 'approximate'})
 
 
+def test_calc_all_weat_index(w2v_small):
+    all_weat = calc_all_weat(w2v_small, filter_by='model',
+                             with_original_finding=True,
+                             with_pvalue=True,
+                             pvalue_kwargs={'method': 'approximate'})
+
+    for index in range(len(WEAT_DATA)):
+        single_weat = calc_all_weat(w2v_small, weat_data=index,
+                                    filter_by='model',
+                                    with_original_finding=True,
+                                    with_pvalue=True,
+                                    pvalue_kwargs={'method':
+                                                   'approximate'})
+
+        assert_deep_almost_equal(single_weat.iloc[0].to_dict(),
+                                 all_weat.iloc[index].to_dict(),
+                                 atol=0.01)
+
+
+def test_calc_all_weat_indices(w2v_small):
+    all_weat = calc_all_weat(w2v_small, filter_by='model',
+                             with_original_finding=True,
+                             with_pvalue=True,
+                             pvalue_kwargs={'method': 'approximate'})
+
+    for index in range(1, len(WEAT_DATA)):
+        indices = tuple(range(index))
+        singles_weat = calc_all_weat(w2v_small, weat_data=indices,
+                                     filter_by='model',
+                                     with_original_finding=True,
+                                     with_pvalue=True,
+                                     pvalue_kwargs={'method':
+                                                    'approximate'})
+
+        assert_deep_almost_equal(singles_weat.to_dict(),
+                                 all_weat.iloc[:index].to_dict(),
+                                 atol=0.01)
+
+
 def test_calc_weat_pleasant_attribute(w2v_small):
     result_v1 = calc_weat_pleasant_unpleasant_attribute(w2v_small,
                                                         WEAT_DATA[1]['first_target'],  # pylint: disable=C0301
@@ -334,3 +393,17 @@ def test_calc_weat_pleasant_attribute(w2v_small):
     result_v2['p'] = float(result_v2['p'])
 
     assert result_v1 == result_v2
+
+
+def test_most_similar(w2v_small):
+    POSITIVE, NEGATIVE = ('doctor', 'she'), ('he',)
+
+    ethically_results = most_similar(w2v_small, POSITIVE, NEGATIVE,
+                                     topn=10)
+    gensim_results = w2v_small.most_similar(POSITIVE, NEGATIVE,
+                                            topn=9)
+
+    assert ethically_results[0][0] == 'doctor'
+
+    assert_deep_almost_equal(ethically_results[1:], gensim_results,
+                             atol=0.01)

@@ -14,7 +14,7 @@ Contents
 
   dataset
   fairness
-  words-embedding-bias
+  word-embedding-bias
   demos
   about/contributing
   about/changelog

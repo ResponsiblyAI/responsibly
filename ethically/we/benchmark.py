@@ -1,5 +1,5 @@
 """
-Evaluate words embedding by standard benchmarks.
+Evaluate word embedding by standard benchmarks.
 
 Reference:
     - https://github.com/kudkudak/word-embeddings-benchmarks
@@ -79,7 +79,7 @@ def evaluate_word_pairs(model, kwargs_word_pairs=None):
     """
     Evaluate word pairs tasks.
 
-    :param model: Words embedding.
+    :param model: Word embedding.
     :param kwargs_word_pairs: Kwargs for
                               evaluate_word_pairs
                               method.
@@ -117,7 +117,7 @@ def evaluate_word_analogies(model, kwargs_word_analogies=None):
     """
     Evaluate word analogies tasks.
 
-    :param model: Words embedding.
+    :param model: Word embedding.
     :param kwargs_word_analogies: Kwargs for
                                   evaluate_word_analogies
                                   method.
@@ -144,13 +144,13 @@ def evaluate_word_analogies(model, kwargs_word_analogies=None):
     return df
 
 
-def evaluate_words_embedding(model,
-                             kwargs_word_pairs=None,
-                             kwargs_word_analogies=None):
+def evaluate_word_embedding(model,
+                            kwargs_word_pairs=None,
+                            kwargs_word_analogies=None):
     """
     Evaluate word pairs tasks and word analogies tasks.
 
-    :param model: Words embedding.
+    :param model: Word embedding.
     :param kwargs_word_pairs: Kwargs fo
                               evaluate_word_pairs
                               method.
