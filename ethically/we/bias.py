@@ -72,6 +72,7 @@ and
 
 """
 
+import warnings
 import copy
 
 import matplotlib.pylab as plt
@@ -102,7 +103,6 @@ DIRECTION_METHODS = ['single', 'sum', 'pca']
 DEBIAS_METHODS = ['neutralize', 'hard', 'soft']
 FIRST_PC_THRESHOLD = 0.5
 MAX_NON_SPECIFIC_EXAMPLES = 1000
-MAX_ANALOGY_TRIES = 1000
 
 __all__ = ['GenderBiasWE', 'BiasWordEmbedding']
 
@@ -114,10 +114,12 @@ class BiasWordEmbedding:
     :param bool only_lower: Whether the word embedding contrains
                             only lower case words
     :param bool verbose: Set verbosity
+    :param bool normalize: Whether to normalize all the vectors
+                           (recommended!)
     """
 
     def __init__(self, model, only_lower=False, verbose=False,
-                 identify_direction=False):
+                 identify_direction=False, normalize=True):
         assert_gensim_keyed_vectors(model)
 
         # TODO: this is bad Python, ask someone about it
@@ -139,6 +141,9 @@ class BiasWordEmbedding:
         self.direction = None
         self.positive_end = None
         self.negative_end = None
+
+        if normalize:
+            self.model.init_sims(replace=True)
 
     def __copy__(self):
         bias_word_embedding = self.__class__(self.model,
@@ -469,7 +474,7 @@ class BiasWordEmbedding:
     def generate_analogies(self, n_analogies=100, seed='ends',
                            multiple=False,
                            delta=1., restrict_vocab=30000,
-                           unrestricted=True):
+                           unrestricted=False):
         """
         Generate analogies based on a seed vector.
 
@@ -484,7 +489,13 @@ class BiasWordEmbedding:
 
 
         There is criticism regarding generating analogies
-        when used with `unstricted=False`:
+        when used with `unstricted=False` and not ignoring analogies 
+        with `match` column equal to `False`.
+        Tolga's technique of generating analogies, as implemented in this
+        method, is limited inherently to analogies with x != y, which may
+        be force "fake" bias analogies.
+        
+        See:
         - Nissim, M., van Noord, R., van der Goot, R. (2019).
           `Fair is Better than Sensational: Man is to Doctor
           as Woman is to Doctor <https://arxiv.org/abs/1905.09866>`_.
@@ -499,14 +510,17 @@ class BiasWordEmbedding:
         :param float delta: Threshold for semantic similarity.
                             The maximal distance between x and y.
         :param int restrict_vocab: The vocabulary size to use.
-        :param bool unrestricted: Whether to remove analogies
-                                  that doesn't macth to unrestricted
-                                  most similar.
+        :param bool unrestricted: Whether to validate the generated analogies
+                                  with unrestricted `most_similar`.
         :return: Data Frame of analogies (x, y), their distances,
                  and their cosine similarity scores
         """
-
         # pylint: disable=C0301,R0914
+        
+        if not unrestricted:
+            warnings.warn('Not Using unrestricted most_similar may introduce'
+                          'fake biased analogies.')
+
         (seed_vector,
          positive_end,
          negative_end) = get_seed_vector(seed, self)
@@ -517,9 +531,15 @@ class BiasWordEmbedding:
                               / np.linalg.norm(restrict_vocab_vectors, axis=1)[:, None])
 
         pairs_distances = euclidean_distances(normalized_vectors, normalized_vectors)
-        pairs_indices = np.array(np.nonzero(
-            ((pairs_distances < delta)
-             & (pairs_distances != 0)))).T
+
+        # `pairs_distances` must be not-equal to zero
+        # otherwise, x-y will be the zero vector, and every cosine similarity
+        # will be equal to zero.
+        # This cause to the **limitation** of this method which enforce a not-same
+        # words for x and y.
+        pairs_mask = (pairs_distances < delta) & (pairs_distances != 0)
+
+        pairs_indices = np.array(np.nonzero(pairs_mask)).T
         x_vectors = np.take(normalized_vectors, pairs_indices[:, 0], axis=0)
         y_vectors = np.take(normalized_vectors, pairs_indices[:, 1], axis=0)
 
@@ -538,41 +558,51 @@ class BiasWordEmbedding:
         generated_words_y = set()
 
         n_analogy_tries = 0
-
         while len(analogies) < n_analogies:
             cos_distance_index = next(sorted_cos_distances_indices_iter)
             paris_index = pairs_indices[cos_distance_index]
             word_x, word_y = [self.model.index2word[index]
                               for index in paris_index]
 
-            if unrestricted:
-                if n_analogy_tries > MAX_ANALOGY_TRIES:
-                    break
-
-                most_x = most_similar(self.model,
-                                      [word_y, positive_end],
-                                      negative_end)[0][0]
-                most_y = most_similar(self.model,
-                                      [word_x, negative_end],
-                                      positive_end)[0][0]
-
-                if most_x != word_x or most_y != word_y:
-                    n_analogy_tries += 1
-                    continue
-
             if multiple or (not multiple
                             and (word_x not in generated_words_x
                                  and word_y not in generated_words_y)):
-                analogies.append({positive_end: word_x,
+                
+                
+                if unrestricted:
+                    most_x = next(word
+                                  for word, _ in most_similar(self.model,
+                                                              [word_y, positive_end],
+                                                              [negative_end]))
+                    most_y = next(word
+                                  for word, _ in most_similar(self.model,
+                                                              [word_x, negative_end],
+                                                              [positive_end]))
+
+                    analogy['most_x'] = most_x
+                    analogy['most_y'] = most_y
+                    analogy['match'] = ((word_x == most_x)
+                                        and (word_y == most_y))
+
+                analogy = ({positive_end: word_x,
                                   negative_end: word_y,
                                   'score': cos_distances[cos_distance_index],
                                   'distance': pairs_distances[tuple(paris_index)]})
-            generated_words_x.add(word_x)
-            generated_words_y.add(word_y)
+                
+                generated_words_x.add(word_x)
+                generated_words_y.add(word_y)
+                
+                analogies.append(analogy)
 
         df = pd.DataFrame(analogies)
-        df = df[[positive_end, negative_end, 'distance', 'score']]
 
+        columns = [positive_end, negative_end, 'distance', 'score']
+        
+        if unrestricted:
+            columns.extend(['most_x', 'most_y', 'match'])
+
+        df = df[columns]
+    
         return df
 
     def calc_direct_bias(self, neutral_words, c=None):
@@ -973,11 +1003,16 @@ class GenderBiasWE(BiasWordEmbedding):
     :param bool only_lower: Whether the word embedding contrains
                             only lower case words
     :param bool verbose: Set verbosity
+    :param bool normalize: Whether to normalize all the vectors
+                           (recommended!)
     """
 
     def __init__(self, model, only_lower=False, verbose=False,
-                 identify_direction=True):
-        super().__init__(model, only_lower, verbose)
+                 identify_direction=True, normalize=True):
+        super().__init__(model=model,
+                         only_lower=only_lower,
+                         verbose=verbose,
+                         normalize=True)
         self._initialize_data()
         if identify_direction:
             self._identify_direction('she', 'he',
