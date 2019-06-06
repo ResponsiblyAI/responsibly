@@ -407,3 +407,13 @@ def test_most_similar(w2v_small):
 
     assert_deep_almost_equal(ethically_results[1:], gensim_results,
                              atol=0.01)
+
+
+def test_compute_association(gender_biased_w2v_small):
+    """
+    Test compute_association method in GenderBiasWE.
+    """
+    (r, pvalue), _ = gender_biased_w2v_small.compute_factual_association()
+
+    assert isclose(r, 0.7070401592764508)
+    assert isclose(pvalue, 1.4324502214459908e-06)

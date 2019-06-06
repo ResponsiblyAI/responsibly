@@ -79,7 +79,7 @@ import matplotlib.pylab as plt
 import numpy as np
 import pandas as pd
 import seaborn as sns
-from scipy.stats import spearmanr
+from scipy.stats import pearsonr, spearmanr
 from sklearn.decomposition import PCA
 from sklearn.metrics.pairwise import euclidean_distances
 from sklearn.svm import LinearSVC
@@ -89,7 +89,7 @@ from tabulate import tabulate
 
 from ..consts import RANDOM_STATE
 from .benchmark import evaluate_word_embedding
-from .data import BOLUKBASI_DATA
+from .data import BOLUKBASI_DATA, OCCUPATION_FEMALE_PRECENTAGE
 from .utils import (
     assert_gensim_keyed_vectors, cosine_similarity, generate_one_word_forms,
     generate_words_forms, get_seed_vector, most_similar, normalize,
@@ -926,6 +926,66 @@ class BiasWordEmbedding:
                                                  random_state=random_state,
                                                  ax=ax)
 
+    def compute_factual_association(self, factual_properity):
+        """Compute association of a factual property to the projection on the direction.
+
+        Inspired by WEFAT (Word-Embedding Factual Association Test), but it is not the same:
+        - Caliskan, A., Bryson, J. J., & Narayanan, A. (2017).
+        `Semantics derived automatically
+        from language corpora contain human-like biases
+        <http://opus.bath.ac.uk/55288/>`_.
+        Science, 356(6334), 183-186.
+
+        In a future version, the WEFAT will also be implemented.
+
+        If a word doesn't exist in the word embedding, then it will be filtered out.
+
+        For example, in :class:`ethically.we.bias.GenderBiasWE`, the defuat factual
+        property is the percentage of female in various occupations
+        from the Labor Force Statistics of 2017 Population Survey,
+        Taken from: https://arxiv.org/abs/1804.06876
+
+        :param dict factual_properity: Dictionary of words and their factual values.
+        :return: Pearson r, pvalue and the words with their associated factual values
+                and their projection on the bias direction.
+        """
+
+        points = {word: (value, self.project_on_direction(word))
+                  for word, value in factual_properity.items()
+                  if word in self.model}
+
+        x, y = zip(*points.values())
+
+        return pearsonr(x, y), points
+
+    def plot_factual_association(self, factual_properity, ax=None):
+        """Plot association of a factual property to the projection on the direction.
+
+        See: :meth:`BiasWordEmbedding.compute_factual_association`
+
+        :param dict factual_properity: Dictionary of words and their factual values.
+        """
+
+        result = self.compute_factual_association(factual_properity)
+
+        (r, pvalue), points = result
+        x, y = zip(*points.values())
+
+        if ax is None:
+            _, ax = plt.subplots(1)
+
+        ax.scatter(x, y)
+
+        plt.title('Assocsion between Factual Property'
+                  'and Projection on Direction '
+                  '(Pearson R = {:0.2f} ; pvalue={:0.2f})'
+                  .format(r, pvalue))
+
+        plt.xlabel('Factual Property')
+        plt.ylabel('Projection on Direction')
+
+        return ax
+
     @staticmethod
     def plot_most_biased_clustering(biased, debiased,
                                     seed='ends', n_extreme=500,
@@ -1120,3 +1180,10 @@ class GenderBiasWE(BiasWordEmbedding):
         return super().learn_full_specific_words(seed_specific_words,
                                                  max_non_specific_examples,
                                                  debug)
+
+    def compute_factual_association(self, factual_properity=OCCUPATION_FEMALE_PRECENTAGE):
+        return super().compute_factual_association(factual_properity)
+
+    def plot_factual_association(self, factual_properity=OCCUPATION_FEMALE_PRECENTAGE,
+                                 ax=None):
+        return super().plot_factual_association(factual_properity)
