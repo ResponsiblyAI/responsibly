@@ -62,7 +62,7 @@ from mlxtend.evaluate import permutation_test
 
 from ..consts import RANDOM_STATE
 from .data import WEAT_DATA
-from .utils import assert_gensim_keyed_vectors
+from .utils import assert_gensim_keyed_vectors, cosine_similarities_by_words
 
 
 FILTER_BY_OPTIONS = ['model', 'data']
@@ -79,10 +79,15 @@ def _calc_association_target_attributes(model, target_word,
 
     with warnings.catch_warnings():
         warnings.simplefilter('ignore', FutureWarning)
-        first_mean = model.n_similarity([target_word],
-                                        first_attribute_words).mean()
-        second_mean = model.n_similarity([target_word],
-                                         second_attribute_words).mean()
+        first_mean = cosine_similarities_by_words(
+            model,
+            target_word,
+            first_attribute_words).mean()
+
+        second_mean = cosine_similarities_by_words(
+            model,
+            target_word,
+            second_attribute_words).mean()
 
     return first_mean - second_mean
 
@@ -111,14 +116,14 @@ def _calc_weat_score(model,
 
 
 def _calc_weat_pvalue(first_associations, second_associations,
-                      method='approximate'):
+                      method='exact'):
 
     if method not in PVALUE_METHODS:
         raise ValueError('method should be one of {}, {} was given'.format(
             PVALUE_METHODS, method))
 
     pvalue = permutation_test(first_associations, second_associations,
-                              func='x_mean > y_mean',
+                              func=lambda x, y: sum(x) - sum(y),
                               method=method,
                               seed=RANDOM_STATE)  # if exact - no meaning
     return pvalue
@@ -366,6 +371,6 @@ def calc_all_weat(model, weat_data='caliskan', filter_by='model',
                                                 if pvalue else pvalue)
 
     results_df = results_df[cols]
-    results_df = results_df.round(2)
+    results_df = results_df.round(4)
 
     return results_df
