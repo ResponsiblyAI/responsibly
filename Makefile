@@ -252,6 +252,8 @@ clean-all: clean
 	# rm -rf *.rst docs/apidocs *.html docs/*.png site
 	cd docs && make clean
 	cd docs/notebooks && find . ! -name '*.ipynb' -type f -exec rm -rf {} + && rm -rf -- ./*/
+	cd docs && rm readme.rst
+	cd docs/about && rm changelog.rst contributing.rst license.rst
 
 .PHONY: .clean-build
 .clean-build:
