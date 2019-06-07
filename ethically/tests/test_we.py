@@ -384,15 +384,24 @@ def test_calc_all_weat_indices(w2v_small):
 
 
 def test_calc_weat_pleasant_attribute(w2v_small):
+    # pylint: disable=line-too-long
+
+    pvalue_kwargs = {'method': 'approximate'}
+
     result_v1 = calc_weat_pleasant_unpleasant_attribute(w2v_small,
-                                                        WEAT_DATA[1]['first_target'],  # pylint: disable=C0301
-                                                        WEAT_DATA[1]['second_target'])  # pylint: disable=C0301
-    result_v1['p'] = round(result_v1['p'], 2)
+                                                        WEAT_DATA[1]['first_target'],
+                                                        WEAT_DATA[1]['second_target'],
+                                                        pvalue_kwargs=pvalue_kwargs)
+    result_v1['p'] = round(result_v1['p'], 4)
+    result_v1['d'] = round(result_v1['d'], 4)
+    result_v1['s'] = round(result_v1['s'], 4)
 
-    result_v2 = calc_all_weat(w2v_small).iloc[1].to_dict()
-    result_v2['p'] = float(result_v2['p'])
+    result_v2 = (calc_all_weat(w2v_small, (1,),
+                               pvalue_kwargs=pvalue_kwargs)
+                 .iloc[0]
+                 .to_dict())
 
-    assert result_v1 == result_v2
+    assert_deep_almost_equal(result_v1, result_v2)
 
 
 def test_most_similar(w2v_small):
