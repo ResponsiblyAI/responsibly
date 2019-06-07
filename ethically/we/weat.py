@@ -69,6 +69,7 @@ FILTER_BY_OPTIONS = ['model', 'data']
 RESULTS_DF_COLUMNS = ['Target words', 'Attrib. words',
                       'Nt', 'Na', 's', 'd', 'p']
 PVALUE_METHODS = ['exact', 'approximate']
+PVALUE_WARNING_VALUE = 20
 ORIGINAL_DF_COLUMNS = ['original_' + key for key in ['N', 'd', 'p']]
 
 
@@ -121,6 +122,14 @@ def _calc_weat_pvalue(first_associations, second_associations,
     if method not in PVALUE_METHODS:
         raise ValueError('method should be one of {}, {} was given'.format(
             PVALUE_METHODS, method))
+
+    if (method == 'exact'
+            and (len(first_associations) + len(second_associations)
+                 > PVALUE_WARNING_VALUE)):
+        warnings.warn("Considor using"
+                      " pvalue_kwargs={'method': 'approximate'}"
+                      " as it might take to long to run with"
+                      " exact p-value calculation.")
 
     pvalue = permutation_test(first_associations, second_associations,
                               func=lambda x, y: sum(x) - sum(y),
