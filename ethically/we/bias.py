@@ -1186,4 +1186,4 @@ class GenderBiasWE(BiasWordEmbedding):
 
     def plot_factual_association(self, factual_properity=OCCUPATION_FEMALE_PRECENTAGE,
                                  ax=None):
-        return super().plot_factual_association(factual_properity)
+        return super().plot_factual_association(factual_properity, ax)
