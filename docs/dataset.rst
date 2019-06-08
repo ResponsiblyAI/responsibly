@@ -3,8 +3,8 @@ Datasets
 
 .. automodule:: ethically.dataset
 
-General Datasets
-----------------
+General Dataset
+---------------
 .. autoclass:: ethically.dataset.Dataset
     :members:
 
