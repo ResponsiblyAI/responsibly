@@ -62,14 +62,13 @@ from mlxtend.evaluate import permutation_test
 
 from ..consts import RANDOM_STATE
 from .data import WEAT_DATA
-from .utils import assert_gensim_keyed_vectors, cosine_similarities_by_words
+from .utils import assert_gensim_keyed_vectors
 
 
 FILTER_BY_OPTIONS = ['model', 'data']
 RESULTS_DF_COLUMNS = ['Target words', 'Attrib. words',
                       'Nt', 'Na', 's', 'd', 'p']
 PVALUE_METHODS = ['exact', 'approximate']
-PVALUE_WARNING_VALUE = 20
 ORIGINAL_DF_COLUMNS = ['original_' + key for key in ['N', 'd', 'p']]
 
 
@@ -80,15 +79,10 @@ def _calc_association_target_attributes(model, target_word,
 
     with warnings.catch_warnings():
         warnings.simplefilter('ignore', FutureWarning)
-        first_mean = cosine_similarities_by_words(
-            model,
-            target_word,
-            first_attribute_words).mean()
-
-        second_mean = cosine_similarities_by_words(
-            model,
-            target_word,
-            second_attribute_words).mean()
+        first_mean = model.n_similarity([target_word],
+                                        first_attribute_words).mean()
+        second_mean = model.n_similarity([target_word],
+                                         second_attribute_words).mean()
 
     return first_mean - second_mean
 
@@ -117,22 +111,14 @@ def _calc_weat_score(model,
 
 
 def _calc_weat_pvalue(first_associations, second_associations,
-                      method='exact'):
+                      method='approximate'):
 
     if method not in PVALUE_METHODS:
         raise ValueError('method should be one of {}, {} was given'.format(
             PVALUE_METHODS, method))
 
-    if (method == 'exact'
-            and (len(first_associations) + len(second_associations)
-                 > PVALUE_WARNING_VALUE)):
-        warnings.warn("Considor using"
-                      " pvalue_kwargs={'method': 'approximate'}"
-                      " as it might take to long to run with"
-                      " exact p-value calculation.")
-
     pvalue = permutation_test(first_associations, second_associations,
-                              func=lambda x, y: sum(x) - sum(y),
+                              func='x_mean > y_mean',
                               method=method,
                               seed=RANDOM_STATE)  # if exact - no meaning
     return pvalue
@@ -335,14 +321,18 @@ def calc_all_weat(model, weat_data='caliskan', filter_by='model',
     if pvalue_kwargs is None:
         pvalue_kwargs = {}
 
-    weat_data = copy.deepcopy(weat_data)
+    actual_weat_data = copy.deepcopy(weat_data)
 
-    _filter_weat_data(weat_data,
+    _filter_weat_data(actual_weat_data,
                       model,
                       filter_by)
 
+    if weat_data != actual_weat_data:
+        warnings.warn('Given weat_data was filterd by {}.'
+                      .format(filter_by))
+
     results = []
-    for stimuli in weat_data:
+    for stimuli in actual_weat_data:
         result = calc_single_weat(model,
                                   stimuli['first_target'],
                                   stimuli['second_target'],
@@ -380,6 +370,6 @@ def calc_all_weat(model, weat_data='caliskan', filter_by='model',
                                                 if pvalue else pvalue)
 
     results_df = results_df[cols]
-    results_df = results_df.round(4)
+    results_df = results_df.round(2)
 
     return results_df
