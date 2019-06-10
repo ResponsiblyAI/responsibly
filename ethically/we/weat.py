@@ -72,7 +72,11 @@ FILTER_BY_OPTIONS = ['model', 'data']
 RESULTS_DF_COLUMNS = ['Target words', 'Attrib. words',
                       'Nt', 'Na', 's', 'd', 'p']
 PVALUE_METHODS = ['exact', 'approximate']
+PVALUE_DEFUALT_METHOD = 'exact'
 ORIGINAL_DF_COLUMNS = ['original_' + key for key in ['N', 'd', 'p']]
+WEAT_WORD_SETS = ['first_target', 'second_target',
+                  'first_attribute', 'second_attribute']
+PVALUE_EXACT_WARNING_LEN = 10
 
 _warning_setup()
 
@@ -122,7 +126,7 @@ def _calc_weat_score(model,
 
 
 def _calc_weat_pvalue(first_associations, second_associations,
-                      method='approximate'):
+                      method=PVALUE_DEFUALT_METHOD):
 
     if method not in PVALUE_METHODS:
         raise ValueError('method should be one of {}, {} was given'.format(
@@ -329,8 +333,16 @@ def calc_all_weat(model, weat_data='caliskan', filter_by='model',
     elif isinstance(weat_data, tuple):
         weat_data = [WEAT_DATA[index] for index in weat_data]
 
-    if pvalue_kwargs is None:
-        pvalue_kwargs = {}
+    if (not pvalue_kwargs
+            or pvalue_kwargs['method'] == PVALUE_DEFUALT_METHOD):
+        max_word_set_len = max(len(stimuli[ws]['words'])
+                               for stimuli in weat_data
+                               for ws in WEAT_WORD_SETS)
+        if max_word_set_len > PVALUE_EXACT_WARNING_LEN:
+            warnings.warn('At least one stimuli has a word set bigger'
+                          ' than {}, and the computation might take a while.'
+                          ' Consider using \'exact\' as method'
+                          ' for pvalue_kwargs.'.format(PVALUE_EXACT_WARNING_LEN))
 
     actual_weat_data = copy.deepcopy(weat_data)
 
