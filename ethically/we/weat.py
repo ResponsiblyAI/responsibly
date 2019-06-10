@@ -60,9 +60,10 @@ import numpy as np
 import pandas as pd
 from mlxtend.evaluate import permutation_test
 
-from ..consts import RANDOM_STATE
-from .data import WEAT_DATA
-from .utils import assert_gensim_keyed_vectors
+from ethically.consts import RANDOM_STATE
+from ethically.utils import _warning_setup
+from ethically.we.data import WEAT_DATA
+from ethically.we.utils import assert_gensim_keyed_vectors
 
 
 FILTER_BY_OPTIONS = ['model', 'data']
@@ -70,6 +71,8 @@ RESULTS_DF_COLUMNS = ['Target words', 'Attrib. words',
                       'Nt', 'Na', 's', 'd', 'p']
 PVALUE_METHODS = ['exact', 'approximate']
 ORIGINAL_DF_COLUMNS = ['original_' + key for key in ['N', 'd', 'p']]
+
+_warning_setup()
 
 
 def _calc_association_target_attributes(model, target_word,

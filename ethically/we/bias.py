@@ -85,18 +85,18 @@ from sklearn.metrics.pairwise import euclidean_distances
 from sklearn.svm import LinearSVC
 from tqdm import tqdm
 
-from tabulate import tabulate
-
-from ..consts import RANDOM_STATE
-from .benchmark import evaluate_word_embedding
-from .data import BOLUKBASI_DATA, OCCUPATION_FEMALE_PRECENTAGE
-from .utils import (
+from ethically.consts import RANDOM_STATE
+from ethically.utils import _warning_setup
+from ethically.we.benchmark import evaluate_word_embedding
+from ethically.we.data import BOLUKBASI_DATA, OCCUPATION_FEMALE_PRECENTAGE
+from ethically.we.utils import (
     assert_gensim_keyed_vectors, cosine_similarity, generate_one_word_forms,
     generate_words_forms, get_seed_vector, most_similar, normalize,
     plot_clustering_as_classification, project_params, project_reject_vector,
     project_vector, reject_vector, round_to_extreme,
     take_two_sides_extreme_sorted, update_word_vector,
 )
+from tabulate import tabulate
 
 
 DIRECTION_METHODS = ['single', 'sum', 'pca']
@@ -106,11 +106,7 @@ MAX_NON_SPECIFIC_EXAMPLES = 1000
 
 __all__ = ['GenderBiasWE', 'BiasWordEmbedding']
 
-# https://stackoverflow.com/questions/2187269/print-only-the-message-on-warnings
-formatwarning_orig = warnings.formatwarning
-# pylint: disable=line-too-long
-warnings.formatwarning = lambda message, category, filename, lineno, line=None: \
-    formatwarning_orig(message, category, filename, lineno, line='')
+_warning_setup()
 
 
 class BiasWordEmbedding:

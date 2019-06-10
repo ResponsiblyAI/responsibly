@@ -7,6 +7,7 @@ from math import isclose
 import numpy as np
 import pytest
 
+from ethically.consts import RANDOM_STATE
 from ethically.tests.data import TOLGA_GENDER_ANALOGIES
 from ethically.tests.utils import assert_deep_almost_equal
 from ethically.we import (
@@ -16,8 +17,6 @@ from ethically.we.data import WEAT_DATA, load_w2v_small
 from ethically.we.utils import (
     most_similar, project_params, project_reject_vector, project_vector,
 )
-
-from ..consts import RANDOM_STATE
 
 
 ATOL = 1e-6
