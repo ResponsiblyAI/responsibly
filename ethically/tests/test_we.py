@@ -391,16 +391,16 @@ def test_calc_weat_pleasant_attribute(w2v_small):
                                                         WEAT_DATA[1]['first_target'],
                                                         WEAT_DATA[1]['second_target'],
                                                         pvalue_kwargs=pvalue_kwargs)
-    result_v1['p'] = round(result_v1['p'], 4)
-    result_v1['d'] = round(result_v1['d'], 4)
-    result_v1['s'] = round(result_v1['s'], 4)
+    result_v1['p'] = round(result_v1['p'], 2)
+    result_v1['d'] = round(result_v1['d'], 2)
+    result_v1['s'] = round(result_v1['s'], 2)
 
     result_v2 = (calc_all_weat(w2v_small, (1,),
                                pvalue_kwargs=pvalue_kwargs)
                  .iloc[0]
                  .to_dict())
 
-    assert_deep_almost_equal(result_v1, result_v2)
+    assert_deep_almost_equal(result_v1, result_v2, atol=0.01)
 
 
 def test_most_similar(w2v_small):
