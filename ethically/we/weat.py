@@ -393,6 +393,6 @@ def calc_all_weat(model, weat_data='caliskan', filter_by='model',
                                                 if pvalue else pvalue)
 
     results_df = results_df[cols]
-    results_df = results_df.round(2)
+    results_df = results_df.round(4)
 
     return results_df
