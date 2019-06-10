@@ -63,7 +63,9 @@ from mlxtend.evaluate import permutation_test
 from ethically.consts import RANDOM_STATE
 from ethically.utils import _warning_setup
 from ethically.we.data import WEAT_DATA
-from ethically.we.utils import assert_gensim_keyed_vectors
+from ethically.we.utils import (
+    assert_gensim_keyed_vectors, cosine_similarities_by_words,
+)
 
 
 FILTER_BY_OPTIONS = ['model', 'data']
@@ -78,14 +80,20 @@ _warning_setup()
 def _calc_association_target_attributes(model, target_word,
                                         first_attribute_words,
                                         second_attribute_words):
+    # pylint: disable=line-too-long
+
     assert_gensim_keyed_vectors(model)
 
     with warnings.catch_warnings():
         warnings.simplefilter('ignore', FutureWarning)
-        first_mean = model.n_similarity([target_word],
-                                        first_attribute_words).mean()
-        second_mean = model.n_similarity([target_word],
-                                         second_attribute_words).mean()
+        first_mean = (cosine_similarities_by_words(model,
+                                                   target_word,
+                                                   first_attribute_words)
+                      .mean())
+        second_mean = (cosine_similarities_by_words(model,
+                                                    target_word,
+                                                    second_attribute_words)
+                       .mean())
 
     return first_mean - second_mean
 
