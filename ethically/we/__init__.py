@@ -44,9 +44,9 @@ the impact of debiasing performance.
 
 """
 
-from .bias import BiasWordEmbedding, GenderBiasWE
-from .data import load_w2v_small
-from .utils import most_similar
-from .weat import (
+from ethically.we.bias import BiasWordEmbedding, GenderBiasWE
+from ethically.we.data import load_w2v_small
+from ethically.we.utils import most_similar
+from ethically.we.weat import (
     calc_all_weat, calc_single_weat, calc_weat_pleasant_unpleasant_attribute,
 )
