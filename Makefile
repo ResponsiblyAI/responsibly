@@ -133,6 +133,7 @@ read-coverage:
 
 .PHONY: docs
 docs:
+	mkdir -p docs/about
 	ln -sf `realpath README.rst --relative-to=docs` docs/readme.rst
 	ln -sf `realpath CHANGELOG.rst --relative-to=docs/about` docs/about/changelog.rst
 	ln -sf `realpath CONTRIBUTING.rst --relative-to=docs/about` docs/about/contributing.rst
@@ -252,8 +253,8 @@ clean-all: clean
 	# rm -rf *.rst docs/apidocs *.html docs/*.png site
 	cd docs && make clean
 	cd docs/notebooks && find . ! -name '*.ipynb' -type f -exec rm -rf {} + && rm -rf -- ./*/
-	cd docs && rm readme.rst
-	cd docs/about && rm changelog.rst contributing.rst license.rst
+	cd docs && rm -f readme.rst
+	rm -rf docs/about
 
 .PHONY: .clean-build
 .clean-build:
