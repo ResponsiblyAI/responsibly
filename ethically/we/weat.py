@@ -160,7 +160,13 @@ def _calc_weat_associations(model,
 
 
 def _filter_by_data_weat_stimuli(stimuli):
-    """Inplace."""
+    """Filter WEAT stimuli words if there is a `remove` key.
+
+    Some of the words from Caliskan et al. (2017) seems as not being used.
+
+    Modifiy the stimuli object in place.
+    """
+
     for group in stimuli:
         if 'remove' in stimuli[group]:
             words_to_remove = stimuli[group]['remove']
@@ -176,7 +182,10 @@ def _sample_if_bigger(seq, length):
 
 
 def _filter_by_model_weat_stimuli(stimuli, model):
-    """Inplace."""
+    """Filter WEAT stimuli words if they are not exists in the model.
+
+    Modifiy the stimuli object in place.
+    """
 
     for group_category in ['target', 'attribute']:
         first_group = 'first_' + group_category
@@ -189,6 +198,8 @@ def _filter_by_model_weat_stimuli(stimuli, model):
 
         min_len = min(len(first_words), len(second_words))
 
+        # sample to make the first and second word set
+        # with equal size
         first_words = _sample_if_bigger(first_words, min_len)
         second_words = _sample_if_bigger(second_words, min_len)
 
