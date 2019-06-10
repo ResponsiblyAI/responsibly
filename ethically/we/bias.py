@@ -923,9 +923,10 @@ class BiasWordEmbedding:
                                                  ax=ax)
 
     def compute_factual_association(self, factual_properity):
-        """Compute association of a factual property to the projection on the direction.
+        """Compute association of a factual property to the projection.
 
-        Inspired by WEFAT (Word-Embedding Factual Association Test), but it is not the same:
+        Inspired by WEFAT (Word-Embedding Factual Association Test),
+        but it is not the same:
         - Caliskan, A., Bryson, J. J., & Narayanan, A. (2017).
         `Semantics derived automatically
         from language corpora contain human-like biases
@@ -934,16 +935,20 @@ class BiasWordEmbedding:
 
         In a future version, the WEFAT will also be implemented.
 
-        If a word doesn't exist in the word embedding, then it will be filtered out.
+        If a word doesn't exist in the word embedding,
+        then it will be filtered out.
 
-        For example, in :class:`ethically.we.bias.GenderBiasWE`, the defuat factual
-        property is the percentage of female in various occupations
+        For example, in :class:`ethically.we.bias.GenderBiasWE`,
+        the defuat factual property is the percentage of female
+        in various occupations
         from the Labor Force Statistics of 2017 Population Survey,
         Taken from: https://arxiv.org/abs/1804.06876
 
-        :param dict factual_properity: Dictionary of words and their factual values.
-        :return: Pearson r, pvalue and the words with their associated factual values
-                and their projection on the bias direction.
+        :param dict factual_properity: Dictionary of words
+                                       and their factual values.
+        :return: Pearson r, pvalue and the words with their
+                 associated factual values
+                 and their projection on the bias direction.
         """
 
         points = {word: (value, self.project_on_direction(word))
@@ -955,11 +960,12 @@ class BiasWordEmbedding:
         return pearsonr(x, y), points
 
     def plot_factual_association(self, factual_properity, ax=None):
-        """Plot association of a factual property to the projection on the direction.
+        """Plot association of a factual property to the projection.
 
         See: :meth:`BiasWordEmbedding.compute_factual_association`
 
-        :param dict factual_properity: Dictionary of words and their factual values.
+        :param dict factual_properity: Dictionary of words
+                                       and their factual values.
         """
 
         result = self.compute_factual_association(factual_properity)
@@ -1177,9 +1183,11 @@ class GenderBiasWE(BiasWordEmbedding):
                                                  max_non_specific_examples,
                                                  debug)
 
-    def compute_factual_association(self, factual_properity=OCCUPATION_FEMALE_PRECENTAGE):
+    def compute_factual_association(self,
+                                    factual_properity=OCCUPATION_FEMALE_PRECENTAGE):  # pylint: disable=line-too-long
         return super().compute_factual_association(factual_properity)
 
-    def plot_factual_association(self, factual_properity=OCCUPATION_FEMALE_PRECENTAGE,
+    def plot_factual_association(self,
+                                 factual_properity=OCCUPATION_FEMALE_PRECENTAGE,  # pylint: disable=line-too-long
                                  ax=None):
         return super().plot_factual_association(factual_properity, ax)
