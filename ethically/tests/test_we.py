@@ -382,6 +382,19 @@ def test_calc_all_weat_indices(w2v_small):
                                  atol=0.01)
 
 
+def test_calc_all_weat_defaults(w2v_small):
+    weat_5_results_default = (calc_all_weat(w2v_small, (5,))
+                              .iloc[0].to_dict())
+
+    weat_5_results = (calc_all_weat(w2v_small, (5,),
+                                    filter_by='model',
+                                    with_pvalue=True,
+                                    pvalue_kwargs={'method': 'exact'})
+                      .iloc[0].to_dict())
+
+    assert_deep_almost_equal(weat_5_results_default, weat_5_results)
+
+
 def test_calc_weat_pleasant_attribute(w2v_small):
     # pylint: disable=line-too-long
 
