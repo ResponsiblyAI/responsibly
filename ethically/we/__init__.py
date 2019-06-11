@@ -12,9 +12,9 @@ Metrics and debiasing for bias (such as gender and race) in word embedding.
     arXiv preprint arXiv:1903.03862.
 
 .. important::
-   The following paper criticize using most_similar` function
-   from `gensim <https://radimrehurek.com/gensim/>`_ in the context
-   of word embedding bias and the `generating analogies process:
+   The following paper criticize using :func:`~ethically.we.utils.most_similar`
+   function from `gensim <https://radimrehurek.com/gensim/>`_ in the context
+   of word embedding bias and the generating analogies process:
 
    Nissim, M., van Noord, R., van der Goot, R. (2019).
    `Fair is Better than Sensational: Man is to Doctor
