@@ -90,10 +90,12 @@ def _calc_association_target_attributes(model, target_word,
 
     with warnings.catch_warnings():
         warnings.simplefilter('ignore', FutureWarning)
+
         first_mean = (cosine_similarities_by_words(model,
                                                    target_word,
                                                    first_attribute_words)
                       .mean())
+
         second_mean = (cosine_similarities_by_words(model,
                                                     target_word,
                                                     second_attribute_words)
@@ -133,7 +135,7 @@ def _calc_weat_pvalue(first_associations, second_associations,
             PVALUE_METHODS, method))
 
     pvalue = permutation_test(first_associations, second_associations,
-                              func='x_mean > y_mean',
+                              func=lambda x, y: sum(x) - sum(y),
                               method=method,
                               seed=RANDOM_STATE)  # if exact - no meaning
     return pvalue
