@@ -8,9 +8,9 @@ Revision History
 
   - Fix bug in computing WEAT
 
-  - Computing and plotting factual properity
+  - Computing and plotting factual property
     association to projections on a bias direction,
-    simiar to WEFAT
+    similar to WEFAT
 
 
 0.0.4 (2019/06/03)
