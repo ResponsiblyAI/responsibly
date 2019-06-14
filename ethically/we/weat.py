@@ -60,29 +60,46 @@ import numpy as np
 import pandas as pd
 from mlxtend.evaluate import permutation_test
 
-from ..consts import RANDOM_STATE
-from .data import WEAT_DATA
-from .utils import assert_gensim_keyed_vectors
+from ethically.consts import RANDOM_STATE
+from ethically.utils import _warning_setup
+from ethically.we.data import WEAT_DATA
+from ethically.we.utils import (
+    assert_gensim_keyed_vectors, cosine_similarities_by_words,
+)
 
 
 FILTER_BY_OPTIONS = ['model', 'data']
 RESULTS_DF_COLUMNS = ['Target words', 'Attrib. words',
                       'Nt', 'Na', 's', 'd', 'p']
 PVALUE_METHODS = ['exact', 'approximate']
+PVALUE_DEFUALT_METHOD = 'exact'
 ORIGINAL_DF_COLUMNS = ['original_' + key for key in ['N', 'd', 'p']]
+WEAT_WORD_SETS = ['first_target', 'second_target',
+                  'first_attribute', 'second_attribute']
+PVALUE_EXACT_WARNING_LEN = 10
+
+_warning_setup()
 
 
 def _calc_association_target_attributes(model, target_word,
                                         first_attribute_words,
                                         second_attribute_words):
+    # pylint: disable=line-too-long
+
     assert_gensim_keyed_vectors(model)
 
     with warnings.catch_warnings():
         warnings.simplefilter('ignore', FutureWarning)
-        first_mean = model.n_similarity([target_word],
-                                        first_attribute_words).mean()
-        second_mean = model.n_similarity([target_word],
-                                         second_attribute_words).mean()
+
+        first_mean = (cosine_similarities_by_words(model,
+                                                   target_word,
+                                                   first_attribute_words)
+                      .mean())
+
+        second_mean = (cosine_similarities_by_words(model,
+                                                    target_word,
+                                                    second_attribute_words)
+                       .mean())
 
     return first_mean - second_mean
 
@@ -111,14 +128,14 @@ def _calc_weat_score(model,
 
 
 def _calc_weat_pvalue(first_associations, second_associations,
-                      method='approximate'):
+                      method=PVALUE_DEFUALT_METHOD):
 
     if method not in PVALUE_METHODS:
         raise ValueError('method should be one of {}, {} was given'.format(
             PVALUE_METHODS, method))
 
     pvalue = permutation_test(first_associations, second_associations,
-                              func='x_mean > y_mean',
+                              func=lambda x, y: sum(x) - sum(y),
                               method=method,
                               seed=RANDOM_STATE)  # if exact - no meaning
     return pvalue
@@ -145,7 +162,13 @@ def _calc_weat_associations(model,
 
 
 def _filter_by_data_weat_stimuli(stimuli):
-    """Inplace."""
+    """Filter WEAT stimuli words if there is a `remove` key.
+
+    Some of the words from Caliskan et al. (2017) seems as not being used.
+
+    Modifiy the stimuli object in place.
+    """
+
     for group in stimuli:
         if 'remove' in stimuli[group]:
             words_to_remove = stimuli[group]['remove']
@@ -161,7 +184,10 @@ def _sample_if_bigger(seq, length):
 
 
 def _filter_by_model_weat_stimuli(stimuli, model):
-    """Inplace."""
+    """Filter WEAT stimuli words if they are not exists in the model.
+
+    Modifiy the stimuli object in place.
+    """
 
     for group_category in ['target', 'attribute']:
         first_group = 'first_' + group_category
@@ -174,6 +200,8 @@ def _filter_by_model_weat_stimuli(stimuli, model):
 
         min_len = min(len(first_words), len(second_words))
 
+        # sample to make the first and second word set
+        # with equal size
         first_words = _sample_if_bigger(first_words, min_len)
         second_words = _sample_if_bigger(second_words, min_len)
 
@@ -318,17 +346,29 @@ def calc_all_weat(model, weat_data='caliskan', filter_by='model',
     elif isinstance(weat_data, tuple):
         weat_data = [WEAT_DATA[index] for index in weat_data]
 
-    if pvalue_kwargs is None:
-        pvalue_kwargs = {}
+    if (not pvalue_kwargs
+            or pvalue_kwargs['method'] == PVALUE_DEFUALT_METHOD):
+        max_word_set_len = max(len(stimuli[ws]['words'])
+                               for stimuli in weat_data
+                               for ws in WEAT_WORD_SETS)
+        if max_word_set_len > PVALUE_EXACT_WARNING_LEN:
+            warnings.warn('At least one stimuli has a word set bigger'
+                          ' than {}, and the computation might take a while.'
+                          ' Consider using \'exact\' as method'
+                          ' for pvalue_kwargs.'.format(PVALUE_EXACT_WARNING_LEN))
 
-    weat_data = copy.deepcopy(weat_data)
+    actual_weat_data = copy.deepcopy(weat_data)
 
-    _filter_weat_data(weat_data,
+    _filter_weat_data(actual_weat_data,
                       model,
                       filter_by)
 
+    if weat_data != actual_weat_data:
+        warnings.warn('Given weat_data was filterd by {}.'
+                      .format(filter_by))
+
     results = []
-    for stimuli in weat_data:
+    for stimuli in actual_weat_data:
         result = calc_single_weat(model,
                                   stimuli['first_target'],
                                   stimuli['second_target'],
@@ -366,6 +406,6 @@ def calc_all_weat(model, weat_data='caliskan', filter_by='model',
                                                 if pvalue else pvalue)
 
     results_df = results_df[cols]
-    results_df = results_df.round(2)
+    results_df = results_df.round(4)
 
     return results_df

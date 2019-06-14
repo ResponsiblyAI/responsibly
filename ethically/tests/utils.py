@@ -17,7 +17,9 @@ def assert_deep_almost_equal(expected, actual, *args, **kwargs):
     # is_root = not '__trace' in kwargs
     # trace = kwargs.pop('__trace', 'ROOT')
     try:
-        if isinstance(expected, (int, float, complex)):
+        if isinstance(expected, (int, float, complex,
+                                 np.float16, np.float32,
+                                 np.float64)):
             np.testing.assert_allclose(expected, actual, *args, **kwargs)
         elif isinstance(expected, (list, tuple, np.ndarray)):
             assert len(expected) == len(actual)

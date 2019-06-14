@@ -1,6 +1,18 @@
 Revision History
 ================
 
+0.0.5 (2019/06/14)
+------------------
+
+- Word embedding bias
+
+  - Fix bug in computing WEAT
+
+  - Computing and plotting factual properity
+    association to projections on a bias direction,
+    simiar to WEFAT
+
+
 0.0.4 (2019/06/03)
 ------------------
 

@@ -63,3 +63,10 @@ BOLUKBASI_DATA['gender']['word_group_keys'] = ['profession_names',
 
 
 WEAT_DATA = load_json_resource('weat')
+
+# Zhao, J., Wang, T., Yatskar, M., Ordonez, V., & Chang, K. W. (2018).
+# Gender bias in coreference resolution: Evaluation and debiasing methods.
+# arXiv preprint arXiv:1804.06876.
+# https://arxiv.org/abs/1804.06876
+OCCUPATION_FEMALE_PRECENTAGE = load_json_resource(
+    'occupational_female_precentage')

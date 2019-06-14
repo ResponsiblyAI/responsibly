@@ -12,9 +12,9 @@ Metrics and debiasing for bias (such as gender and race) in word embedding.
     arXiv preprint arXiv:1903.03862.
 
 .. important::
-   The following paper criticize using most_similar` function
-   from `gensim <https://radimrehurek.com/gensim/>`_ in the context
-   of word embedding bias and the `generating analogies process:
+   The following paper criticize using :func:`~ethically.we.utils.most_similar`
+   function from `gensim <https://radimrehurek.com/gensim/>`_ in the context
+   of word embedding bias and the generating analogies process:
 
    Nissim, M., van Noord, R., van der Goot, R. (2019).
    `Fair is Better than Sensational: Man is to Doctor
@@ -44,9 +44,9 @@ the impact of debiasing performance.
 
 """
 
-from .bias import BiasWordEmbedding, GenderBiasWE
-from .data import load_w2v_small
-from .utils import most_similar
-from .weat import (
+from ethically.we.bias import BiasWordEmbedding, GenderBiasWE
+from ethically.we.data import load_w2v_small
+from ethically.we.utils import most_similar
+from ethically.we.weat import (
     calc_all_weat, calc_single_weat, calc_weat_pleasant_unpleasant_attribute,
 )

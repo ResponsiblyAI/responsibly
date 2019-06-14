@@ -126,21 +126,18 @@ WEAT_DATA[1]['second_attribute']['words'] = WEAT_DATA[0]['second_attribute']['wo
 WEAT_DATA[2]['first_target']['remove'] = ['Chip', 'Ian', 'Fred', 'Jed', 'Todd', 'Brandon', 'Hank', 'Wilbur', 'Sara', 'Amber', 'Crystal', 'Meredith', 'Shannon', 'Donna', 'Bobbie-Sue', 'Peggy', 'Sue-Ellen', 'Wendy']
 WEAT_DATA[2]['second_target']['remove'] = ['Lerone', 'Percell', 'Rasaan', 'Rashaun', 'Everol', 'Terryl', 'Aiesha', 'Lashelle', 'Temeka', 'Tameisha', 'Teretha', 'Latonya', 'Shanise', 'Sharise', 'Tashika', 'Lashandra', 'Shavonn', 'Tawanda']
 
-print(len(WEAT_DATA[2]['first_target']['remove']), len(WEAT_DATA[2]['second_target']['remove']))
 assert len(WEAT_DATA[2]['first_target']['remove']) == len(WEAT_DATA[2]['second_target']['remove'])
 assert set(WEAT_DATA[2]['first_target']['remove']).issubset(WEAT_DATA[2]['first_target']['words'])
 
 WEAT_DATA[3]['first_target']['remove'] = ['Jay', 'Kristen']
 WEAT_DATA[3]['second_target']['remove'] = ['Tremayne', 'Latonya']
 
-print(len(WEAT_DATA[3]['first_target']['remove']), len(WEAT_DATA[3]['second_target']['remove']))
 assert len(WEAT_DATA[3]['first_target']['remove']) == len(WEAT_DATA[3]['second_target']['remove'])
 assert set(WEAT_DATA[3]['first_target']['remove']).issubset(WEAT_DATA[3]['first_target']['words'])
 
 WEAT_DATA[4]['first_target']['remove'] = ['Jay', 'Kristen']
 WEAT_DATA[4]['second_target']['remove'] = ['Tremayne', 'Latonya']
 
-print(len(WEAT_DATA[4]['first_target']['remove']), len(WEAT_DATA[4]['second_target']['remove']))
 assert len(WEAT_DATA[4]['first_target']['remove']) == len(WEAT_DATA[4]['second_target']['remove'])
 assert set(WEAT_DATA[4]['first_target']['remove']).issubset(WEAT_DATA[4]['first_target']['words'])
 
