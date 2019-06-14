@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Word Embedding Bias &#8212; Ethically 0.0.4 documentation</title>
+    <title>Word Embedding Bias &#8212; Ethically 0.0.5 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -48,9 +48,9 @@ arXiv preprint arXiv:1903.03862.</p>
 </div>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
-<p>The following paper criticize using most_similar` function
-from <a class="reference external" href="https://radimrehurek.com/gensim/">gensim</a> in the context
-of word embedding bias and the <a href="#id1"><span class="problematic" id="id2">`</span></a>generating analogies process:</p>
+<p>The following paper criticize using <a class="reference internal" href="#ethically.we.utils.most_similar" title="ethically.we.utils.most_similar"><code class="xref py py-func docutils literal notranslate"><span class="pre">most_similar()</span></code></a>
+function from <a class="reference external" href="https://radimrehurek.com/gensim/">gensim</a> in the context
+of word embedding bias and the generating analogies process:</p>
 <p>Nissim, M., van Noord, R., van der Goot, R. (2019).
 <a class="reference external" href="https://arxiv.org/abs/1905.09866">Fair is Better than Sensational: Man is to Doctor
 as Woman is to Doctor</a>.</p>
@@ -75,6 +75,8 @@ word embeddings are also available, primarily to check
 the impact of debiasing performance.</p>
 <p>Refer to the <a class="reference external" href="notebooks/demo-word-embedding-bias.html">Word Embedding demo</a>
 for a complete usage example.</p>
+<p>For a technical discussion about the various bias metrics,
+refer to the page <a class="reference internal" href="word-embedding-bias-metric-analysis.html"><span class="doc">Analysis of Word Embedding Bias Metrics</span></a>.</p>
 <div class="section" id="module-ethically.we.bias">
 <span id="bolukbasi-bias-measure-and-debiasing"></span><h2>Bolukbasi Bias Measure and Debiasing<a class="headerlink" href="#module-ethically.we.bias" title="Permalink to this headline">¶</a></h2>
 <p>Measuring and adjusting bias in word embedding by Bolukbasi (2016).</p>
@@ -413,6 +415,50 @@ to sample for training</p></li>
 </dl>
 </dd></dl>
 
+<dl class="method">
+<dt id="ethically.we.bias.BiasWordEmbedding.compute_factual_association">
+<code class="descname">compute_factual_association</code><span class="sig-paren">(</span><em>factual_properity</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/we/bias.html#BiasWordEmbedding.compute_factual_association"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.bias.BiasWordEmbedding.compute_factual_association" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute association of a factual property to the projection.</p>
+<p>Inspired by WEFAT (Word-Embedding Factual Association Test),
+but it is not the same:
+- Caliskan, A., Bryson, J. J., &amp; Narayanan, A. (2017).
+<a class="reference external" href="http://opus.bath.ac.uk/55288/">Semantics derived automatically
+from language corpora contain human-like biases</a>.
+Science, 356(6334), 183-186.</p>
+<p>In a future version, the WEFAT will also be implemented.</p>
+<p>If a word doesn’t exist in the word embedding,
+then it will be filtered out.</p>
+<p>For example, in <a class="reference internal" href="#ethically.we.bias.GenderBiasWE" title="ethically.we.bias.GenderBiasWE"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethically.we.bias.GenderBiasWE</span></code></a>,
+the defuat factual property is the percentage of female
+in various occupations
+from the Labor Force Statistics of 2017 Population Survey,
+Taken from: <a class="reference external" href="https://arxiv.org/abs/1804.06876">https://arxiv.org/abs/1804.06876</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>factual_properity</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Dictionary of words
+and their factual values.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Pearson r, pvalue and the words with their
+associated factual values
+and their projection on the bias direction.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethically.we.bias.BiasWordEmbedding.plot_factual_association">
+<code class="descname">plot_factual_association</code><span class="sig-paren">(</span><em>factual_properity</em>, <em>ax=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/we/bias.html#BiasWordEmbedding.plot_factual_association"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.bias.BiasWordEmbedding.plot_factual_association" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot association of a factual property to the projection.</p>
+<p>See: <a class="reference internal" href="#ethically.we.bias.BiasWordEmbedding.compute_factual_association" title="ethically.we.bias.BiasWordEmbedding.compute_factual_association"><code class="xref py py-meth docutils literal notranslate"><span class="pre">BiasWordEmbedding.compute_factual_association()</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>factual_properity</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Dictionary of words
+and their factual values.</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="staticmethod">
 <dt id="ethically.we.bias.BiasWordEmbedding.plot_most_biased_clustering">
 <em class="property">static </em><code class="descname">plot_most_biased_clustering</code><span class="sig-paren">(</span><em>biased</em>, <em>debiased</em>, <em>seed='ends'</em>, <em>n_extreme=500</em>, <em>random_state=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/we/bias.html#BiasWordEmbedding.plot_most_biased_clustering"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.bias.BiasWordEmbedding.plot_most_biased_clustering" title="Permalink to this definition">¶</a></dt>
@@ -440,16 +486,13 @@ and negative words.</p>
 </dd>
 </dl>
 <p>Based on:</p>
-<ul>
+<ul class="simple">
 <li><p>Gonen, H., &amp; Goldberg, Y. (2019).
-<a href="#id6"><span class="problematic" id="id7">`</span></a>Lipstick on a Pig:</p>
-<blockquote>
-<div><p>Debiasing Methods Cover up Systematic Gender Biases
-in Word Embeddings But do not Remove Them
-&lt;<a class="reference external" href="https://arxiv.org/abs/1903.03862">https://arxiv.org/abs/1903.03862</a>&gt;`_.
-arXiv preprint arXiv:1903.03862.</p>
-</div></blockquote>
-</li>
+<a class="reference external" href="https://arxiv.org/abs/1903.03862">Lipstick on a Pig:
+Debiasing Methods Cover up Systematic Gender Biases
+in Word Embeddings But do not Remove
+Them</a>.
+arXiv preprint arXiv:1903.03862.</p></li>
 <li><p><a class="reference external" href="https://github.com/gonenhila/gender_bias_lipstick">https://github.com/gonenhila/gender_bias_lipstick</a></p></li>
 </ul>
 </dd></dl>
@@ -610,6 +653,50 @@ to sample for training</p></li>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>List of learned specific words and the classifier object</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethically.we.bias.GenderBiasWE.compute_factual_association">
+<code class="descname">compute_factual_association</code><span class="sig-paren">(</span><em>factual_properity={'accountant': 61</em>, <em>'analyst': 41</em>, <em>'assistant': 85</em>, <em>'attendant': 76</em>, <em>'auditor': 61</em>, <em>'baker': 65</em>, <em>'carpenter': 2</em>, <em>'cashier': 73</em>, <em>'ceo': 39</em>, <em>'chief': 27</em>, <em>'cleaner': 89</em>, <em>'clerk': 72</em>, <em>'construction_worker': 4</em>, <em>'cook': 38</em>, <em>'counselors': 73</em>, <em>'designers': 54</em>, <em>'developer': 20</em>, <em>'driver': 6</em>, <em>'editor': 52</em>, <em>'farmer': 22</em>, <em>'guard': 22</em>, <em>'hairdressers': 92</em>, <em>'housekeeper': 89</em>, <em>'janitor': 34</em>, <em>'laborer': 4</em>, <em>'lawyer': 35</em>, <em>'librarian': 84</em>, <em>'manager': 43</em>, <em>'mechanician': 4</em>, <em>'mover': 18</em>, <em>'nurse': 90</em>, <em>'physician': 38</em>, <em>'receptionist': 90</em>, <em>'salesperson': 48</em>, <em>'secretary': 95</em>, <em>'sewer': 80</em>, <em>'sheriff': 14</em>, <em>'supervisor': 44</em>, <em>'teacher': 78</em>, <em>'writer': 63}</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/we/bias.html#GenderBiasWE.compute_factual_association"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.bias.GenderBiasWE.compute_factual_association" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute association of a factual property to the projection.</p>
+<p>Inspired by WEFAT (Word-Embedding Factual Association Test),
+but it is not the same:
+- Caliskan, A., Bryson, J. J., &amp; Narayanan, A. (2017).
+<a class="reference external" href="http://opus.bath.ac.uk/55288/">Semantics derived automatically
+from language corpora contain human-like biases</a>.
+Science, 356(6334), 183-186.</p>
+<p>In a future version, the WEFAT will also be implemented.</p>
+<p>If a word doesn’t exist in the word embedding,
+then it will be filtered out.</p>
+<p>For example, in <a class="reference internal" href="#ethically.we.bias.GenderBiasWE" title="ethically.we.bias.GenderBiasWE"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethically.we.bias.GenderBiasWE</span></code></a>,
+the defuat factual property is the percentage of female
+in various occupations
+from the Labor Force Statistics of 2017 Population Survey,
+Taken from: <a class="reference external" href="https://arxiv.org/abs/1804.06876">https://arxiv.org/abs/1804.06876</a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>factual_properity</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Dictionary of words
+and their factual values.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Pearson r, pvalue and the words with their
+associated factual values
+and their projection on the bias direction.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="ethically.we.bias.GenderBiasWE.plot_factual_association">
+<code class="descname">plot_factual_association</code><span class="sig-paren">(</span><em>factual_properity={'accountant': 61</em>, <em>'analyst': 41</em>, <em>'assistant': 85</em>, <em>'attendant': 76</em>, <em>'auditor': 61</em>, <em>'baker': 65</em>, <em>'carpenter': 2</em>, <em>'cashier': 73</em>, <em>'ceo': 39</em>, <em>'chief': 27</em>, <em>'cleaner': 89</em>, <em>'clerk': 72</em>, <em>'construction_worker': 4</em>, <em>'cook': 38</em>, <em>'counselors': 73</em>, <em>'designers': 54</em>, <em>'developer': 20</em>, <em>'driver': 6</em>, <em>'editor': 52</em>, <em>'farmer': 22</em>, <em>'guard': 22</em>, <em>'hairdressers': 92</em>, <em>'housekeeper': 89</em>, <em>'janitor': 34</em>, <em>'laborer': 4</em>, <em>'lawyer': 35</em>, <em>'librarian': 84</em>, <em>'manager': 43</em>, <em>'mechanician': 4</em>, <em>'mover': 18</em>, <em>'nurse': 90</em>, <em>'physician': 38</em>, <em>'receptionist': 90</em>, <em>'salesperson': 48</em>, <em>'secretary': 95</em>, <em>'sewer': 80</em>, <em>'sheriff': 14</em>, <em>'supervisor': 44</em>, <em>'teacher': 78</em>, <em>'writer': 63}</em>, <em>ax=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/we/bias.html#GenderBiasWE.plot_factual_association"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.bias.GenderBiasWE.plot_factual_association" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot association of a factual property to the projection.</p>
+<p>See: <a class="reference internal" href="#ethically.we.bias.BiasWordEmbedding.compute_factual_association" title="ethically.we.bias.BiasWordEmbedding.compute_factual_association"><code class="xref py py-meth docutils literal notranslate"><span class="pre">BiasWordEmbedding.compute_factual_association()</span></code></a></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>factual_properity</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Dictionary of words
+and their factual values.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -788,6 +875,12 @@ WEAT results (might be computationally expensive)</p></li>
 </dd></dl>
 
 <dl class="function">
+<dt id="ethically.we.utils.cosine_similarities_by_words">
+<code class="descclassname">ethically.we.utils.</code><code class="descname">cosine_similarities_by_words</code><span class="sig-paren">(</span><em>model</em>, <em>word</em>, <em>words</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/we/utils.html#cosine_similarities_by_words"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.utils.cosine_similarities_by_words" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute cosine similarities between a word and a set of other words.</p>
+</dd></dl>
+
+<dl class="function">
 <dt id="ethically.we.utils.most_similar">
 <code class="descclassname">ethically.we.utils.</code><code class="descname">most_similar</code><span class="sig-paren">(</span><em>model</em>, <em>positive=None</em>, <em>negative=None</em>, <em>topn=10</em>, <em>restrict_vocab=None</em>, <em>indexer=None</em>, <em>unrestricted=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/we/utils.html#most_similar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.utils.most_similar" title="Permalink to this definition">¶</a></dt>
 <dd><p>Find the top-N most similar words.</p>
@@ -953,7 +1046,13 @@ method.</p></li>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="dataset.html">Datasets</a></li>
 <li class="toctree-l1"><a class="reference internal" href="fairness.html">Classification Fairness</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Word Embedding Bias</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Word Embedding Bias</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#module-ethically.we.bias">Bolukbasi Bias Measure and Debiasing</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-ethically.we.weat">WEAT</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-ethically.we.utils">Utilities</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-ethically.we.benchmark">Word Embedding Benchmarks</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="demos.html">Demos</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about/contributing.html">For Contributors</a></li>
 <li class="toctree-l1"><a class="reference internal" href="about/changelog.html">Revision History</a></li>

@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>ethically.we.bias &#8212; Ethically 0.0.4 documentation</title>
+    <title>ethically.we.bias &#8212; Ethically 0.0.5 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -113,24 +113,24 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">spearmanr</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">pearsonr</span><span class="p">,</span> <span class="n">spearmanr</span>
 <span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="k">import</span> <span class="n">PCA</span>
 <span class="kn">from</span> <span class="nn">sklearn.metrics.pairwise</span> <span class="k">import</span> <span class="n">euclidean_distances</span>
 <span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="k">import</span> <span class="n">LinearSVC</span>
 <span class="kn">from</span> <span class="nn">tqdm</span> <span class="k">import</span> <span class="n">tqdm</span>
 
-<span class="kn">from</span> <span class="nn">tabulate</span> <span class="k">import</span> <span class="n">tabulate</span>
-
-<span class="kn">from</span> <span class="nn">..consts</span> <span class="k">import</span> <span class="n">RANDOM_STATE</span>
-<span class="kn">from</span> <span class="nn">.benchmark</span> <span class="k">import</span> <span class="n">evaluate_word_embedding</span>
-<span class="kn">from</span> <span class="nn">.data</span> <span class="k">import</span> <span class="n">BOLUKBASI_DATA</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="p">(</span>
+<span class="kn">from</span> <span class="nn">ethically.consts</span> <span class="k">import</span> <span class="n">RANDOM_STATE</span>
+<span class="kn">from</span> <span class="nn">ethically.utils</span> <span class="k">import</span> <span class="n">_warning_setup</span>
+<span class="kn">from</span> <span class="nn">ethically.we.benchmark</span> <span class="k">import</span> <span class="n">evaluate_word_embedding</span>
+<span class="kn">from</span> <span class="nn">ethically.we.data</span> <span class="k">import</span> <span class="n">BOLUKBASI_DATA</span><span class="p">,</span> <span class="n">OCCUPATION_FEMALE_PRECENTAGE</span>
+<span class="kn">from</span> <span class="nn">ethically.we.utils</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">assert_gensim_keyed_vectors</span><span class="p">,</span> <span class="n">cosine_similarity</span><span class="p">,</span> <span class="n">generate_one_word_forms</span><span class="p">,</span>
     <span class="n">generate_words_forms</span><span class="p">,</span> <span class="n">get_seed_vector</span><span class="p">,</span> <span class="n">most_similar</span><span class="p">,</span> <span class="n">normalize</span><span class="p">,</span>
     <span class="n">plot_clustering_as_classification</span><span class="p">,</span> <span class="n">project_params</span><span class="p">,</span> <span class="n">project_reject_vector</span><span class="p">,</span>
     <span class="n">project_vector</span><span class="p">,</span> <span class="n">reject_vector</span><span class="p">,</span> <span class="n">round_to_extreme</span><span class="p">,</span>
     <span class="n">take_two_sides_extreme_sorted</span><span class="p">,</span> <span class="n">update_word_vector</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="kn">from</span> <span class="nn">tabulate</span> <span class="k">import</span> <span class="n">tabulate</span>
 
 
 <span class="n">DIRECTION_METHODS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;single&#39;</span><span class="p">,</span> <span class="s1">&#39;sum&#39;</span><span class="p">,</span> <span class="s1">&#39;pca&#39;</span><span class="p">]</span>
@@ -140,11 +140,7 @@
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;GenderBiasWE&#39;</span><span class="p">,</span> <span class="s1">&#39;BiasWordEmbedding&#39;</span><span class="p">]</span>
 
-<span class="c1"># https://stackoverflow.com/questions/2187269/print-only-the-message-on-warnings</span>
-<span class="n">formatwarning_orig</span> <span class="o">=</span> <span class="n">warnings</span><span class="o">.</span><span class="n">formatwarning</span>
-<span class="c1"># pylint: disable=line-too-long</span>
-<span class="n">warnings</span><span class="o">.</span><span class="n">formatwarning</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">message</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="kc">None</span><span class="p">:</span> \
-    <span class="n">formatwarning_orig</span><span class="p">(</span><span class="n">message</span><span class="p">,</span> <span class="n">category</span><span class="p">,</span> <span class="n">filename</span><span class="p">,</span> <span class="n">lineno</span><span class="p">,</span> <span class="n">line</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">)</span>
+<span class="n">_warning_setup</span><span class="p">()</span>
 
 
 <div class="viewcode-block" id="BiasWordEmbedding"><a class="viewcode-back" href="../../../word-embedding-bias.html#ethically.we.bias.BiasWordEmbedding">[docs]</a><span class="k">class</span> <span class="nc">BiasWordEmbedding</span><span class="p">:</span>
@@ -960,6 +956,72 @@
                                                  <span class="n">random_state</span><span class="o">=</span><span class="n">random_state</span><span class="p">,</span>
                                                  <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
 
+<div class="viewcode-block" id="BiasWordEmbedding.compute_factual_association"><a class="viewcode-back" href="../../../word-embedding-bias.html#ethically.we.bias.BiasWordEmbedding.compute_factual_association">[docs]</a>    <span class="k">def</span> <span class="nf">compute_factual_association</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factual_properity</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute association of a factual property to the projection.</span>
+
+<span class="sd">        Inspired by WEFAT (Word-Embedding Factual Association Test),</span>
+<span class="sd">        but it is not the same:</span>
+<span class="sd">        - Caliskan, A., Bryson, J. J., &amp; Narayanan, A. (2017).</span>
+<span class="sd">        `Semantics derived automatically</span>
+<span class="sd">        from language corpora contain human-like biases</span>
+<span class="sd">        &lt;http://opus.bath.ac.uk/55288/&gt;`_.</span>
+<span class="sd">        Science, 356(6334), 183-186.</span>
+
+<span class="sd">        In a future version, the WEFAT will also be implemented.</span>
+
+<span class="sd">        If a word doesn&#39;t exist in the word embedding,</span>
+<span class="sd">        then it will be filtered out.</span>
+
+<span class="sd">        For example, in :class:`ethically.we.bias.GenderBiasWE`,</span>
+<span class="sd">        the defuat factual property is the percentage of female</span>
+<span class="sd">        in various occupations</span>
+<span class="sd">        from the Labor Force Statistics of 2017 Population Survey,</span>
+<span class="sd">        Taken from: https://arxiv.org/abs/1804.06876</span>
+
+<span class="sd">        :param dict factual_properity: Dictionary of words</span>
+<span class="sd">                                       and their factual values.</span>
+<span class="sd">        :return: Pearson r, pvalue and the words with their</span>
+<span class="sd">                 associated factual values</span>
+<span class="sd">                 and their projection on the bias direction.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">points</span> <span class="o">=</span> <span class="p">{</span><span class="n">word</span><span class="p">:</span> <span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">project_on_direction</span><span class="p">(</span><span class="n">word</span><span class="p">))</span>
+                  <span class="k">for</span> <span class="n">word</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">factual_properity</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                  <span class="k">if</span> <span class="n">word</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">}</span>
+
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">points</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+        <span class="k">return</span> <span class="n">pearsonr</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">points</span></div>
+
+<div class="viewcode-block" id="BiasWordEmbedding.plot_factual_association"><a class="viewcode-back" href="../../../word-embedding-bias.html#ethically.we.bias.BiasWordEmbedding.plot_factual_association">[docs]</a>    <span class="k">def</span> <span class="nf">plot_factual_association</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">factual_properity</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Plot association of a factual property to the projection.</span>
+
+<span class="sd">        See: :meth:`BiasWordEmbedding.compute_factual_association`</span>
+
+<span class="sd">        :param dict factual_properity: Dictionary of words</span>
+<span class="sd">                                       and their factual values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">compute_factual_association</span><span class="p">(</span><span class="n">factual_properity</span><span class="p">)</span>
+
+        <span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">),</span> <span class="n">points</span> <span class="o">=</span> <span class="n">result</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">points</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="s1">&#39;Assocsion between Factual Property&#39;</span>
+                  <span class="s1">&#39;and Projection on Direction &#39;</span>
+                  <span class="s1">&#39;(Pearson R = </span><span class="si">{:0.2f}</span><span class="s1"> ; pvalue=</span><span class="si">{:0.2f}</span><span class="s1">)&#39;</span>
+                  <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">r</span><span class="p">,</span> <span class="n">pvalue</span><span class="p">))</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Factual Property&#39;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Projection on Direction&#39;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">ax</span></div>
+
 <div class="viewcode-block" id="BiasWordEmbedding.plot_most_biased_clustering"><a class="viewcode-back" href="../../../word-embedding-bias.html#ethically.we.bias.BiasWordEmbedding.plot_most_biased_clustering">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">plot_most_biased_clustering</span><span class="p">(</span><span class="n">biased</span><span class="p">,</span> <span class="n">debiased</span><span class="p">,</span>
                                     <span class="n">seed</span><span class="o">=</span><span class="s1">&#39;ends&#39;</span><span class="p">,</span> <span class="n">n_extreme</span><span class="o">=</span><span class="mi">500</span><span class="p">,</span>
@@ -985,10 +1047,10 @@
 
 <span class="sd">        - Gonen, H., &amp; Goldberg, Y. (2019).</span>
 <span class="sd">          `Lipstick on a Pig:</span>
-<span class="sd">           Debiasing Methods Cover up Systematic Gender Biases</span>
-<span class="sd">           in Word Embeddings But do not Remove Them</span>
-<span class="sd">           &lt;https://arxiv.org/abs/1903.03862&gt;`_.</span>
-<span class="sd">           arXiv preprint arXiv:1903.03862.</span>
+<span class="sd">          Debiasing Methods Cover up Systematic Gender Biases</span>
+<span class="sd">          in Word Embeddings But do not Remove</span>
+<span class="sd">          Them &lt;https://arxiv.org/abs/1903.03862&gt;`_.</span>
+<span class="sd">          arXiv preprint arXiv:1903.03862.</span>
 
 <span class="sd">        - https://github.com/gonenhila/gender_bias_lipstick</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -1153,7 +1215,16 @@
 
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">learn_full_specific_words</span><span class="p">(</span><span class="n">seed_specific_words</span><span class="p">,</span>
                                                  <span class="n">max_non_specific_examples</span><span class="p">,</span>
-                                                 <span class="n">debug</span><span class="p">)</span></div></div>
+                                                 <span class="n">debug</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GenderBiasWE.compute_factual_association"><a class="viewcode-back" href="../../../word-embedding-bias.html#ethically.we.bias.GenderBiasWE.compute_factual_association">[docs]</a>    <span class="k">def</span> <span class="nf">compute_factual_association</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                    <span class="n">factual_properity</span><span class="o">=</span><span class="n">OCCUPATION_FEMALE_PRECENTAGE</span><span class="p">):</span>  <span class="c1"># pylint: disable=line-too-long</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">compute_factual_association</span><span class="p">(</span><span class="n">factual_properity</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="GenderBiasWE.plot_factual_association"><a class="viewcode-back" href="../../../word-embedding-bias.html#ethically.we.bias.GenderBiasWE.plot_factual_association">[docs]</a>    <span class="k">def</span> <span class="nf">plot_factual_association</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                                 <span class="n">factual_properity</span><span class="o">=</span><span class="n">OCCUPATION_FEMALE_PRECENTAGE</span><span class="p">,</span>  <span class="c1"># pylint: disable=line-too-long</span>
+                                 <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">plot_factual_association</span><span class="p">(</span><span class="n">factual_properity</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span></div></div>
 </pre></div>
 
           </div>

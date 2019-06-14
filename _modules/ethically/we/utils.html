@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>ethically.we.utils &#8212; Ethically 0.0.4 documentation</title>
+    <title>ethically.we.utils &#8212; Ethically 0.0.5 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -103,6 +103,19 @@
     <span class="n">projected_vector</span> <span class="o">=</span> <span class="n">projection</span> <span class="o">*</span> <span class="n">normalize_u</span>
     <span class="n">rejected_vector</span> <span class="o">=</span> <span class="n">v</span> <span class="o">-</span> <span class="n">projected_vector</span>
     <span class="k">return</span> <span class="n">projection</span><span class="p">,</span> <span class="n">projected_vector</span><span class="p">,</span> <span class="n">rejected_vector</span></div>
+
+
+<div class="viewcode-block" id="cosine_similarities_by_words"><a class="viewcode-back" href="../../../word-embedding-bias.html#ethically.we.utils.cosine_similarities_by_words">[docs]</a><span class="k">def</span> <span class="nf">cosine_similarities_by_words</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">words</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Compute cosine similarities between a word and a set of other words.&quot;&quot;&quot;</span>
+
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">string_types</span><span class="p">),</span> \
+        <span class="s1">&#39;The arguemnt `word` should be a string.&#39;</span>
+    <span class="k">assert</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">words</span><span class="p">,</span> <span class="n">string_types</span><span class="p">),</span> \
+        <span class="s1">&#39;The argument `words` should not be a string.&#39;</span>
+
+    <span class="n">vec</span> <span class="o">=</span> <span class="n">model</span><span class="p">[</span><span class="n">word</span><span class="p">]</span>
+    <span class="n">vecs</span> <span class="o">=</span> <span class="p">[</span><span class="n">model</span><span class="p">[</span><span class="n">w</span><span class="p">]</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="n">words</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">model</span><span class="o">.</span><span class="n">cosine_similarities</span><span class="p">(</span><span class="n">vec</span><span class="p">,</span> <span class="n">vecs</span><span class="p">)</span></div>
 
 
 <span class="k">def</span> <span class="nf">update_word_vector</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">new_vector</span><span class="p">):</span>

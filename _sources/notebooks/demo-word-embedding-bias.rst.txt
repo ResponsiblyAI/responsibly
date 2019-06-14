@@ -362,7 +362,7 @@ Generate analogies along the gender direction
 
 .. parsed-literal::
 
-    /project/ethically/ethically/we/bias.py:528: UserWarning: Not Using unrestricted most_similar may introduce fake biased analogies.
+    /project/ethically/ethically/we/bias.py:524: UserWarning: Not Using unrestricted most_similar may introduce fake biased analogies.
 
 
 
@@ -396,220 +396,220 @@ Generate analogies along the gender direction
       <tbody>
         <tr>
           <th>100</th>
-          <td>Kristin</td>
-          <td>Dustin</td>
-          <td>0.966452</td>
-          <td>0.469848</td>
+          <td>Michelle</td>
+          <td>Kris</td>
+          <td>0.998236</td>
+          <td>0.278537</td>
         </tr>
         <tr>
           <th>101</th>
-          <td>Kristen</td>
-          <td>Rob</td>
-          <td>0.991272</td>
-          <td>0.469578</td>
+          <td>Marie</td>
+          <td>Rene</td>
+          <td>0.964208</td>
+          <td>0.277007</td>
         </tr>
         <tr>
           <th>102</th>
-          <td>grandmother</td>
-          <td>grandfather</td>
-          <td>0.730415</td>
-          <td>0.469545</td>
+          <td>Because</td>
+          <td>Obviously</td>
+          <td>0.831023</td>
+          <td>0.275847</td>
         </tr>
         <tr>
           <th>103</th>
-          <td>Margaret</td>
-          <td>James</td>
-          <td>0.984905</td>
-          <td>0.468080</td>
+          <td>Freshman</td>
+          <td>Rookie</td>
+          <td>0.860134</td>
+          <td>0.275070</td>
         </tr>
         <tr>
           <th>104</th>
-          <td>Chairperson</td>
-          <td>Chairman</td>
-          <td>0.771229</td>
-          <td>0.467142</td>
+          <td>L.</td>
+          <td>D.</td>
+          <td>0.547581</td>
+          <td>0.270656</td>
         </tr>
         <tr>
           <th>105</th>
-          <td>Sue</td>
-          <td>Bob</td>
-          <td>0.867737</td>
-          <td>0.467020</td>
+          <td>gender</td>
+          <td>racial</td>
+          <td>0.929380</td>
+          <td>0.270301</td>
         </tr>
         <tr>
           <th>106</th>
-          <td>Marissa</td>
-          <td>Joey</td>
-          <td>0.903669</td>
-          <td>0.466710</td>
+          <td>designer</td>
+          <td>architect</td>
+          <td>0.998560</td>
+          <td>0.269882</td>
         </tr>
         <tr>
           <th>107</th>
-          <td>Ana</td>
-          <td>Rafael</td>
-          <td>0.955153</td>
-          <td>0.465362</td>
+          <td>pitcher</td>
+          <td>starter</td>
+          <td>0.880994</td>
+          <td>0.269517</td>
         </tr>
         <tr>
           <th>108</th>
-          <td>Mandy</td>
-          <td>Danny</td>
-          <td>0.995450</td>
-          <td>0.465077</td>
+          <td>dress</td>
+          <td>garb</td>
+          <td>0.922170</td>
+          <td>0.268413</td>
         </tr>
         <tr>
           <th>109</th>
-          <td>Lynne</td>
-          <td>Alan</td>
-          <td>0.991509</td>
-          <td>0.463440</td>
+          <td>midfielder</td>
+          <td>playmaker</td>
+          <td>0.794748</td>
+          <td>0.264263</td>
         </tr>
         <tr>
           <th>110</th>
-          <td>Hayley</td>
-          <td>Darren</td>
-          <td>0.935050</td>
-          <td>0.463340</td>
+          <td>teen</td>
+          <td>youth</td>
+          <td>0.991954</td>
+          <td>0.263156</td>
         </tr>
         <tr>
           <th>111</th>
-          <td>Lady_Vols</td>
-          <td>Vols</td>
-          <td>0.667961</td>
-          <td>0.461936</td>
+          <td>Kim</td>
+          <td>Lee</td>
+          <td>0.912462</td>
+          <td>0.262296</td>
         </tr>
         <tr>
           <th>112</th>
-          <td>Helen</td>
-          <td>Peter</td>
-          <td>0.979657</td>
-          <td>0.460809</td>
+          <td>wife</td>
+          <td>nephew</td>
+          <td>0.920047</td>
+          <td>0.260974</td>
         </tr>
         <tr>
           <th>113</th>
-          <td>Suzanne</td>
-          <td>Doug</td>
-          <td>0.960908</td>
-          <td>0.459296</td>
+          <td>freshmen</td>
+          <td>rookies</td>
+          <td>0.926256</td>
+          <td>0.258481</td>
         </tr>
         <tr>
           <th>114</th>
-          <td>Mauresmo</td>
-          <td>Safin</td>
-          <td>0.595751</td>
-          <td>0.458443</td>
+          <td>tissue</td>
+          <td>cartilage</td>
+          <td>0.916341</td>
+          <td>0.255413</td>
         </tr>
         <tr>
           <th>115</th>
-          <td>Megan</td>
-          <td>Ryan</td>
-          <td>0.999172</td>
-          <td>0.458178</td>
+          <td>Clinton</td>
+          <td>Kerry</td>
+          <td>0.870915</td>
+          <td>0.253803</td>
         </tr>
         <tr>
           <th>116</th>
-          <td>Claudia</td>
-          <td>Antonio</td>
-          <td>0.988970</td>
-          <td>0.457570</td>
+          <td>friend</td>
+          <td>buddy</td>
+          <td>0.778140</td>
+          <td>0.253237</td>
         </tr>
         <tr>
           <th>117</th>
-          <td>Molly</td>
-          <td>TJ</td>
-          <td>0.955233</td>
-          <td>0.457353</td>
+          <td>Madonna</td>
+          <td>Jay_Z</td>
+          <td>0.992756</td>
+          <td>0.249955</td>
         </tr>
         <tr>
           <th>118</th>
-          <td>LPGA_Tour</td>
-          <td>PGA_Tour</td>
-          <td>0.654526</td>
-          <td>0.457002</td>
+          <td>sophomore</td>
+          <td>pounder</td>
+          <td>0.994297</td>
+          <td>0.249418</td>
         </tr>
         <tr>
           <th>119</th>
-          <td>daughters</td>
-          <td>sons</td>
-          <td>0.566625</td>
-          <td>0.456871</td>
+          <td>French</td>
+          <td>Frenchman</td>
+          <td>0.930501</td>
+          <td>0.245944</td>
         </tr>
         <tr>
           <th>120</th>
-          <td>Veronica</td>
-          <td>Victor</td>
-          <td>0.927873</td>
-          <td>0.453312</td>
+          <td>Hillary_Clinton</td>
+          <td>Rudy_Giuliani</td>
+          <td>0.991420</td>
+          <td>0.245931</td>
         </tr>
         <tr>
           <th>121</th>
-          <td>Donna</td>
-          <td>Gary</td>
-          <td>0.931971</td>
-          <td>0.452931</td>
+          <td>grandchildren</td>
+          <td>uncle</td>
+          <td>0.977610</td>
+          <td>0.245361</td>
         </tr>
         <tr>
           <th>122</th>
-          <td>Joanna</td>
-          <td>Damian</td>
-          <td>0.996135</td>
-          <td>0.452802</td>
+          <td>designers</td>
+          <td>architects</td>
+          <td>0.958956</td>
+          <td>0.244383</td>
         </tr>
         <tr>
           <th>123</th>
-          <td>Mother</td>
-          <td>Father</td>
-          <td>0.990464</td>
-          <td>0.451837</td>
+          <td>amazing</td>
+          <td>unbelievable</td>
+          <td>0.599789</td>
+          <td>0.244071</td>
         </tr>
         <tr>
           <th>124</th>
-          <td>Patricia</td>
-          <td>Frank</td>
-          <td>0.959790</td>
-          <td>0.450896</td>
+          <td>nurses</td>
+          <td>doctors</td>
+          <td>0.860856</td>
+          <td>0.242197</td>
         </tr>
         <tr>
           <th>125</th>
-          <td>Jackie</td>
-          <td>Bobby</td>
-          <td>0.887963</td>
-          <td>0.449590</td>
+          <td>incredibly</td>
+          <td>obviously</td>
+          <td>0.995428</td>
+          <td>0.240613</td>
         </tr>
         <tr>
           <th>126</th>
-          <td>Kylie</td>
-          <td>Robbie</td>
-          <td>0.965910</td>
-          <td>0.449439</td>
+          <td>designed</td>
+          <td>engineered</td>
+          <td>0.955340</td>
+          <td>0.240351</td>
         </tr>
         <tr>
           <th>127</th>
-          <td>Girls</td>
-          <td>Boys</td>
-          <td>0.723472</td>
-          <td>0.448700</td>
+          <td>athletes</td>
+          <td>players</td>
+          <td>0.981356</td>
+          <td>0.236221</td>
         </tr>
         <tr>
           <th>128</th>
-          <td>Tanya</td>
-          <td>Shane</td>
-          <td>0.978509</td>
-          <td>0.447646</td>
+          <td>royal</td>
+          <td>king</td>
+          <td>0.975726</td>
+          <td>0.235774</td>
         </tr>
         <tr>
           <th>129</th>
-          <td>volleyball</td>
-          <td>football</td>
-          <td>0.995761</td>
-          <td>0.446960</td>
+          <td>cigarette</td>
+          <td>cigar</td>
+          <td>0.874594</td>
+          <td>0.235614</td>
         </tr>
         <tr>
           <th>130</th>
-          <td>diva</td>
-          <td>superstar</td>
-          <td>0.912041</td>
-          <td>0.446289</td>
+          <td>Ali</td>
+          <td>Omar</td>
+          <td>0.782018</td>
+          <td>0.235450</td>
         </tr>
       </tbody>
     </table>
@@ -716,102 +716,102 @@ Word2Vec which is available in *ethically*.
       <tbody>
         <tr>
           <th>40</th>
-          <td>daughters</td>
-          <td>sons</td>
-          <td>0.566625</td>
-          <td>0.456871</td>
-          <td>daughters</td>
-          <td>sons</td>
-          <td>True</td>
+          <td>sexy</td>
+          <td>manly</td>
+          <td>0.957372</td>
+          <td>0.315748</td>
+          <td>manly</td>
+          <td>sexy</td>
+          <td>False</td>
         </tr>
         <tr>
           <th>41</th>
-          <td>grandma</td>
-          <td>grandpa</td>
-          <td>0.668825</td>
-          <td>0.450289</td>
-          <td>grandma</td>
-          <td>grandpa</td>
+          <td>females</td>
+          <td>males</td>
+          <td>0.540050</td>
+          <td>0.309507</td>
+          <td>females</td>
+          <td>males</td>
           <td>True</td>
         </tr>
         <tr>
           <th>42</th>
-          <td>volleyball</td>
-          <td>football</td>
-          <td>0.995761</td>
-          <td>0.446960</td>
-          <td>football</td>
-          <td>volleyball</td>
+          <td>pink</td>
+          <td>red</td>
+          <td>0.884951</td>
+          <td>0.307515</td>
+          <td>red</td>
+          <td>pink</td>
           <td>False</td>
         </tr>
         <tr>
           <th>43</th>
-          <td>diva</td>
-          <td>superstar</td>
-          <td>0.912041</td>
-          <td>0.446289</td>
-          <td>superstar</td>
-          <td>diva</td>
+          <td>wonderful</td>
+          <td>great</td>
+          <td>0.685876</td>
+          <td>0.303149</td>
+          <td>great</td>
+          <td>wonderful</td>
           <td>False</td>
         </tr>
         <tr>
           <th>44</th>
-          <td>mommy</td>
-          <td>kid</td>
-          <td>0.998122</td>
-          <td>0.441464</td>
-          <td>kid</td>
-          <td>mommy</td>
+          <td>chair</td>
+          <td>chairman</td>
+          <td>0.876192</td>
+          <td>0.300693</td>
+          <td>chairwoman</td>
+          <td>chair</td>
           <td>False</td>
         </tr>
         <tr>
           <th>45</th>
-          <td>Sarah</td>
-          <td>Matthew</td>
-          <td>0.866011</td>
-          <td>0.441280</td>
-          <td>Matthew</td>
-          <td>Sarah</td>
+          <td>friends</td>
+          <td>buddies</td>
+          <td>0.771554</td>
+          <td>0.299829</td>
+          <td>buddies</td>
+          <td>friends</td>
           <td>False</td>
         </tr>
         <tr>
           <th>46</th>
-          <td>hairdresser</td>
-          <td>barber</td>
-          <td>0.830417</td>
-          <td>0.436828</td>
-          <td>barber</td>
-          <td>hairdresser</td>
+          <td>female</td>
+          <td>male</td>
+          <td>0.564742</td>
+          <td>0.295819</td>
+          <td>male</td>
+          <td>female</td>
           <td>False</td>
         </tr>
         <tr>
           <th>47</th>
-          <td>softball</td>
-          <td>baseball</td>
-          <td>0.762902</td>
-          <td>0.432811</td>
-          <td>baseball</td>
-          <td>softball</td>
+          <td>beauty</td>
+          <td>grandeur</td>
+          <td>0.995714</td>
+          <td>0.293428</td>
+          <td>grandeur</td>
+          <td>beauty</td>
           <td>False</td>
         </tr>
         <tr>
           <th>48</th>
-          <td>goddess</td>
-          <td>god</td>
-          <td>0.834418</td>
-          <td>0.429436</td>
-          <td>god</td>
-          <td>goddess</td>
+          <td>teenager</td>
+          <td>youngster</td>
+          <td>0.726009</td>
+          <td>0.289508</td>
+          <td>youngster</td>
+          <td>teenager</td>
           <td>False</td>
         </tr>
         <tr>
           <th>49</th>
-          <td>Aisha</td>
-          <td>Jamal</td>
-          <td>0.955993</td>
-          <td>0.428560</td>
-          <td>Jamal</td>
-          <td>Aisha</td>
+          <td>cute</td>
+          <td>goofy</td>
+          <td>0.823867</td>
+          <td>0.289354</td>
+          <td>goofy</td>
+          <td>cute</td>
           <td>False</td>
         </tr>
       </tbody>
@@ -920,6 +920,33 @@ Generate the Indirect Gender Bias in the direction ``softball``-``football``
 
 
 
+Association with percentage of female in occupation
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: ipython3
+
+    import pandas as pd
+    
+    from ethically.we.data import OCCUPATION_FEMALE_PRECENTAGE
+    
+    pd.Series(OCCUPATION_FEMALE_PRECENTAGE).sort_values().plot(kind='barh', figsize=(5, 10));
+
+
+
+.. image:: demo-word-embedding-bias_files/demo-word-embedding-bias_38_0.png
+
+
+.. code:: ipython3
+
+    f, ax = plt.subplots(1, figsize=(14, 10))
+    
+    w2v_gender_bias_we.plot_factual_association(ax=ax);
+
+
+
+.. image:: demo-word-embedding-bias_files/demo-word-embedding-bias_39_0.png
+
+
 Perform hard-debiasing
 ~~~~~~~~~~~~~~~~~~~~~~
 
@@ -937,7 +964,7 @@ The table shows the details of the equalize step on the equality sets.
 
 .. parsed-literal::
 
-    100%|██████████| 2997983/2997983 [02:07<00:00, 23467.29it/s]
+    100%|████████████████████████████████████████████████████████████████████████| 2997983/2997983 [02:29<00:00, 20011.17it/s]
 
 
 .. parsed-literal::
@@ -946,66 +973,66 @@ The table shows the details of the equalize step on the equality sets.
     Equalize Words Data (all equal for 1-dim bias space (direction):
                         equalized_projected_scalar    projected_scalar    scaling
     ----------------  ----------------------------  ------------------  ---------
-    (0, 'daughter')                       0.289697           0.292953    0.289697
-    (0, 'son')                           -0.289697          -0.121614    0.289697
-    (1, 'Gal')                            0.59801            0.110373    0.59801
-    (1, 'Guy')                           -0.59801           -0.137855    0.59801
-    (2, 'MARY')                           0.356334           0.222307    0.356334
-    (2, 'JOHN')                          -0.356334          -0.0818515   0.356334
-    (3, 'GIRL')                           0.395733           0.242016    0.395733
-    (3, 'BOY')                           -0.395733          -0.0573038   0.395733
-    (4, 'Mother')                         0.498544           0.312446    0.498544
-    (4, 'Father')                        -0.498544          -0.197701    0.498544
-    (5, 'Girl')                           0.398915           0.251796    0.398915
-    (5, 'Boy')                           -0.398915          -0.0954833   0.398915
-    (6, 'gal')                            0.51301            0.400741    0.51301
-    (6, 'guy')                           -0.51301           -0.326011    0.51301
-    (7, 'Woman')                          0.392149           0.238867    0.392149
-    (7, 'Man')                           -0.392149          -0.184176    0.392149
-    (8, 'WOMAN')                          0.416802           0.257037    0.416802
-    (8, 'MAN')                           -0.416802          -0.0911706   0.416802
-    (9, 'she')                            0.443113           0.469059    0.443113
-    (9, 'he')                            -0.443113          -0.362353    0.443113
-    (10, 'HER')                           0.509812           0.267332    0.509812
-    (10, 'HIS')                          -0.509812          -0.0502074   0.509812
-    (11, 'Daughter')                      0.469635           0.22278     0.469635
-    (11, 'Son')                          -0.469635          -0.168291    0.469635
-    (12, 'Female')                        0.405189           0.198377    0.405189
-    (12, 'Male')                         -0.405189           0.0366158   0.405189
+    (0, 'Girl')                           0.398915           0.251796    0.398915
+    (0, 'Boy')                           -0.398915          -0.0954833   0.398915
+    (1, 'daughter')                       0.289697           0.292953    0.289697
+    (1, 'son')                           -0.289697          -0.121614    0.289697
+    (2, 'girl')                           0.29452            0.318458    0.29452
+    (2, 'boy')                           -0.29452           -0.0826128   0.29452
+    (3, 'she')                            0.443113           0.469059    0.443113
+    (3, 'he')                            -0.443113          -0.362353    0.443113
+    (4, 'Woman')                          0.392149           0.238867    0.392149
+    (4, 'Man')                           -0.392149          -0.184176    0.392149
+    (5, 'female')                         0.336739           0.282941    0.336739
+    (5, 'male')                          -0.336739           0.083992    0.336739
+    (6, 'WOMAN')                          0.416802           0.257037    0.416802
+    (6, 'MAN')                           -0.416802          -0.0911706   0.416802
+    (7, 'Daughter')                       0.469635           0.22278     0.469635
+    (7, 'Son')                           -0.469635          -0.168291    0.469635
+    (8, 'GIRL')                           0.395733           0.242016    0.395733
+    (8, 'BOY')                           -0.395733          -0.0573038   0.395733
+    (9, 'Gal')                            0.59801            0.110373    0.59801
+    (9, 'Guy')                           -0.59801           -0.137855    0.59801
+    (10, 'Female')                        0.405189           0.198377    0.405189
+    (10, 'Male')                         -0.405189           0.0366158   0.405189
+    (11, 'Mary')                          0.488704           0.301974    0.488704
+    (11, 'John')                         -0.488704          -0.251126    0.488704
+    (12, 'Mother')                        0.498544           0.312446    0.498544
+    (12, 'Father')                       -0.498544          -0.197701    0.498544
     (13, 'SHE')                           0.540225           0.385345    0.540225
     (13, 'HE')                           -0.540225          -0.120598    0.540225
-    (14, 'girl')                          0.29452            0.318458    0.29452
-    (14, 'boy')                          -0.29452           -0.0826128   0.29452
-    (15, 'Mary')                          0.488704           0.301974    0.488704
-    (15, 'John')                         -0.488704          -0.251126    0.488704
-    (16, 'Herself')                       0.479517           0.29538     0.479517
-    (16, 'Himself')                      -0.479517          -0.220471    0.479517
-    (17, 'mother')                        0.332768           0.300389    0.332768
-    (17, 'father')                       -0.332768          -0.147961    0.332768
-    (18, 'FEMALE')                        0.483523           0.179938    0.483523
-    (18, 'MALE')                         -0.483523           0.0635581   0.483523
-    (19, 'Her')                           0.272142           0.267272    0.272142
-    (19, 'His')                          -0.272142          -0.122555    0.272142
-    (20, 'herself')                       0.401098           0.378141    0.401098
-    (20, 'himself')                      -0.401098          -0.38296     0.401098
-    (21, 'DAUGHTER')                      0.521962           0.171916    0.521962
-    (21, 'SON')                          -0.521962           0.0122388   0.521962
-    (22, 'She')                           0.316178           0.330259    0.316178
-    (22, 'He')                           -0.316178          -0.178255    0.316178
-    (23, 'woman')                         0.346934           0.340348    0.346934
-    (23, 'man')                          -0.346934          -0.220952    0.346934
-    (24, 'MOTHER')                        0.391596           0.235139    0.391596
-    (24, 'FATHER')                       -0.391596          -0.0389424   0.391596
-    (25, 'GAL')                           0.596187           0.185162    0.596187
-    (25, 'GUY')                          -0.596187          -0.0558901   0.596187
-    (26, 'her')                           0.430368           0.446157    0.430368
-    (26, 'his')                          -0.430368          -0.333555    0.430368
-    (27, 'mary')                          0.444525           0.192964    0.444525
-    (27, 'john')                         -0.444525          -0.0204266   0.444525
-    (28, 'HERSELF')                       0.388876           0.247386    0.388876
-    (28, 'HIMSELF')                      -0.388876          -0.148449    0.388876
-    (29, 'female')                        0.336739           0.282941    0.336739
-    (29, 'male')                         -0.336739           0.083992    0.336739
+    (14, 'HER')                           0.509812           0.267332    0.509812
+    (14, 'HIS')                          -0.509812          -0.0502074   0.509812
+    (15, 'herself')                       0.401098           0.378141    0.401098
+    (15, 'himself')                      -0.401098          -0.38296     0.401098
+    (16, 'She')                           0.316178           0.330259    0.316178
+    (16, 'He')                           -0.316178          -0.178255    0.316178
+    (17, 'HERSELF')                       0.388876           0.247386    0.388876
+    (17, 'HIMSELF')                      -0.388876          -0.148449    0.388876
+    (18, 'MOTHER')                        0.391596           0.235139    0.391596
+    (18, 'FATHER')                       -0.391596          -0.0389424   0.391596
+    (19, 'DAUGHTER')                      0.521962           0.171916    0.521962
+    (19, 'SON')                          -0.521962           0.0122388   0.521962
+    (20, 'her')                           0.430368           0.446157    0.430368
+    (20, 'his')                          -0.430368          -0.333555    0.430368
+    (21, 'woman')                         0.346934           0.340348    0.346934
+    (21, 'man')                          -0.346934          -0.220952    0.346934
+    (22, 'gal')                           0.51301            0.400741    0.51301
+    (22, 'guy')                          -0.51301           -0.326011    0.51301
+    (23, 'Herself')                       0.479517           0.29538     0.479517
+    (23, 'Himself')                      -0.479517          -0.220471    0.479517
+    (24, 'mary')                          0.444525           0.192964    0.444525
+    (24, 'john')                         -0.444525          -0.0204266   0.444525
+    (25, 'mother')                        0.332768           0.300389    0.332768
+    (25, 'father')                       -0.332768          -0.147961    0.332768
+    (26, 'MARY')                          0.356334           0.222307    0.356334
+    (26, 'JOHN')                         -0.356334          -0.0818515   0.356334
+    (27, 'Her')                           0.272142           0.267272    0.272142
+    (27, 'His')                          -0.272142          -0.122555    0.272142
+    (28, 'GAL')                           0.596187           0.185162    0.596187
+    (28, 'GUY')                          -0.596187          -0.0558901   0.596187
+    (29, 'FEMALE')                        0.483523           0.179938    0.483523
+    (29, 'MALE')                         -0.483523           0.0635581   0.483523
 
 
 Now our model is gender debiased, let’s check what changed…
@@ -1200,7 +1227,7 @@ gender direction.
 
 
 
-.. image:: demo-word-embedding-bias_files/demo-word-embedding-bias_49_0.png
+.. image:: demo-word-embedding-bias_files/demo-word-embedding-bias_52_0.png
 
 
 Generate analogies along the gender direction
@@ -1213,7 +1240,7 @@ Generate analogies along the gender direction
 
 .. parsed-literal::
 
-    /project/ethically/ethically/we/bias.py:528: UserWarning: Not Using unrestricted most_similar may introduce fake biased analogies.
+    /project/ethically/ethically/we/bias.py:524: UserWarning: Not Using unrestricted most_similar may introduce fake biased analogies.
 
 
 
@@ -1247,213 +1274,213 @@ Generate analogies along the gender direction
       <tbody>
         <tr>
           <th>50</th>
-          <td>princess</td>
-          <td>prince</td>
-          <td>0.776336</td>
-          <td>0.419846</td>
+          <td>Cavaliers</td>
+          <td>Bulls</td>
+          <td>0.843798</td>
+          <td>1.757572e-01</td>
         </tr>
         <tr>
           <th>51</th>
-          <td>ladies</td>
-          <td>gentlemen</td>
-          <td>0.907104</td>
-          <td>0.414876</td>
+          <td>Mayor</td>
+          <td>Councilman</td>
+          <td>0.746075</td>
+          <td>1.706857e-01</td>
         </tr>
         <tr>
           <th>52</th>
-          <td>hers</td>
-          <td>theirs</td>
-          <td>0.995313</td>
-          <td>0.414376</td>
+          <td>counterparts</td>
+          <td>brethren</td>
+          <td>0.907441</td>
+          <td>1.688463e-01</td>
         </tr>
         <tr>
           <th>53</th>
-          <td>moms</td>
-          <td>dads</td>
-          <td>0.721775</td>
-          <td>0.412200</td>
+          <td>girlfriend</td>
+          <td>cousin</td>
+          <td>0.902712</td>
+          <td>1.659258e-01</td>
         </tr>
         <tr>
           <th>54</th>
-          <td>'S</td>
-          <td>JOHN</td>
-          <td>0.875368</td>
-          <td>0.407067</td>
+          <td>God</td>
+          <td>Him</td>
+          <td>0.768831</td>
+          <td>1.635439e-01</td>
         </tr>
         <tr>
           <th>55</th>
-          <td>nieces</td>
-          <td>nephews</td>
-          <td>0.592494</td>
-          <td>0.397772</td>
+          <td>dealer</td>
+          <td>salesman</td>
+          <td>0.980144</td>
+          <td>1.602965e-01</td>
         </tr>
         <tr>
           <th>56</th>
-          <td>twins</td>
-          <td>twin_brother</td>
-          <td>0.986594</td>
-          <td>0.395549</td>
+          <td>Rep.</td>
+          <td>Congressman</td>
+          <td>0.606849</td>
+          <td>1.563420e-01</td>
         </tr>
         <tr>
           <th>57</th>
-          <td>teenage_girls</td>
-          <td>teenagers</td>
-          <td>0.633941</td>
-          <td>0.392028</td>
+          <td>royal</td>
+          <td>king</td>
+          <td>0.964398</td>
+          <td>1.526245e-01</td>
         </tr>
         <tr>
           <th>58</th>
-          <td>me</td>
-          <td>him</td>
-          <td>0.783902</td>
-          <td>0.372271</td>
+          <td>mayor</td>
+          <td>councilman</td>
+          <td>0.669266</td>
+          <td>1.477674e-01</td>
         </tr>
         <tr>
           <th>59</th>
-          <td>Queen</td>
-          <td>King</td>
-          <td>0.984149</td>
-          <td>0.368574</td>
+          <td>father</td>
+          <td>Son</td>
+          <td>0.937306</td>
+          <td>1.460223e-01</td>
         </tr>
         <tr>
           <th>60</th>
-          <td>diva</td>
-          <td>superstar</td>
-          <td>0.864003</td>
-          <td>0.365742</td>
+          <td>replied</td>
+          <td>sir</td>
+          <td>0.924511</td>
+          <td>1.454486e-01</td>
         </tr>
         <tr>
           <th>61</th>
-          <td>females</td>
-          <td>males</td>
-          <td>0.540050</td>
-          <td>0.358331</td>
+          <td>entrepreneurs</td>
+          <td>businessmen</td>
+          <td>0.870914</td>
+          <td>1.430111e-01</td>
         </tr>
         <tr>
           <th>62</th>
-          <td>nun</td>
-          <td>priest</td>
-          <td>0.759639</td>
-          <td>0.348560</td>
+          <td>muscle</td>
+          <td>muscular</td>
+          <td>0.879145</td>
+          <td>1.414681e-01</td>
         </tr>
         <tr>
           <th>63</th>
-          <td>hostess</td>
-          <td>bartender</td>
-          <td>0.950007</td>
-          <td>0.345549</td>
+          <td>cancer</td>
+          <td>prostate</td>
+          <td>0.957669</td>
+          <td>1.266430e-01</td>
         </tr>
         <tr>
           <th>64</th>
-          <td>estrogen</td>
-          <td>hormone</td>
-          <td>0.696338</td>
-          <td>0.341519</td>
+          <td>grandchildren</td>
+          <td>grandson</td>
+          <td>0.801695</td>
+          <td>1.205991e-01</td>
         </tr>
         <tr>
           <th>65</th>
-          <td>brides</td>
-          <td>couples</td>
-          <td>0.972527</td>
-          <td>0.332111</td>
+          <td>Carl</td>
+          <td>Earl</td>
+          <td>0.907355</td>
+          <td>1.089646e-01</td>
         </tr>
         <tr>
           <th>66</th>
-          <td>Grandma</td>
-          <td>Daddy</td>
-          <td>0.911720</td>
-          <td>0.330911</td>
+          <td>Twins</td>
+          <td>Minnesota_Twins</td>
+          <td>0.569007</td>
+          <td>1.061712e-01</td>
         </tr>
         <tr>
           <th>67</th>
-          <td>breasts</td>
-          <td>penis</td>
-          <td>0.831993</td>
-          <td>0.313547</td>
+          <td>dad</td>
+          <td>Uncle</td>
+          <td>0.959446</td>
+          <td>1.055075e-01</td>
         </tr>
         <tr>
           <th>68</th>
-          <td>husbands</td>
-          <td>spouses</td>
-          <td>0.853097</td>
-          <td>0.310460</td>
+          <td>officials</td>
+          <td>spokesmen</td>
+          <td>0.993293</td>
+          <td>1.011937e-01</td>
         </tr>
         <tr>
           <th>69</th>
-          <td>stepmother</td>
-          <td>stepfather</td>
-          <td>0.724000</td>
-          <td>0.299351</td>
+          <td>senator</td>
+          <td>congressman</td>
+          <td>0.727949</td>
+          <td>1.010955e-01</td>
         </tr>
         <tr>
           <th>70</th>
-          <td>compatriots</td>
-          <td>countrymen</td>
-          <td>0.668135</td>
-          <td>0.298054</td>
+          <td>male</td>
+          <td>Male</td>
+          <td>0.722843</td>
+          <td>9.469609e-02</td>
         </tr>
         <tr>
           <th>71</th>
-          <td>Moms</td>
-          <td>Kids</td>
-          <td>0.956169</td>
-          <td>0.287390</td>
+          <td>Tiger</td>
+          <td>Lion</td>
+          <td>0.983778</td>
+          <td>9.045189e-02</td>
         </tr>
         <tr>
           <th>72</th>
-          <td>bride</td>
-          <td>wedding</td>
-          <td>0.793948</td>
-          <td>0.280887</td>
+          <td>mates</td>
+          <td>lads</td>
+          <td>0.973074</td>
+          <td>8.008651e-02</td>
         </tr>
         <tr>
           <th>73</th>
-          <td>grandma</td>
-          <td>grandparents</td>
-          <td>0.834085</td>
-          <td>0.280859</td>
+          <td>animals</td>
+          <td>lions</td>
+          <td>0.965651</td>
+          <td>7.712748e-02</td>
         </tr>
         <tr>
           <th>74</th>
-          <td>Mothers</td>
-          <td>Families</td>
-          <td>0.992906</td>
-          <td>0.280381</td>
+          <td>Griffin</td>
+          <td>Knight</td>
+          <td>0.972307</td>
+          <td>7.696815e-02</td>
         </tr>
         <tr>
           <th>75</th>
-          <td>teenage_girl</td>
-          <td>teenager</td>
-          <td>0.693754</td>
-          <td>0.278641</td>
+          <td>Bear</td>
+          <td>Bull</td>
+          <td>0.929982</td>
+          <td>7.682274e-02</td>
         </tr>
         <tr>
           <th>76</th>
-          <td>really</td>
-          <td>guys</td>
-          <td>0.904382</td>
-          <td>0.278066</td>
+          <td>man</td>
+          <td>MAN</td>
+          <td>0.962340</td>
+          <td>7.260233e-02</td>
         </tr>
         <tr>
           <th>77</th>
-          <td>lesbians</td>
-          <td>gays</td>
-          <td>0.672257</td>
-          <td>0.275510</td>
+          <td>relatives</td>
+          <td>nephews</td>
+          <td>0.977246</td>
+          <td>6.704777e-02</td>
         </tr>
         <tr>
           <th>78</th>
-          <td>maid</td>
-          <td>prostitute</td>
-          <td>0.996605</td>
-          <td>0.273014</td>
+          <td>lovely</td>
+          <td>handsome</td>
+          <td>0.994425</td>
+          <td>6.624248e-02</td>
         </tr>
         <tr>
           <th>79</th>
-          <td>boyfriend</td>
-          <td>cousin</td>
-          <td>0.933765</td>
-          <td>0.269540</td>
+          <td>Ravens</td>
+          <td>Colts</td>
+          <td>0.655846</td>
+          <td>6.506501e-02</td>
         </tr>
         <tr>
           <th>...</th>
@@ -1464,213 +1491,213 @@ Generate analogies along the gender direction
         </tr>
         <tr>
           <th>120</th>
-          <td>housewife</td>
-          <td>maid</td>
-          <td>0.993165</td>
-          <td>0.107080</td>
+          <td>Liverpool</td>
+          <td>Magpies</td>
+          <td>0.984137</td>
+          <td>3.166497e-08</td>
         </tr>
         <tr>
           <th>121</th>
-          <td>Twins</td>
-          <td>Minnesota_Twins</td>
-          <td>0.569007</td>
-          <td>0.106171</td>
+          <td>If</td>
+          <td>Normally</td>
+          <td>0.779753</td>
+          <td>3.073364e-08</td>
         </tr>
         <tr>
           <th>122</th>
-          <td>Muslim_Brotherhood</td>
-          <td>Brotherhood</td>
-          <td>0.768524</td>
-          <td>0.105229</td>
+          <td>Walker</td>
+          <td>Wise</td>
+          <td>0.981883</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>123</th>
-          <td>Sons</td>
-          <td>Brothers</td>
-          <td>0.974409</td>
-          <td>0.105127</td>
+          <td>weather</td>
+          <td>Weather</td>
+          <td>0.816121</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>124</th>
-          <td>girlfriend</td>
-          <td>friend</td>
-          <td>0.863154</td>
-          <td>0.102165</td>
+          <td>manufacturing</td>
+          <td>plant</td>
+          <td>0.975745</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>125</th>
-          <td>officials</td>
-          <td>spokesmen</td>
-          <td>0.993293</td>
-          <td>0.101194</td>
+          <td>weight</td>
+          <td>Weight</td>
+          <td>0.859017</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>126</th>
-          <td>senator</td>
-          <td>congressman</td>
-          <td>0.727949</td>
-          <td>0.101095</td>
+          <td>retailers</td>
+          <td>shoppers</td>
+          <td>0.848585</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>127</th>
-          <td>mum</td>
-          <td>wife</td>
-          <td>0.988321</td>
-          <td>0.100951</td>
+          <td>Thus</td>
+          <td>Considering</td>
+          <td>0.932179</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>128</th>
-          <td>Dragon</td>
-          <td>Lion</td>
-          <td>0.973824</td>
-          <td>0.091376</td>
+          <td>distribution</td>
+          <td>distributing</td>
+          <td>0.908768</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>129</th>
-          <td>elephants</td>
-          <td>lions</td>
-          <td>0.816916</td>
-          <td>0.091170</td>
+          <td>stupid</td>
+          <td>cute</td>
+          <td>0.970388</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>130</th>
-          <td>suitors</td>
-          <td>bidders</td>
-          <td>0.885706</td>
-          <td>0.089623</td>
+          <td>mound</td>
+          <td>reliever</td>
+          <td>0.943645</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>131</th>
-          <td>Hey</td>
-          <td>Dude</td>
-          <td>0.930392</td>
-          <td>0.088758</td>
+          <td>Because</td>
+          <td>When</td>
+          <td>0.828063</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>132</th>
-          <td>motherhood</td>
-          <td>moms</td>
-          <td>0.985667</td>
-          <td>0.088414</td>
+          <td>Shawn</td>
+          <td>Linda</td>
+          <td>0.983454</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>133</th>
-          <td>footballers</td>
-          <td>lads</td>
-          <td>0.893389</td>
-          <td>0.087230</td>
+          <td>Even</td>
+          <td>And</td>
+          <td>0.685391</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>134</th>
-          <td>fiancee</td>
-          <td>married</td>
-          <td>0.975317</td>
-          <td>0.083668</td>
+          <td>installation</td>
+          <td>installed</td>
+          <td>0.854023</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>135</th>
-          <td>Ma</td>
-          <td>Chen</td>
-          <td>0.708616</td>
-          <td>0.081899</td>
+          <td>hospitalized</td>
+          <td>underwent_surgery</td>
+          <td>0.919806</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>136</th>
-          <td>Sisters</td>
-          <td>nuns</td>
-          <td>0.965521</td>
-          <td>0.081399</td>
+          <td>Brian</td>
+          <td>Sue</td>
+          <td>0.892449</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>137</th>
-          <td>Alford</td>
-          <td>Knight</td>
-          <td>0.949402</td>
-          <td>0.078825</td>
+          <td>Lisa</td>
+          <td>Lucy</td>
+          <td>0.918754</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>138</th>
-          <td>Bear</td>
-          <td>Bull</td>
-          <td>0.929982</td>
-          <td>0.076823</td>
+          <td>Wallace</td>
+          <td>Campbell</td>
+          <td>0.966834</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>139</th>
-          <td>Sister</td>
-          <td>Sisters</td>
-          <td>0.838480</td>
-          <td>0.073938</td>
+          <td>expert</td>
+          <td>guru</td>
+          <td>0.934079</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>140</th>
-          <td>estranged_wife</td>
-          <td>estranged</td>
-          <td>0.940954</td>
-          <td>0.071833</td>
+          <td>reluctant</td>
+          <td>willing</td>
+          <td>0.804542</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>141</th>
-          <td>charming</td>
-          <td>handsome</td>
-          <td>0.947110</td>
-          <td>0.069552</td>
+          <td>Patricia</td>
+          <td>Debbie</td>
+          <td>0.790438</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>142</th>
-          <td>Ravens</td>
-          <td>Colts</td>
-          <td>0.655846</td>
-          <td>0.065065</td>
+          <td>Reynolds</td>
+          <td>Barker</td>
+          <td>0.977590</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>143</th>
-          <td>ex_girlfriend</td>
-          <td>acquaintance</td>
-          <td>0.954250</td>
-          <td>0.063640</td>
+          <td>PCs</td>
+          <td>computers</td>
+          <td>0.730985</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>144</th>
-          <td>Jared</td>
-          <td>Beau</td>
-          <td>0.811900</td>
-          <td>0.063562</td>
+          <td>drug</td>
+          <td>heroin</td>
+          <td>0.885918</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>145</th>
-          <td>Dragons</td>
-          <td>Knights</td>
-          <td>0.750920</td>
-          <td>0.062835</td>
+          <td>enhance</td>
+          <td>enable</td>
+          <td>0.949511</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>146</th>
-          <td>Sacramento_Kings</td>
-          <td>Kings</td>
-          <td>0.936280</td>
-          <td>0.062079</td>
+          <td>like</td>
+          <td>weird</td>
+          <td>0.930146</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>147</th>
-          <td>Eagles</td>
-          <td>Lions</td>
-          <td>0.813655</td>
-          <td>0.061791</td>
+          <td>Lincoln</td>
+          <td>Truman</td>
+          <td>0.987122</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>148</th>
-          <td>males</td>
-          <td>juveniles</td>
-          <td>0.950117</td>
-          <td>0.061457</td>
+          <td>Pat</td>
+          <td>Phyllis</td>
+          <td>0.944572</td>
+          <td>2.980232e-08</td>
         </tr>
         <tr>
           <th>149</th>
-          <td>impatient</td>
-          <td>restless</td>
-          <td>0.859043</td>
-          <td>0.061337</td>
+          <td>Monroe</td>
+          <td>Genesee</td>
+          <td>0.978479</td>
+          <td>2.980232e-08</td>
         </tr>
       </tbody>
     </table>
@@ -1816,7 +1843,7 @@ We can compare the projections of neutral profession names on the gender directi
 
 
 
-.. image:: demo-word-embedding-bias_files/demo-word-embedding-bias_57_0.png
+.. image:: demo-word-embedding-bias_files/demo-word-embedding-bias_60_0.png
 
 
 Can we identify race bias? (Exploratory - API may change in a future release)
@@ -1884,7 +1911,7 @@ Can we identify race bias? (Exploratory - API may change in a future release)
 
 
 
-.. image:: demo-word-embedding-bias_files/demo-word-embedding-bias_65_0.png
+.. image:: demo-word-embedding-bias_files/demo-word-embedding-bias_68_0.png
 
 
 .. code:: ipython3
@@ -1894,7 +1921,7 @@ Can we identify race bias? (Exploratory - API may change in a future release)
 
 .. parsed-literal::
 
-    /project/ethically/ethically/we/bias.py:528: UserWarning: Not Using unrestricted most_similar may introduce fake biased analogies.
+    /project/ethically/ethically/we/bias.py:524: UserWarning: Not Using unrestricted most_similar may introduce fake biased analogies.
 
 
 
@@ -1928,213 +1955,213 @@ Can we identify race bias? (Exploratory - API may change in a future release)
       <tbody>
         <tr>
           <th>0</th>
-          <td>Whites</td>
-          <td>Blacks</td>
-          <td>0.912216</td>
-          <td>1.000000</td>
-        </tr>
-        <tr>
-          <th>1</th>
-          <td>Robson</td>
-          <td>Macdonald</td>
-          <td>0.985018</td>
-          <td>0.309408</td>
-        </tr>
-        <tr>
-          <th>2</th>
           <td>white</td>
           <td>blacks</td>
           <td>0.984017</td>
           <td>0.300863</td>
         </tr>
         <tr>
-          <th>3</th>
-          <td>Socceroos</td>
-          <td>Australians</td>
-          <td>0.986101</td>
-          <td>0.299272</td>
-        </tr>
-        <tr>
-          <th>4</th>
-          <td>Colchester</td>
-          <td>Suffolk</td>
-          <td>0.983591</td>
-          <td>0.293401</td>
-        </tr>
-        <tr>
-          <th>5</th>
+          <th>1</th>
           <td>central_bank</td>
           <td>Federal_Reserve</td>
-          <td>0.803606</td>
+          <td>0.803605</td>
           <td>0.288356</td>
         </tr>
         <tr>
-          <th>6</th>
-          <td>separatists</td>
-          <td>Tamils</td>
-          <td>0.969865</td>
-          <td>0.285174</td>
-        </tr>
-        <tr>
-          <th>7</th>
-          <td>£_#.#million</td>
-          <td>£_##m</td>
-          <td>0.571088</td>
-          <td>0.284160</td>
-        </tr>
-        <tr>
-          <th>8</th>
-          <td>Mali</td>
-          <td>Africans</td>
-          <td>1.000000</td>
-          <td>0.279874</td>
-        </tr>
-        <tr>
-          <th>9</th>
-          <td>Osborn</td>
-          <td>Kaufman</td>
-          <td>0.978736</td>
-          <td>0.272794</td>
-        </tr>
-        <tr>
-          <th>10</th>
-          <td>Shrewsbury</td>
-          <td>Camden</td>
-          <td>0.990493</td>
-          <td>0.272494</td>
-        </tr>
-        <tr>
-          <th>11</th>
-          <td>Kiwis</td>
-          <td>South_Africans</td>
-          <td>0.908654</td>
-          <td>0.269471</td>
-        </tr>
-        <tr>
-          <th>12</th>
+          <th>2</th>
           <td>Everton</td>
           <td>Merseyside</td>
           <td>0.977917</td>
           <td>0.267331</td>
         </tr>
         <tr>
-          <th>13</th>
-          <td>invariably</td>
-          <td>Often</td>
-          <td>0.941042</td>
-          <td>0.266132</td>
-        </tr>
-        <tr>
-          <th>14</th>
+          <th>3</th>
           <td>Reds</td>
           <td>Marlins</td>
           <td>0.913352</td>
           <td>0.265320</td>
         </tr>
         <tr>
-          <th>15</th>
-          <td>Fulham</td>
-          <td>Londoners</td>
-          <td>0.968282</td>
-          <td>0.264644</td>
-        </tr>
-        <tr>
-          <th>16</th>
-          <td>Deputy_Prime_Minister</td>
-          <td>Ministers</td>
-          <td>0.993855</td>
-          <td>0.262742</td>
-        </tr>
-        <tr>
-          <th>17</th>
-          <td>Middlesbrough</td>
-          <td>Yorkshire</td>
-          <td>0.999041</td>
-          <td>0.260441</td>
-        </tr>
-        <tr>
-          <th>18</th>
-          <td>Frisco</td>
-          <td>Texas</td>
-          <td>0.969951</td>
-          <td>0.260051</td>
-        </tr>
-        <tr>
-          <th>19</th>
-          <td>McCormack</td>
-          <td>Walsh</td>
-          <td>0.921689</td>
-          <td>0.259972</td>
-        </tr>
-        <tr>
-          <th>20</th>
+          <th>4</th>
           <td>Palmer</td>
           <td>Lewis</td>
           <td>0.963303</td>
           <td>0.257839</td>
         </tr>
         <tr>
-          <th>21</th>
+          <th>5</th>
           <td>Chapman</td>
           <td>Goodman</td>
           <td>0.922701</td>
           <td>0.257333</td>
         </tr>
         <tr>
-          <th>22</th>
+          <th>6</th>
           <td>World_Cup</td>
           <td>Olympics</td>
           <td>0.908482</td>
           <td>0.255429</td>
         </tr>
         <tr>
-          <th>23</th>
-          <td>Grayson</td>
-          <td>Montgomery</td>
-          <td>0.992772</td>
-          <td>0.255016</td>
-        </tr>
-        <tr>
-          <th>24</th>
-          <td>Redlands</td>
-          <td>Southern_California</td>
-          <td>0.880251</td>
-          <td>0.254323</td>
-        </tr>
-        <tr>
-          <th>25</th>
-          <td>Barnsley</td>
-          <td>Midlands</td>
-          <td>0.946628</td>
-          <td>0.253846</td>
-        </tr>
-        <tr>
-          <th>26</th>
-          <td>Ochoa</td>
-          <td>Diaz</td>
-          <td>0.963471</td>
-          <td>0.253756</td>
-        </tr>
-        <tr>
-          <th>27</th>
-          <td>scorers</td>
-          <td>Offensively</td>
-          <td>0.973055</td>
-          <td>0.253263</td>
-        </tr>
-        <tr>
-          <th>28</th>
-          <td>Togo</td>
-          <td>Liberia</td>
-          <td>0.995750</td>
-          <td>0.252202</td>
-        </tr>
-        <tr>
-          <th>29</th>
+          <th>7</th>
           <td>want</td>
           <td>Why</td>
           <td>0.981551</td>
           <td>0.251682</td>
+        </tr>
+        <tr>
+          <th>8</th>
+          <td>virus</td>
+          <td>HIV</td>
+          <td>0.948869</td>
+          <td>0.250508</td>
+        </tr>
+        <tr>
+          <th>9</th>
+          <td>usually</td>
+          <td>Often</td>
+          <td>0.904155</td>
+          <td>0.237194</td>
+        </tr>
+        <tr>
+          <th>10</th>
+          <td>brown</td>
+          <td>black</td>
+          <td>0.920143</td>
+          <td>0.236836</td>
+        </tr>
+        <tr>
+          <th>11</th>
+          <td>definitely</td>
+          <td>Honestly</td>
+          <td>0.990034</td>
+          <td>0.236568</td>
+        </tr>
+        <tr>
+          <th>12</th>
+          <td>soccer</td>
+          <td>sports</td>
+          <td>0.915918</td>
+          <td>0.235413</td>
+        </tr>
+        <tr>
+          <th>13</th>
+          <td>Spurs</td>
+          <td>Shaq</td>
+          <td>0.980871</td>
+          <td>0.235350</td>
+        </tr>
+        <tr>
+          <th>14</th>
+          <td>goalie</td>
+          <td>shorthanded</td>
+          <td>0.997886</td>
+          <td>0.235113</td>
+        </tr>
+        <tr>
+          <th>15</th>
+          <td>tribe</td>
+          <td>Native_Americans</td>
+          <td>0.952653</td>
+          <td>0.234396</td>
+        </tr>
+        <tr>
+          <th>16</th>
+          <td>tournament</td>
+          <td>regionals</td>
+          <td>0.906039</td>
+          <td>0.233398</td>
+        </tr>
+        <tr>
+          <th>17</th>
+          <td>Chile</td>
+          <td>Latin_America</td>
+          <td>0.947953</td>
+          <td>0.232998</td>
+        </tr>
+        <tr>
+          <th>18</th>
+          <td>defendant</td>
+          <td>Defendant</td>
+          <td>0.639279</td>
+          <td>0.230648</td>
+        </tr>
+        <tr>
+          <th>19</th>
+          <td>West_Ham</td>
+          <td>Londoners</td>
+          <td>0.982217</td>
+          <td>0.228847</td>
+        </tr>
+        <tr>
+          <th>20</th>
+          <td>Ghana</td>
+          <td>Africans</td>
+          <td>0.995349</td>
+          <td>0.226636</td>
+        </tr>
+        <tr>
+          <th>21</th>
+          <td>Premier_League</td>
+          <td>IPL</td>
+          <td>0.963885</td>
+          <td>0.226511</td>
+        </tr>
+        <tr>
+          <th>22</th>
+          <td>Leeds</td>
+          <td>Midlands</td>
+          <td>0.924533</td>
+          <td>0.226077</td>
+        </tr>
+        <tr>
+          <th>23</th>
+          <td>Webb</td>
+          <td>Byrd</td>
+          <td>0.976120</td>
+          <td>0.225578</td>
+        </tr>
+        <tr>
+          <th>24</th>
+          <td>shirt</td>
+          <td>T_shirt</td>
+          <td>0.732459</td>
+          <td>0.224453</td>
+        </tr>
+        <tr>
+          <th>25</th>
+          <td>everybody</td>
+          <td>Somebody</td>
+          <td>0.966056</td>
+          <td>0.223887</td>
+        </tr>
+        <tr>
+          <th>26</th>
+          <td>Falcons</td>
+          <td>Canes</td>
+          <td>0.940961</td>
+          <td>0.223731</td>
+        </tr>
+        <tr>
+          <th>27</th>
+          <td>Ferguson</td>
+          <td>Brown</td>
+          <td>0.976292</td>
+          <td>0.222968</td>
+        </tr>
+        <tr>
+          <th>28</th>
+          <td>militants</td>
+          <td>Militants</td>
+          <td>0.758435</td>
+          <td>0.222902</td>
+        </tr>
+        <tr>
+          <th>29</th>
+          <td>Nicholas</td>
+          <td>Ernest</td>
+          <td>0.959587</td>
+          <td>0.221283</td>
         </tr>
       </tbody>
     </table>
@@ -2149,7 +2176,7 @@ Can we identify race bias? (Exploratory - API may change in a future release)
 
 .. parsed-literal::
 
-    /project/ethically/ethically/we/bias.py:528: UserWarning: Not Using unrestricted most_similar may introduce fake biased analogies.
+    /project/ethically/ethically/we/bias.py:524: UserWarning: Not Using unrestricted most_similar may introduce fake biased analogies.
 
 
 
@@ -2183,213 +2210,213 @@ Can we identify race bias? (Exploratory - API may change in a future release)
       <tbody>
         <tr>
           <th>100</th>
-          <td>Soccer</td>
-          <td>Baseball</td>
-          <td>0.872321</td>
-          <td>0.219214</td>
+          <td>only</td>
+          <td>Only</td>
+          <td>0.943405</td>
+          <td>0.197555</td>
         </tr>
         <tr>
           <th>101</th>
-          <td>insurgents</td>
-          <td>Insurgents</td>
-          <td>0.766031</td>
-          <td>0.218794</td>
+          <td>Fletcher</td>
+          <td>Norris</td>
+          <td>0.947846</td>
+          <td>0.197228</td>
         </tr>
         <tr>
           <th>102</th>
-          <td>Gov._Sarah_Palin</td>
-          <td>Barack_Obama</td>
-          <td>0.971065</td>
-          <td>0.218626</td>
+          <td>red</td>
+          <td>white</td>
+          <td>0.928751</td>
+          <td>0.196619</td>
         </tr>
         <tr>
           <th>103</th>
-          <td>Shearer</td>
-          <td>Crouch</td>
-          <td>0.957810</td>
-          <td>0.218460</td>
+          <td>jurors</td>
+          <td>Jurors</td>
+          <td>0.697708</td>
+          <td>0.196573</td>
         </tr>
         <tr>
           <th>104</th>
-          <td>Orr</td>
-          <td>Jacobs</td>
-          <td>0.995846</td>
-          <td>0.218355</td>
+          <td>complaints</td>
+          <td>Complaints</td>
+          <td>0.710755</td>
+          <td>0.196412</td>
         </tr>
         <tr>
           <th>105</th>
-          <td>too</td>
-          <td>Too</td>
-          <td>0.780133</td>
-          <td>0.218131</td>
+          <td>knee_injury</td>
+          <td>ankle_sprain</td>
+          <td>0.631131</td>
+          <td>0.196400</td>
         </tr>
         <tr>
           <th>106</th>
-          <td>Glendale</td>
-          <td>Los_Angeles</td>
-          <td>0.989286</td>
-          <td>0.218044</td>
+          <td>automatic</td>
+          <td>automated</td>
+          <td>0.955530</td>
+          <td>0.196397</td>
         </tr>
         <tr>
           <th>107</th>
-          <td>Vienna</td>
-          <td>Berlin</td>
-          <td>0.892588</td>
-          <td>0.217690</td>
+          <td>worries</td>
+          <td>Concerns</td>
+          <td>0.794042</td>
+          <td>0.196306</td>
         </tr>
         <tr>
           <th>108</th>
-          <td>South_Africa</td>
-          <td>African</td>
-          <td>0.947052</td>
-          <td>0.217639</td>
+          <td>Player</td>
+          <td>Athlete</td>
+          <td>0.867647</td>
+          <td>0.196244</td>
         </tr>
         <tr>
           <th>109</th>
-          <td>Lebanon</td>
-          <td>Gaza</td>
-          <td>0.938393</td>
-          <td>0.217626</td>
+          <td>cricket</td>
+          <td>BCCI</td>
+          <td>0.885252</td>
+          <td>0.196228</td>
         </tr>
         <tr>
           <th>110</th>
-          <td>Croft</td>
-          <td>Sykes</td>
-          <td>0.942439</td>
-          <td>0.217576</td>
+          <td>just</td>
+          <td>Just</td>
+          <td>0.951253</td>
+          <td>0.196210</td>
         </tr>
         <tr>
           <th>111</th>
-          <td>matches</td>
-          <td>matchups</td>
-          <td>0.994549</td>
-          <td>0.217504</td>
+          <td>Nations</td>
+          <td>aboriginal</td>
+          <td>0.988780</td>
+          <td>0.195973</td>
         </tr>
         <tr>
           <th>112</th>
-          <td>McLeod</td>
-          <td>Norris</td>
-          <td>0.999020</td>
-          <td>0.217422</td>
+          <td>assistant</td>
+          <td>intern</td>
+          <td>0.925927</td>
+          <td>0.195862</td>
         </tr>
         <tr>
           <th>113</th>
-          <td>Gannon</td>
-          <td>Callahan</td>
-          <td>0.969276</td>
-          <td>0.217401</td>
+          <td>##st</td>
+          <td>nd</td>
+          <td>0.899736</td>
+          <td>0.195463</td>
         </tr>
         <tr>
           <th>114</th>
-          <td>Honduras</td>
-          <td>Haitian</td>
-          <td>0.995602</td>
-          <td>0.217262</td>
+          <td>Democratic_Party</td>
+          <td>DNC</td>
+          <td>0.994089</td>
+          <td>0.195221</td>
         </tr>
         <tr>
           <th>115</th>
-          <td>midfielder</td>
-          <td>outfielder</td>
-          <td>0.995766</td>
-          <td>0.217115</td>
+          <td>game</td>
+          <td>Game</td>
+          <td>0.966801</td>
+          <td>0.195120</td>
         </tr>
         <tr>
           <th>116</th>
-          <td>Thorne</td>
-          <td>Roberts</td>
-          <td>0.971392</td>
-          <td>0.216360</td>
+          <td>Bengals</td>
+          <td>Texans</td>
+          <td>0.994674</td>
+          <td>0.194374</td>
         </tr>
         <tr>
           <th>117</th>
-          <td>Mulligan</td>
-          <td>Hayes</td>
-          <td>0.988634</td>
-          <td>0.216358</td>
+          <td>provincial</td>
+          <td>Ontario</td>
+          <td>0.993721</td>
+          <td>0.194351</td>
         </tr>
         <tr>
           <th>118</th>
-          <td>Argentina</td>
-          <td>Puerto_Rico</td>
-          <td>0.986361</td>
-          <td>0.215849</td>
+          <td>Scotland</td>
+          <td>UK</td>
+          <td>0.933167</td>
+          <td>0.193891</td>
         </tr>
         <tr>
           <th>119</th>
-          <td>boss</td>
-          <td>bosses</td>
-          <td>0.861806</td>
-          <td>0.215746</td>
+          <td>Nathan</td>
+          <td>Marcus</td>
+          <td>0.988859</td>
+          <td>0.193761</td>
         </tr>
         <tr>
           <th>120</th>
-          <td>Nicolas</td>
-          <td>Pierre</td>
-          <td>0.954176</td>
-          <td>0.215630</td>
+          <td>because</td>
+          <td>Because</td>
+          <td>0.835368</td>
+          <td>0.192906</td>
         </tr>
         <tr>
           <th>121</th>
-          <td>Royals</td>
-          <td>Yanks</td>
-          <td>0.963751</td>
-          <td>0.215550</td>
+          <td>seems</td>
+          <td>Seems</td>
+          <td>0.840152</td>
+          <td>0.192520</td>
         </tr>
         <tr>
           <th>122</th>
-          <td>RBS</td>
-          <td>BofA</td>
-          <td>0.969339</td>
-          <td>0.215294</td>
+          <td>league</td>
+          <td>postseason</td>
+          <td>0.960766</td>
+          <td>0.192454</td>
         </tr>
         <tr>
           <th>123</th>
-          <td>##.##.##_#:##</td>
-          <td>Economics_Writer</td>
-          <td>0.868734</td>
-          <td>0.215190</td>
+          <td>defender</td>
+          <td>defenders</td>
+          <td>0.715703</td>
+          <td>0.192400</td>
         </tr>
         <tr>
           <th>124</th>
-          <td>Valparaiso</td>
-          <td>Indiana</td>
-          <td>0.877236</td>
-          <td>0.215173</td>
+          <td>celebrations</td>
+          <td>parades</td>
+          <td>0.960279</td>
+          <td>0.192243</td>
         </tr>
         <tr>
           <th>125</th>
-          <td>Saints</td>
-          <td>Brees</td>
-          <td>0.991979</td>
-          <td>0.214991</td>
+          <td>Republican</td>
+          <td>Rudy_Giuliani</td>
+          <td>0.995810</td>
+          <td>0.192109</td>
         </tr>
         <tr>
           <th>126</th>
-          <td>lawmakers</td>
-          <td>Lawmakers</td>
-          <td>0.701857</td>
-          <td>0.214725</td>
+          <td>holiday</td>
+          <td>Labor_Day</td>
+          <td>0.912426</td>
+          <td>0.191855</td>
         </tr>
         <tr>
           <th>127</th>
-          <td>Hyundai</td>
-          <td>DaimlerChrysler</td>
-          <td>0.986032</td>
-          <td>0.214707</td>
+          <td>Norway</td>
+          <td>Oslo</td>
+          <td>0.887618</td>
+          <td>0.191662</td>
         </tr>
         <tr>
           <th>128</th>
-          <td>Red_Devils</td>
-          <td>Trojans</td>
-          <td>0.891813</td>
-          <td>0.214425</td>
+          <td>evidence</td>
+          <td>Evidence</td>
+          <td>0.761856</td>
+          <td>0.191556</td>
         </tr>
         <tr>
           <th>129</th>
-          <td>lots</td>
-          <td>Lots</td>
-          <td>0.841864</td>
-          <td>0.214390</td>
+          <td>Elementary_School</td>
+          <td>Public_Schools</td>
+          <td>0.940586</td>
+          <td>0.191520</td>
         </tr>
       </tbody>
     </table>
@@ -2404,7 +2431,7 @@ Can we identify race bias? (Exploratory - API may change in a future release)
 
 
 
-.. image:: demo-word-embedding-bias_files/demo-word-embedding-bias_68_0.png
+.. image:: demo-word-embedding-bias_files/demo-word-embedding-bias_71_0.png
 
 
 Word Embedding Association Test (WEAT)
@@ -2427,6 +2454,11 @@ First, let’s look on a reduced version of Word2Vec.
 
     calc_all_weat(model_w2v_small, filter_by='model', with_original_finding=True,
                   with_pvalue=True, pvalue_kwargs={'method': 'approximate'})
+
+
+.. parsed-literal::
+
+    /project/ethically/ethically/we/weat.py:368: UserWarning: Given weat_data was filterd by model.
 
 
 
@@ -2470,8 +2502,8 @@ First, let’s look on a reduced version of Word2Vec.
           <td>Pleasant vs. Unpleasant</td>
           <td>2x2</td>
           <td>24x2</td>
-          <td>0.0949031</td>
-          <td>1.23443</td>
+          <td>0.0455987</td>
+          <td>1.2461</td>
           <td>1.6e-01</td>
           <td>32</td>
           <td>1.35</td>
@@ -2483,8 +2515,8 @@ First, let’s look on a reduced version of Word2Vec.
           <td>Pleasant vs. Unpleasant</td>
           <td>16x2</td>
           <td>24x2</td>
-          <td>2.11433</td>
-          <td>1.58925</td>
+          <td>0.9667</td>
+          <td>1.59092</td>
           <td>0</td>
           <td>32</td>
           <td>1.66</td>
@@ -2496,9 +2528,9 @@ First, let’s look on a reduced version of Word2Vec.
           <td>Pleasant vs. Unpleasant</td>
           <td>6x2</td>
           <td>24x2</td>
-          <td>0.287312</td>
-          <td>1.10003</td>
-          <td>2.6e-02</td>
+          <td>0.136516</td>
+          <td>1.1408</td>
+          <td>2.3e-02</td>
           <td>26</td>
           <td>1.17</td>
           <td>1e-5</td>
@@ -2509,8 +2541,8 @@ First, let’s look on a reduced version of Word2Vec.
           <td>Pleasant vs. Unpleasant</td>
           <td>18x2</td>
           <td>24x2</td>
-          <td>0.952434</td>
-          <td>1.31962</td>
+          <td>0.440816</td>
+          <td>1.3369</td>
           <td>0</td>
           <td></td>
           <td></td>
@@ -2522,8 +2554,8 @@ First, let’s look on a reduced version of Word2Vec.
           <td>Pleasant vs. Unpleasant</td>
           <td>18x2</td>
           <td>8x2</td>
-          <td>0.538377</td>
-          <td>0.732444</td>
+          <td>0.33806</td>
+          <td>0.733674</td>
           <td>1.8e-02</td>
           <td></td>
           <td></td>
@@ -2535,7 +2567,7 @@ First, let’s look on a reduced version of Word2Vec.
           <td>Career vs. Family</td>
           <td>1x2</td>
           <td>8x2</td>
-          <td>0.247673</td>
+          <td>0.154198</td>
           <td>2</td>
           <td>0</td>
           <td>39k</td>
@@ -2548,9 +2580,9 @@ First, let’s look on a reduced version of Word2Vec.
           <td>Male terms vs. Female terms</td>
           <td>7x2</td>
           <td>8x2</td>
-          <td>0.184416</td>
-          <td>0.718851</td>
-          <td>1.0e-01</td>
+          <td>0.161991</td>
+          <td>0.835966</td>
+          <td>5.8e-02</td>
           <td>28k</td>
           <td>0.82</td>
           <td>&lt; 1e-2</td>
@@ -2561,8 +2593,8 @@ First, let’s look on a reduced version of Word2Vec.
           <td>Male terms vs. Female terms</td>
           <td>6x2</td>
           <td>8x2</td>
-          <td>0.370207</td>
-          <td>1.35016</td>
+          <td>0.303524</td>
+          <td>1.37307</td>
           <td>7.0e-03</td>
           <td>91</td>
           <td>1.47</td>
@@ -2574,9 +2606,9 @@ First, let’s look on a reduced version of Word2Vec.
           <td>Temporary vs. Permanent</td>
           <td>6x2</td>
           <td>5x2</td>
-          <td>0.590304</td>
-          <td>1.22442</td>
-          <td>2.0e-02</td>
+          <td>0.342582</td>
+          <td>1.18702</td>
+          <td>2.5e-02</td>
           <td>135</td>
           <td>1.01</td>
           <td>1e-3</td>
@@ -2609,6 +2641,11 @@ Let’s reproduce the results from the paper on the full Word2Vec and Glove word
                   with_pvalue=True, pvalue_kwargs={'method': 'approximate'})
 
 
+.. parsed-literal::
+
+    /project/ethically/ethically/we/weat.py:368: UserWarning: Given weat_data was filterd by data.
+
+
 
 
 .. raw:: html
@@ -2650,8 +2687,8 @@ Let’s reproduce the results from the paper on the full Word2Vec and Glove word
           <td>Pleasant vs. Unpleasant</td>
           <td>25x2</td>
           <td>25x2</td>
-          <td>3.87</td>
-          <td>1.50</td>
+          <td>2.2382</td>
+          <td>1.5196</td>
           <td>0</td>
           <td>32</td>
           <td>1.35</td>
@@ -2663,8 +2700,8 @@ Let’s reproduce the results from the paper on the full Word2Vec and Glove word
           <td>Pleasant vs. Unpleasant</td>
           <td>25x2</td>
           <td>25x2</td>
-          <td>3.85</td>
-          <td>1.52</td>
+          <td>2.2906</td>
+          <td>1.5496</td>
           <td>0</td>
           <td>32</td>
           <td>1.66</td>
@@ -2676,8 +2713,8 @@ Let’s reproduce the results from the paper on the full Word2Vec and Glove word
           <td>Pleasant vs. Unpleasant</td>
           <td>32x2</td>
           <td>25x2</td>
-          <td>2.92</td>
-          <td>1.43</td>
+          <td>1.6208</td>
+          <td>1.4163</td>
           <td>0</td>
           <td>26</td>
           <td>1.17</td>
@@ -2689,8 +2726,8 @@ Let’s reproduce the results from the paper on the full Word2Vec and Glove word
           <td>Pleasant vs. Unpleasant</td>
           <td>16x2</td>
           <td>25x2</td>
-          <td>1.30</td>
-          <td>1.53</td>
+          <td>0.7272</td>
+          <td>1.5226</td>
           <td>0</td>
           <td></td>
           <td></td>
@@ -2702,8 +2739,8 @@ Let’s reproduce the results from the paper on the full Word2Vec and Glove word
           <td>Pleasant vs. Unpleasant</td>
           <td>16x2</td>
           <td>8x2</td>
-          <td>1.11</td>
-          <td>1.25</td>
+          <td>0.9177</td>
+          <td>1.3045</td>
           <td>0</td>
           <td></td>
           <td></td>
@@ -2715,8 +2752,8 @@ Let’s reproduce the results from the paper on the full Word2Vec and Glove word
           <td>Career vs. Family</td>
           <td>8x2</td>
           <td>8x2</td>
-          <td>1.80</td>
-          <td>1.87</td>
+          <td>1.2670</td>
+          <td>1.8734</td>
           <td>0</td>
           <td>39k</td>
           <td>0.72</td>
@@ -2728,9 +2765,9 @@ Let’s reproduce the results from the paper on the full Word2Vec and Glove word
           <td>Male terms vs. Female terms</td>
           <td>8x2</td>
           <td>8x2</td>
-          <td>0.23</td>
-          <td>1.05</td>
-          <td>2.2e-02</td>
+          <td>0.1989</td>
+          <td>1.0896</td>
+          <td>1.6e-02</td>
           <td>28k</td>
           <td>0.82</td>
           <td>&lt; 1e-2</td>
@@ -2741,8 +2778,8 @@ Let’s reproduce the results from the paper on the full Word2Vec and Glove word
           <td>Male terms vs. Female terms</td>
           <td>8x2</td>
           <td>8x2</td>
-          <td>0.40</td>
-          <td>1.27</td>
+          <td>0.3456</td>
+          <td>1.2780</td>
           <td>2.0e-03</td>
           <td>91</td>
           <td>1.47</td>
@@ -2754,9 +2791,9 @@ Let’s reproduce the results from the paper on the full Word2Vec and Glove word
           <td>Temporary vs. Permanent</td>
           <td>6x2</td>
           <td>7x2</td>
-          <td>0.90</td>
-          <td>1.63</td>
-          <td>0</td>
+          <td>0.5051</td>
+          <td>1.4442</td>
+          <td>2.0e-03</td>
           <td>135</td>
           <td>1.01</td>
           <td>1e-3</td>
@@ -2767,9 +2804,9 @@ Let’s reproduce the results from the paper on the full Word2Vec and Glove word
           <td>Pleasant vs. Unpleasant</td>
           <td>8x2</td>
           <td>8x2</td>
-          <td>0.59</td>
-          <td>1.45</td>
-          <td>1.0e-03</td>
+          <td>0.5096</td>
+          <td>1.5520</td>
+          <td>0</td>
           <td>43k</td>
           <td>1.42</td>
           <td>&lt; 1e-2</td>
@@ -2794,6 +2831,11 @@ Results from the paper:
                   with_pvalue=True, pvalue_kwargs={'method': 'approximate'})
 
 
+.. parsed-literal::
+
+    /project/ethically/ethically/we/weat.py:368: UserWarning: Given weat_data was filterd by model.
+
+
 
 
 .. raw:: html
@@ -2835,8 +2877,8 @@ Results from the paper:
           <td>Pleasant vs. Unpleasant</td>
           <td>25x2</td>
           <td>25x2</td>
-          <td>3.15</td>
-          <td>1.55</td>
+          <td>1.4078</td>
+          <td>1.5550</td>
           <td>0</td>
           <td>32</td>
           <td>1.35</td>
@@ -2848,8 +2890,8 @@ Results from the paper:
           <td>Pleasant vs. Unpleasant</td>
           <td>24x2</td>
           <td>25x2</td>
-          <td>3.82</td>
-          <td>1.67</td>
+          <td>1.7317</td>
+          <td>1.6638</td>
           <td>0</td>
           <td>32</td>
           <td>1.66</td>
@@ -2861,8 +2903,8 @@ Results from the paper:
           <td>Pleasant vs. Unpleasant</td>
           <td>47x2</td>
           <td>25x2</td>
-          <td>1.22</td>
-          <td>0.59</td>
+          <td>0.5672</td>
+          <td>0.6047</td>
           <td>1.0e-03</td>
           <td>26</td>
           <td>1.17</td>
@@ -2874,8 +2916,8 @@ Results from the paper:
           <td>Pleasant vs. Unpleasant</td>
           <td>18x2</td>
           <td>25x2</td>
-          <td>0.91</td>
-          <td>1.31</td>
+          <td>0.4180</td>
+          <td>1.3320</td>
           <td>0</td>
           <td></td>
           <td></td>
@@ -2887,8 +2929,8 @@ Results from the paper:
           <td>Pleasant vs. Unpleasant</td>
           <td>18x2</td>
           <td>8x2</td>
-          <td>0.54</td>
-          <td>0.73</td>
+          <td>0.3381</td>
+          <td>0.7337</td>
           <td>1.8e-02</td>
           <td></td>
           <td></td>
@@ -2900,8 +2942,8 @@ Results from the paper:
           <td>Career vs. Family</td>
           <td>8x2</td>
           <td>8x2</td>
-          <td>1.98</td>
-          <td>1.94</td>
+          <td>1.2516</td>
+          <td>1.9518</td>
           <td>0</td>
           <td>39k</td>
           <td>0.72</td>
@@ -2913,9 +2955,9 @@ Results from the paper:
           <td>Male terms vs. Female terms</td>
           <td>8x2</td>
           <td>8x2</td>
-          <td>0.27</td>
-          <td>0.89</td>
-          <td>4.3e-02</td>
+          <td>0.2255</td>
+          <td>0.9981</td>
+          <td>2.7e-02</td>
           <td>28k</td>
           <td>0.82</td>
           <td>&lt; 1e-2</td>
@@ -2926,9 +2968,9 @@ Results from the paper:
           <td>Male terms vs. Female terms</td>
           <td>8x2</td>
           <td>8x2</td>
-          <td>0.44</td>
-          <td>1.26</td>
-          <td>4.0e-03</td>
+          <td>0.3572</td>
+          <td>1.2846</td>
+          <td>0</td>
           <td>91</td>
           <td>1.47</td>
           <td>1e-24</td>
@@ -2939,9 +2981,9 @@ Results from the paper:
           <td>Temporary vs. Permanent</td>
           <td>6x2</td>
           <td>6x2</td>
-          <td>0.67</td>
-          <td>1.41</td>
-          <td>6.0e-03</td>
+          <td>0.3727</td>
+          <td>1.3259</td>
+          <td>1.3e-02</td>
           <td>135</td>
           <td>1.01</td>
           <td>1e-3</td>
@@ -2952,9 +2994,9 @@ Results from the paper:
           <td>Pleasant vs. Unpleasant</td>
           <td>8x2</td>
           <td>7x2</td>
-          <td>-0.13</td>
-          <td>-0.36</td>
-          <td>7.3e-01</td>
+          <td>-0.0852</td>
+          <td>-0.3721</td>
+          <td>7.4e-01</td>
           <td>43k</td>
           <td>1.42</td>
           <td>&lt; 1e-2</td>
@@ -3000,9 +3042,9 @@ No WEAT bias in this case.
      'Na': '25x2',
      'Nt': '6x2',
      'Target words': 'Citizen vs. Immigrant',
-     'd': 0.7592962,
-     'p': 0.119,
-     's': 0.2437886819243431}
+     'd': 0.70259565,
+     'p': 0.13852813852813853,
+     's': 0.1026485487818718}
 
 
 
@@ -3031,7 +3073,12 @@ First experiment - WEAT before and after debias
     
     calc_all_weat(w2v_gender_bias_we.model, weat_data=(5, 6, 7),
                   filter_by='model', with_original_finding=True,
-                  with_pvalue=True, pvalue_kwargs={'method': 'approximate'})
+                  with_pvalue=True)
+
+
+.. parsed-literal::
+
+    /project/ethically/ethically/we/weat.py:368: UserWarning: Given weat_data was filterd by model.
 
 
 
@@ -3075,8 +3122,8 @@ First experiment - WEAT before and after debias
           <td>Career vs. Family</td>
           <td>8x2</td>
           <td>8x2</td>
-          <td>1.98</td>
-          <td>1.94</td>
+          <td>1.2516</td>
+          <td>1.9518</td>
           <td>0</td>
           <td>39k</td>
           <td>0.72</td>
@@ -3088,9 +3135,9 @@ First experiment - WEAT before and after debias
           <td>Male terms vs. Female terms</td>
           <td>8x2</td>
           <td>8x2</td>
-          <td>0.27</td>
-          <td>0.89</td>
-          <td>4.3e-02</td>
+          <td>0.2255</td>
+          <td>0.9981</td>
+          <td>2.3e-02</td>
           <td>28k</td>
           <td>0.82</td>
           <td>&lt; 1e-2</td>
@@ -3101,8 +3148,8 @@ First experiment - WEAT before and after debias
           <td>Male terms vs. Female terms</td>
           <td>8x2</td>
           <td>8x2</td>
-          <td>0.44</td>
-          <td>1.26</td>
+          <td>0.3572</td>
+          <td>1.2846</td>
           <td>4.0e-03</td>
           <td>91</td>
           <td>1.47</td>
@@ -3120,7 +3167,12 @@ First experiment - WEAT before and after debias
     
     calc_all_weat(w2v_gender_debias_we.model, weat_data=(5, 6, 7),
                   filter_by='model', with_original_finding=True,
-                  with_pvalue=True, pvalue_kwargs={'method': 'approximate'})
+                  with_pvalue=True)
+
+
+.. parsed-literal::
+
+    /project/ethically/ethically/we/weat.py:368: UserWarning: Given weat_data was filterd by model.
 
 
 
@@ -3164,8 +3216,8 @@ First experiment - WEAT before and after debias
           <td>Career vs. Family</td>
           <td>8x2</td>
           <td>8x2</td>
-          <td>1.10</td>
-          <td>1.75</td>
+          <td>0.7067</td>
+          <td>1.7923</td>
           <td>0</td>
           <td>39k</td>
           <td>0.72</td>
@@ -3177,8 +3229,8 @@ First experiment - WEAT before and after debias
           <td>Male terms vs. Female terms</td>
           <td>8x2</td>
           <td>8x2</td>
-          <td>-0.09</td>
-          <td>-1.07</td>
+          <td>-0.0689</td>
+          <td>-1.1207</td>
           <td>9.9e-01</td>
           <td>28k</td>
           <td>0.82</td>
@@ -3190,9 +3242,9 @@ First experiment - WEAT before and after debias
           <td>Male terms vs. Female terms</td>
           <td>8x2</td>
           <td>8x2</td>
-          <td>0.01</td>
-          <td>0.10</td>
-          <td>4.0e-01</td>
+          <td>0.0103</td>
+          <td>0.1283</td>
+          <td>4.1e-01</td>
           <td>91</td>
           <td>1.47</td>
           <td>1e-24</td>
@@ -3214,28 +3266,8 @@ attribute words (Math vs. Arts and Science vs. Arts).
 
 .. code:: ipython3
 
-    # Significant result
-    
-    calc_single_weat(w2v_gender_debias_we.model,
-                     WEAT_DATA[5]['first_target'],
-                     WEAT_DATA[5]['second_target'],
-                     WEAT_DATA[7]['first_target'],
-                     WEAT_DATA[7]['second_target'])
-
-
-
-
-.. parsed-literal::
-
-    {'Attrib. words': 'Science vs. Arts',
-     'Na': '8x2',
-     'Nt': '8x2',
-     'Target words': 'Male names vs. Female names',
-     'd': 1.0502447,
-     'p': 0.017,
-     's': 0.345535583794117}
-
-
+    from ethically.we import calc_single_weat
+    from ethically.we.data import WEAT_DATA
 
 .. code:: ipython3
 
@@ -3244,6 +3276,31 @@ attribute words (Math vs. Arts and Science vs. Arts).
     calc_single_weat(w2v_gender_debias_we.model,
                      WEAT_DATA[5]['first_target'],
                      WEAT_DATA[5]['second_target'],
+                     WEAT_DATA[6]['first_target'],
+                     WEAT_DATA[6]['second_target'])
+
+
+
+
+.. parsed-literal::
+
+    {'Attrib. words': 'Math vs. Arts',
+     'Na': '8x2',
+     'Nt': '8x2',
+     'Target words': 'Male names vs. Female names',
+     'd': 1.513799,
+     'p': 0.0009324009324009324,
+     's': 0.34435559436678886}
+
+
+
+.. code:: ipython3
+
+    # Significant result
+    
+    calc_single_weat(w2v_gender_bias_we.model,
+                     WEAT_DATA[5]['first_target'],
+                     WEAT_DATA[5]['second_target'],
                      WEAT_DATA[7]['first_target'],
                      WEAT_DATA[7]['second_target'])
 
@@ -3256,9 +3313,9 @@ attribute words (Math vs. Arts and Science vs. Arts).
      'Na': '8x2',
      'Nt': '8x2',
      'Target words': 'Male names vs. Female names',
-     'd': 1.0502447,
-     'p': 0.017,
-     's': 0.345535583794117}
+     'd': 1.7127873,
+     'p': 0.0,
+     's': 0.5357069745659828}
 
 
 
@@ -3271,5 +3328,5 @@ Second experiment - Clustering as classification of the most biased neutral word
 
 
 
-.. image:: demo-word-embedding-bias_files/demo-word-embedding-bias_87_0.png
+.. image:: demo-word-embedding-bias_files/demo-word-embedding-bias_91_0.png
 

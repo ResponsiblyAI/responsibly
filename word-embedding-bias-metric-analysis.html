@@ -1,0 +1,269 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>Analysis of Word Embedding Bias Metrics &#8212; Ethically 0.0.5 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="_static/language_data.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="analysis-of-word-embedding-bias-metrics">
+<h1>Analysis of Word Embedding Bias Metrics<a class="headerlink" href="#analysis-of-word-embedding-bias-metrics" title="Permalink to this headline">¶</a></h1>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This page is still work-in-progress.</p>
+</div>
+<p>There are two common ways to measure bias in word embedding intrinsically,
+one is given by Tolga et al. work, and the second is called WEAT.
+Both of the two approaches use the same building block:
+cosine similarity between two word vectors,
+but it seems that they capture bias differently.
+For example, after a gender debiasing of Word2Vec model
+using Tolga’s methods, the gender-bias which is measured with WEAT score
+is not eliminated. We might hypothesize that WEAT score measures bias
+in a more profound sense.</p>
+<p>In this page, we aim to bridge the gap between the two measures.
+We will formulate the WEAT score using Tolga’s terminology,
+and observe its power.</p>
+<p>We assume that you are familiar with these two papers:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>Bolukbasi, T., Chang, K. W., Zou, J. Y., Saligrama, V.,
+&amp; Kalai, A. T. (2016).
+<a class="reference external" href="https://arxiv.org/abs/1607.06520">Man is to computer programmer as woman is to homemaker?
+debiasing word embeddings</a>.
+in Advances in neural information processing systems
+(pp. 4349-4357).</p></li>
+<li><p>Caliskan, A., Bryson, J. J., &amp; Narayanan, A. (2017).
+<a class="reference external" href="http://opus.bath.ac.uk/55288/">Semantics derived automatically
+from language corpora contain human-like biases</a>.
+Science, 356(6334), 183-186.</p></li>
+</ul>
+</div></blockquote>
+<p>Let’s start with the definition of the WEAT score.
+Note that we will use “word”, “vector” and “word vector” interchangeably.</p>
+<p>Let <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span> be two sets of target words of equal size,
+and <span class="math notranslate nohighlight">\(A\)</span> two sets of attribute words of equal size.
+Let <span class="math notranslate nohighlight">\(cos(\vec a, \vec b)\)</span> donate the cosine
+of the angle between vector <span class="math notranslate nohighlight">\(\vec a\)</span> and <span class="math notranslate nohighlight">\(\vec b\)</span>.
+We will assume the word embedding is normalized,
+i.e., all its vectors have a norm equal to one.
+Therefore, the cosine similarity between two word vectors
+is the same as the inner product of these vectors
+<span class="math notranslate nohighlight">\(\langle\vec a, \vec b\rangle\)</span>.</p>
+<p>The WEAT test statistic is</p>
+<div class="math notranslate nohighlight">
+\[s(X, Y, A, B)
+= \sum\limits_{\vec x \in X}{s(\vec x, A, B)} - \sum\limits_{\vec y \in X}{s(\vec y, A, B)}\]</div>
+<p>where</p>
+<div class="math notranslate nohighlight">
+\[s(w, A, B)
+= mean_{\vec a \in A}cos(\vec w, \vec a) - mean_{\vec b \in B}cos(\vec w, \vec b)\]</div>
+<p>Let <span class="math notranslate nohighlight">\(N = |A| = |B|\)</span>. Then we can rewrite <span class="math notranslate nohighlight">\(s(w, A, B)\)</span>:</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray}
+
+s(w, A, B) &amp; = &amp; mean_{\vec a \in A}cos(\vec w, \vec a) - mean_{\vec b \in B}cos(\vec w, \vec b) \\
+           &amp; = &amp; mean_{\vec a \in A}\langle\vec w, \vec a\rangle - mean_{\vec b \in B}\langle\vec w, \vec b\rangle \\
+           &amp; = &amp; \frac{1}{N} \sum\limits_{\vec a \in A} \langle\vec w, \vec a\rangle - \frac{1}{N} \sum\limits_{\vec b \in b} \langle\vec w, \vec b\rangle
+\end{eqnarray}</div><p>Using the linearity of the inner product:</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray}
+
+&amp; = &amp; \frac{1}{N} \langle\vec w, \sum\limits_{\vec a \in A} \vec a\rangle - \frac{1}{N} \langle\vec w, \sum\limits_{\vec b \in b}  \vec b\rangle \\
+&amp; = &amp; \frac{1}{N} \langle\vec w, \sum\limits_{\vec a \in A} \vec a - \sum\limits_{\vec b \in b}  \vec b\rangle
+
+\end{eqnarray}</div><p>Let’s define:</p>
+<div class="math notranslate nohighlight">
+\[\vec d_{AB} = \sum\limits_{\vec a \in A} \vec a - \sum\limits_{\vec b \in b}  \vec b\]</div>
+<p>And then:</p>
+<div class="math notranslate nohighlight">
+\[s(w, A, B) = \frac{1}{N} \langle\vec w, \vec d_{AB}\rangle\]</div>
+<p>So <span class="math notranslate nohighlight">\(s(w, A, B)\)</span> measures the association between
+a word <span class="math notranslate nohighlight">\(\vec w\)</span> and a direction <span class="math notranslate nohighlight">\(\vec d_{AB}\)</span>
+which is defined by two sets of words <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>.
+This is a key point, we formulated the low-level part of WEAT
+using the notion of a direction in a word embedding.</p>
+<p>Tolga’s paper suggests three ways to come up with a direction
+in a word embedding between two concepts:</p>
+<ol class="arabic simple">
+<li><p>Have two words, one for each end, <span class="math notranslate nohighlight">\(\vec a\)</span> and <span class="math notranslate nohighlight">\(\vec b\)</span>,
+and substruct them to get <span class="math notranslate nohighlight">\(\vec d = \vec a - \vec b\)</span>.
+Then, normalize <span class="math notranslate nohighlight">\(\vec d\)</span>.
+For example, <span class="math notranslate nohighlight">\(\overrightarrow{she} - \overrightarrow{he}\)</span>.</p></li>
+<li><p>Have two sets of words, one for each end,
+<span class="math notranslate nohighlight">\(\vec A\)</span> and <span class="math notranslate nohighlight">\(\vec B\)</span>,
+calculate the normalized sum of each group,
+then subtract the sums and normalized again.
+Up to a factor, this is precisely <span class="math notranslate nohighlight">\(d_{AB}\)</span>!
+Nevertheless, this factor might be matter,
+as it changes for every check in the p-value calculation
+using the permutation test.
+This will be examined experimentally in the future.</p></li>
+<li><p>The last method has a stronger assumption,
+it requires having a set of pairs of words,
+one from the concept <span class="math notranslate nohighlight">\(A\)</span> and the other from the concept <span class="math notranslate nohighlight">\(B\)</span>.
+For example, she-he and mother-father.
+We won’t describe the method here.
+Note that this is the method that Tolga’s paper use
+to define the gender direction for debiasing.</p></li>
+</ol>
+<p>The first method is basically the same as the second method,
+when <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span> contain each only one word vector.</p>
+<p>Now, let’s move forward to rewrite the WEAT score itself:</p>
+<div class="math notranslate nohighlight">
+\begin{eqnarray}
+
+s(X, Y, A, B) &amp; = &amp; \sum\limits_{\vec x \in X}{s(\vec x, A, B)} - \sum\limits_{\vec y \in X}{s(\vec y, A, B)} \\
+              &amp; = &amp; \frac{1}{N}\sum\limits_{\vec x \in X}\langle\vec x, \vec d_{AB}\rangle - \frac{1}{N}\sum\limits_{\vec y \in Y}\langle\vec y, \vec d_{AB}\rangle \\
+              &amp; = &amp; \frac{1}{N}\langle\sum\limits_{\vec x \in X} \vec x, \vec d_{AB}\rangle - \frac{1}{N}\langle\sum\limits_{\vec y \in Y} \vec y, \vec d_{AB}\rangle \\
+              &amp; = &amp; \frac{1}{N}\langle\sum\limits_{\vec x \in X} \vec x - \sum\limits_{\vec y \in Y} \vec y, \vec d_{AB}\rangle \\
+              &amp; = &amp; \frac{1}{N}\langle\vec d_{XY}, \vec d_{AB}\rangle
+
+\end{eqnarray}</div><p>This formulation allows us to see what the WEAT score is really about:
+measuring the association between two directions.
+Each direction is defined by two concepts ends,
+such as Female-Male, Science-Art, Pleasent-Unpleasant.
+It explains why WEAT seems like a more deeper measure of bias,
+In the WEAT score, the direction is defined by two sets of words,
+one for each end. As mentioned above, Tolga’s paper
+suggests two more methods for specifying the direction.</p>
+<p>Note that the WEAT score is scaled only with the size of
+<span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>,
+because <span class="math notranslate nohighlight">\(s(X, Y, A, B)\)</span> only sums over <span class="math notranslate nohighlight">\(X\)</span> and <span class="math notranslate nohighlight">\(Y\)</span>
+and doesn’t use the mean, in contrast to <span class="math notranslate nohighlight">\(s(\vec w, A, B)\)</span>.
+Besides, even though the perspective of association between
+two directions may help us to understand better what WEAT score measure,
+the original formulation matters to compute the p-value.</p>
+<p>Tolga’s direct bias works a bit different. Given a biad direction
+<span class="math notranslate nohighlight">\(\vec d\)</span>
+and a set of neutral words <span class="math notranslate nohighlight">\(W\)</span>, then:</p>
+<div class="math notranslate nohighlight">
+\[DirectBias(\vec d, W) = \frac{1}{|W|}\sum\limits_{\vec w \in W} |\langle \vec d, \vec w \rangle|\]</div>
+<p>The bias direction <span class="math notranslate nohighlight">\(\vec d\)</span> can be defined with
+one of the three methods described above,
+including the WEAT flavored one as <span class="math notranslate nohighlight">\(\vec d_{AB}\)</span>
+with two word sets <span class="math notranslate nohighlight">\(A\)</span> and <span class="math notranslate nohighlight">\(B\)</span>.
+The direct bias definition lacks the second direction,
+and it is indeed easier to debias, as it requires removing the
+<span class="math notranslate nohighlight">\(\vec d\)</span> part from all the neutral words in the vocabulary.</p>
+<p>In Tolga’s papar there is another metric - indirect bias - that takes
+two words (<span class="math notranslate nohighlight">\(\vec v, \vec u\)</span>) and the (bias) direction (<span class="math notranslate nohighlight">\(\vec d\)</span>),
+and measures the shared proportion of the two word projections
+on the bias direction:</p>
+<div class="math notranslate nohighlight">
+\[IndirectBias(\vec d, \vec v, \vec w) = \frac{\langle \vec d, \vec v \rangle \langle \vec d, \vec w \rangle}{\langle \vec v, \vec w \rangle}\]</div>
+<p>Therefore, we can formalize the WEAT score as a measure
+of association between two concept directions in a word embedding.
+Practically, the WEAT score uses two sets of words to define a direction,
+while in Tolga’s paper, there are an additional two more methods.</p>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Ethically</a></h1>
+
+
+
+
+
+
+<p>
+<iframe src="https://ghbtns.com/github-btn.html?user=EthicallyAI&repo=ethically&type=star&v=2&count=true&size=large&v=2"
+  allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
+</p>
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dataset.html">Datasets</a></li>
+<li class="toctree-l1"><a class="reference internal" href="fairness.html">Classification Fairness</a></li>
+<li class="toctree-l1"><a class="reference internal" href="word-embedding-bias.html">Word Embedding Bias</a></li>
+<li class="toctree-l1"><a class="reference internal" href="demos.html">Demos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about/contributing.html">For Contributors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about/changelog.html">Revision History</a></li>
+<li class="toctree-l1"><a class="reference internal" href="about/license.html">License</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2019, Shlomi Hod.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.0</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+      |
+      <a href="_sources/word-embedding-bias-metric-analysis.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+    <a href="https://github.com/EthicallyAI/ethically" class="github">
+        <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
+    </a>
+    
+
+    
+  </body>
+</html>

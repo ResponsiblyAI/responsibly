@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>ethically.we.weat &#8212; Ethically 0.0.4 documentation</title>
+    <title>ethically.we.weat &#8212; Ethically 0.0.5 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -94,29 +94,46 @@
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">mlxtend.evaluate</span> <span class="k">import</span> <span class="n">permutation_test</span>
 
-<span class="kn">from</span> <span class="nn">..consts</span> <span class="k">import</span> <span class="n">RANDOM_STATE</span>
-<span class="kn">from</span> <span class="nn">.data</span> <span class="k">import</span> <span class="n">WEAT_DATA</span>
-<span class="kn">from</span> <span class="nn">.utils</span> <span class="k">import</span> <span class="n">assert_gensim_keyed_vectors</span>
+<span class="kn">from</span> <span class="nn">ethically.consts</span> <span class="k">import</span> <span class="n">RANDOM_STATE</span>
+<span class="kn">from</span> <span class="nn">ethically.utils</span> <span class="k">import</span> <span class="n">_warning_setup</span>
+<span class="kn">from</span> <span class="nn">ethically.we.data</span> <span class="k">import</span> <span class="n">WEAT_DATA</span>
+<span class="kn">from</span> <span class="nn">ethically.we.utils</span> <span class="k">import</span> <span class="p">(</span>
+    <span class="n">assert_gensim_keyed_vectors</span><span class="p">,</span> <span class="n">cosine_similarities_by_words</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <span class="n">FILTER_BY_OPTIONS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;model&#39;</span><span class="p">,</span> <span class="s1">&#39;data&#39;</span><span class="p">]</span>
 <span class="n">RESULTS_DF_COLUMNS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Target words&#39;</span><span class="p">,</span> <span class="s1">&#39;Attrib. words&#39;</span><span class="p">,</span>
                       <span class="s1">&#39;Nt&#39;</span><span class="p">,</span> <span class="s1">&#39;Na&#39;</span><span class="p">,</span> <span class="s1">&#39;s&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">]</span>
 <span class="n">PVALUE_METHODS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;exact&#39;</span><span class="p">,</span> <span class="s1">&#39;approximate&#39;</span><span class="p">]</span>
+<span class="n">PVALUE_DEFUALT_METHOD</span> <span class="o">=</span> <span class="s1">&#39;exact&#39;</span>
 <span class="n">ORIGINAL_DF_COLUMNS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;original_&#39;</span> <span class="o">+</span> <span class="n">key</span> <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;N&#39;</span><span class="p">,</span> <span class="s1">&#39;d&#39;</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">]]</span>
+<span class="n">WEAT_WORD_SETS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;first_target&#39;</span><span class="p">,</span> <span class="s1">&#39;second_target&#39;</span><span class="p">,</span>
+                  <span class="s1">&#39;first_attribute&#39;</span><span class="p">,</span> <span class="s1">&#39;second_attribute&#39;</span><span class="p">]</span>
+<span class="n">PVALUE_EXACT_WARNING_LEN</span> <span class="o">=</span> <span class="mi">10</span>
+
+<span class="n">_warning_setup</span><span class="p">()</span>
 
 
 <span class="k">def</span> <span class="nf">_calc_association_target_attributes</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">target_word</span><span class="p">,</span>
                                         <span class="n">first_attribute_words</span><span class="p">,</span>
                                         <span class="n">second_attribute_words</span><span class="p">):</span>
+    <span class="c1"># pylint: disable=line-too-long</span>
+
     <span class="n">assert_gensim_keyed_vectors</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 
     <span class="k">with</span> <span class="n">warnings</span><span class="o">.</span><span class="n">catch_warnings</span><span class="p">():</span>
         <span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s1">&#39;ignore&#39;</span><span class="p">,</span> <span class="ne">FutureWarning</span><span class="p">)</span>
-        <span class="n">first_mean</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">n_similarity</span><span class="p">([</span><span class="n">target_word</span><span class="p">],</span>
-                                        <span class="n">first_attribute_words</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
-        <span class="n">second_mean</span> <span class="o">=</span> <span class="n">model</span><span class="o">.</span><span class="n">n_similarity</span><span class="p">([</span><span class="n">target_word</span><span class="p">],</span>
-                                         <span class="n">second_attribute_words</span><span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+
+        <span class="n">first_mean</span> <span class="o">=</span> <span class="p">(</span><span class="n">cosine_similarities_by_words</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
+                                                   <span class="n">target_word</span><span class="p">,</span>
+                                                   <span class="n">first_attribute_words</span><span class="p">)</span>
+                      <span class="o">.</span><span class="n">mean</span><span class="p">())</span>
+
+        <span class="n">second_mean</span> <span class="o">=</span> <span class="p">(</span><span class="n">cosine_similarities_by_words</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
+                                                    <span class="n">target_word</span><span class="p">,</span>
+                                                    <span class="n">second_attribute_words</span><span class="p">)</span>
+                       <span class="o">.</span><span class="n">mean</span><span class="p">())</span>
 
     <span class="k">return</span> <span class="n">first_mean</span> <span class="o">-</span> <span class="n">second_mean</span>
 
@@ -145,14 +162,14 @@
 
 
 <span class="k">def</span> <span class="nf">_calc_weat_pvalue</span><span class="p">(</span><span class="n">first_associations</span><span class="p">,</span> <span class="n">second_associations</span><span class="p">,</span>
-                      <span class="n">method</span><span class="o">=</span><span class="s1">&#39;approximate&#39;</span><span class="p">):</span>
+                      <span class="n">method</span><span class="o">=</span><span class="n">PVALUE_DEFUALT_METHOD</span><span class="p">):</span>
 
     <span class="k">if</span> <span class="n">method</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">PVALUE_METHODS</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;method should be one of </span><span class="si">{}</span><span class="s1">, </span><span class="si">{}</span><span class="s1"> was given&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
             <span class="n">PVALUE_METHODS</span><span class="p">,</span> <span class="n">method</span><span class="p">))</span>
 
     <span class="n">pvalue</span> <span class="o">=</span> <span class="n">permutation_test</span><span class="p">(</span><span class="n">first_associations</span><span class="p">,</span> <span class="n">second_associations</span><span class="p">,</span>
-                              <span class="n">func</span><span class="o">=</span><span class="s1">&#39;x_mean &gt; y_mean&#39;</span><span class="p">,</span>
+                              <span class="n">func</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="nb">sum</span><span class="p">(</span><span class="n">x</span><span class="p">)</span> <span class="o">-</span> <span class="nb">sum</span><span class="p">(</span><span class="n">y</span><span class="p">),</span>
                               <span class="n">method</span><span class="o">=</span><span class="n">method</span><span class="p">,</span>
                               <span class="n">seed</span><span class="o">=</span><span class="n">RANDOM_STATE</span><span class="p">)</span>  <span class="c1"># if exact - no meaning</span>
     <span class="k">return</span> <span class="n">pvalue</span>
@@ -179,7 +196,13 @@
 
 
 <span class="k">def</span> <span class="nf">_filter_by_data_weat_stimuli</span><span class="p">(</span><span class="n">stimuli</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Inplace.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Filter WEAT stimuli words if there is a `remove` key.</span>
+
+<span class="sd">    Some of the words from Caliskan et al. (2017) seems as not being used.</span>
+
+<span class="sd">    Modifiy the stimuli object in place.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">stimuli</span><span class="p">:</span>
         <span class="k">if</span> <span class="s1">&#39;remove&#39;</span> <span class="ow">in</span> <span class="n">stimuli</span><span class="p">[</span><span class="n">group</span><span class="p">]:</span>
             <span class="n">words_to_remove</span> <span class="o">=</span> <span class="n">stimuli</span><span class="p">[</span><span class="n">group</span><span class="p">][</span><span class="s1">&#39;remove&#39;</span><span class="p">]</span>
@@ -195,7 +218,10 @@
 
 
 <span class="k">def</span> <span class="nf">_filter_by_model_weat_stimuli</span><span class="p">(</span><span class="n">stimuli</span><span class="p">,</span> <span class="n">model</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Inplace.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Filter WEAT stimuli words if they are not exists in the model.</span>
+
+<span class="sd">    Modifiy the stimuli object in place.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">for</span> <span class="n">group_category</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;target&#39;</span><span class="p">,</span> <span class="s1">&#39;attribute&#39;</span><span class="p">]:</span>
         <span class="n">first_group</span> <span class="o">=</span> <span class="s1">&#39;first_&#39;</span> <span class="o">+</span> <span class="n">group_category</span>
@@ -208,6 +234,8 @@
 
         <span class="n">min_len</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">first_words</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">second_words</span><span class="p">))</span>
 
+        <span class="c1"># sample to make the first and second word set</span>
+        <span class="c1"># with equal size</span>
         <span class="n">first_words</span> <span class="o">=</span> <span class="n">_sample_if_bigger</span><span class="p">(</span><span class="n">first_words</span><span class="p">,</span> <span class="n">min_len</span><span class="p">)</span>
         <span class="n">second_words</span> <span class="o">=</span> <span class="n">_sample_if_bigger</span><span class="p">(</span><span class="n">second_words</span><span class="p">,</span> <span class="n">min_len</span><span class="p">)</span>
 
@@ -352,17 +380,29 @@
     <span class="k">elif</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">weat_data</span><span class="p">,</span> <span class="nb">tuple</span><span class="p">):</span>
         <span class="n">weat_data</span> <span class="o">=</span> <span class="p">[</span><span class="n">WEAT_DATA</span><span class="p">[</span><span class="n">index</span><span class="p">]</span> <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="n">weat_data</span><span class="p">]</span>
 
-    <span class="k">if</span> <span class="n">pvalue_kwargs</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-        <span class="n">pvalue_kwargs</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="ow">not</span> <span class="n">pvalue_kwargs</span>
+            <span class="ow">or</span> <span class="n">pvalue_kwargs</span><span class="p">[</span><span class="s1">&#39;method&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">PVALUE_DEFUALT_METHOD</span><span class="p">):</span>
+        <span class="n">max_word_set_len</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">stimuli</span><span class="p">[</span><span class="n">ws</span><span class="p">][</span><span class="s1">&#39;words&#39;</span><span class="p">])</span>
+                               <span class="k">for</span> <span class="n">stimuli</span> <span class="ow">in</span> <span class="n">weat_data</span>
+                               <span class="k">for</span> <span class="n">ws</span> <span class="ow">in</span> <span class="n">WEAT_WORD_SETS</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">max_word_set_len</span> <span class="o">&gt;</span> <span class="n">PVALUE_EXACT_WARNING_LEN</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;At least one stimuli has a word set bigger&#39;</span>
+                          <span class="s1">&#39; than </span><span class="si">{}</span><span class="s1">, and the computation might take a while.&#39;</span>
+                          <span class="s1">&#39; Consider using </span><span class="se">\&#39;</span><span class="s1">exact</span><span class="se">\&#39;</span><span class="s1"> as method&#39;</span>
+                          <span class="s1">&#39; for pvalue_kwargs.&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">PVALUE_EXACT_WARNING_LEN</span><span class="p">))</span>
 
-    <span class="n">weat_data</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">weat_data</span><span class="p">)</span>
+    <span class="n">actual_weat_data</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">weat_data</span><span class="p">)</span>
 
-    <span class="n">_filter_weat_data</span><span class="p">(</span><span class="n">weat_data</span><span class="p">,</span>
+    <span class="n">_filter_weat_data</span><span class="p">(</span><span class="n">actual_weat_data</span><span class="p">,</span>
                       <span class="n">model</span><span class="p">,</span>
                       <span class="n">filter_by</span><span class="p">)</span>
 
+    <span class="k">if</span> <span class="n">weat_data</span> <span class="o">!=</span> <span class="n">actual_weat_data</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Given weat_data was filterd by </span><span class="si">{}</span><span class="s1">.&#39;</span>
+                      <span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">filter_by</span><span class="p">))</span>
+
     <span class="n">results</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">stimuli</span> <span class="ow">in</span> <span class="n">weat_data</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">stimuli</span> <span class="ow">in</span> <span class="n">actual_weat_data</span><span class="p">:</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">calc_single_weat</span><span class="p">(</span><span class="n">model</span><span class="p">,</span>
                                   <span class="n">stimuli</span><span class="p">[</span><span class="s1">&#39;first_target&#39;</span><span class="p">],</span>
                                   <span class="n">stimuli</span><span class="p">[</span><span class="s1">&#39;second_target&#39;</span><span class="p">],</span>
@@ -400,7 +440,7 @@
                                                 <span class="k">if</span> <span class="n">pvalue</span> <span class="k">else</span> <span class="n">pvalue</span><span class="p">)</span>
 
     <span class="n">results_df</span> <span class="o">=</span> <span class="n">results_df</span><span class="p">[</span><span class="n">cols</span><span class="p">]</span>
-    <span class="n">results_df</span> <span class="o">=</span> <span class="n">results_df</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">results_df</span> <span class="o">=</span> <span class="n">results_df</span><span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">results_df</span></div>
 </pre></div>
