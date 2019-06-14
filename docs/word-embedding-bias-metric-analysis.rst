@@ -160,6 +160,9 @@ Note that the WEAT score is scaled only with the size of
 :math:`A` and :math:`B`,
 because :math:`s(X, Y, A, B)` only sums over :math:`X` and :math:`Y`
 and doesn't use the mean, in contrast to :math:`s(\vec w, A, B)`.
+Besides, even though the perspective of association between
+two directions may help us to understand better what WEAT score measure,
+the original formulation matters to compute the p-value.
 
 Tolga's direct bias works a bit different. Given a biad direction
 :math:`\vec d`
