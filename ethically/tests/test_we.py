@@ -7,6 +7,7 @@ from math import isclose
 import numpy as np
 import pytest
 
+from ethically.consts import RANDOM_STATE
 from ethically.tests.data import TOLGA_GENDER_ANALOGIES
 from ethically.tests.utils import assert_deep_almost_equal
 from ethically.we import (
@@ -16,8 +17,6 @@ from ethically.we.data import WEAT_DATA, load_w2v_small
 from ethically.we.utils import (
     most_similar, project_params, project_reject_vector, project_vector,
 )
-
-from ..consts import RANDOM_STATE
 
 
 ATOL = 1e-6
@@ -383,16 +382,38 @@ def test_calc_all_weat_indices(w2v_small):
                                  atol=0.01)
 
 
+def test_calc_all_weat_defaults(w2v_small):
+    weat_5_results_default = (calc_all_weat(w2v_small, (5,))
+                              .iloc[0].to_dict())
+
+    weat_5_results = (calc_all_weat(w2v_small, (5,),
+                                    filter_by='model',
+                                    with_pvalue=True,
+                                    pvalue_kwargs={'method': 'exact'})
+                      .iloc[0].to_dict())
+
+    assert_deep_almost_equal(weat_5_results_default, weat_5_results)
+
+
 def test_calc_weat_pleasant_attribute(w2v_small):
+    # pylint: disable=line-too-long
+
+    pvalue_kwargs = {'method': 'approximate'}
+
     result_v1 = calc_weat_pleasant_unpleasant_attribute(w2v_small,
-                                                        WEAT_DATA[1]['first_target'],  # pylint: disable=C0301
-                                                        WEAT_DATA[1]['second_target'])  # pylint: disable=C0301
-    result_v1['p'] = round(result_v1['p'], 2)
+                                                        WEAT_DATA[1]['first_target'],
+                                                        WEAT_DATA[1]['second_target'],
+                                                        pvalue_kwargs=pvalue_kwargs)
+    result_v1['p'] = round(result_v1['p'], 4)
+    result_v1['d'] = round(result_v1['d'], 4)
+    result_v1['s'] = round(result_v1['s'], 4)
 
-    result_v2 = calc_all_weat(w2v_small).iloc[1].to_dict()
-    result_v2['p'] = float(result_v2['p'])
+    result_v2 = (calc_all_weat(w2v_small, (1,),
+                               pvalue_kwargs=pvalue_kwargs)
+                 .iloc[0]
+                 .to_dict())
 
-    assert result_v1 == result_v2
+    assert_deep_almost_equal(result_v1, result_v2, atol=0.01)
 
 
 def test_most_similar(w2v_small):
@@ -407,3 +428,13 @@ def test_most_similar(w2v_small):
 
     assert_deep_almost_equal(ethically_results[1:], gensim_results,
                              atol=0.01)
+
+
+def test_compute_association(gender_biased_w2v_small):
+    """
+    Test compute_association method in GenderBiasWE.
+    """
+    (r, pvalue), _ = gender_biased_w2v_small.compute_factual_association()
+
+    assert isclose(r, 0.7070401592764508)
+    assert isclose(pvalue, 1.4324502214459908e-06)

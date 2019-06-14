@@ -71,6 +71,19 @@ def project_params(u, v):
     return projection, projected_vector, rejected_vector
 
 
+def cosine_similarities_by_words(model, word, words):
+    """Compute cosine similarities between a word and a set of other words."""
+
+    assert isinstance(word, string_types), \
+        'The arguemnt `word` should be a string.'
+    assert not isinstance(words, string_types), \
+        'The argument `words` should not be a string.'
+
+    vec = model[word]
+    vecs = [model[w] for w in words]
+    return model.cosine_similarities(vec, vecs)
+
+
 def update_word_vector(model, word, new_vector):
     model.vectors[model.vocab[word].index] = new_vector
     if model.vectors_norm is not None:
