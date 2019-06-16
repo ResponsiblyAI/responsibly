@@ -116,8 +116,11 @@ def take_two_sides_extreme_sorted(df, n_extreme,
 
 def assert_gensim_keyed_vectors(model):
     if not isinstance(model, WORD_EMBEDDING_MODEL_TYPES):
-        raise TypeError('model should be of type {}, not {}'
-                        .format(''.join(WORD_EMBEDDING_MODEL_TYPES),
+        type_names = (model_type.__name__
+                      for model_type in WORD_EMBEDDING_MODEL_TYPES)
+        raise TypeError('model should be on of the types'
+                        ' ({}), not {}.'
+                        .format(', '.join(type_names),
                                 type(model)))
 
 
