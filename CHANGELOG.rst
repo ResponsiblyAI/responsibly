@@ -6,7 +6,7 @@ Revision History
 
 - Word embedding bias
 
-  - Improve functionality of BiasWordEmbedding
+  - Improve functionality of `BiasWordEmbedding`
 
 
 0.0.5 (2019/06/14)
