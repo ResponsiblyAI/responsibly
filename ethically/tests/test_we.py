@@ -201,8 +201,10 @@ def test_neutralize(gender_biased_w2v_small, is_preforming=True):
 
 def test_equalize(gender_biased_w2v_small, is_preforming=True):
     """Test _equalize method in GenderBiasWE."""
-    # pylint: disable=C0301
-    equality_sets = gender_biased_w2v_small._data['definitional_pairs']
+    # pylint: disable=line-too-long
+    equality_sets = {tuple(w) for w in gender_biased_w2v_small._data['equalize_pairs']}
+    equality_sets |= {tuple(w) for w in gender_biased_w2v_small._data['definitional_pairs']}
+    equality_sets = gender_biased_w2v_small._generate_pair_candidates(equality_sets)
 
     if is_preforming:
         gender_biased_w2v_small._equalize(equality_sets)
@@ -216,7 +218,6 @@ def test_equalize(gender_biased_w2v_small, is_preforming=True):
 
             np.testing.assert_allclose(np.linalg.norm(vector), 1, atol=ATOL)
 
-            # pylint: disable=C0301
             (projection_vector,
              rejection_vector) = project_reject_vector(vector,
                                                        gender_biased_w2v_small.direction)

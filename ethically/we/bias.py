@@ -786,6 +786,14 @@ class BiasWordEmbedding:
 
         self.model.init_sims(replace=True)
 
+    def _generate_pair_candidates(self, pairs):
+        # pylint: disable=line-too-long
+        return {(candidate1, candidate2)
+                for word1, word2 in pairs
+                for candidate1, candidate2 in zip(generate_one_word_forms(word1),
+                                                  generate_one_word_forms(word2))
+                if candidate1 in self.model and candidate2 in self.model}
+
     def debias(self, method='hard', neutral_words=None, equality_sets=None,
                inplace=True):
         """Debias the word embedding.
@@ -825,6 +833,13 @@ class BiasWordEmbedding:
         if method == 'hard':
             if self._verbose:
                 print('Equalize...')
+
+            assert all(len(equality_set) == 2
+                       for equality_set in equality_sets), \
+                   'Currently supporting only equality pairs.'
+
+            equality_sets = self._generate_pair_candidates(equality_sets)
+
             bias_word_embedding._equalize(equality_sets)
 
         if inplace:
@@ -1167,22 +1182,14 @@ class GenderBiasWE(BiasWordEmbedding):
 
     def debias(self, method='hard', neutral_words=None, equality_sets=None,
                inplace=True):
-        # pylint: disable=C0301
+        # pylint: disable=line-too-long
         if method in ['hard', 'neutralize']:
             if neutral_words is None:
                 neutral_words = self._data['neutral_words']
 
         if method == 'hard' and equality_sets is None:
-            equality_sets = self._data['definitional_pairs']
-
-            if not self.only_lower:
-                assert all(len(equality_set) == 2
-                           for equality_set in equality_sets), 'currently supporting only equality pairs if only_lower is False'
-                # TODO: refactor
-                equality_sets = {(candidate1, candidate2)
-                                 for word1, word2 in equality_sets
-                                 for candidate1, candidate2 in zip(generate_one_word_forms(word1),
-                                                                   generate_one_word_forms(word2))}
+            equality_sets = {tuple(w) for w in self._data['equalize_pairs']}
+            equality_sets |= {tuple(w) for w in self._data['definitional_pairs']}
 
         return super().debias(method, neutral_words, equality_sets,
                               inplace)
