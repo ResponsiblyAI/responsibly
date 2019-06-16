@@ -1,14 +1,6 @@
 Revision History
 ================
 
-0.0.6 (2019/??/??)
-------------------
-
-- Word embedding bias
-
-  - Improve functionality of BiasWordEmbedding
-
-
 0.0.5 (2019/06/14)
 ------------------
 
