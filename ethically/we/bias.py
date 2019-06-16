@@ -1070,21 +1070,34 @@ class GenderBiasWE(BiasWordEmbedding):
     :param bool only_lower: Whether the word embedding contrains
                             only lower case words
     :param bool verbose: Set verbosity
+    :param str identify_direction: Set the method of identifying
+                                   the gender direction:
+                                   `'single'`, `'sum'` or `'pca'`.
     :param bool to_normalize: Whether to normalize all the vectors
                               (recommended!)
     """
 
     def __init__(self, model, only_lower=False, verbose=False,
-                 identify_direction=True, to_normalize=True):
+                 identify_direction='pca', to_normalize=True):
         super().__init__(model=model,
                          only_lower=only_lower,
                          verbose=verbose,
                          to_normalize=True)
         self._initialize_data()
+
         if identify_direction:
+            definitional = None
+
+            if identify_direction == 'single':
+                definitional = ('she', 'he')
+            elif identify_direction == 'sum':
+                definitional = zip(*self._data['definitional_pairs'])
+            elif identify_direction == 'pca':
+                definitional = self._data['definitional_pairs']
+
             self._identify_direction('she', 'he',
-                                     self._data['definitional_pairs'],
-                                     'pca')
+                                     definitional,
+                                     identify_direction)
 
     def _initialize_data(self):
         self._data = copy.deepcopy(BOLUKBASI_DATA['gender'])
