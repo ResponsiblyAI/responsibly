@@ -15,7 +15,8 @@ from ethically.we import (
 )
 from ethically.we.data import WEAT_DATA, load_w2v_small
 from ethically.we.utils import (
-    most_similar, project_params, project_reject_vector, project_vector,
+    most_similar, normalize, project_params, project_reject_vector,
+    project_vector,
 )
 
 
@@ -33,6 +34,22 @@ def w2v_small():
 def gender_biased_w2v_small():
     model = load_w2v_small()
     return GenderBiasWE(model, only_lower=True, verbose=True)
+
+
+def test_identify_direction_single(w2v_small):
+    gb = GenderBiasWE(w2v_small, only_lower=True, verbose=True,
+                      identify_direction='single')
+
+    direction = normalize(w2v_small['she'] - w2v_small['he'])
+
+    np.testing.assert_allclose(gb.direction, direction)
+
+
+# TODO: only check that there is no exception,
+# should b change to a better test cas
+def test_identify_direction_sum(w2v_small):
+    gb = GenderBiasWE(w2v_small, only_lower=True, verbose=True,
+                      identify_direction='sum')
 
 
 def test_assert_gensim_keyed_vectors():

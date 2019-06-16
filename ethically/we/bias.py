@@ -226,6 +226,9 @@ class BiasWordEmbedding:
         direction = None
 
         if method == 'single':
+            if self._verbose:
+                print('Positive definitional end: ', definitional[0])
+                print('Negative definitional end: ', definitional[0])
             direction = normalize(normalize(self[definitional[0]])
                                   - normalize(self[definitional[1]]))
 
@@ -1107,7 +1110,7 @@ class GenderBiasWE(BiasWordEmbedding):
             if identify_direction == 'single':
                 definitional = ('she', 'he')
             elif identify_direction == 'sum':
-                definitional = zip(*self._data['definitional_pairs'])
+                definitional = list(zip(*self._data['definitional_pairs']))
             elif identify_direction == 'pca':
                 definitional = self._data['definitional_pairs']
 
