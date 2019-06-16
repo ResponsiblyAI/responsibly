@@ -128,6 +128,7 @@ class BiasWordEmbedding:
         # probably should be a better design
         # identify_direction doesn't have any meaning
         # for the class BiasWordEmbedding
+        # The goal is to force this interfeace of sub-classes.
         if self.__class__ == __class__ and identify_direction is not False:
             raise ValueError('identify_direction must be False'
                              ' for an instance of {}'
