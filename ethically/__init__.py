@@ -1,5 +1,8 @@
 # pylint: disable=line-too-long
 
+from ethically import fairness, we
+
+
 __project__ = 'ethically'
 __description__ = 'Toolkit for Auditing and Mitigating Bias and Fairness of Machine Learning Systems 🔎🤖🧰'
 __url__ = 'http://docs.ethically.ai'
