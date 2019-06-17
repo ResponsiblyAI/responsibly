@@ -327,7 +327,7 @@ Therefore, the method my introduce “fake” bias.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w2v_gender_bias_we</span><span class="o">.</span><span class="n">generate_analogies</span><span class="p">(</span><span class="mi">131</span><span class="p">)[</span><span class="mi">100</span><span class="p">:]</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">ethically</span><span class="o">/</span><span class="n">ethically</span><span class="o">/</span><span class="n">we</span><span class="o">/</span><span class="n">bias</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">524</span><span class="p">:</span> <span class="ne">UserWarning</span><span class="p">:</span> <span class="n">Not</span> <span class="n">Using</span> <span class="n">unrestricted</span> <span class="n">most_similar</span> <span class="n">may</span> <span class="n">introduce</span> <span class="n">fake</span> <span class="n">biased</span> <span class="n">analogies</span><span class="o">.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">ethically</span><span class="o">/</span><span class="n">ethically</span><span class="o">/</span><span class="n">we</span><span class="o">/</span><span class="n">bias</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">528</span><span class="p">:</span> <span class="ne">UserWarning</span><span class="p">:</span> <span class="n">Not</span> <span class="n">Using</span> <span class="n">unrestricted</span> <span class="n">most_similar</span> <span class="n">may</span> <span class="n">introduce</span> <span class="n">fake</span> <span class="n">biased</span> <span class="n">analogies</span><span class="o">.</span>
 </pre></div>
 </div>
 <div>
@@ -864,73 +864,339 @@ Word2Vec which is available in <em>ethically</em>.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Neutralize</span><span class="o">...</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>100%|████████████████████████████████████████████████████████████████████████| 2997983/2997983 [02:29&lt;00:00, 20011.17it/s]
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>100%|████████████████████████████████████████████████████████████████████████| 2997983/2997983 [02:12&lt;00:00, 22549.86it/s]
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Equalize</span><span class="o">...</span>
 <span class="n">Equalize</span> <span class="n">Words</span> <span class="n">Data</span> <span class="p">(</span><span class="nb">all</span> <span class="n">equal</span> <span class="k">for</span> <span class="mi">1</span><span class="o">-</span><span class="n">dim</span> <span class="n">bias</span> <span class="n">space</span> <span class="p">(</span><span class="n">direction</span><span class="p">):</span>
-                    <span class="n">equalized_projected_scalar</span>    <span class="n">projected_scalar</span>    <span class="n">scaling</span>
-<span class="o">----------------</span>  <span class="o">----------------------------</span>  <span class="o">------------------</span>  <span class="o">---------</span>
-<span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Girl&#39;</span><span class="p">)</span>                           <span class="mf">0.398915</span>           <span class="mf">0.251796</span>    <span class="mf">0.398915</span>
-<span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Boy&#39;</span><span class="p">)</span>                           <span class="o">-</span><span class="mf">0.398915</span>          <span class="o">-</span><span class="mf">0.0954833</span>   <span class="mf">0.398915</span>
-<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;daughter&#39;</span><span class="p">)</span>                       <span class="mf">0.289697</span>           <span class="mf">0.292953</span>    <span class="mf">0.289697</span>
-<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;son&#39;</span><span class="p">)</span>                           <span class="o">-</span><span class="mf">0.289697</span>          <span class="o">-</span><span class="mf">0.121614</span>    <span class="mf">0.289697</span>
-<span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;girl&#39;</span><span class="p">)</span>                           <span class="mf">0.29452</span>            <span class="mf">0.318458</span>    <span class="mf">0.29452</span>
-<span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;boy&#39;</span><span class="p">)</span>                           <span class="o">-</span><span class="mf">0.29452</span>           <span class="o">-</span><span class="mf">0.0826128</span>   <span class="mf">0.29452</span>
-<span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;she&#39;</span><span class="p">)</span>                            <span class="mf">0.443113</span>           <span class="mf">0.469059</span>    <span class="mf">0.443113</span>
-<span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;he&#39;</span><span class="p">)</span>                            <span class="o">-</span><span class="mf">0.443113</span>          <span class="o">-</span><span class="mf">0.362353</span>    <span class="mf">0.443113</span>
-<span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;Woman&#39;</span><span class="p">)</span>                          <span class="mf">0.392149</span>           <span class="mf">0.238867</span>    <span class="mf">0.392149</span>
-<span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;Man&#39;</span><span class="p">)</span>                           <span class="o">-</span><span class="mf">0.392149</span>          <span class="o">-</span><span class="mf">0.184176</span>    <span class="mf">0.392149</span>
-<span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;female&#39;</span><span class="p">)</span>                         <span class="mf">0.336739</span>           <span class="mf">0.282941</span>    <span class="mf">0.336739</span>
-<span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;male&#39;</span><span class="p">)</span>                          <span class="o">-</span><span class="mf">0.336739</span>           <span class="mf">0.083992</span>    <span class="mf">0.336739</span>
-<span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;WOMAN&#39;</span><span class="p">)</span>                          <span class="mf">0.416802</span>           <span class="mf">0.257037</span>    <span class="mf">0.416802</span>
-<span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;MAN&#39;</span><span class="p">)</span>                           <span class="o">-</span><span class="mf">0.416802</span>          <span class="o">-</span><span class="mf">0.0911706</span>   <span class="mf">0.416802</span>
-<span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;Daughter&#39;</span><span class="p">)</span>                       <span class="mf">0.469635</span>           <span class="mf">0.22278</span>     <span class="mf">0.469635</span>
-<span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;Son&#39;</span><span class="p">)</span>                           <span class="o">-</span><span class="mf">0.469635</span>          <span class="o">-</span><span class="mf">0.168291</span>    <span class="mf">0.469635</span>
-<span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;GIRL&#39;</span><span class="p">)</span>                           <span class="mf">0.395733</span>           <span class="mf">0.242016</span>    <span class="mf">0.395733</span>
-<span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;BOY&#39;</span><span class="p">)</span>                           <span class="o">-</span><span class="mf">0.395733</span>          <span class="o">-</span><span class="mf">0.0573038</span>   <span class="mf">0.395733</span>
-<span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;Gal&#39;</span><span class="p">)</span>                            <span class="mf">0.59801</span>            <span class="mf">0.110373</span>    <span class="mf">0.59801</span>
-<span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;Guy&#39;</span><span class="p">)</span>                           <span class="o">-</span><span class="mf">0.59801</span>           <span class="o">-</span><span class="mf">0.137855</span>    <span class="mf">0.59801</span>
-<span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;Female&#39;</span><span class="p">)</span>                        <span class="mf">0.405189</span>           <span class="mf">0.198377</span>    <span class="mf">0.405189</span>
-<span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;Male&#39;</span><span class="p">)</span>                         <span class="o">-</span><span class="mf">0.405189</span>           <span class="mf">0.0366158</span>   <span class="mf">0.405189</span>
-<span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="s1">&#39;Mary&#39;</span><span class="p">)</span>                          <span class="mf">0.488704</span>           <span class="mf">0.301974</span>    <span class="mf">0.488704</span>
-<span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="s1">&#39;John&#39;</span><span class="p">)</span>                         <span class="o">-</span><span class="mf">0.488704</span>          <span class="o">-</span><span class="mf">0.251126</span>    <span class="mf">0.488704</span>
-<span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="s1">&#39;Mother&#39;</span><span class="p">)</span>                        <span class="mf">0.498544</span>           <span class="mf">0.312446</span>    <span class="mf">0.498544</span>
-<span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="s1">&#39;Father&#39;</span><span class="p">)</span>                       <span class="o">-</span><span class="mf">0.498544</span>          <span class="o">-</span><span class="mf">0.197701</span>    <span class="mf">0.498544</span>
-<span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="s1">&#39;SHE&#39;</span><span class="p">)</span>                           <span class="mf">0.540225</span>           <span class="mf">0.385345</span>    <span class="mf">0.540225</span>
-<span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="s1">&#39;HE&#39;</span><span class="p">)</span>                           <span class="o">-</span><span class="mf">0.540225</span>          <span class="o">-</span><span class="mf">0.120598</span>    <span class="mf">0.540225</span>
-<span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="s1">&#39;HER&#39;</span><span class="p">)</span>                           <span class="mf">0.509812</span>           <span class="mf">0.267332</span>    <span class="mf">0.509812</span>
-<span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="s1">&#39;HIS&#39;</span><span class="p">)</span>                          <span class="o">-</span><span class="mf">0.509812</span>          <span class="o">-</span><span class="mf">0.0502074</span>   <span class="mf">0.509812</span>
-<span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;herself&#39;</span><span class="p">)</span>                       <span class="mf">0.401098</span>           <span class="mf">0.378141</span>    <span class="mf">0.401098</span>
-<span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;himself&#39;</span><span class="p">)</span>                      <span class="o">-</span><span class="mf">0.401098</span>          <span class="o">-</span><span class="mf">0.38296</span>     <span class="mf">0.401098</span>
-<span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="s1">&#39;She&#39;</span><span class="p">)</span>                           <span class="mf">0.316178</span>           <span class="mf">0.330259</span>    <span class="mf">0.316178</span>
-<span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="s1">&#39;He&#39;</span><span class="p">)</span>                           <span class="o">-</span><span class="mf">0.316178</span>          <span class="o">-</span><span class="mf">0.178255</span>    <span class="mf">0.316178</span>
-<span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="s1">&#39;HERSELF&#39;</span><span class="p">)</span>                       <span class="mf">0.388876</span>           <span class="mf">0.247386</span>    <span class="mf">0.388876</span>
-<span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="s1">&#39;HIMSELF&#39;</span><span class="p">)</span>                      <span class="o">-</span><span class="mf">0.388876</span>          <span class="o">-</span><span class="mf">0.148449</span>    <span class="mf">0.388876</span>
-<span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="s1">&#39;MOTHER&#39;</span><span class="p">)</span>                        <span class="mf">0.391596</span>           <span class="mf">0.235139</span>    <span class="mf">0.391596</span>
-<span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="s1">&#39;FATHER&#39;</span><span class="p">)</span>                       <span class="o">-</span><span class="mf">0.391596</span>          <span class="o">-</span><span class="mf">0.0389424</span>   <span class="mf">0.391596</span>
-<span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="s1">&#39;DAUGHTER&#39;</span><span class="p">)</span>                      <span class="mf">0.521962</span>           <span class="mf">0.171916</span>    <span class="mf">0.521962</span>
-<span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="s1">&#39;SON&#39;</span><span class="p">)</span>                          <span class="o">-</span><span class="mf">0.521962</span>           <span class="mf">0.0122388</span>   <span class="mf">0.521962</span>
-<span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="s1">&#39;her&#39;</span><span class="p">)</span>                           <span class="mf">0.430368</span>           <span class="mf">0.446157</span>    <span class="mf">0.430368</span>
-<span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="s1">&#39;his&#39;</span><span class="p">)</span>                          <span class="o">-</span><span class="mf">0.430368</span>          <span class="o">-</span><span class="mf">0.333555</span>    <span class="mf">0.430368</span>
-<span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="s1">&#39;woman&#39;</span><span class="p">)</span>                         <span class="mf">0.346934</span>           <span class="mf">0.340348</span>    <span class="mf">0.346934</span>
-<span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="s1">&#39;man&#39;</span><span class="p">)</span>                          <span class="o">-</span><span class="mf">0.346934</span>          <span class="o">-</span><span class="mf">0.220952</span>    <span class="mf">0.346934</span>
-<span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="s1">&#39;gal&#39;</span><span class="p">)</span>                           <span class="mf">0.51301</span>            <span class="mf">0.400741</span>    <span class="mf">0.51301</span>
-<span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="s1">&#39;guy&#39;</span><span class="p">)</span>                          <span class="o">-</span><span class="mf">0.51301</span>           <span class="o">-</span><span class="mf">0.326011</span>    <span class="mf">0.51301</span>
-<span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="s1">&#39;Herself&#39;</span><span class="p">)</span>                       <span class="mf">0.479517</span>           <span class="mf">0.29538</span>     <span class="mf">0.479517</span>
-<span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="s1">&#39;Himself&#39;</span><span class="p">)</span>                      <span class="o">-</span><span class="mf">0.479517</span>          <span class="o">-</span><span class="mf">0.220471</span>    <span class="mf">0.479517</span>
-<span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="s1">&#39;mary&#39;</span><span class="p">)</span>                          <span class="mf">0.444525</span>           <span class="mf">0.192964</span>    <span class="mf">0.444525</span>
-<span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="s1">&#39;john&#39;</span><span class="p">)</span>                         <span class="o">-</span><span class="mf">0.444525</span>          <span class="o">-</span><span class="mf">0.0204266</span>   <span class="mf">0.444525</span>
-<span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="s1">&#39;mother&#39;</span><span class="p">)</span>                        <span class="mf">0.332768</span>           <span class="mf">0.300389</span>    <span class="mf">0.332768</span>
-<span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="s1">&#39;father&#39;</span><span class="p">)</span>                       <span class="o">-</span><span class="mf">0.332768</span>          <span class="o">-</span><span class="mf">0.147961</span>    <span class="mf">0.332768</span>
-<span class="p">(</span><span class="mi">26</span><span class="p">,</span> <span class="s1">&#39;MARY&#39;</span><span class="p">)</span>                          <span class="mf">0.356334</span>           <span class="mf">0.222307</span>    <span class="mf">0.356334</span>
-<span class="p">(</span><span class="mi">26</span><span class="p">,</span> <span class="s1">&#39;JOHN&#39;</span><span class="p">)</span>                         <span class="o">-</span><span class="mf">0.356334</span>          <span class="o">-</span><span class="mf">0.0818515</span>   <span class="mf">0.356334</span>
-<span class="p">(</span><span class="mi">27</span><span class="p">,</span> <span class="s1">&#39;Her&#39;</span><span class="p">)</span>                           <span class="mf">0.272142</span>           <span class="mf">0.267272</span>    <span class="mf">0.272142</span>
-<span class="p">(</span><span class="mi">27</span><span class="p">,</span> <span class="s1">&#39;His&#39;</span><span class="p">)</span>                          <span class="o">-</span><span class="mf">0.272142</span>          <span class="o">-</span><span class="mf">0.122555</span>    <span class="mf">0.272142</span>
-<span class="p">(</span><span class="mi">28</span><span class="p">,</span> <span class="s1">&#39;GAL&#39;</span><span class="p">)</span>                           <span class="mf">0.596187</span>           <span class="mf">0.185162</span>    <span class="mf">0.596187</span>
-<span class="p">(</span><span class="mi">28</span><span class="p">,</span> <span class="s1">&#39;GUY&#39;</span><span class="p">)</span>                          <span class="o">-</span><span class="mf">0.596187</span>          <span class="o">-</span><span class="mf">0.0558901</span>   <span class="mf">0.596187</span>
-<span class="p">(</span><span class="mi">29</span><span class="p">,</span> <span class="s1">&#39;FEMALE&#39;</span><span class="p">)</span>                        <span class="mf">0.483523</span>           <span class="mf">0.179938</span>    <span class="mf">0.483523</span>
-<span class="p">(</span><span class="mi">29</span><span class="p">,</span> <span class="s1">&#39;MALE&#39;</span><span class="p">)</span>                         <span class="o">-</span><span class="mf">0.483523</span>           <span class="mf">0.0635581</span>   <span class="mf">0.483523</span>
+                            <span class="n">equalized_projected_scalar</span>    <span class="n">projected_scalar</span>    <span class="n">scaling</span>
+<span class="o">------------------------</span>  <span class="o">----------------------------</span>  <span class="o">------------------</span>  <span class="o">---------</span>
+<span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;twin_brother&#39;</span><span class="p">)</span>                          <span class="o">-</span><span class="mf">0.490669</span>        <span class="o">-</span><span class="mf">0.236034</span>      <span class="mf">0.490669</span>
+<span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;twin_sister&#39;</span><span class="p">)</span>                            <span class="mf">0.490669</span>         <span class="mf">0.335621</span>      <span class="mf">0.490669</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;she&#39;</span><span class="p">)</span>                                    <span class="mf">0.443113</span>         <span class="mf">0.469059</span>      <span class="mf">0.443113</span>
+<span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;he&#39;</span><span class="p">)</span>                                    <span class="o">-</span><span class="mf">0.443113</span>        <span class="o">-</span><span class="mf">0.362353</span>      <span class="mf">0.443113</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;king&#39;</span><span class="p">)</span>                                  <span class="o">-</span><span class="mf">0.42974</span>         <span class="o">-</span><span class="mf">0.147191</span>      <span class="mf">0.42974</span>
+<span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;queen&#39;</span><span class="p">)</span>                                  <span class="mf">0.42974</span>          <span class="mf">0.349422</span>      <span class="mf">0.42974</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;brother&#39;</span><span class="p">)</span>                               <span class="o">-</span><span class="mf">0.379581</span>        <span class="o">-</span><span class="mf">0.215975</span>      <span class="mf">0.379581</span>
+<span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="s1">&#39;sister&#39;</span><span class="p">)</span>                                 <span class="mf">0.379581</span>         <span class="mf">0.30764</span>       <span class="mf">0.379581</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;SHE&#39;</span><span class="p">)</span>                                    <span class="mf">0.540225</span>         <span class="mf">0.385345</span>      <span class="mf">0.540225</span>
+<span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;HE&#39;</span><span class="p">)</span>                                    <span class="o">-</span><span class="mf">0.540225</span>        <span class="o">-</span><span class="mf">0.120598</span>      <span class="mf">0.540225</span>
+<span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;spokesman&#39;</span><span class="p">)</span>                             <span class="o">-</span><span class="mf">0.34572</span>         <span class="o">-</span><span class="mf">0.157774</span>      <span class="mf">0.34572</span>
+<span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="s1">&#39;spokeswoman&#39;</span><span class="p">)</span>                            <span class="mf">0.34572</span>          <span class="mf">0.299861</span>      <span class="mf">0.34572</span>
+<span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;son&#39;</span><span class="p">)</span>                                   <span class="o">-</span><span class="mf">0.289697</span>        <span class="o">-</span><span class="mf">0.121614</span>      <span class="mf">0.289697</span>
+<span class="p">(</span><span class="mi">6</span><span class="p">,</span> <span class="s1">&#39;daughter&#39;</span><span class="p">)</span>                               <span class="mf">0.289697</span>         <span class="mf">0.292953</span>      <span class="mf">0.289697</span>
+<span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;BUSINESSMAN&#39;</span><span class="p">)</span>                           <span class="o">-</span><span class="mf">0.433807</span>        <span class="o">-</span><span class="mf">0.115595</span>      <span class="mf">0.433807</span>
+<span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;BUSINESSWOMAN&#39;</span><span class="p">)</span>                          <span class="mf">0.433807</span>         <span class="mf">0.221015</span>      <span class="mf">0.433807</span>
+<span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;prostate_cancer&#39;</span><span class="p">)</span>                       <span class="o">-</span><span class="mf">0.323124</span>        <span class="o">-</span><span class="mf">0.133314</span>      <span class="mf">0.323124</span>
+<span class="p">(</span><span class="mi">8</span><span class="p">,</span> <span class="s1">&#39;ovarian_cancer&#39;</span><span class="p">)</span>                         <span class="mf">0.323124</span>         <span class="mf">0.226155</span>      <span class="mf">0.323124</span>
+<span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;SONS&#39;</span><span class="p">)</span>                                  <span class="o">-</span><span class="mf">0.482901</span>        <span class="o">-</span><span class="mf">0.0158731</span>     <span class="mf">0.482901</span>
+<span class="p">(</span><span class="mi">9</span><span class="p">,</span> <span class="s1">&#39;DAUGHTERS&#39;</span><span class="p">)</span>                              <span class="mf">0.482901</span>         <span class="mf">0.162073</span>      <span class="mf">0.482901</span>
+<span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;SON&#39;</span><span class="p">)</span>                                  <span class="o">-</span><span class="mf">0.521962</span>         <span class="mf">0.0122388</span>     <span class="mf">0.521962</span>
+<span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="s1">&#39;DAUGHTER&#39;</span><span class="p">)</span>                              <span class="mf">0.521962</span>         <span class="mf">0.171916</span>      <span class="mf">0.521962</span>
+<span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="s1">&#39;boy&#39;</span><span class="p">)</span>                                  <span class="o">-</span><span class="mf">0.29452</span>         <span class="o">-</span><span class="mf">0.0826128</span>     <span class="mf">0.29452</span>
+<span class="p">(</span><span class="mi">11</span><span class="p">,</span> <span class="s1">&#39;girl&#39;</span><span class="p">)</span>                                  <span class="mf">0.29452</span>          <span class="mf">0.318458</span>      <span class="mf">0.29452</span>
+<span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="s1">&#39;businessman&#39;</span><span class="p">)</span>                          <span class="o">-</span><span class="mf">0.433252</span>        <span class="o">-</span><span class="mf">0.218544</span>      <span class="mf">0.433252</span>
+<span class="p">(</span><span class="mi">12</span><span class="p">,</span> <span class="s1">&#39;businesswoman&#39;</span><span class="p">)</span>                         <span class="mf">0.433252</span>         <span class="mf">0.379637</span>      <span class="mf">0.433252</span>
+<span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="s1">&#39;Daughter&#39;</span><span class="p">)</span>                              <span class="mf">0.469635</span>         <span class="mf">0.22278</span>       <span class="mf">0.469635</span>
+<span class="p">(</span><span class="mi">13</span><span class="p">,</span> <span class="s1">&#39;Son&#39;</span><span class="p">)</span>                                  <span class="o">-</span><span class="mf">0.469635</span>        <span class="o">-</span><span class="mf">0.168291</span>      <span class="mf">0.469635</span>
+<span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="s1">&#39;Testosterone&#39;</span><span class="p">)</span>                         <span class="o">-</span><span class="mf">0.438459</span>        <span class="o">-</span><span class="mf">0.0278472</span>     <span class="mf">0.438459</span>
+<span class="p">(</span><span class="mi">14</span><span class="p">,</span> <span class="s1">&#39;Estrogen&#39;</span><span class="p">)</span>                              <span class="mf">0.438459</span>         <span class="mf">0.140597</span>      <span class="mf">0.438459</span>
+<span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;Gal&#39;</span><span class="p">)</span>                                   <span class="mf">0.59801</span>          <span class="mf">0.110373</span>      <span class="mf">0.59801</span>
+<span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="s1">&#39;Guy&#39;</span><span class="p">)</span>                                  <span class="o">-</span><span class="mf">0.59801</span>         <span class="o">-</span><span class="mf">0.137855</span>      <span class="mf">0.59801</span>
+<span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="s1">&#39;He&#39;</span><span class="p">)</span>                                   <span class="o">-</span><span class="mf">0.316178</span>        <span class="o">-</span><span class="mf">0.178255</span>      <span class="mf">0.316178</span>
+<span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="s1">&#39;She&#39;</span><span class="p">)</span>                                   <span class="mf">0.316178</span>         <span class="mf">0.330259</span>      <span class="mf">0.316178</span>
+<span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="s1">&#39;colt&#39;</span><span class="p">)</span>                                 <span class="o">-</span><span class="mf">0.277647</span>         <span class="mf">0.038939</span>      <span class="mf">0.277647</span>
+<span class="p">(</span><span class="mi">17</span><span class="p">,</span> <span class="s1">&#39;filly&#39;</span><span class="p">)</span>                                 <span class="mf">0.277647</span>         <span class="mf">0.248487</span>      <span class="mf">0.277647</span>
+<span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="s1">&#39;Uncle&#39;</span><span class="p">)</span>                                <span class="o">-</span><span class="mf">0.506537</span>        <span class="o">-</span><span class="mf">0.216235</span>      <span class="mf">0.506537</span>
+<span class="p">(</span><span class="mi">18</span><span class="p">,</span> <span class="s1">&#39;Aunt&#39;</span><span class="p">)</span>                                  <span class="mf">0.506537</span>         <span class="mf">0.347936</span>      <span class="mf">0.506537</span>
+<span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="s1">&#39;Dad&#39;</span><span class="p">)</span>                                  <span class="o">-</span><span class="mf">0.351847</span>        <span class="o">-</span><span class="mf">0.0842964</span>     <span class="mf">0.351847</span>
+<span class="p">(</span><span class="mi">19</span><span class="p">,</span> <span class="s1">&#39;Mom&#39;</span><span class="p">)</span>                                   <span class="mf">0.351847</span>         <span class="mf">0.245609</span>      <span class="mf">0.351847</span>
+<span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="s1">&#39;monastery&#39;</span><span class="p">)</span>                            <span class="o">-</span><span class="mf">0.41815</span>          <span class="mf">0.00771394</span>    <span class="mf">0.41815</span>
+<span class="p">(</span><span class="mi">20</span><span class="p">,</span> <span class="s1">&#39;convent&#39;</span><span class="p">)</span>                               <span class="mf">0.41815</span>          <span class="mf">0.264842</span>      <span class="mf">0.41815</span>
+<span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="s1">&#39;Sons&#39;</span><span class="p">)</span>                                 <span class="o">-</span><span class="mf">0.54096</span>         <span class="o">-</span><span class="mf">0.0837717</span>     <span class="mf">0.54096</span>
+<span class="p">(</span><span class="mi">21</span><span class="p">,</span> <span class="s1">&#39;Daughters&#39;</span><span class="p">)</span>                             <span class="mf">0.54096</span>          <span class="mf">0.287506</span>      <span class="mf">0.54096</span>
+<span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="s1">&#39;her&#39;</span><span class="p">)</span>                                   <span class="mf">0.430368</span>         <span class="mf">0.446157</span>      <span class="mf">0.430368</span>
+<span class="p">(</span><span class="mi">22</span><span class="p">,</span> <span class="s1">&#39;his&#39;</span><span class="p">)</span>                                  <span class="o">-</span><span class="mf">0.430368</span>        <span class="o">-</span><span class="mf">0.333555</span>      <span class="mf">0.430368</span>
+<span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="s1">&#39;MALES&#39;</span><span class="p">)</span>                                <span class="o">-</span><span class="mf">0.357316</span>         <span class="mf">0.122686</span>      <span class="mf">0.357316</span>
+<span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="s1">&#39;FEMALES&#39;</span><span class="p">)</span>                               <span class="mf">0.357316</span>         <span class="mf">0.179751</span>      <span class="mf">0.357316</span>
+<span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="s1">&#39;Grandfather&#39;</span><span class="p">)</span>                          <span class="o">-</span><span class="mf">0.404502</span>        <span class="o">-</span><span class="mf">0.106806</span>      <span class="mf">0.404502</span>
+<span class="p">(</span><span class="mi">24</span><span class="p">,</span> <span class="s1">&#39;Grandmother&#39;</span><span class="p">)</span>                           <span class="mf">0.404502</span>         <span class="mf">0.266623</span>      <span class="mf">0.404502</span>
+<span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="s1">&#39;MAN&#39;</span><span class="p">)</span>                                  <span class="o">-</span><span class="mf">0.416802</span>        <span class="o">-</span><span class="mf">0.0911706</span>     <span class="mf">0.416802</span>
+<span class="p">(</span><span class="mi">25</span><span class="p">,</span> <span class="s1">&#39;WOMAN&#39;</span><span class="p">)</span>                                 <span class="mf">0.416802</span>         <span class="mf">0.257037</span>      <span class="mf">0.416802</span>
+<span class="p">(</span><span class="mi">26</span><span class="p">,</span> <span class="s1">&#39;Her&#39;</span><span class="p">)</span>                                   <span class="mf">0.272142</span>         <span class="mf">0.267272</span>      <span class="mf">0.272142</span>
+<span class="p">(</span><span class="mi">26</span><span class="p">,</span> <span class="s1">&#39;His&#39;</span><span class="p">)</span>                                  <span class="o">-</span><span class="mf">0.272142</span>        <span class="o">-</span><span class="mf">0.122555</span>      <span class="mf">0.272142</span>
+<span class="p">(</span><span class="mi">27</span><span class="p">,</span> <span class="s1">&#39;Father&#39;</span><span class="p">)</span>                               <span class="o">-</span><span class="mf">0.498544</span>        <span class="o">-</span><span class="mf">0.197701</span>      <span class="mf">0.498544</span>
+<span class="p">(</span><span class="mi">27</span><span class="p">,</span> <span class="s1">&#39;Mother&#39;</span><span class="p">)</span>                                <span class="mf">0.498544</span>         <span class="mf">0.312446</span>      <span class="mf">0.498544</span>
+<span class="p">(</span><span class="mi">28</span><span class="p">,</span> <span class="s1">&#39;SCHOOLBOY&#39;</span><span class="p">)</span>                            <span class="o">-</span><span class="mf">0.354319</span>        <span class="o">-</span><span class="mf">0.0530171</span>     <span class="mf">0.354319</span>
+<span class="p">(</span><span class="mi">28</span><span class="p">,</span> <span class="s1">&#39;SCHOOLGIRL&#39;</span><span class="p">)</span>                            <span class="mf">0.354319</span>         <span class="mf">0.26279</span>       <span class="mf">0.354319</span>
+<span class="p">(</span><span class="mi">29</span><span class="p">,</span> <span class="s1">&#39;Males&#39;</span><span class="p">)</span>                                <span class="o">-</span><span class="mf">0.356464</span>         <span class="mf">0.0607782</span>     <span class="mf">0.356464</span>
+<span class="p">(</span><span class="mi">29</span><span class="p">,</span> <span class="s1">&#39;Females&#39;</span><span class="p">)</span>                               <span class="mf">0.356464</span>         <span class="mf">0.190471</span>      <span class="mf">0.356464</span>
+<span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="s1">&#39;Monastery&#39;</span><span class="p">)</span>                            <span class="o">-</span><span class="mf">0.525956</span>         <span class="mf">0.0928539</span>     <span class="mf">0.525956</span>
+<span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="s1">&#39;Convent&#39;</span><span class="p">)</span>                               <span class="mf">0.525956</span>         <span class="mf">0.210066</span>      <span class="mf">0.525956</span>
+<span class="p">(</span><span class="mi">31</span><span class="p">,</span> <span class="s1">&#39;WOMAN&#39;</span><span class="p">)</span>                                 <span class="mf">0.416802</span>         <span class="mf">0.416802</span>      <span class="mf">0.416802</span>
+<span class="p">(</span><span class="mi">31</span><span class="p">,</span> <span class="s1">&#39;MAN&#39;</span><span class="p">)</span>                                  <span class="o">-</span><span class="mf">0.416802</span>        <span class="o">-</span><span class="mf">0.416802</span>      <span class="mf">0.416802</span>
+<span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="s1">&#39;gelding&#39;</span><span class="p">)</span>                              <span class="o">-</span><span class="mf">0.293829</span>         <span class="mf">0.0329541</span>     <span class="mf">0.293829</span>
+<span class="p">(</span><span class="mi">32</span><span class="p">,</span> <span class="s1">&#39;mare&#39;</span><span class="p">)</span>                                  <span class="mf">0.293829</span>         <span class="mf">0.25824</span>       <span class="mf">0.293829</span>
+<span class="p">(</span><span class="mi">33</span><span class="p">,</span> <span class="s1">&#39;BROTHER&#39;</span><span class="p">)</span>                              <span class="o">-</span><span class="mf">0.39397</span>         <span class="o">-</span><span class="mf">0.0290051</span>     <span class="mf">0.39397</span>
+<span class="p">(</span><span class="mi">33</span><span class="p">,</span> <span class="s1">&#39;SISTER&#39;</span><span class="p">)</span>                                <span class="mf">0.39397</span>          <span class="mf">0.214365</span>      <span class="mf">0.39397</span>
+<span class="p">(</span><span class="mi">34</span><span class="p">,</span> <span class="s1">&#39;NEPHEW&#39;</span><span class="p">)</span>                               <span class="o">-</span><span class="mf">0.391999</span>         <span class="mf">0.0409397</span>     <span class="mf">0.391999</span>
+<span class="p">(</span><span class="mi">34</span><span class="p">,</span> <span class="s1">&#39;NIECE&#39;</span><span class="p">)</span>                                 <span class="mf">0.391999</span>         <span class="mf">0.133487</span>      <span class="mf">0.391999</span>
+<span class="p">(</span><span class="mi">35</span><span class="p">,</span> <span class="s1">&#39;Woman&#39;</span><span class="p">)</span>                                 <span class="mf">0.392149</span>         <span class="mf">0.238867</span>      <span class="mf">0.392149</span>
+<span class="p">(</span><span class="mi">35</span><span class="p">,</span> <span class="s1">&#39;Man&#39;</span><span class="p">)</span>                                  <span class="o">-</span><span class="mf">0.392149</span>        <span class="o">-</span><span class="mf">0.184176</span>      <span class="mf">0.392149</span>
+<span class="p">(</span><span class="mi">36</span><span class="p">,</span> <span class="s1">&#39;Herself&#39;</span><span class="p">)</span>                               <span class="mf">0.479517</span>         <span class="mf">0.29538</span>       <span class="mf">0.479517</span>
+<span class="p">(</span><span class="mi">36</span><span class="p">,</span> <span class="s1">&#39;Himself&#39;</span><span class="p">)</span>                              <span class="o">-</span><span class="mf">0.479517</span>        <span class="o">-</span><span class="mf">0.220471</span>      <span class="mf">0.479517</span>
+<span class="p">(</span><span class="mi">37</span><span class="p">,</span> <span class="s1">&#39;FATHERHOOD&#39;</span><span class="p">)</span>                           <span class="o">-</span><span class="mf">0.391908</span>        <span class="o">-</span><span class="mf">0.00414218</span>    <span class="mf">0.391908</span>
+<span class="p">(</span><span class="mi">37</span><span class="p">,</span> <span class="s1">&#39;MOTHERHOOD&#39;</span><span class="p">)</span>                            <span class="mf">0.391908</span>         <span class="mf">0.275103</span>      <span class="mf">0.391908</span>
+<span class="p">(</span><span class="mi">38</span><span class="p">,</span> <span class="s1">&#39;HIMSELF&#39;</span><span class="p">)</span>                              <span class="o">-</span><span class="mf">0.388876</span>        <span class="o">-</span><span class="mf">0.148449</span>      <span class="mf">0.388876</span>
+<span class="p">(</span><span class="mi">38</span><span class="p">,</span> <span class="s1">&#39;HERSELF&#39;</span><span class="p">)</span>                               <span class="mf">0.388876</span>         <span class="mf">0.247386</span>      <span class="mf">0.388876</span>
+<span class="p">(</span><span class="mi">39</span><span class="p">,</span> <span class="s1">&#39;Dads&#39;</span><span class="p">)</span>                                 <span class="o">-</span><span class="mf">0.413548</span>         <span class="mf">0.0235679</span>     <span class="mf">0.413548</span>
+<span class="p">(</span><span class="mi">39</span><span class="p">,</span> <span class="s1">&#39;Moms&#39;</span><span class="p">)</span>                                  <span class="mf">0.413548</span>         <span class="mf">0.274793</span>      <span class="mf">0.413548</span>
+<span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="s1">&#39;UNCLE&#39;</span><span class="p">)</span>                                <span class="o">-</span><span class="mf">0.55611</span>         <span class="o">-</span><span class="mf">0.0985665</span>     <span class="mf">0.55611</span>
+<span class="p">(</span><span class="mi">40</span><span class="p">,</span> <span class="s1">&#39;AUNT&#39;</span><span class="p">)</span>                                  <span class="mf">0.55611</span>          <span class="mf">0.23314</span>       <span class="mf">0.55611</span>
+<span class="p">(</span><span class="mi">41</span><span class="p">,</span> <span class="s1">&#39;EX_GIRLFRIEND&#39;</span><span class="p">)</span>                         <span class="mf">0.351169</span>         <span class="mf">0.0955083</span>     <span class="mf">0.351169</span>
+<span class="p">(</span><span class="mi">41</span><span class="p">,</span> <span class="s1">&#39;EX_BOYFRIEND&#39;</span><span class="p">)</span>                         <span class="o">-</span><span class="mf">0.351169</span>         <span class="mf">0.0702349</span>     <span class="mf">0.351169</span>
+<span class="p">(</span><span class="mi">42</span><span class="p">,</span> <span class="s1">&#39;KING&#39;</span><span class="p">)</span>                                 <span class="o">-</span><span class="mf">0.492517</span>         <span class="mf">0.00505558</span>    <span class="mf">0.492517</span>
+<span class="p">(</span><span class="mi">42</span><span class="p">,</span> <span class="s1">&#39;QUEEN&#39;</span><span class="p">)</span>                                 <span class="mf">0.492517</span>         <span class="mf">0.189189</span>      <span class="mf">0.492517</span>
+<span class="p">(</span><span class="mi">43</span><span class="p">,</span> <span class="s1">&#39;BROTHERS&#39;</span><span class="p">)</span>                             <span class="o">-</span><span class="mf">0.454497</span>        <span class="o">-</span><span class="mf">0.0106211</span>     <span class="mf">0.454497</span>
+<span class="p">(</span><span class="mi">43</span><span class="p">,</span> <span class="s1">&#39;SISTERS&#39;</span><span class="p">)</span>                               <span class="mf">0.454497</span>         <span class="mf">0.231603</span>      <span class="mf">0.454497</span>
+<span class="p">(</span><span class="mi">44</span><span class="p">,</span> <span class="s1">&#39;FEMALE&#39;</span><span class="p">)</span>                                <span class="mf">0.483523</span>         <span class="mf">0.179938</span>      <span class="mf">0.483523</span>
+<span class="p">(</span><span class="mi">44</span><span class="p">,</span> <span class="s1">&#39;MALE&#39;</span><span class="p">)</span>                                 <span class="o">-</span><span class="mf">0.483523</span>         <span class="mf">0.0635581</span>     <span class="mf">0.483523</span>
+<span class="p">(</span><span class="mi">45</span><span class="p">,</span> <span class="s1">&#39;CHAIRMAN&#39;</span><span class="p">)</span>                             <span class="o">-</span><span class="mf">0.41157</span>         <span class="o">-</span><span class="mf">0.0895591</span>     <span class="mf">0.41157</span>
+<span class="p">(</span><span class="mi">45</span><span class="p">,</span> <span class="s1">&#39;CHAIRWOMAN&#39;</span><span class="p">)</span>                            <span class="mf">0.41157</span>          <span class="mf">0.115293</span>      <span class="mf">0.41157</span>
+<span class="p">(</span><span class="mi">46</span><span class="p">,</span> <span class="s1">&#39;men&#39;</span><span class="p">)</span>                                  <span class="o">-</span><span class="mf">0.37037</span>         <span class="o">-</span><span class="mf">0.0550618</span>     <span class="mf">0.37037</span>
+<span class="p">(</span><span class="mi">46</span><span class="p">,</span> <span class="s1">&#39;women&#39;</span><span class="p">)</span>                                 <span class="mf">0.37037</span>          <span class="mf">0.344343</span>      <span class="mf">0.37037</span>
+<span class="p">(</span><span class="mi">47</span><span class="p">,</span> <span class="s1">&#39;FATHER&#39;</span><span class="p">)</span>                               <span class="o">-</span><span class="mf">0.391596</span>        <span class="o">-</span><span class="mf">0.0389424</span>     <span class="mf">0.391596</span>
+<span class="p">(</span><span class="mi">47</span><span class="p">,</span> <span class="s1">&#39;MOTHER&#39;</span><span class="p">)</span>                                <span class="mf">0.391596</span>         <span class="mf">0.235139</span>      <span class="mf">0.391596</span>
+<span class="p">(</span><span class="mi">48</span><span class="p">,</span> <span class="s1">&#39;GIRL&#39;</span><span class="p">)</span>                                  <span class="mf">0.395733</span>         <span class="mf">0.242016</span>      <span class="mf">0.395733</span>
+<span class="p">(</span><span class="mi">48</span><span class="p">,</span> <span class="s1">&#39;BOY&#39;</span><span class="p">)</span>                                  <span class="o">-</span><span class="mf">0.395733</span>        <span class="o">-</span><span class="mf">0.0573038</span>     <span class="mf">0.395733</span>
+<span class="p">(</span><span class="mi">49</span><span class="p">,</span> <span class="s1">&#39;She&#39;</span><span class="p">)</span>                                   <span class="mf">0.316178</span>         <span class="mf">0.316178</span>      <span class="mf">0.316178</span>
+<span class="p">(</span><span class="mi">49</span><span class="p">,</span> <span class="s1">&#39;He&#39;</span><span class="p">)</span>                                   <span class="o">-</span><span class="mf">0.316178</span>        <span class="o">-</span><span class="mf">0.316178</span>      <span class="mf">0.316178</span>
+<span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s1">&#39;grandfather&#39;</span><span class="p">)</span>                          <span class="o">-</span><span class="mf">0.365996</span>        <span class="o">-</span><span class="mf">0.166732</span>      <span class="mf">0.365996</span>
+<span class="p">(</span><span class="mi">50</span><span class="p">,</span> <span class="s1">&#39;grandmother&#39;</span><span class="p">)</span>                           <span class="mf">0.365996</span>         <span class="mf">0.214762</span>      <span class="mf">0.365996</span>
+<span class="p">(</span><span class="mi">51</span><span class="p">,</span> <span class="s1">&#39;FELLA&#39;</span><span class="p">)</span>                                <span class="o">-</span><span class="mf">0.407682</span>         <span class="mf">0.0719139</span>     <span class="mf">0.407682</span>
+<span class="p">(</span><span class="mi">51</span><span class="p">,</span> <span class="s1">&#39;GRANNY&#39;</span><span class="p">)</span>                                <span class="mf">0.407682</span>         <span class="mf">0.238423</span>      <span class="mf">0.407682</span>
+<span class="p">(</span><span class="mi">52</span><span class="p">,</span> <span class="s1">&#39;HER&#39;</span><span class="p">)</span>                                   <span class="mf">0.509812</span>         <span class="mf">0.267332</span>      <span class="mf">0.509812</span>
+<span class="p">(</span><span class="mi">52</span><span class="p">,</span> <span class="s1">&#39;HIS&#39;</span><span class="p">)</span>                                  <span class="o">-</span><span class="mf">0.509812</span>        <span class="o">-</span><span class="mf">0.0502074</span>     <span class="mf">0.509812</span>
+<span class="p">(</span><span class="mi">53</span><span class="p">,</span> <span class="s1">&#39;MOTHER&#39;</span><span class="p">)</span>                                <span class="mf">0.391596</span>         <span class="mf">0.391596</span>      <span class="mf">0.391596</span>
+<span class="p">(</span><span class="mi">53</span><span class="p">,</span> <span class="s1">&#39;FATHER&#39;</span><span class="p">)</span>                               <span class="o">-</span><span class="mf">0.391596</span>        <span class="o">-</span><span class="mf">0.391596</span>      <span class="mf">0.391596</span>
+<span class="p">(</span><span class="mi">54</span><span class="p">,</span> <span class="s1">&#39;HIS&#39;</span><span class="p">)</span>                                  <span class="o">-</span><span class="mf">0.509812</span>        <span class="o">-</span><span class="mf">0.509812</span>      <span class="mf">0.509812</span>
+<span class="p">(</span><span class="mi">54</span><span class="p">,</span> <span class="s1">&#39;HER&#39;</span><span class="p">)</span>                                   <span class="mf">0.509812</span>         <span class="mf">0.509812</span>      <span class="mf">0.509812</span>
+<span class="p">(</span><span class="mi">55</span><span class="p">,</span> <span class="s1">&#39;GAL&#39;</span><span class="p">)</span>                                   <span class="mf">0.596187</span>         <span class="mf">0.185162</span>      <span class="mf">0.596187</span>
+<span class="p">(</span><span class="mi">55</span><span class="p">,</span> <span class="s1">&#39;GUY&#39;</span><span class="p">)</span>                                  <span class="o">-</span><span class="mf">0.596187</span>        <span class="o">-</span><span class="mf">0.0558901</span>     <span class="mf">0.596187</span>
+<span class="p">(</span><span class="mi">56</span><span class="p">,</span> <span class="s1">&#39;Brothers&#39;</span><span class="p">)</span>                             <span class="o">-</span><span class="mf">0.525812</span>        <span class="o">-</span><span class="mf">0.186208</span>      <span class="mf">0.525812</span>
+<span class="p">(</span><span class="mi">56</span><span class="p">,</span> <span class="s1">&#39;Sisters&#39;</span><span class="p">)</span>                               <span class="mf">0.525812</span>         <span class="mf">0.283176</span>      <span class="mf">0.525812</span>
+<span class="p">(</span><span class="mi">57</span><span class="p">,</span> <span class="s1">&#39;dads&#39;</span><span class="p">)</span>                                 <span class="o">-</span><span class="mf">0.396782</span>         <span class="mf">0.0161552</span>     <span class="mf">0.396782</span>
+<span class="p">(</span><span class="mi">57</span><span class="p">,</span> <span class="s1">&#39;moms&#39;</span><span class="p">)</span>                                  <span class="mf">0.396782</span>         <span class="mf">0.313671</span>      <span class="mf">0.396782</span>
+<span class="p">(</span><span class="mi">58</span><span class="p">,</span> <span class="s1">&#39;Congressman&#39;</span><span class="p">)</span>                          <span class="o">-</span><span class="mf">0.440227</span>        <span class="o">-</span><span class="mf">0.094876</span>      <span class="mf">0.440227</span>
+<span class="p">(</span><span class="mi">58</span><span class="p">,</span> <span class="s1">&#39;Congresswoman&#39;</span><span class="p">)</span>                         <span class="mf">0.440227</span>         <span class="mf">0.330899</span>      <span class="mf">0.440227</span>
+<span class="p">(</span><span class="mi">59</span><span class="p">,</span> <span class="s1">&#39;Boys&#39;</span><span class="p">)</span>                                 <span class="o">-</span><span class="mf">0.372932</span>        <span class="o">-</span><span class="mf">0.0837174</span>     <span class="mf">0.372932</span>
+<span class="p">(</span><span class="mi">59</span><span class="p">,</span> <span class="s1">&#39;Girls&#39;</span><span class="p">)</span>                                 <span class="mf">0.372932</span>         <span class="mf">0.265106</span>      <span class="mf">0.372932</span>
+<span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="s1">&#39;man&#39;</span><span class="p">)</span>                                  <span class="o">-</span><span class="mf">0.346934</span>        <span class="o">-</span><span class="mf">0.220952</span>      <span class="mf">0.346934</span>
+<span class="p">(</span><span class="mi">60</span><span class="p">,</span> <span class="s1">&#39;woman&#39;</span><span class="p">)</span>                                 <span class="mf">0.346934</span>         <span class="mf">0.340348</span>      <span class="mf">0.346934</span>
+<span class="p">(</span><span class="mi">61</span><span class="p">,</span> <span class="s1">&#39;boys&#39;</span><span class="p">)</span>                                 <span class="o">-</span><span class="mf">0.286694</span>        <span class="o">-</span><span class="mf">0.0196151</span>     <span class="mf">0.286694</span>
+<span class="p">(</span><span class="mi">61</span><span class="p">,</span> <span class="s1">&#39;girls&#39;</span><span class="p">)</span>                                 <span class="mf">0.286694</span>         <span class="mf">0.306264</span>      <span class="mf">0.286694</span>
+<span class="p">(</span><span class="mi">62</span><span class="p">,</span> <span class="s1">&#39;kings&#39;</span><span class="p">)</span>                                <span class="o">-</span><span class="mf">0.451522</span>        <span class="o">-</span><span class="mf">0.150457</span>      <span class="mf">0.451522</span>
+<span class="p">(</span><span class="mi">62</span><span class="p">,</span> <span class="s1">&#39;queens&#39;</span><span class="p">)</span>                                <span class="mf">0.451522</span>         <span class="mf">0.284191</span>      <span class="mf">0.451522</span>
+<span class="p">(</span><span class="mi">63</span><span class="p">,</span> <span class="s1">&#39;Boy&#39;</span><span class="p">)</span>                                  <span class="o">-</span><span class="mf">0.398915</span>        <span class="o">-</span><span class="mf">0.0954833</span>     <span class="mf">0.398915</span>
+<span class="p">(</span><span class="mi">63</span><span class="p">,</span> <span class="s1">&#39;Girl&#39;</span><span class="p">)</span>                                  <span class="mf">0.398915</span>         <span class="mf">0.251796</span>      <span class="mf">0.398915</span>
+<span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="s1">&#39;dudes&#39;</span><span class="p">)</span>                                <span class="o">-</span><span class="mf">0.420662</span>        <span class="o">-</span><span class="mf">0.0660332</span>     <span class="mf">0.420662</span>
+<span class="p">(</span><span class="mi">64</span><span class="p">,</span> <span class="s1">&#39;gals&#39;</span><span class="p">)</span>                                  <span class="mf">0.420662</span>         <span class="mf">0.311196</span>      <span class="mf">0.420662</span>
+<span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="s1">&#39;fatherhood&#39;</span><span class="p">)</span>                           <span class="o">-</span><span class="mf">0.45719</span>         <span class="o">-</span><span class="mf">0.114388</span>      <span class="mf">0.45719</span>
+<span class="p">(</span><span class="mi">65</span><span class="p">,</span> <span class="s1">&#39;motherhood&#39;</span><span class="p">)</span>                            <span class="mf">0.45719</span>          <span class="mf">0.400818</span>      <span class="mf">0.45719</span>
+<span class="p">(</span><span class="mi">66</span><span class="p">,</span> <span class="s1">&#39;grandpa&#39;</span><span class="p">)</span>                              <span class="o">-</span><span class="mf">0.342244</span>        <span class="o">-</span><span class="mf">0.08867</span>       <span class="mf">0.342244</span>
+<span class="p">(</span><span class="mi">66</span><span class="p">,</span> <span class="s1">&#39;grandma&#39;</span><span class="p">)</span>                               <span class="mf">0.342244</span>         <span class="mf">0.23426</span>       <span class="mf">0.342244</span>
+<span class="p">(</span><span class="mi">67</span><span class="p">,</span> <span class="s1">&#39;girl&#39;</span><span class="p">)</span>                                  <span class="mf">0.29452</span>          <span class="mf">0.29452</span>       <span class="mf">0.29452</span>
+<span class="p">(</span><span class="mi">67</span><span class="p">,</span> <span class="s1">&#39;boy&#39;</span><span class="p">)</span>                                  <span class="o">-</span><span class="mf">0.29452</span>         <span class="o">-</span><span class="mf">0.29452</span>       <span class="mf">0.29452</span>
+<span class="p">(</span><span class="mi">68</span><span class="p">,</span> <span class="s1">&#39;Grandsons&#39;</span><span class="p">)</span>                            <span class="o">-</span><span class="mf">0.518755</span>        <span class="o">-</span><span class="mf">0.00799486</span>    <span class="mf">0.518755</span>
+<span class="p">(</span><span class="mi">68</span><span class="p">,</span> <span class="s1">&#39;Granddaughters&#39;</span><span class="p">)</span>                        <span class="mf">0.518755</span>         <span class="mf">0.280871</span>      <span class="mf">0.518755</span>
+<span class="p">(</span><span class="mi">69</span><span class="p">,</span> <span class="s1">&#39;fella&#39;</span><span class="p">)</span>                                <span class="o">-</span><span class="mf">0.500677</span>        <span class="o">-</span><span class="mf">0.139339</span>      <span class="mf">0.500677</span>
+<span class="p">(</span><span class="mi">69</span><span class="p">,</span> <span class="s1">&#39;granny&#39;</span><span class="p">)</span>                                <span class="mf">0.500677</span>         <span class="mf">0.223876</span>      <span class="mf">0.500677</span>
+<span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="s1">&#39;FATHERS&#39;</span><span class="p">)</span>                              <span class="o">-</span><span class="mf">0.496495</span>         <span class="mf">0.115495</span>      <span class="mf">0.496495</span>
+<span class="p">(</span><span class="mi">70</span><span class="p">,</span> <span class="s1">&#39;MOTHERS&#39;</span><span class="p">)</span>                               <span class="mf">0.496495</span>         <span class="mf">0.249673</span>      <span class="mf">0.496495</span>
+<span class="p">(</span><span class="mi">71</span><span class="p">,</span> <span class="s1">&#39;FRATERNITY&#39;</span><span class="p">)</span>                           <span class="o">-</span><span class="mf">0.374105</span>         <span class="mf">0.0226484</span>     <span class="mf">0.374105</span>
+<span class="p">(</span><span class="mi">71</span><span class="p">,</span> <span class="s1">&#39;SORORITY&#39;</span><span class="p">)</span>                              <span class="mf">0.374105</span>         <span class="mf">0.164613</span>      <span class="mf">0.374105</span>
+<span class="p">(</span><span class="mi">72</span><span class="p">,</span> <span class="s1">&#39;MALE&#39;</span><span class="p">)</span>                                 <span class="o">-</span><span class="mf">0.483523</span>        <span class="o">-</span><span class="mf">0.483523</span>      <span class="mf">0.483523</span>
+<span class="p">(</span><span class="mi">72</span><span class="p">,</span> <span class="s1">&#39;FEMALE&#39;</span><span class="p">)</span>                                <span class="mf">0.483523</span>         <span class="mf">0.483523</span>      <span class="mf">0.483523</span>
+<span class="p">(</span><span class="mi">73</span><span class="p">,</span> <span class="s1">&#39;His&#39;</span><span class="p">)</span>                                  <span class="o">-</span><span class="mf">0.272142</span>        <span class="o">-</span><span class="mf">0.272142</span>      <span class="mf">0.272142</span>
+<span class="p">(</span><span class="mi">73</span><span class="p">,</span> <span class="s1">&#39;Her&#39;</span><span class="p">)</span>                                   <span class="mf">0.272142</span>         <span class="mf">0.272142</span>      <span class="mf">0.272142</span>
+<span class="p">(</span><span class="mi">74</span><span class="p">,</span> <span class="s1">&#39;Chairman&#39;</span><span class="p">)</span>                             <span class="o">-</span><span class="mf">0.47138</span>         <span class="o">-</span><span class="mf">0.171282</span>      <span class="mf">0.47138</span>
+<span class="p">(</span><span class="mi">74</span><span class="p">,</span> <span class="s1">&#39;Chairwoman&#39;</span><span class="p">)</span>                            <span class="mf">0.47138</span>          <span class="mf">0.378271</span>      <span class="mf">0.47138</span>
+<span class="p">(</span><span class="mi">75</span><span class="p">,</span> <span class="s1">&#39;BOYS&#39;</span><span class="p">)</span>                                 <span class="o">-</span><span class="mf">0.322782</span>        <span class="o">-</span><span class="mf">0.0660134</span>     <span class="mf">0.322782</span>
+<span class="p">(</span><span class="mi">75</span><span class="p">,</span> <span class="s1">&#39;GIRLS&#39;</span><span class="p">)</span>                                 <span class="mf">0.322782</span>         <span class="mf">0.231138</span>      <span class="mf">0.322782</span>
+<span class="p">(</span><span class="mi">76</span><span class="p">,</span> <span class="s1">&#39;he&#39;</span><span class="p">)</span>                                   <span class="o">-</span><span class="mf">0.443113</span>        <span class="o">-</span><span class="mf">0.443113</span>      <span class="mf">0.443113</span>
+<span class="p">(</span><span class="mi">76</span><span class="p">,</span> <span class="s1">&#39;she&#39;</span><span class="p">)</span>                                   <span class="mf">0.443113</span>         <span class="mf">0.443113</span>      <span class="mf">0.443113</span>
+<span class="p">(</span><span class="mi">77</span><span class="p">,</span> <span class="s1">&#39;SPOKESMAN&#39;</span><span class="p">)</span>                            <span class="o">-</span><span class="mf">0.380453</span>        <span class="o">-</span><span class="mf">0.0499313</span>     <span class="mf">0.380453</span>
+<span class="p">(</span><span class="mi">77</span><span class="p">,</span> <span class="s1">&#39;SPOKESWOMAN&#39;</span><span class="p">)</span>                           <span class="mf">0.380453</span>         <span class="mf">0.0706001</span>     <span class="mf">0.380453</span>
+<span class="p">(</span><span class="mi">78</span><span class="p">,</span> <span class="s1">&#39;Mother&#39;</span><span class="p">)</span>                                <span class="mf">0.498544</span>         <span class="mf">0.498544</span>      <span class="mf">0.498544</span>
+<span class="p">(</span><span class="mi">78</span><span class="p">,</span> <span class="s1">&#39;Father&#39;</span><span class="p">)</span>                               <span class="o">-</span><span class="mf">0.498544</span>        <span class="o">-</span><span class="mf">0.498544</span>      <span class="mf">0.498544</span>
+<span class="p">(</span><span class="mi">79</span><span class="p">,</span> <span class="s1">&#39;BOY&#39;</span><span class="p">)</span>                                  <span class="o">-</span><span class="mf">0.395733</span>        <span class="o">-</span><span class="mf">0.395733</span>      <span class="mf">0.395733</span>
+<span class="p">(</span><span class="mi">79</span><span class="p">,</span> <span class="s1">&#39;GIRL&#39;</span><span class="p">)</span>                                  <span class="mf">0.395733</span>         <span class="mf">0.395733</span>      <span class="mf">0.395733</span>
+<span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="s1">&#39;congressman&#39;</span><span class="p">)</span>                          <span class="o">-</span><span class="mf">0.427999</span>        <span class="o">-</span><span class="mf">0.0735924</span>     <span class="mf">0.427999</span>
+<span class="p">(</span><span class="mi">80</span><span class="p">,</span> <span class="s1">&#39;congresswoman&#39;</span><span class="p">)</span>                         <span class="mf">0.427999</span>         <span class="mf">0.260272</span>      <span class="mf">0.427999</span>
+<span class="p">(</span><span class="mi">81</span><span class="p">,</span> <span class="s1">&#39;Councilman&#39;</span><span class="p">)</span>                           <span class="o">-</span><span class="mf">0.397548</span>        <span class="o">-</span><span class="mf">0.127344</span>      <span class="mf">0.397548</span>
+<span class="p">(</span><span class="mi">81</span><span class="p">,</span> <span class="s1">&#39;Councilwoman&#39;</span><span class="p">)</span>                          <span class="mf">0.397548</span>         <span class="mf">0.343178</span>      <span class="mf">0.397548</span>
+<span class="p">(</span><span class="mi">82</span><span class="p">,</span> <span class="s1">&#39;GRANDSON&#39;</span><span class="p">)</span>                             <span class="o">-</span><span class="mf">0.329135</span>        <span class="o">-</span><span class="mf">0.0209265</span>     <span class="mf">0.329135</span>
+<span class="p">(</span><span class="mi">82</span><span class="p">,</span> <span class="s1">&#39;GRANDDAUGHTER&#39;</span><span class="p">)</span>                         <span class="mf">0.329135</span>         <span class="mf">0.13067</span>       <span class="mf">0.329135</span>
+<span class="p">(</span><span class="mi">83</span><span class="p">,</span> <span class="s1">&#39;male&#39;</span><span class="p">)</span>                                 <span class="o">-</span><span class="mf">0.336739</span>         <span class="mf">0.083992</span>      <span class="mf">0.336739</span>
+<span class="p">(</span><span class="mi">83</span><span class="p">,</span> <span class="s1">&#39;female&#39;</span><span class="p">)</span>                                <span class="mf">0.336739</span>         <span class="mf">0.282941</span>      <span class="mf">0.336739</span>
+<span class="p">(</span><span class="mi">84</span><span class="p">,</span> <span class="s1">&#39;King&#39;</span><span class="p">)</span>                                 <span class="o">-</span><span class="mf">0.496294</span>        <span class="o">-</span><span class="mf">0.116789</span>      <span class="mf">0.496294</span>
+<span class="p">(</span><span class="mi">84</span><span class="p">,</span> <span class="s1">&#39;Queen&#39;</span><span class="p">)</span>                                 <span class="mf">0.496294</span>         <span class="mf">0.245944</span>      <span class="mf">0.496294</span>
+<span class="p">(</span><span class="mi">85</span><span class="p">,</span> <span class="s1">&#39;nephew&#39;</span><span class="p">)</span>                               <span class="o">-</span><span class="mf">0.34779</span>         <span class="o">-</span><span class="mf">0.199274</span>      <span class="mf">0.34779</span>
+<span class="p">(</span><span class="mi">85</span><span class="p">,</span> <span class="s1">&#39;niece&#39;</span><span class="p">)</span>                                 <span class="mf">0.34779</span>          <span class="mf">0.251294</span>      <span class="mf">0.34779</span>
+<span class="p">(</span><span class="mi">86</span><span class="p">,</span> <span class="s1">&#39;Fatherhood&#39;</span><span class="p">)</span>                           <span class="o">-</span><span class="mf">0.523357</span>        <span class="o">-</span><span class="mf">0.0710201</span>     <span class="mf">0.523357</span>
+<span class="p">(</span><span class="mi">86</span><span class="p">,</span> <span class="s1">&#39;Motherhood&#39;</span><span class="p">)</span>                            <span class="mf">0.523357</span>         <span class="mf">0.348078</span>      <span class="mf">0.523357</span>
+<span class="p">(</span><span class="mi">87</span><span class="p">,</span> <span class="s1">&#39;prince&#39;</span><span class="p">)</span>                               <span class="o">-</span><span class="mf">0.417368</span>        <span class="o">-</span><span class="mf">0.009603</span>      <span class="mf">0.417368</span>
+<span class="p">(</span><span class="mi">87</span><span class="p">,</span> <span class="s1">&#39;princess&#39;</span><span class="p">)</span>                              <span class="mf">0.417368</span>         <span class="mf">0.316339</span>      <span class="mf">0.417368</span>
+<span class="p">(</span><span class="mi">88</span><span class="p">,</span> <span class="s1">&#39;PRINCE&#39;</span><span class="p">)</span>                               <span class="o">-</span><span class="mf">0.450062</span>        <span class="o">-</span><span class="mf">0.00160602</span>    <span class="mf">0.450062</span>
+<span class="p">(</span><span class="mi">88</span><span class="p">,</span> <span class="s1">&#39;PRINCESS&#39;</span><span class="p">)</span>                              <span class="mf">0.450062</span>         <span class="mf">0.293144</span>      <span class="mf">0.450062</span>
+<span class="p">(</span><span class="mi">89</span><span class="p">,</span> <span class="s1">&#39;Colt&#39;</span><span class="p">)</span>                                 <span class="o">-</span><span class="mf">0.611685</span>        <span class="o">-</span><span class="mf">0.148979</span>      <span class="mf">0.611685</span>
+<span class="p">(</span><span class="mi">89</span><span class="p">,</span> <span class="s1">&#39;Filly&#39;</span><span class="p">)</span>                                 <span class="mf">0.611685</span>         <span class="mf">0.228734</span>      <span class="mf">0.611685</span>
+<span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="s1">&#39;WIVES&#39;</span><span class="p">)</span>                                <span class="o">-</span><span class="mf">0.415113</span>         <span class="mf">0.0981047</span>     <span class="mf">0.415113</span>
+<span class="p">(</span><span class="mi">90</span><span class="p">,</span> <span class="s1">&#39;HUSBANDS&#39;</span><span class="p">)</span>                              <span class="mf">0.415113</span>         <span class="mf">0.19312</span>       <span class="mf">0.415113</span>
+<span class="p">(</span><span class="mi">91</span><span class="p">,</span> <span class="s1">&#39;dad&#39;</span><span class="p">)</span>                                  <span class="o">-</span><span class="mf">0.365253</span>        <span class="o">-</span><span class="mf">0.115006</span>      <span class="mf">0.365253</span>
+<span class="p">(</span><span class="mi">91</span><span class="p">,</span> <span class="s1">&#39;mom&#39;</span><span class="p">)</span>                                   <span class="mf">0.365253</span>         <span class="mf">0.281311</span>      <span class="mf">0.365253</span>
+<span class="p">(</span><span class="mi">92</span><span class="p">,</span> <span class="s1">&#39;gal&#39;</span><span class="p">)</span>                                   <span class="mf">0.51301</span>          <span class="mf">0.400741</span>      <span class="mf">0.51301</span>
+<span class="p">(</span><span class="mi">92</span><span class="p">,</span> <span class="s1">&#39;guy&#39;</span><span class="p">)</span>                                  <span class="o">-</span><span class="mf">0.51301</span>         <span class="o">-</span><span class="mf">0.326011</span>      <span class="mf">0.51301</span>
+<span class="p">(</span><span class="mi">93</span><span class="p">,</span> <span class="s1">&#39;father&#39;</span><span class="p">)</span>                               <span class="o">-</span><span class="mf">0.332768</span>        <span class="o">-</span><span class="mf">0.147961</span>      <span class="mf">0.332768</span>
+<span class="p">(</span><span class="mi">93</span><span class="p">,</span> <span class="s1">&#39;mother&#39;</span><span class="p">)</span>                                <span class="mf">0.332768</span>         <span class="mf">0.300389</span>      <span class="mf">0.332768</span>
+<span class="p">(</span><span class="mi">94</span><span class="p">,</span> <span class="s1">&#39;Schoolboy&#39;</span><span class="p">)</span>                            <span class="o">-</span><span class="mf">0.451227</span>        <span class="o">-</span><span class="mf">0.131485</span>      <span class="mf">0.451227</span>
+<span class="p">(</span><span class="mi">94</span><span class="p">,</span> <span class="s1">&#39;Schoolgirl&#39;</span><span class="p">)</span>                            <span class="mf">0.451227</span>         <span class="mf">0.241867</span>      <span class="mf">0.451227</span>
+<span class="p">(</span><span class="mi">95</span><span class="p">,</span> <span class="s1">&#39;MARY&#39;</span><span class="p">)</span>                                  <span class="mf">0.356334</span>         <span class="mf">0.222307</span>      <span class="mf">0.356334</span>
+<span class="p">(</span><span class="mi">95</span><span class="p">,</span> <span class="s1">&#39;JOHN&#39;</span><span class="p">)</span>                                 <span class="o">-</span><span class="mf">0.356334</span>        <span class="o">-</span><span class="mf">0.0818515</span>     <span class="mf">0.356334</span>
+<span class="p">(</span><span class="mi">96</span><span class="p">,</span> <span class="s1">&#39;wives&#39;</span><span class="p">)</span>                                <span class="o">-</span><span class="mf">0.402256</span>         <span class="mf">0.0785034</span>     <span class="mf">0.402256</span>
+<span class="p">(</span><span class="mi">96</span><span class="p">,</span> <span class="s1">&#39;husbands&#39;</span><span class="p">)</span>                              <span class="mf">0.402256</span>         <span class="mf">0.264852</span>      <span class="mf">0.402256</span>
+<span class="p">(</span><span class="mi">97</span><span class="p">,</span> <span class="s1">&#39;Gelding&#39;</span><span class="p">)</span>                              <span class="o">-</span><span class="mf">0.543137</span>         <span class="mf">0.0701695</span>     <span class="mf">0.543137</span>
+<span class="p">(</span><span class="mi">97</span><span class="p">,</span> <span class="s1">&#39;Mare&#39;</span><span class="p">)</span>                                  <span class="mf">0.543137</span>         <span class="mf">0.147159</span>      <span class="mf">0.543137</span>
+<span class="p">(</span><span class="mi">98</span><span class="p">,</span> <span class="s1">&#39;Grandpa&#39;</span><span class="p">)</span>                              <span class="o">-</span><span class="mf">0.389706</span>        <span class="o">-</span><span class="mf">0.088718</span>      <span class="mf">0.389706</span>
+<span class="p">(</span><span class="mi">98</span><span class="p">,</span> <span class="s1">&#39;Grandma&#39;</span><span class="p">)</span>                               <span class="mf">0.389706</span>         <span class="mf">0.293524</span>      <span class="mf">0.389706</span>
+<span class="p">(</span><span class="mi">99</span><span class="p">,</span> <span class="s1">&#39;chairman&#39;</span><span class="p">)</span>                             <span class="o">-</span><span class="mf">0.436074</span>        <span class="o">-</span><span class="mf">0.182156</span>      <span class="mf">0.436074</span>
+<span class="p">(</span><span class="mi">99</span><span class="p">,</span> <span class="s1">&#39;chairwoman&#39;</span><span class="p">)</span>                            <span class="mf">0.436074</span>         <span class="mf">0.388825</span>      <span class="mf">0.436074</span>
+<span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;himself&#39;</span><span class="p">)</span>                             <span class="o">-</span><span class="mf">0.401098</span>        <span class="o">-</span><span class="mf">0.38296</span>       <span class="mf">0.401098</span>
+<span class="p">(</span><span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;herself&#39;</span><span class="p">)</span>                              <span class="mf">0.401098</span>         <span class="mf">0.378141</span>      <span class="mf">0.401098</span>
+<span class="p">(</span><span class="mi">101</span><span class="p">,</span> <span class="s1">&#39;GENTLEMEN&#39;</span><span class="p">)</span>                           <span class="o">-</span><span class="mf">0.504079</span>        <span class="o">-</span><span class="mf">0.0460637</span>     <span class="mf">0.504079</span>
+<span class="p">(</span><span class="mi">101</span><span class="p">,</span> <span class="s1">&#39;LADIES&#39;</span><span class="p">)</span>                               <span class="mf">0.504079</span>         <span class="mf">0.191514</span>      <span class="mf">0.504079</span>
+<span class="p">(</span><span class="mi">102</span><span class="p">,</span> <span class="s1">&#39;DAUGHTER&#39;</span><span class="p">)</span>                             <span class="mf">0.521962</span>         <span class="mf">0.521962</span>      <span class="mf">0.521962</span>
+<span class="p">(</span><span class="mi">102</span><span class="p">,</span> <span class="s1">&#39;SON&#39;</span><span class="p">)</span>                                 <span class="o">-</span><span class="mf">0.521962</span>        <span class="o">-</span><span class="mf">0.521962</span>      <span class="mf">0.521962</span>
+<span class="p">(</span><span class="mi">103</span><span class="p">,</span> <span class="s1">&#39;Men&#39;</span><span class="p">)</span>                                 <span class="o">-</span><span class="mf">0.429011</span>        <span class="o">-</span><span class="mf">0.0406838</span>     <span class="mf">0.429011</span>
+<span class="p">(</span><span class="mi">103</span><span class="p">,</span> <span class="s1">&#39;Women&#39;</span><span class="p">)</span>                                <span class="mf">0.429011</span>         <span class="mf">0.350025</span>      <span class="mf">0.429011</span>
+<span class="p">(</span><span class="mi">104</span><span class="p">,</span> <span class="s1">&#39;Grandson&#39;</span><span class="p">)</span>                            <span class="o">-</span><span class="mf">0.436104</span>        <span class="o">-</span><span class="mf">0.184543</span>      <span class="mf">0.436104</span>
+<span class="p">(</span><span class="mi">104</span><span class="p">,</span> <span class="s1">&#39;Granddaughter&#39;</span><span class="p">)</span>                        <span class="mf">0.436104</span>         <span class="mf">0.262283</span>      <span class="mf">0.436104</span>
+<span class="p">(</span><span class="mi">105</span><span class="p">,</span> <span class="s1">&#39;CONGRESSMAN&#39;</span><span class="p">)</span>                         <span class="o">-</span><span class="mf">0.362044</span>        <span class="o">-</span><span class="mf">0.038846</span>      <span class="mf">0.362044</span>
+<span class="p">(</span><span class="mi">105</span><span class="p">,</span> <span class="s1">&#39;CONGRESSWOMAN&#39;</span><span class="p">)</span>                        <span class="mf">0.362044</span>         <span class="mf">0.134128</span>      <span class="mf">0.362044</span>
+<span class="p">(</span><span class="mi">106</span><span class="p">,</span> <span class="s1">&#39;Dudes&#39;</span><span class="p">)</span>                               <span class="o">-</span><span class="mf">0.511909</span>         <span class="mf">0.108169</span>      <span class="mf">0.511909</span>
+<span class="p">(</span><span class="mi">106</span><span class="p">,</span> <span class="s1">&#39;Gals&#39;</span><span class="p">)</span>                                 <span class="mf">0.511909</span>         <span class="mf">0.224083</span>      <span class="mf">0.511909</span>
+<span class="p">(</span><span class="mi">107</span><span class="p">,</span> <span class="s1">&#39;sons&#39;</span><span class="p">)</span>                                <span class="o">-</span><span class="mf">0.295192</span>        <span class="o">-</span><span class="mf">0.0671465</span>     <span class="mf">0.295192</span>
+<span class="p">(</span><span class="mi">107</span><span class="p">,</span> <span class="s1">&#39;daughters&#39;</span><span class="p">)</span>                            <span class="mf">0.295192</span>         <span class="mf">0.232942</span>      <span class="mf">0.295192</span>
+<span class="p">(</span><span class="mi">108</span><span class="p">,</span> <span class="s1">&#39;HERSELF&#39;</span><span class="p">)</span>                              <span class="mf">0.388876</span>         <span class="mf">0.388876</span>      <span class="mf">0.388876</span>
+<span class="p">(</span><span class="mi">108</span><span class="p">,</span> <span class="s1">&#39;HIMSELF&#39;</span><span class="p">)</span>                             <span class="o">-</span><span class="mf">0.388876</span>        <span class="o">-</span><span class="mf">0.388876</span>      <span class="mf">0.388876</span>
+<span class="p">(</span><span class="mi">109</span><span class="p">,</span> <span class="s1">&#39;ex_girlfriend&#39;</span><span class="p">)</span>                       <span class="o">-</span><span class="mf">0.320849</span>         <span class="mf">0.0607288</span>     <span class="mf">0.320849</span>
+<span class="p">(</span><span class="mi">109</span><span class="p">,</span> <span class="s1">&#39;ex_boyfriend&#39;</span><span class="p">)</span>                         <span class="mf">0.320849</span>         <span class="mf">0.184493</span>      <span class="mf">0.320849</span>
+<span class="p">(</span><span class="mi">110</span><span class="p">,</span> <span class="s1">&#39;herself&#39;</span><span class="p">)</span>                              <span class="mf">0.401098</span>         <span class="mf">0.401098</span>      <span class="mf">0.401098</span>
+<span class="p">(</span><span class="mi">110</span><span class="p">,</span> <span class="s1">&#39;himself&#39;</span><span class="p">)</span>                             <span class="o">-</span><span class="mf">0.401098</span>        <span class="o">-</span><span class="mf">0.401098</span>      <span class="mf">0.401098</span>
+<span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="s1">&#39;males&#39;</span><span class="p">)</span>                               <span class="o">-</span><span class="mf">0.311424</span>         <span class="mf">0.0583918</span>     <span class="mf">0.311424</span>
+<span class="p">(</span><span class="mi">111</span><span class="p">,</span> <span class="s1">&#39;females&#39;</span><span class="p">)</span>                              <span class="mf">0.311424</span>         <span class="mf">0.251908</span>      <span class="mf">0.311424</span>
+<span class="p">(</span><span class="mi">112</span><span class="p">,</span> <span class="s1">&#39;mother&#39;</span><span class="p">)</span>                               <span class="mf">0.332768</span>         <span class="mf">0.332768</span>      <span class="mf">0.332768</span>
+<span class="p">(</span><span class="mi">112</span><span class="p">,</span> <span class="s1">&#39;father&#39;</span><span class="p">)</span>                              <span class="o">-</span><span class="mf">0.332768</span>        <span class="o">-</span><span class="mf">0.332768</span>      <span class="mf">0.332768</span>
+<span class="p">(</span><span class="mi">113</span><span class="p">,</span> <span class="s1">&#39;HE&#39;</span><span class="p">)</span>                                  <span class="o">-</span><span class="mf">0.540225</span>        <span class="o">-</span><span class="mf">0.540225</span>      <span class="mf">0.540225</span>
+<span class="p">(</span><span class="mi">113</span><span class="p">,</span> <span class="s1">&#39;SHE&#39;</span><span class="p">)</span>                                  <span class="mf">0.540225</span>         <span class="mf">0.540225</span>      <span class="mf">0.540225</span>
+<span class="p">(</span><span class="mi">114</span><span class="p">,</span> <span class="s1">&#39;uncle&#39;</span><span class="p">)</span>                               <span class="o">-</span><span class="mf">0.343917</span>        <span class="o">-</span><span class="mf">0.184815</span>      <span class="mf">0.343917</span>
+<span class="p">(</span><span class="mi">114</span><span class="p">,</span> <span class="s1">&#39;aunt&#39;</span><span class="p">)</span>                                 <span class="mf">0.343917</span>         <span class="mf">0.227356</span>      <span class="mf">0.343917</span>
+<span class="p">(</span><span class="mi">115</span><span class="p">,</span> <span class="s1">&#39;Fella&#39;</span><span class="p">)</span>                               <span class="o">-</span><span class="mf">0.635087</span>        <span class="o">-</span><span class="mf">0.0236144</span>     <span class="mf">0.635087</span>
+<span class="p">(</span><span class="mi">115</span><span class="p">,</span> <span class="s1">&#39;Granny&#39;</span><span class="p">)</span>                               <span class="mf">0.635087</span>         <span class="mf">0.229781</span>      <span class="mf">0.635087</span>
+<span class="p">(</span><span class="mi">116</span><span class="p">,</span> <span class="s1">&#39;councilman&#39;</span><span class="p">)</span>                          <span class="o">-</span><span class="mf">0.357917</span>        <span class="o">-</span><span class="mf">0.0988956</span>     <span class="mf">0.357917</span>
+<span class="p">(</span><span class="mi">116</span><span class="p">,</span> <span class="s1">&#39;councilwoman&#39;</span><span class="p">)</span>                         <span class="mf">0.357917</span>         <span class="mf">0.327105</span>      <span class="mf">0.357917</span>
+<span class="p">(</span><span class="mi">117</span><span class="p">,</span> <span class="s1">&#39;schoolboy&#39;</span><span class="p">)</span>                           <span class="o">-</span><span class="mf">0.401826</span>        <span class="o">-</span><span class="mf">0.185449</span>      <span class="mf">0.401826</span>
+<span class="p">(</span><span class="mi">117</span><span class="p">,</span> <span class="s1">&#39;schoolgirl&#39;</span><span class="p">)</span>                           <span class="mf">0.401826</span>         <span class="mf">0.285677</span>      <span class="mf">0.401826</span>
+<span class="p">(</span><span class="mi">118</span><span class="p">,</span> <span class="s1">&#39;fraternity&#39;</span><span class="p">)</span>                          <span class="o">-</span><span class="mf">0.439336</span>        <span class="o">-</span><span class="mf">0.126512</span>      <span class="mf">0.439336</span>
+<span class="p">(</span><span class="mi">118</span><span class="p">,</span> <span class="s1">&#39;sorority&#39;</span><span class="p">)</span>                             <span class="mf">0.439336</span>         <span class="mf">0.312585</span>      <span class="mf">0.439336</span>
+<span class="p">(</span><span class="mi">119</span><span class="p">,</span> <span class="s1">&#39;MONASTERY&#39;</span><span class="p">)</span>                           <span class="o">-</span><span class="mf">0.476844</span>         <span class="mf">0.0618239</span>     <span class="mf">0.476844</span>
+<span class="p">(</span><span class="mi">119</span><span class="p">,</span> <span class="s1">&#39;CONVENT&#39;</span><span class="p">)</span>                              <span class="mf">0.476844</span>         <span class="mf">0.0779661</span>     <span class="mf">0.476844</span>
+<span class="p">(</span><span class="mi">120</span><span class="p">,</span> <span class="s1">&#39;KINGS&#39;</span><span class="p">)</span>                               <span class="o">-</span><span class="mf">0.506902</span>        <span class="o">-</span><span class="mf">0.0580522</span>     <span class="mf">0.506902</span>
+<span class="p">(</span><span class="mi">120</span><span class="p">,</span> <span class="s1">&#39;QUEENS&#39;</span><span class="p">)</span>                               <span class="mf">0.506902</span>         <span class="mf">0.0699294</span>     <span class="mf">0.506902</span>
+<span class="p">(</span><span class="mi">121</span><span class="p">,</span> <span class="s1">&#39;GRANDPA&#39;</span><span class="p">)</span>                             <span class="o">-</span><span class="mf">0.38419</span>          <span class="mf">0.0151106</span>     <span class="mf">0.38419</span>
+<span class="p">(</span><span class="mi">121</span><span class="p">,</span> <span class="s1">&#39;GRANDMA&#39;</span><span class="p">)</span>                              <span class="mf">0.38419</span>          <span class="mf">0.205817</span>      <span class="mf">0.38419</span>
+<span class="p">(</span><span class="mi">122</span><span class="p">,</span> <span class="s1">&#39;Gentlemen&#39;</span><span class="p">)</span>                           <span class="o">-</span><span class="mf">0.556283</span>        <span class="o">-</span><span class="mf">0.0475263</span>     <span class="mf">0.556283</span>
+<span class="p">(</span><span class="mi">122</span><span class="p">,</span> <span class="s1">&#39;Ladies&#39;</span><span class="p">)</span>                               <span class="mf">0.556283</span>         <span class="mf">0.247173</span>      <span class="mf">0.556283</span>
+<span class="p">(</span><span class="mi">123</span><span class="p">,</span> <span class="s1">&#39;catholic_priest&#39;</span><span class="p">)</span>                     <span class="o">-</span><span class="mf">0.491534</span>        <span class="o">-</span><span class="mf">0.0380949</span>     <span class="mf">0.491534</span>
+<span class="p">(</span><span class="mi">123</span><span class="p">,</span> <span class="s1">&#39;nun&#39;</span><span class="p">)</span>                                  <span class="mf">0.491534</span>         <span class="mf">0.26478</span>       <span class="mf">0.491534</span>
+<span class="p">(</span><span class="mi">124</span><span class="p">,</span> <span class="s1">&#39;Brother&#39;</span><span class="p">)</span>                             <span class="o">-</span><span class="mf">0.521082</span>        <span class="o">-</span><span class="mf">0.241616</span>      <span class="mf">0.521082</span>
+<span class="p">(</span><span class="mi">124</span><span class="p">,</span> <span class="s1">&#39;Sister&#39;</span><span class="p">)</span>                               <span class="mf">0.521082</span>         <span class="mf">0.345172</span>      <span class="mf">0.521082</span>
+<span class="p">(</span><span class="mi">125</span><span class="p">,</span> <span class="s1">&#39;mary&#39;</span><span class="p">)</span>                                 <span class="mf">0.444525</span>         <span class="mf">0.192964</span>      <span class="mf">0.444525</span>
+<span class="p">(</span><span class="mi">125</span><span class="p">,</span> <span class="s1">&#39;john&#39;</span><span class="p">)</span>                                <span class="o">-</span><span class="mf">0.444525</span>        <span class="o">-</span><span class="mf">0.0204266</span>     <span class="mf">0.444525</span>
+<span class="p">(</span><span class="mi">126</span><span class="p">,</span> <span class="s1">&#39;DADS&#39;</span><span class="p">)</span>                                <span class="o">-</span><span class="mf">0.583846</span>         <span class="mf">0.0983991</span>     <span class="mf">0.583846</span>
+<span class="p">(</span><span class="mi">126</span><span class="p">,</span> <span class="s1">&#39;MOMS&#39;</span><span class="p">)</span>                                 <span class="mf">0.583846</span>         <span class="mf">0.234249</span>      <span class="mf">0.583846</span>
+<span class="p">(</span><span class="mi">127</span><span class="p">,</span> <span class="s1">&#39;Wives&#39;</span><span class="p">)</span>                               <span class="o">-</span><span class="mf">0.540185</span>         <span class="mf">0.104208</span>      <span class="mf">0.540185</span>
+<span class="p">(</span><span class="mi">127</span><span class="p">,</span> <span class="s1">&#39;Husbands&#39;</span><span class="p">)</span>                             <span class="mf">0.540185</span>         <span class="mf">0.153448</span>      <span class="mf">0.540185</span>
+<span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="s1">&#39;Male&#39;</span><span class="p">)</span>                                <span class="o">-</span><span class="mf">0.405189</span>         <span class="mf">0.0366158</span>     <span class="mf">0.405189</span>
+<span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="s1">&#39;Female&#39;</span><span class="p">)</span>                               <span class="mf">0.405189</span>         <span class="mf">0.198377</span>      <span class="mf">0.405189</span>
+<span class="p">(</span><span class="mi">129</span><span class="p">,</span> <span class="s1">&#39;Prince&#39;</span><span class="p">)</span>                              <span class="o">-</span><span class="mf">0.511457</span>        <span class="o">-</span><span class="mf">0.0959666</span>     <span class="mf">0.511457</span>
+<span class="p">(</span><span class="mi">129</span><span class="p">,</span> <span class="s1">&#39;Princess&#39;</span><span class="p">)</span>                             <span class="mf">0.511457</span>         <span class="mf">0.337395</span>      <span class="mf">0.511457</span>
+<span class="p">(</span><span class="mi">130</span><span class="p">,</span> <span class="s1">&#39;Mary&#39;</span><span class="p">)</span>                                 <span class="mf">0.488704</span>         <span class="mf">0.301974</span>      <span class="mf">0.488704</span>
+<span class="p">(</span><span class="mi">130</span><span class="p">,</span> <span class="s1">&#39;John&#39;</span><span class="p">)</span>                                <span class="o">-</span><span class="mf">0.488704</span>        <span class="o">-</span><span class="mf">0.251126</span>      <span class="mf">0.488704</span>
+<span class="p">(</span><span class="mi">131</span><span class="p">,</span> <span class="s1">&#39;Female&#39;</span><span class="p">)</span>                               <span class="mf">0.405189</span>         <span class="mf">0.405189</span>      <span class="mf">0.405189</span>
+<span class="p">(</span><span class="mi">131</span><span class="p">,</span> <span class="s1">&#39;Male&#39;</span><span class="p">)</span>                                <span class="o">-</span><span class="mf">0.405189</span>        <span class="o">-</span><span class="mf">0.405189</span>      <span class="mf">0.405189</span>
+<span class="p">(</span><span class="mi">132</span><span class="p">,</span> <span class="s1">&#39;DAD&#39;</span><span class="p">)</span>                                 <span class="o">-</span><span class="mf">0.548123</span>        <span class="o">-</span><span class="mf">0.00731271</span>    <span class="mf">0.548123</span>
+<span class="p">(</span><span class="mi">132</span><span class="p">,</span> <span class="s1">&#39;MOM&#39;</span><span class="p">)</span>                                  <span class="mf">0.548123</span>         <span class="mf">0.143416</span>      <span class="mf">0.548123</span>
+<span class="p">(</span><span class="mi">133</span><span class="p">,</span> <span class="s1">&#39;Prostate_Cancer&#39;</span><span class="p">)</span>                     <span class="o">-</span><span class="mf">0.388372</span>        <span class="o">-</span><span class="mf">0.101902</span>      <span class="mf">0.388372</span>
+<span class="p">(</span><span class="mi">133</span><span class="p">,</span> <span class="s1">&#39;Ovarian_Cancer&#39;</span><span class="p">)</span>                       <span class="mf">0.388372</span>         <span class="mf">0.203867</span>      <span class="mf">0.388372</span>
+<span class="p">(</span><span class="mi">134</span><span class="p">,</span> <span class="s1">&#39;Himself&#39;</span><span class="p">)</span>                             <span class="o">-</span><span class="mf">0.479517</span>        <span class="o">-</span><span class="mf">0.479517</span>      <span class="mf">0.479517</span>
+<span class="p">(</span><span class="mi">134</span><span class="p">,</span> <span class="s1">&#39;Herself&#39;</span><span class="p">)</span>                              <span class="mf">0.479517</span>         <span class="mf">0.479517</span>      <span class="mf">0.479517</span>
+<span class="p">(</span><span class="mi">135</span><span class="p">,</span> <span class="s1">&#39;female&#39;</span><span class="p">)</span>                               <span class="mf">0.336739</span>         <span class="mf">0.336739</span>      <span class="mf">0.336739</span>
+<span class="p">(</span><span class="mi">135</span><span class="p">,</span> <span class="s1">&#39;male&#39;</span><span class="p">)</span>                                <span class="o">-</span><span class="mf">0.336739</span>        <span class="o">-</span><span class="mf">0.336739</span>      <span class="mf">0.336739</span>
+<span class="p">(</span><span class="mi">136</span><span class="p">,</span> <span class="s1">&#39;Girl&#39;</span><span class="p">)</span>                                 <span class="mf">0.398915</span>         <span class="mf">0.398915</span>      <span class="mf">0.398915</span>
+<span class="p">(</span><span class="mi">136</span><span class="p">,</span> <span class="s1">&#39;Boy&#39;</span><span class="p">)</span>                                 <span class="o">-</span><span class="mf">0.398915</span>        <span class="o">-</span><span class="mf">0.398915</span>      <span class="mf">0.398915</span>
+<span class="p">(</span><span class="mi">137</span><span class="p">,</span> <span class="s1">&#39;Man&#39;</span><span class="p">)</span>                                 <span class="o">-</span><span class="mf">0.392149</span>        <span class="o">-</span><span class="mf">0.392149</span>      <span class="mf">0.392149</span>
+<span class="p">(</span><span class="mi">137</span><span class="p">,</span> <span class="s1">&#39;Woman&#39;</span><span class="p">)</span>                                <span class="mf">0.392149</span>         <span class="mf">0.392149</span>      <span class="mf">0.392149</span>
+<span class="p">(</span><span class="mi">138</span><span class="p">,</span> <span class="s1">&#39;Son&#39;</span><span class="p">)</span>                                 <span class="o">-</span><span class="mf">0.469635</span>        <span class="o">-</span><span class="mf">0.469635</span>      <span class="mf">0.469635</span>
+<span class="p">(</span><span class="mi">138</span><span class="p">,</span> <span class="s1">&#39;Daughter&#39;</span><span class="p">)</span>                             <span class="mf">0.469635</span>         <span class="mf">0.469635</span>      <span class="mf">0.469635</span>
+<span class="p">(</span><span class="mi">139</span><span class="p">,</span> <span class="s1">&#39;Gentleman&#39;</span><span class="p">)</span>                           <span class="o">-</span><span class="mf">0.64165</span>         <span class="o">-</span><span class="mf">0.107577</span>      <span class="mf">0.64165</span>
+<span class="p">(</span><span class="mi">139</span><span class="p">,</span> <span class="s1">&#39;Lady&#39;</span><span class="p">)</span>                                 <span class="mf">0.64165</span>          <span class="mf">0.331577</span>      <span class="mf">0.64165</span>
+<span class="p">(</span><span class="mi">140</span><span class="p">,</span> <span class="s1">&#39;woman&#39;</span><span class="p">)</span>                                <span class="mf">0.346934</span>         <span class="mf">0.346934</span>      <span class="mf">0.346934</span>
+<span class="p">(</span><span class="mi">140</span><span class="p">,</span> <span class="s1">&#39;man&#39;</span><span class="p">)</span>                                 <span class="o">-</span><span class="mf">0.346934</span>        <span class="o">-</span><span class="mf">0.346934</span>      <span class="mf">0.346934</span>
+<span class="p">(</span><span class="mi">141</span><span class="p">,</span> <span class="s1">&#39;his&#39;</span><span class="p">)</span>                                 <span class="o">-</span><span class="mf">0.430368</span>        <span class="o">-</span><span class="mf">0.430368</span>      <span class="mf">0.430368</span>
+<span class="p">(</span><span class="mi">141</span><span class="p">,</span> <span class="s1">&#39;her&#39;</span><span class="p">)</span>                                  <span class="mf">0.430368</span>         <span class="mf">0.430368</span>      <span class="mf">0.430368</span>
+<span class="p">(</span><span class="mi">142</span><span class="p">,</span> <span class="s1">&#39;grandsons&#39;</span><span class="p">)</span>                           <span class="o">-</span><span class="mf">0.324771</span>        <span class="o">-</span><span class="mf">0.0453894</span>     <span class="mf">0.324771</span>
+<span class="p">(</span><span class="mi">142</span><span class="p">,</span> <span class="s1">&#39;granddaughters&#39;</span><span class="p">)</span>                       <span class="mf">0.324771</span>         <span class="mf">0.23981</span>       <span class="mf">0.324771</span>
+<span class="p">(</span><span class="mi">143</span><span class="p">,</span> <span class="s1">&#39;daughter&#39;</span><span class="p">)</span>                             <span class="mf">0.289697</span>         <span class="mf">0.289697</span>      <span class="mf">0.289697</span>
+<span class="p">(</span><span class="mi">143</span><span class="p">,</span> <span class="s1">&#39;son&#39;</span><span class="p">)</span>                                 <span class="o">-</span><span class="mf">0.289697</span>        <span class="o">-</span><span class="mf">0.289697</span>      <span class="mf">0.289697</span>
+<span class="p">(</span><span class="mi">144</span><span class="p">,</span> <span class="s1">&#39;Nephew&#39;</span><span class="p">)</span>                              <span class="o">-</span><span class="mf">0.589035</span>        <span class="o">-</span><span class="mf">0.104864</span>      <span class="mf">0.589035</span>
+<span class="p">(</span><span class="mi">144</span><span class="p">,</span> <span class="s1">&#39;Niece&#39;</span><span class="p">)</span>                                <span class="mf">0.589035</span>         <span class="mf">0.129172</span>      <span class="mf">0.589035</span>
+<span class="p">(</span><span class="mi">145</span><span class="p">,</span> <span class="s1">&#39;COLT&#39;</span><span class="p">)</span>                                <span class="o">-</span><span class="mf">0.574654</span>         <span class="mf">0.0448574</span>     <span class="mf">0.574654</span>
+<span class="p">(</span><span class="mi">145</span><span class="p">,</span> <span class="s1">&#39;FILLY&#39;</span><span class="p">)</span>                                <span class="mf">0.574654</span>         <span class="mf">0.128587</span>      <span class="mf">0.574654</span>
+<span class="p">(</span><span class="mi">146</span><span class="p">,</span> <span class="s1">&#39;fathers&#39;</span><span class="p">)</span>                             <span class="o">-</span><span class="mf">0.418326</span>        <span class="o">-</span><span class="mf">0.0428798</span>     <span class="mf">0.418326</span>
+<span class="p">(</span><span class="mi">146</span><span class="p">,</span> <span class="s1">&#39;mothers&#39;</span><span class="p">)</span>                              <span class="mf">0.418326</span>         <span class="mf">0.363402</span>      <span class="mf">0.418326</span>
+<span class="p">(</span><span class="mi">147</span><span class="p">,</span> <span class="s1">&#39;Fraternity&#39;</span><span class="p">)</span>                          <span class="o">-</span><span class="mf">0.444296</span>        <span class="o">-</span><span class="mf">0.0604545</span>     <span class="mf">0.444296</span>
+<span class="p">(</span><span class="mi">147</span><span class="p">,</span> <span class="s1">&#39;Sorority&#39;</span><span class="p">)</span>                             <span class="mf">0.444296</span>         <span class="mf">0.255009</span>      <span class="mf">0.444296</span>
+<span class="p">(</span><span class="mi">148</span><span class="p">,</span> <span class="s1">&#39;Fathers&#39;</span><span class="p">)</span>                             <span class="o">-</span><span class="mf">0.497203</span>        <span class="o">-</span><span class="mf">0.0100986</span>     <span class="mf">0.497203</span>
+<span class="p">(</span><span class="mi">148</span><span class="p">,</span> <span class="s1">&#39;Mothers&#39;</span><span class="p">)</span>                              <span class="mf">0.497203</span>         <span class="mf">0.278392</span>      <span class="mf">0.497203</span>
+<span class="p">(</span><span class="mi">149</span><span class="p">,</span> <span class="s1">&#39;PROSTATE_CANCER&#39;</span><span class="p">)</span>                     <span class="o">-</span><span class="mf">0.366725</span>         <span class="mf">0.0937956</span>     <span class="mf">0.366725</span>
+<span class="p">(</span><span class="mi">149</span><span class="p">,</span> <span class="s1">&#39;OVARIAN_CANCER&#39;</span><span class="p">)</span>                       <span class="mf">0.366725</span>         <span class="mf">0.105068</span>      <span class="mf">0.366725</span>
+<span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="s1">&#39;GENTLEMAN&#39;</span><span class="p">)</span>                           <span class="o">-</span><span class="mf">0.415516</span>         <span class="mf">0.0409928</span>     <span class="mf">0.415516</span>
+<span class="p">(</span><span class="mi">150</span><span class="p">,</span> <span class="s1">&#39;LADY&#39;</span><span class="p">)</span>                                 <span class="mf">0.415516</span>         <span class="mf">0.232875</span>      <span class="mf">0.415516</span>
+<span class="p">(</span><span class="mi">151</span><span class="p">,</span> <span class="s1">&#39;Businessman&#39;</span><span class="p">)</span>                         <span class="o">-</span><span class="mf">0.47819</span>         <span class="o">-</span><span class="mf">0.219352</span>      <span class="mf">0.47819</span>
+<span class="p">(</span><span class="mi">151</span><span class="p">,</span> <span class="s1">&#39;Businesswoman&#39;</span><span class="p">)</span>                        <span class="mf">0.47819</span>          <span class="mf">0.316095</span>      <span class="mf">0.47819</span>
+<span class="p">(</span><span class="mi">152</span><span class="p">,</span> <span class="s1">&#39;GRANDFATHER&#39;</span><span class="p">)</span>                         <span class="o">-</span><span class="mf">0.331654</span>         <span class="mf">0.000438667</span>   <span class="mf">0.331654</span>
+<span class="p">(</span><span class="mi">152</span><span class="p">,</span> <span class="s1">&#39;GRANDMOTHER&#39;</span><span class="p">)</span>                          <span class="mf">0.331654</span>         <span class="mf">0.197366</span>      <span class="mf">0.331654</span>
+<span class="p">(</span><span class="mi">153</span><span class="p">,</span> <span class="s1">&#39;gentlemen&#39;</span><span class="p">)</span>                           <span class="o">-</span><span class="mf">0.471394</span>        <span class="o">-</span><span class="mf">0.0597054</span>     <span class="mf">0.471394</span>
+<span class="p">(</span><span class="mi">153</span><span class="p">,</span> <span class="s1">&#39;ladies&#39;</span><span class="p">)</span>                               <span class="mf">0.471394</span>         <span class="mf">0.31663</span>       <span class="mf">0.471394</span>
+<span class="p">(</span><span class="mi">154</span><span class="p">,</span> <span class="s1">&#39;brothers&#39;</span><span class="p">)</span>                            <span class="o">-</span><span class="mf">0.401082</span>        <span class="o">-</span><span class="mf">0.199109</span>      <span class="mf">0.401082</span>
+<span class="p">(</span><span class="mi">154</span><span class="p">,</span> <span class="s1">&#39;sisters&#39;</span><span class="p">)</span>                              <span class="mf">0.401082</span>         <span class="mf">0.332171</span>      <span class="mf">0.401082</span>
+<span class="p">(</span><span class="mi">155</span><span class="p">,</span> <span class="s1">&#39;MEN&#39;</span><span class="p">)</span>                                 <span class="o">-</span><span class="mf">0.504133</span>         <span class="mf">0.0498845</span>     <span class="mf">0.504133</span>
+<span class="p">(</span><span class="mi">155</span><span class="p">,</span> <span class="s1">&#39;WOMEN&#39;</span><span class="p">)</span>                                <span class="mf">0.504133</span>         <span class="mf">0.268836</span>      <span class="mf">0.504133</span>
+<span class="p">(</span><span class="mi">156</span><span class="p">,</span> <span class="s1">&#39;grandson&#39;</span><span class="p">)</span>                            <span class="o">-</span><span class="mf">0.29271</span>         <span class="o">-</span><span class="mf">0.0966837</span>     <span class="mf">0.29271</span>
+<span class="p">(</span><span class="mi">156</span><span class="p">,</span> <span class="s1">&#39;granddaughter&#39;</span><span class="p">)</span>                        <span class="mf">0.29271</span>          <span class="mf">0.240935</span>      <span class="mf">0.29271</span>
+<span class="p">(</span><span class="mi">157</span><span class="p">,</span> <span class="s1">&#39;DUDES&#39;</span><span class="p">)</span>                               <span class="o">-</span><span class="mf">0.547787</span>         <span class="mf">0.0688136</span>     <span class="mf">0.547787</span>
+<span class="p">(</span><span class="mi">157</span><span class="p">,</span> <span class="s1">&#39;GALS&#39;</span><span class="p">)</span>                                 <span class="mf">0.547787</span>         <span class="mf">0.182588</span>      <span class="mf">0.547787</span>
+<span class="p">(</span><span class="mi">158</span><span class="p">,</span> <span class="s1">&#39;Kings&#39;</span><span class="p">)</span>                               <span class="o">-</span><span class="mf">0.569429</span>        <span class="o">-</span><span class="mf">0.058123</span>      <span class="mf">0.569429</span>
+<span class="p">(</span><span class="mi">158</span><span class="p">,</span> <span class="s1">&#39;Queens&#39;</span><span class="p">)</span>                               <span class="mf">0.569429</span>         <span class="mf">0.00867156</span>    <span class="mf">0.569429</span>
+<span class="p">(</span><span class="mi">159</span><span class="p">,</span> <span class="s1">&#39;testosterone&#39;</span><span class="p">)</span>                        <span class="o">-</span><span class="mf">0.411566</span>        <span class="o">-</span><span class="mf">0.0294625</span>     <span class="mf">0.411566</span>
+<span class="p">(</span><span class="mi">159</span><span class="p">,</span> <span class="s1">&#39;estrogen&#39;</span><span class="p">)</span>                             <span class="mf">0.411566</span>         <span class="mf">0.237813</span>      <span class="mf">0.411566</span>
+<span class="p">(</span><span class="mi">160</span><span class="p">,</span> <span class="s1">&#39;Spokesman&#39;</span><span class="p">)</span>                           <span class="o">-</span><span class="mf">0.402475</span>        <span class="o">-</span><span class="mf">0.128433</span>      <span class="mf">0.402475</span>
+<span class="p">(</span><span class="mi">160</span><span class="p">,</span> <span class="s1">&#39;Spokeswoman&#39;</span><span class="p">)</span>                          <span class="mf">0.402475</span>         <span class="mf">0.313343</span>      <span class="mf">0.402475</span>
+<span class="p">(</span><span class="mi">161</span><span class="p">,</span> <span class="s1">&#39;Ex_Girlfriend&#39;</span><span class="p">)</span>                       <span class="o">-</span><span class="mf">0.333678</span>        <span class="o">-</span><span class="mf">0.0357934</span>     <span class="mf">0.333678</span>
+<span class="p">(</span><span class="mi">161</span><span class="p">,</span> <span class="s1">&#39;Ex_Boyfriend&#39;</span><span class="p">)</span>                         <span class="mf">0.333678</span>         <span class="mf">0.191153</span>      <span class="mf">0.333678</span>
+<span class="p">(</span><span class="mi">162</span><span class="p">,</span> <span class="s1">&#39;gentleman&#39;</span><span class="p">)</span>                           <span class="o">-</span><span class="mf">0.504986</span>        <span class="o">-</span><span class="mf">0.138084</span>      <span class="mf">0.504986</span>
+<span class="p">(</span><span class="mi">162</span><span class="p">,</span> <span class="s1">&#39;lady&#39;</span><span class="p">)</span>                                 <span class="mf">0.504986</span>         <span class="mf">0.351432</span>      <span class="mf">0.504986</span>
 </pre></div>
 </div>
 </div>
@@ -985,7 +1251,7 @@ the debiasing:</p>
       <th>Mturk</th>
       <td>0.633</td>
       <td>0.000</td>
-      <td>0.656</td>
+      <td>0.657</td>
       <td>0.00</td>
       <td>0.000</td>
     </tr>
@@ -1009,21 +1275,21 @@ the debiasing:</p>
       <th>SimLex999</th>
       <td>0.450</td>
       <td>0.000</td>
-      <td>0.438</td>
+      <td>0.439</td>
       <td>0.00</td>
       <td>0.100</td>
     </tr>
     <tr>
       <th>TR9856</th>
-      <td>0.661</td>
+      <td>0.660</td>
       <td>0.000</td>
-      <td>0.662</td>
+      <td>0.661</td>
       <td>0.00</td>
       <td>85.430</td>
     </tr>
     <tr>
       <th>WS353</th>
-      <td>0.623</td>
+      <td>0.621</td>
       <td>0.000</td>
       <td>0.657</td>
       <td>0.00</td>
@@ -1062,7 +1328,7 @@ the debiasing:</p>
     </tr>
     <tr>
       <th>MSR-syntax</th>
-      <td>0.736</td>
+      <td>0.737</td>
     </tr>
   </tbody>
 </table>
@@ -1096,7 +1362,7 @@ gender direction.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">w2v_gender_debias_we</span><span class="o">.</span><span class="n">generate_analogies</span><span class="p">(</span><span class="mi">150</span><span class="p">)[</span><span class="mi">50</span><span class="p">:]</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">ethically</span><span class="o">/</span><span class="n">ethically</span><span class="o">/</span><span class="n">we</span><span class="o">/</span><span class="n">bias</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">524</span><span class="p">:</span> <span class="ne">UserWarning</span><span class="p">:</span> <span class="n">Not</span> <span class="n">Using</span> <span class="n">unrestricted</span> <span class="n">most_similar</span> <span class="n">may</span> <span class="n">introduce</span> <span class="n">fake</span> <span class="n">biased</span> <span class="n">analogies</span><span class="o">.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">ethically</span><span class="o">/</span><span class="n">ethically</span><span class="o">/</span><span class="n">we</span><span class="o">/</span><span class="n">bias</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">528</span><span class="p">:</span> <span class="ne">UserWarning</span><span class="p">:</span> <span class="n">Not</span> <span class="n">Using</span> <span class="n">unrestricted</span> <span class="n">most_similar</span> <span class="n">may</span> <span class="n">introduce</span> <span class="n">fake</span> <span class="n">biased</span> <span class="n">analogies</span><span class="o">.</span>
 </pre></div>
 </div>
 <div>
@@ -1126,213 +1392,213 @@ gender direction.</p>
   <tbody>
     <tr>
       <th>50</th>
+      <td>teenagers</td>
+      <td>males</td>
+      <td>0.993710</td>
+      <td>3.133955e-01</td>
+    </tr>
+    <tr>
+      <th>51</th>
+      <td>horses</td>
+      <td>colt</td>
+      <td>0.888134</td>
+      <td>3.126180e-01</td>
+    </tr>
+    <tr>
+      <th>52</th>
+      <td>cousin</td>
+      <td>younger_brother</td>
+      <td>0.758962</td>
+      <td>3.097599e-01</td>
+    </tr>
+    <tr>
+      <th>53</th>
+      <td>really</td>
+      <td>guys</td>
+      <td>0.904382</td>
+      <td>2.780662e-01</td>
+    </tr>
+    <tr>
+      <th>54</th>
+      <td>Lady</td>
+      <td>Girl</td>
+      <td>0.981106</td>
+      <td>2.474099e-01</td>
+    </tr>
+    <tr>
+      <th>55</th>
+      <td>son</td>
+      <td>Uncle</td>
+      <td>0.948682</td>
+      <td>2.285694e-01</td>
+    </tr>
+    <tr>
+      <th>56</th>
+      <td>mum</td>
+      <td>daddy</td>
+      <td>0.980105</td>
+      <td>2.232467e-01</td>
+    </tr>
+    <tr>
+      <th>57</th>
+      <td>Boy</td>
+      <td>Guy</td>
+      <td>0.917343</td>
+      <td>2.170350e-01</td>
+    </tr>
+    <tr>
+      <th>58</th>
+      <td>lady</td>
+      <td>waitress</td>
+      <td>0.972788</td>
+      <td>2.142569e-01</td>
+    </tr>
+    <tr>
+      <th>59</th>
+      <td>boy</td>
+      <td>gentleman</td>
+      <td>0.988562</td>
+      <td>2.129009e-01</td>
+    </tr>
+    <tr>
+      <th>60</th>
+      <td>Hey</td>
+      <td>dude</td>
+      <td>0.919240</td>
+      <td>2.007594e-01</td>
+    </tr>
+    <tr>
+      <th>61</th>
+      <td>striker</td>
+      <td>lad</td>
+      <td>0.981813</td>
+      <td>1.960293e-01</td>
+    </tr>
+    <tr>
+      <th>62</th>
+      <td>father</td>
+      <td>Father</td>
+      <td>0.915928</td>
+      <td>1.809929e-01</td>
+    </tr>
+    <tr>
+      <th>63</th>
       <td>Cavaliers</td>
       <td>Bulls</td>
       <td>0.843798</td>
       <td>1.757572e-01</td>
     </tr>
     <tr>
-      <th>51</th>
-      <td>Mayor</td>
-      <td>Councilman</td>
-      <td>0.746075</td>
-      <td>1.706857e-01</td>
-    </tr>
-    <tr>
-      <th>52</th>
+      <th>64</th>
       <td>counterparts</td>
       <td>brethren</td>
       <td>0.907441</td>
       <td>1.688463e-01</td>
     </tr>
     <tr>
-      <th>53</th>
+      <th>65</th>
       <td>girlfriend</td>
       <td>cousin</td>
       <td>0.902712</td>
       <td>1.659258e-01</td>
     </tr>
     <tr>
-      <th>54</th>
+      <th>66</th>
       <td>God</td>
       <td>Him</td>
       <td>0.768831</td>
       <td>1.635439e-01</td>
     </tr>
     <tr>
-      <th>55</th>
+      <th>67</th>
       <td>dealer</td>
       <td>salesman</td>
       <td>0.980144</td>
       <td>1.602965e-01</td>
     </tr>
     <tr>
-      <th>56</th>
-      <td>Rep.</td>
-      <td>Congressman</td>
-      <td>0.606849</td>
-      <td>1.563420e-01</td>
+      <th>68</th>
+      <td>brother</td>
+      <td>Brother</td>
+      <td>0.937209</td>
+      <td>1.509814e-01</td>
     </tr>
     <tr>
-      <th>57</th>
-      <td>royal</td>
-      <td>king</td>
-      <td>0.964398</td>
-      <td>1.526245e-01</td>
-    </tr>
-    <tr>
-      <th>58</th>
-      <td>mayor</td>
-      <td>councilman</td>
-      <td>0.669266</td>
-      <td>1.477674e-01</td>
-    </tr>
-    <tr>
-      <th>59</th>
-      <td>father</td>
-      <td>Son</td>
-      <td>0.937306</td>
-      <td>1.460223e-01</td>
-    </tr>
-    <tr>
-      <th>60</th>
+      <th>69</th>
       <td>replied</td>
       <td>sir</td>
       <td>0.924511</td>
       <td>1.454486e-01</td>
     </tr>
     <tr>
-      <th>61</th>
+      <th>70</th>
+      <td>brothers</td>
+      <td>Brothers</td>
+      <td>0.863473</td>
+      <td>1.444512e-01</td>
+    </tr>
+    <tr>
+      <th>71</th>
       <td>entrepreneurs</td>
       <td>businessmen</td>
       <td>0.870914</td>
       <td>1.430111e-01</td>
     </tr>
     <tr>
-      <th>62</th>
+      <th>72</th>
       <td>muscle</td>
       <td>muscular</td>
       <td>0.879145</td>
       <td>1.414681e-01</td>
     </tr>
     <tr>
-      <th>63</th>
+      <th>73</th>
+      <td>sons</td>
+      <td>wives</td>
+      <td>0.834242</td>
+      <td>1.283380e-01</td>
+    </tr>
+    <tr>
+      <th>74</th>
       <td>cancer</td>
       <td>prostate</td>
       <td>0.957669</td>
       <td>1.266430e-01</td>
     </tr>
     <tr>
-      <th>64</th>
-      <td>grandchildren</td>
-      <td>grandson</td>
-      <td>0.801695</td>
-      <td>1.205991e-01</td>
+      <th>75</th>
+      <td>dad</td>
+      <td>Son</td>
+      <td>0.953167</td>
+      <td>1.095110e-01</td>
     </tr>
     <tr>
-      <th>65</th>
+      <th>76</th>
       <td>Carl</td>
       <td>Earl</td>
       <td>0.907355</td>
       <td>1.089646e-01</td>
     </tr>
     <tr>
-      <th>66</th>
+      <th>77</th>
       <td>Twins</td>
       <td>Minnesota_Twins</td>
       <td>0.569007</td>
       <td>1.061712e-01</td>
     </tr>
     <tr>
-      <th>67</th>
-      <td>dad</td>
-      <td>Uncle</td>
-      <td>0.959446</td>
-      <td>1.055075e-01</td>
+      <th>78</th>
+      <td>males</td>
+      <td>Male</td>
+      <td>0.908794</td>
+      <td>1.031754e-01</td>
     </tr>
     <tr>
-      <th>68</th>
+      <th>79</th>
       <td>officials</td>
       <td>spokesmen</td>
       <td>0.993293</td>
       <td>1.011937e-01</td>
-    </tr>
-    <tr>
-      <th>69</th>
-      <td>senator</td>
-      <td>congressman</td>
-      <td>0.727949</td>
-      <td>1.010955e-01</td>
-    </tr>
-    <tr>
-      <th>70</th>
-      <td>male</td>
-      <td>Male</td>
-      <td>0.722843</td>
-      <td>9.469609e-02</td>
-    </tr>
-    <tr>
-      <th>71</th>
-      <td>Tiger</td>
-      <td>Lion</td>
-      <td>0.983778</td>
-      <td>9.045189e-02</td>
-    </tr>
-    <tr>
-      <th>72</th>
-      <td>mates</td>
-      <td>lads</td>
-      <td>0.973074</td>
-      <td>8.008651e-02</td>
-    </tr>
-    <tr>
-      <th>73</th>
-      <td>animals</td>
-      <td>lions</td>
-      <td>0.965651</td>
-      <td>7.712748e-02</td>
-    </tr>
-    <tr>
-      <th>74</th>
-      <td>Griffin</td>
-      <td>Knight</td>
-      <td>0.972307</td>
-      <td>7.696815e-02</td>
-    </tr>
-    <tr>
-      <th>75</th>
-      <td>Bear</td>
-      <td>Bull</td>
-      <td>0.929982</td>
-      <td>7.682274e-02</td>
-    </tr>
-    <tr>
-      <th>76</th>
-      <td>man</td>
-      <td>MAN</td>
-      <td>0.962340</td>
-      <td>7.260233e-02</td>
-    </tr>
-    <tr>
-      <th>77</th>
-      <td>relatives</td>
-      <td>nephews</td>
-      <td>0.977246</td>
-      <td>6.704777e-02</td>
-    </tr>
-    <tr>
-      <th>78</th>
-      <td>lovely</td>
-      <td>handsome</td>
-      <td>0.994425</td>
-      <td>6.624248e-02</td>
-    </tr>
-    <tr>
-      <th>79</th>
-      <td>Ravens</td>
-      <td>Colts</td>
-      <td>0.655846</td>
-      <td>6.506501e-02</td>
     </tr>
     <tr>
       <th>...</th>
@@ -1343,212 +1609,212 @@ gender direction.</p>
     </tr>
     <tr>
       <th>120</th>
-      <td>Liverpool</td>
-      <td>Magpies</td>
-      <td>0.984137</td>
-      <td>3.166497e-08</td>
+      <td>Susan</td>
+      <td>David</td>
+      <td>0.785386</td>
+      <td>3.504101e-08</td>
     </tr>
     <tr>
       <th>121</th>
-      <td>If</td>
-      <td>Normally</td>
-      <td>0.779753</td>
-      <td>3.073364e-08</td>
+      <td>bought</td>
+      <td>rented</td>
+      <td>0.987472</td>
+      <td>3.352761e-08</td>
     </tr>
     <tr>
       <th>122</th>
-      <td>Walker</td>
-      <td>Wise</td>
-      <td>0.981883</td>
-      <td>2.980232e-08</td>
+      <td>Kevin</td>
+      <td>AJ</td>
+      <td>0.968675</td>
+      <td>3.352761e-08</td>
     </tr>
     <tr>
       <th>123</th>
-      <td>weather</td>
-      <td>Weather</td>
-      <td>0.816121</td>
-      <td>2.980232e-08</td>
+      <td>evaluate</td>
+      <td>monitor</td>
+      <td>0.917602</td>
+      <td>3.352761e-08</td>
     </tr>
     <tr>
       <th>124</th>
-      <td>manufacturing</td>
-      <td>plant</td>
-      <td>0.975745</td>
-      <td>2.980232e-08</td>
+      <td>Harvey</td>
+      <td>Barker</td>
+      <td>0.991995</td>
+      <td>3.352761e-08</td>
     </tr>
     <tr>
       <th>125</th>
-      <td>weight</td>
-      <td>Weight</td>
-      <td>0.859017</td>
-      <td>2.980232e-08</td>
+      <td>physicians</td>
+      <td>GPs</td>
+      <td>0.930456</td>
+      <td>3.352761e-08</td>
     </tr>
     <tr>
       <th>126</th>
-      <td>retailers</td>
-      <td>shoppers</td>
-      <td>0.848585</td>
-      <td>2.980232e-08</td>
+      <td>Amanda</td>
+      <td>Adrian</td>
+      <td>0.953031</td>
+      <td>3.352761e-08</td>
     </tr>
     <tr>
       <th>127</th>
-      <td>Thus</td>
-      <td>Considering</td>
-      <td>0.932179</td>
-      <td>2.980232e-08</td>
+      <td>And</td>
+      <td>Some</td>
+      <td>0.952518</td>
+      <td>3.352761e-08</td>
     </tr>
     <tr>
       <th>128</th>
-      <td>distribution</td>
-      <td>distributing</td>
-      <td>0.908768</td>
-      <td>2.980232e-08</td>
+      <td>Suns</td>
+      <td>Padres</td>
+      <td>0.993828</td>
+      <td>3.352761e-08</td>
     </tr>
     <tr>
       <th>129</th>
-      <td>stupid</td>
-      <td>cute</td>
-      <td>0.970388</td>
-      <td>2.980232e-08</td>
+      <td>Oakland</td>
+      <td>Bay_Area</td>
+      <td>0.880000</td>
+      <td>3.352761e-08</td>
     </tr>
     <tr>
       <th>130</th>
-      <td>mound</td>
-      <td>reliever</td>
-      <td>0.943645</td>
-      <td>2.980232e-08</td>
+      <td>soldiers</td>
+      <td>marines</td>
+      <td>0.737734</td>
+      <td>3.352761e-08</td>
     </tr>
     <tr>
       <th>131</th>
-      <td>Because</td>
-      <td>When</td>
-      <td>0.828063</td>
-      <td>2.980232e-08</td>
+      <td>Osama_bin_Laden</td>
+      <td>Islamic_extremists</td>
+      <td>0.981496</td>
+      <td>3.166497e-08</td>
     </tr>
     <tr>
       <th>132</th>
-      <td>Shawn</td>
-      <td>Linda</td>
-      <td>0.983454</td>
-      <td>2.980232e-08</td>
+      <td>Senate</td>
+      <td>House_Speaker</td>
+      <td>0.987174</td>
+      <td>3.166497e-08</td>
     </tr>
     <tr>
       <th>133</th>
-      <td>Even</td>
-      <td>And</td>
-      <td>0.685391</td>
-      <td>2.980232e-08</td>
+      <td>Larry</td>
+      <td>Mel</td>
+      <td>0.949718</td>
+      <td>3.166497e-08</td>
     </tr>
     <tr>
       <th>134</th>
-      <td>installation</td>
-      <td>installed</td>
-      <td>0.854023</td>
-      <td>2.980232e-08</td>
+      <td>Of_course</td>
+      <td>Typically</td>
+      <td>0.940184</td>
+      <td>3.166497e-08</td>
     </tr>
     <tr>
       <th>135</th>
-      <td>hospitalized</td>
-      <td>underwent_surgery</td>
-      <td>0.919806</td>
-      <td>2.980232e-08</td>
+      <td>Pyongyang</td>
+      <td>uranium_enrichment</td>
+      <td>0.973787</td>
+      <td>3.166497e-08</td>
     </tr>
     <tr>
       <th>136</th>
-      <td>Brian</td>
-      <td>Sue</td>
-      <td>0.892449</td>
-      <td>2.980232e-08</td>
+      <td>earn</td>
+      <td>garner</td>
+      <td>0.942567</td>
+      <td>3.166497e-08</td>
     </tr>
     <tr>
       <th>137</th>
-      <td>Lisa</td>
-      <td>Lucy</td>
-      <td>0.918754</td>
-      <td>2.980232e-08</td>
+      <td>Brewers</td>
+      <td>St._Louis_Cardinals</td>
+      <td>0.888862</td>
+      <td>3.166497e-08</td>
     </tr>
     <tr>
       <th>138</th>
-      <td>Wallace</td>
-      <td>Campbell</td>
-      <td>0.966834</td>
-      <td>2.980232e-08</td>
+      <td>bin_Laden</td>
+      <td>Osama</td>
+      <td>0.686982</td>
+      <td>3.166497e-08</td>
     </tr>
     <tr>
       <th>139</th>
-      <td>expert</td>
-      <td>guru</td>
-      <td>0.934079</td>
-      <td>2.980232e-08</td>
+      <td>Notre_Dame</td>
+      <td>Badgers</td>
+      <td>0.946028</td>
+      <td>3.166497e-08</td>
     </tr>
     <tr>
       <th>140</th>
-      <td>reluctant</td>
-      <td>willing</td>
-      <td>0.804542</td>
-      <td>2.980232e-08</td>
+      <td>disease</td>
+      <td>diseases</td>
+      <td>0.660790</td>
+      <td>3.166497e-08</td>
     </tr>
     <tr>
       <th>141</th>
-      <td>Patricia</td>
-      <td>Debbie</td>
-      <td>0.790438</td>
-      <td>2.980232e-08</td>
+      <td>horrible</td>
+      <td>horrendous</td>
+      <td>0.563251</td>
+      <td>3.073364e-08</td>
     </tr>
     <tr>
       <th>142</th>
-      <td>Reynolds</td>
-      <td>Barker</td>
-      <td>0.977590</td>
-      <td>2.980232e-08</td>
+      <td>flying</td>
+      <td>fly</td>
+      <td>0.802642</td>
+      <td>3.073364e-08</td>
     </tr>
     <tr>
       <th>143</th>
-      <td>PCs</td>
-      <td>computers</td>
-      <td>0.730985</td>
-      <td>2.980232e-08</td>
+      <td>April</td>
+      <td>June</td>
+      <td>0.317175</td>
+      <td>3.073364e-08</td>
     </tr>
     <tr>
       <th>144</th>
-      <td>drug</td>
-      <td>heroin</td>
-      <td>0.885918</td>
-      <td>2.980232e-08</td>
+      <td>Jeff</td>
+      <td>Greg</td>
+      <td>0.505365</td>
+      <td>3.073364e-08</td>
     </tr>
     <tr>
       <th>145</th>
-      <td>enhance</td>
-      <td>enable</td>
-      <td>0.949511</td>
+      <td>Whether</td>
+      <td>While</td>
+      <td>0.895121</td>
       <td>2.980232e-08</td>
     </tr>
     <tr>
       <th>146</th>
-      <td>like</td>
-      <td>weird</td>
-      <td>0.930146</td>
+      <td>Charlie</td>
+      <td>Jamie</td>
+      <td>0.928001</td>
       <td>2.980232e-08</td>
     </tr>
     <tr>
       <th>147</th>
-      <td>Lincoln</td>
-      <td>Truman</td>
-      <td>0.987122</td>
+      <td>plunged</td>
+      <td>slumped</td>
+      <td>0.732912</td>
       <td>2.980232e-08</td>
     </tr>
     <tr>
       <th>148</th>
-      <td>Pat</td>
-      <td>Phyllis</td>
-      <td>0.944572</td>
+      <td>anxious</td>
+      <td>unhappy</td>
+      <td>0.975818</td>
       <td>2.980232e-08</td>
     </tr>
     <tr>
       <th>149</th>
-      <td>Monroe</td>
-      <td>Genesee</td>
-      <td>0.978479</td>
+      <td>Bulldogs</td>
+      <td>Gaels</td>
+      <td>0.828958</td>
       <td>2.980232e-08</td>
     </tr>
   </tbody>
@@ -1682,26 +1948,21 @@ gender direction.</p>
 <span class="kn">from</span> <span class="nn">ethically.we.data</span> <span class="k">import</span> <span class="n">BOLUKBASI_DATA</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Emily&#39;</span><span class="p">,</span> <span class="s1">&#39;Aisha&#39;</span><span class="p">,</span> <span class="s1">&#39;Anne&#39;</span><span class="p">,</span> <span class="s1">&#39;Keisha&#39;</span><span class="p">,</span>
-         <span class="s1">&#39;Jill&#39;</span><span class="p">,</span> <span class="s1">&#39;Tamika&#39;</span><span class="p">,</span> <span class="s1">&#39;Allison&#39;</span><span class="p">,</span> <span class="s1">&#39;Lakisha&#39;</span><span class="p">,</span>
-         <span class="s1">&#39;Laurie&#39;</span><span class="p">,</span> <span class="s1">&#39;Tanisha&#39;</span><span class="p">,</span> <span class="s1">&#39;Sarah&#39;</span><span class="p">,</span> <span class="s1">&#39;Latoya&#39;</span><span class="p">,</span>
-         <span class="s1">&#39;Meredith&#39;</span><span class="p">,</span> <span class="s1">&#39;Kenya&#39;</span><span class="p">,</span> <span class="s1">&#39;Carrie&#39;</span><span class="p">,</span> <span class="s1">&#39;Latonya&#39;</span><span class="p">,</span>
-         <span class="s1">&#39;Kristen&#39;</span><span class="p">,</span> <span class="s1">&#39;Ebony&#39;</span><span class="p">,</span> <span class="s1">&#39;Todd&#39;</span><span class="p">,</span> <span class="s1">&#39;Rasheed&#39;</span><span class="p">,</span>
-         <span class="s1">&#39;Neil&#39;</span><span class="p">,</span> <span class="s1">&#39;Tremayne&#39;</span><span class="p">,</span> <span class="s1">&#39;Geoffrey&#39;</span><span class="p">,</span> <span class="s1">&#39;Kareem&#39;</span><span class="p">,</span>
-         <span class="s1">&#39;Brett&#39;</span><span class="p">,</span> <span class="s1">&#39;Darnell&#39;</span><span class="p">,</span> <span class="s1">&#39;Brendan&#39;</span><span class="p">,</span> <span class="s1">&#39;Tyrone&#39;</span><span class="p">,</span>
-         <span class="s1">&#39;Greg&#39;</span><span class="p">,</span> <span class="s1">&#39;Hakim&#39;</span><span class="p">,</span> <span class="s1">&#39;Matthew&#39;</span><span class="p">,</span> <span class="s1">&#39;Jamal&#39;</span><span class="p">,</span>
-         <span class="s1">&#39;Jay&#39;</span><span class="p">,</span> <span class="s1">&#39;Leroy&#39;</span><span class="p">,</span> <span class="s1">&#39;Brad&#39;</span><span class="p">,</span> <span class="s1">&#39;Jermaine&#39;</span><span class="p">]</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">white_common_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Emily&#39;</span><span class="p">,</span> <span class="s1">&#39;Anne&#39;</span><span class="p">,</span> <span class="s1">&#39;Jill&#39;</span><span class="p">,</span> <span class="s1">&#39;Allison&#39;</span><span class="p">,</span> <span class="s1">&#39;Laurie&#39;</span><span class="p">,</span> <span class="s1">&#39;Sarah&#39;</span><span class="p">,</span> <span class="s1">&#39;Meredith&#39;</span><span class="p">,</span> <span class="s1">&#39;Carrie&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;Kristen&#39;</span><span class="p">,</span> <span class="s1">&#39;Todd&#39;</span><span class="p">,</span> <span class="s1">&#39;Neil&#39;</span><span class="p">,</span> <span class="s1">&#39;Geoffrey&#39;</span><span class="p">,</span> <span class="s1">&#39;Brett&#39;</span><span class="p">,</span> <span class="s1">&#39;Brendan&#39;</span><span class="p">,</span> <span class="s1">&#39;Greg&#39;</span><span class="p">,</span> <span class="s1">&#39;Matthew&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;Jay&#39;</span><span class="p">,</span> <span class="s1">&#39;Brad&#39;</span><span class="p">]</span>
 
-<span class="n">group1</span> <span class="o">=</span> <span class="n">names</span><span class="p">[::</span><span class="mi">2</span><span class="p">]</span>
-<span class="n">group2</span> <span class="o">=</span> <span class="n">names</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">]</span>
+<span class="n">black_common_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Aisha&#39;</span><span class="p">,</span> <span class="s1">&#39;Keisha&#39;</span><span class="p">,</span> <span class="s1">&#39;Tamika&#39;</span><span class="p">,</span> <span class="s1">&#39;Lakisha&#39;</span><span class="p">,</span> <span class="s1">&#39;Tanisha&#39;</span><span class="p">,</span> <span class="s1">&#39;Latoya&#39;</span><span class="p">,</span> <span class="s1">&#39;Kenya&#39;</span><span class="p">,</span> <span class="s1">&#39;Latonya&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;Ebony&#39;</span><span class="p">,</span> <span class="s1">&#39;Rasheed&#39;</span><span class="p">,</span> <span class="s1">&#39;Tremayne&#39;</span><span class="p">,</span> <span class="s1">&#39;Kareem&#39;</span><span class="p">,</span> <span class="s1">&#39;Darnell&#39;</span><span class="p">,</span> <span class="s1">&#39;Tyrone&#39;</span><span class="p">,</span> <span class="s1">&#39;Hakim&#39;</span><span class="p">,</span> <span class="s1">&#39;Jamal&#39;</span><span class="p">,</span>
+                      <span class="s1">&#39;Leroy&#39;</span><span class="p">,</span> <span class="s1">&#39;Jermaine&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">race_bias_we</span> <span class="o">=</span> <span class="n">BiasWordEmbedding</span><span class="p">(</span><span class="n">w2v_model</span><span class="p">,</span>
-                                  <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+                                 <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">race_bias_we</span><span class="o">.</span><span class="n">_identify_direction</span><span class="p">(</span><span class="s1">&#39;Whites&#39;</span><span class="p">,</span> <span class="s1">&#39;Blacks&#39;</span><span class="p">,</span>
-                                 <span class="p">[</span><span class="n">group1</span><span class="p">,</span> <span class="n">group2</span><span class="p">],</span>
+                                 <span class="n">definitional</span><span class="o">=</span><span class="p">(</span><span class="n">white_common_names</span><span class="p">,</span> <span class="n">black_common_names</span><span class="p">),</span>
                                  <span class="n">method</span><span class="o">=</span><span class="s1">&#39;sum&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -1718,15 +1979,15 @@ gender direction.</p>
 </pre></div>
 </div>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">race_bias_we</span><span class="o">.</span><span class="n">plot_dist_projections_on_direction</span><span class="p">({</span><span class="s1">&#39;neutral_profession_names&#39;</span><span class="p">:</span> <span class="n">neutral_profession_names</span><span class="p">,</span>
-                                                 <span class="s1">&#39;Whites&#39;</span><span class="p">:</span> <span class="n">group1</span><span class="p">,</span>
-                                                 <span class="s1">&#39;Blacks&#39;</span><span class="p">:</span> <span class="n">group2</span><span class="p">});</span>
+                                                 <span class="s1">&#39;Whites&#39;</span><span class="p">:</span> <span class="n">white_common_names</span><span class="p">,</span>
+                                                 <span class="s1">&#39;Blacks&#39;</span><span class="p">:</span> <span class="n">black_common_names</span><span class="p">});</span>
 </pre></div>
 </div>
 <img alt="../_images/demo-word-embedding-bias_68_0.png" src="../_images/demo-word-embedding-bias_68_0.png" />
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">race_bias_we</span><span class="o">.</span><span class="n">generate_analogies</span><span class="p">(</span><span class="mi">30</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">ethically</span><span class="o">/</span><span class="n">ethically</span><span class="o">/</span><span class="n">we</span><span class="o">/</span><span class="n">bias</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">524</span><span class="p">:</span> <span class="ne">UserWarning</span><span class="p">:</span> <span class="n">Not</span> <span class="n">Using</span> <span class="n">unrestricted</span> <span class="n">most_similar</span> <span class="n">may</span> <span class="n">introduce</span> <span class="n">fake</span> <span class="n">biased</span> <span class="n">analogies</span><span class="o">.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">ethically</span><span class="o">/</span><span class="n">ethically</span><span class="o">/</span><span class="n">we</span><span class="o">/</span><span class="n">bias</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">528</span><span class="p">:</span> <span class="ne">UserWarning</span><span class="p">:</span> <span class="n">Not</span> <span class="n">Using</span> <span class="n">unrestricted</span> <span class="n">most_similar</span> <span class="n">may</span> <span class="n">introduce</span> <span class="n">fake</span> <span class="n">biased</span> <span class="n">analogies</span><span class="o">.</span>
 </pre></div>
 </div>
 <div>
@@ -1969,7 +2230,7 @@ gender direction.</p>
 </div><div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">race_bias_we</span><span class="o">.</span><span class="n">generate_analogies</span><span class="p">(</span><span class="mi">130</span><span class="p">)[</span><span class="mi">100</span><span class="p">:]</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">ethically</span><span class="o">/</span><span class="n">ethically</span><span class="o">/</span><span class="n">we</span><span class="o">/</span><span class="n">bias</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">524</span><span class="p">:</span> <span class="ne">UserWarning</span><span class="p">:</span> <span class="n">Not</span> <span class="n">Using</span> <span class="n">unrestricted</span> <span class="n">most_similar</span> <span class="n">may</span> <span class="n">introduce</span> <span class="n">fake</span> <span class="n">biased</span> <span class="n">analogies</span><span class="o">.</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">/</span><span class="n">project</span><span class="o">/</span><span class="n">ethically</span><span class="o">/</span><span class="n">ethically</span><span class="o">/</span><span class="n">we</span><span class="o">/</span><span class="n">bias</span><span class="o">.</span><span class="n">py</span><span class="p">:</span><span class="mi">528</span><span class="p">:</span> <span class="ne">UserWarning</span><span class="p">:</span> <span class="n">Not</span> <span class="n">Using</span> <span class="n">unrestricted</span> <span class="n">most_similar</span> <span class="n">may</span> <span class="n">introduce</span> <span class="n">fake</span> <span class="n">biased</span> <span class="n">analogies</span><span class="o">.</span>
 </pre></div>
 </div>
 <div>
@@ -2938,9 +3199,9 @@ different preprocessing of the word embedding.</p>
       <td>Male terms vs. Female terms</td>
       <td>8x2</td>
       <td>8x2</td>
-      <td>-0.0689</td>
-      <td>-1.1207</td>
-      <td>9.9e-01</td>
+      <td>-0.0618</td>
+      <td>-1.1726</td>
+      <td>1.0e+00</td>
       <td>28k</td>
       <td>0.82</td>
       <td>&lt; 1e-2</td>
@@ -2951,9 +3212,9 @@ different preprocessing of the word embedding.</p>
       <td>Male terms vs. Female terms</td>
       <td>8x2</td>
       <td>8x2</td>
-      <td>0.0103</td>
-      <td>0.1283</td>
-      <td>4.1e-01</td>
+      <td>-0.0286</td>
+      <td>-0.5306</td>
+      <td>8.4e-01</td>
       <td>91</td>
       <td>1.47</td>
       <td>1e-24</td>
@@ -2991,7 +3252,7 @@ attribute words (Math vs. Arts and Science vs. Arts).</p>
 </div>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Significant result</span>
 
-<span class="n">calc_single_weat</span><span class="p">(</span><span class="n">w2v_gender_bias_we</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
+<span class="n">calc_single_weat</span><span class="p">(</span><span class="n">w2v_gender_debias_we</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
                  <span class="n">WEAT_DATA</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="s1">&#39;first_target&#39;</span><span class="p">],</span>
                  <span class="n">WEAT_DATA</span><span class="p">[</span><span class="mi">5</span><span class="p">][</span><span class="s1">&#39;second_target&#39;</span><span class="p">],</span>
                  <span class="n">WEAT_DATA</span><span class="p">[</span><span class="mi">7</span><span class="p">][</span><span class="s1">&#39;first_target&#39;</span><span class="p">],</span>
@@ -3002,9 +3263,9 @@ attribute words (Math vs. Arts and Science vs. Arts).</p>
  <span class="s1">&#39;Na&#39;</span><span class="p">:</span> <span class="s1">&#39;8x2&#39;</span><span class="p">,</span>
  <span class="s1">&#39;Nt&#39;</span><span class="p">:</span> <span class="s1">&#39;8x2&#39;</span><span class="p">,</span>
  <span class="s1">&#39;Target words&#39;</span><span class="p">:</span> <span class="s1">&#39;Male names vs. Female names&#39;</span><span class="p">,</span>
- <span class="s1">&#39;d&#39;</span><span class="p">:</span> <span class="mf">1.7127873</span><span class="p">,</span>
- <span class="s1">&#39;p&#39;</span><span class="p">:</span> <span class="mf">0.0</span><span class="p">,</span>
- <span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="mf">0.5357069745659828</span><span class="p">}</span>
+ <span class="s1">&#39;d&#39;</span><span class="p">:</span> <span class="mf">1.0226882</span><span class="p">,</span>
+ <span class="s1">&#39;p&#39;</span><span class="p">:</span> <span class="mf">0.022455322455322457</span><span class="p">,</span>
+ <span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="mf">0.20674265176057816</span><span class="p">}</span>
 </pre></div>
 </div>
 </div>

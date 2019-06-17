@@ -501,7 +501,7 @@ arXiv preprint arXiv:1903.03862.</p></li>
 
 <dl class="class">
 <dt id="ethically.we.bias.GenderBiasWE">
-<em class="property">class </em><code class="descclassname">ethically.we.bias.</code><code class="descname">GenderBiasWE</code><span class="sig-paren">(</span><em>model</em>, <em>only_lower=False</em>, <em>verbose=False</em>, <em>identify_direction=True</em>, <em>to_normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/we/bias.html#GenderBiasWE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.bias.GenderBiasWE" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="descclassname">ethically.we.bias.</code><code class="descname">GenderBiasWE</code><span class="sig-paren">(</span><em>model</em>, <em>only_lower=False</em>, <em>verbose=False</em>, <em>identify_direction='pca'</em>, <em>to_normalize=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/we/bias.html#GenderBiasWE"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.we.bias.GenderBiasWE" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="#ethically.we.bias.BiasWordEmbedding" title="ethically.we.bias.BiasWordEmbedding"><code class="xref py py-class docutils literal notranslate"><span class="pre">ethically.we.bias.BiasWordEmbedding</span></code></a></p>
 <p>Measure and adjust the Gender Bias in English Word Embedding.</p>
 <dl class="field-list simple">
@@ -511,6 +511,9 @@ arXiv preprint arXiv:1903.03862.</p></li>
 <li><p><strong>only_lower</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether the word embedding contrains
 only lower case words</p></li>
 <li><p><strong>verbose</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Set verbosity</p></li>
+<li><p><strong>identify_direction</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Set the method of identifying
+the gender direction:
+<cite>‘single’</cite>, <cite>‘sum’</cite> or <cite>‘pca’</cite>.</p></li>
 <li><p><strong>to_normalize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Whether to normalize all the vectors
 (recommended!)</p></li>
 </ul>

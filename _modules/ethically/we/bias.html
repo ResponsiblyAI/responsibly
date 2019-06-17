@@ -162,6 +162,7 @@
         <span class="c1"># probably should be a better design</span>
         <span class="c1"># identify_direction doesn&#39;t have any meaning</span>
         <span class="c1"># for the class BiasWordEmbedding</span>
+        <span class="c1"># The goal is to force this interfeace of sub-classes.</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__class__</span> <span class="o">==</span> <span class="vm">__class__</span> <span class="ow">and</span> <span class="n">identify_direction</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">False</span><span class="p">:</span>
             <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;identify_direction must be False&#39;</span>
                              <span class="s1">&#39; for an instance of </span><span class="si">{}</span><span class="s1">&#39;</span>
@@ -259,6 +260,9 @@
         <span class="n">direction</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;single&#39;</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Positive definitional end: &#39;</span><span class="p">,</span> <span class="n">definitional</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Negative definitional end: &#39;</span><span class="p">,</span> <span class="n">definitional</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
             <span class="n">direction</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">definitional</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
                                   <span class="o">-</span> <span class="n">normalize</span><span class="p">(</span><span class="bp">self</span><span class="p">[</span><span class="n">definitional</span><span class="p">[</span><span class="mi">1</span><span class="p">]]))</span>
 
@@ -807,7 +811,7 @@
                         <span class="s1">&#39;scaling&#39;</span><span class="p">:</span> <span class="n">scaling</span><span class="p">,</span>
                         <span class="s1">&#39;projected_scalar&#39;</span><span class="p">:</span> <span class="n">vector</span> <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span><span class="p">,</span>
                         <span class="s1">&#39;equalized_projected_scalar&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">equalized_vector</span>
-<div class="viewcode-block" id="BiasWordEmbedding.debias"><a class="viewcode-back" href="../../../word-embedding-bias.html#ethically.we.bias.BiasWordEmbedding.debias">[docs]</a>                                                       <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span><span class="p">),</span>
+                                                       <span class="o">@</span> <span class="bp">self</span><span class="o">.</span><span class="n">direction</span><span class="p">),</span>
                     <span class="p">})</span>
 
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">:</span>
@@ -819,7 +823,15 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">init_sims</span><span class="p">(</span><span class="n">replace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">debias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;hard&#39;</span><span class="p">,</span> <span class="n">neutral_words</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">equality_sets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="k">def</span> <span class="nf">_generate_pair_candidates</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pairs</span><span class="p">):</span>
+        <span class="c1"># pylint: disable=line-too-long</span>
+        <span class="k">return</span> <span class="p">{(</span><span class="n">candidate1</span><span class="p">,</span> <span class="n">candidate2</span><span class="p">)</span>
+                <span class="k">for</span> <span class="n">word1</span><span class="p">,</span> <span class="n">word2</span> <span class="ow">in</span> <span class="n">pairs</span>
+                <span class="k">for</span> <span class="n">candidate1</span><span class="p">,</span> <span class="n">candidate2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">generate_one_word_forms</span><span class="p">(</span><span class="n">word1</span><span class="p">),</span>
+                                                  <span class="n">generate_one_word_forms</span><span class="p">(</span><span class="n">word2</span><span class="p">))</span>
+                <span class="k">if</span> <span class="n">candidate1</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span> <span class="ow">and</span> <span class="n">candidate2</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">}</span>
+
+<div class="viewcode-block" id="BiasWordEmbedding.debias"><a class="viewcode-back" href="../../../word-embedding-bias.html#ethically.we.bias.BiasWordEmbedding.debias">[docs]</a>    <span class="k">def</span> <span class="nf">debias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;hard&#39;</span><span class="p">,</span> <span class="n">neutral_words</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">equality_sets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Debias the word embedding.</span>
 
@@ -858,6 +870,13 @@
         <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;hard&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">:</span>
                 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Equalize...&#39;</span><span class="p">)</span>
+
+            <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">equality_set</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+                       <span class="k">for</span> <span class="n">equality_set</span> <span class="ow">in</span> <span class="n">equality_sets</span><span class="p">),</span> \
+                   <span class="s1">&#39;Currently supporting only equality pairs.&#39;</span>
+
+            <span class="n">equality_sets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_generate_pair_candidates</span><span class="p">(</span><span class="n">equality_sets</span><span class="p">)</span>
+
             <span class="n">bias_word_embedding</span><span class="o">.</span><span class="n">_equalize</span><span class="p">(</span><span class="n">equality_sets</span><span class="p">)</span>
 
         <span class="k">if</span> <span class="n">inplace</span><span class="p">:</span>
@@ -1104,21 +1123,34 @@
 <span class="sd">    :param bool only_lower: Whether the word embedding contrains</span>
 <span class="sd">                            only lower case words</span>
 <span class="sd">    :param bool verbose: Set verbosity</span>
+<span class="sd">    :param str identify_direction: Set the method of identifying</span>
+<span class="sd">                                   the gender direction:</span>
+<span class="sd">                                   `&#39;single&#39;`, `&#39;sum&#39;` or `&#39;pca&#39;`.</span>
 <span class="sd">    :param bool to_normalize: Whether to normalize all the vectors</span>
 <span class="sd">                              (recommended!)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">only_lower</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-                 <span class="n">identify_direction</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">to_normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+                 <span class="n">identify_direction</span><span class="o">=</span><span class="s1">&#39;pca&#39;</span><span class="p">,</span> <span class="n">to_normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
                          <span class="n">only_lower</span><span class="o">=</span><span class="n">only_lower</span><span class="p">,</span>
                          <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
                          <span class="n">to_normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_initialize_data</span><span class="p">()</span>
+
         <span class="k">if</span> <span class="n">identify_direction</span><span class="p">:</span>
+            <span class="n">definitional</span> <span class="o">=</span> <span class="kc">None</span>
+
+            <span class="k">if</span> <span class="n">identify_direction</span> <span class="o">==</span> <span class="s1">&#39;single&#39;</span><span class="p">:</span>
+                <span class="n">definitional</span> <span class="o">=</span> <span class="p">(</span><span class="s1">&#39;she&#39;</span><span class="p">,</span> <span class="s1">&#39;he&#39;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">identify_direction</span> <span class="o">==</span> <span class="s1">&#39;sum&#39;</span><span class="p">:</span>
+                <span class="n">definitional</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="s1">&#39;definitional_pairs&#39;</span><span class="p">]))</span>
+            <span class="k">elif</span> <span class="n">identify_direction</span> <span class="o">==</span> <span class="s1">&#39;pca&#39;</span><span class="p">:</span>
+                <span class="n">definitional</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="s1">&#39;definitional_pairs&#39;</span><span class="p">]</span>
+
             <span class="bp">self</span><span class="o">.</span><span class="n">_identify_direction</span><span class="p">(</span><span class="s1">&#39;she&#39;</span><span class="p">,</span> <span class="s1">&#39;he&#39;</span><span class="p">,</span>
-                                     <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="s1">&#39;definitional_pairs&#39;</span><span class="p">],</span>
-                                     <span class="s1">&#39;pca&#39;</span><span class="p">)</span>
+                                     <span class="n">definitional</span><span class="p">,</span>
+                                     <span class="n">identify_direction</span><span class="p">)</span>
 
     <span class="k">def</span> <span class="nf">_initialize_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_data</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">BOLUKBASI_DATA</span><span class="p">[</span><span class="s1">&#39;gender&#39;</span><span class="p">])</span>
@@ -1187,22 +1219,14 @@
 
 <div class="viewcode-block" id="GenderBiasWE.debias"><a class="viewcode-back" href="../../../word-embedding-bias.html#ethically.we.bias.GenderBiasWE.debias">[docs]</a>    <span class="k">def</span> <span class="nf">debias</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">method</span><span class="o">=</span><span class="s1">&#39;hard&#39;</span><span class="p">,</span> <span class="n">neutral_words</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">equality_sets</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-        <span class="c1"># pylint: disable=C0301</span>
+        <span class="c1"># pylint: disable=line-too-long</span>
         <span class="k">if</span> <span class="n">method</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">&#39;hard&#39;</span><span class="p">,</span> <span class="s1">&#39;neutralize&#39;</span><span class="p">]:</span>
             <span class="k">if</span> <span class="n">neutral_words</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="n">neutral_words</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="s1">&#39;neutral_words&#39;</span><span class="p">]</span>
 
         <span class="k">if</span> <span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;hard&#39;</span> <span class="ow">and</span> <span class="n">equality_sets</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">equality_sets</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="s1">&#39;definitional_pairs&#39;</span><span class="p">]</span>
-
-            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">only_lower</span><span class="p">:</span>
-                <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">equality_set</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
-                           <span class="k">for</span> <span class="n">equality_set</span> <span class="ow">in</span> <span class="n">equality_sets</span><span class="p">),</span> <span class="s1">&#39;currently supporting only equality pairs if only_lower is False&#39;</span>
-                <span class="c1"># TODO: refactor</span>
-                <span class="n">equality_sets</span> <span class="o">=</span> <span class="p">{(</span><span class="n">candidate1</span><span class="p">,</span> <span class="n">candidate2</span><span class="p">)</span>
-                                 <span class="k">for</span> <span class="n">word1</span><span class="p">,</span> <span class="n">word2</span> <span class="ow">in</span> <span class="n">equality_sets</span>
-                                 <span class="k">for</span> <span class="n">candidate1</span><span class="p">,</span> <span class="n">candidate2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">generate_one_word_forms</span><span class="p">(</span><span class="n">word1</span><span class="p">),</span>
-                                                                   <span class="n">generate_one_word_forms</span><span class="p">(</span><span class="n">word2</span><span class="p">))}</span>
+            <span class="n">equality_sets</span> <span class="o">=</span> <span class="p">{</span><span class="nb">tuple</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="s1">&#39;equalize_pairs&#39;</span><span class="p">]}</span>
+            <span class="n">equality_sets</span> <span class="o">|=</span> <span class="p">{</span><span class="nb">tuple</span><span class="p">(</span><span class="n">w</span><span class="p">)</span> <span class="k">for</span> <span class="n">w</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_data</span><span class="p">[</span><span class="s1">&#39;definitional_pairs&#39;</span><span class="p">]}</span>
 
         <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">debias</span><span class="p">(</span><span class="n">method</span><span class="p">,</span> <span class="n">neutral_words</span><span class="p">,</span> <span class="n">equality_sets</span><span class="p">,</span>
                               <span class="n">inplace</span><span class="p">)</span></div>
