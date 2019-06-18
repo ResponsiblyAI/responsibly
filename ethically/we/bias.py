@@ -227,8 +227,8 @@ class BiasWordEmbedding:
 
         if method == 'single':
             if self._verbose:
-                print('Positive definitional end: ', definitional[0])
-                print('Negative definitional end: ', definitional[0])
+                print('Positive definitional end:', definitional[0])
+                print('Negative definitional end:', definitional[1])
             direction = normalize(normalize(self[definitional[0]])
                                   - normalize(self[definitional[1]]))
 
