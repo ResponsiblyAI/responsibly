@@ -21,6 +21,7 @@ env:
     - BOTO_CONFIG=/dev/null  # https://github.com/travis-ci/travis-ci/issues/7940
 
 before_install:
+  - sudo apt-get install python3-tk
   - pip install pipenv
   - make doctor
 
