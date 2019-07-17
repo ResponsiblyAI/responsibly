@@ -1,16 +1,16 @@
-"""Unit test module for ethically.fairness"""
+"""Unit test module for responsibly.fairness"""
 # pylint: disable=redefined-outer-name,line-too-long
 
 import pytest
 
-from ethically.dataset import COMPASDataset, build_FICO_dataset
-from ethically.fairness.interventions import threshold
-from ethically.fairness.metrics import (
+from responsibly.dataset import COMPASDataset, build_FICO_dataset
+from responsibly.fairness.interventions import threshold
+from responsibly.fairness.metrics import (
     independence_binary, plot_roc_by_attr, separation_binary,
     sufficiency_binary,
 )
-from ethically.fairness.metrics.binary import compare_privileged
-from ethically.tests.utils import assert_deep_almost_equal
+from responsibly.fairness.metrics.binary import compare_privileged
+from responsibly.tests.utils import assert_deep_almost_equal
 
 
 COST_MATRIX = [[0, - 5 / 6], [0, 1 / 6]]

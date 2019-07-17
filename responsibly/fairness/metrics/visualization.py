@@ -3,7 +3,7 @@ from collections import defaultdict
 import seaborn as sns
 from matplotlib import pylab as plt
 
-from ethically.fairness.metrics.score import (
+from responsibly.fairness.metrics.score import (
     roc_auc_score_by_attr, roc_curve_by_attr,
 )
 

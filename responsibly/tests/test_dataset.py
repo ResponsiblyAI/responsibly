@@ -1,9 +1,9 @@
-"""Unit test module for ethically.datasets"""
+"""Unit test module for responsibly.datasets"""
 # pylint: disable=redefined-outer-name
 
 import pytest
 
-from ethically.dataset import AdultDataset, COMPASDataset, GermanDataset
+from responsibly.dataset import AdultDataset, COMPASDataset, GermanDataset
 
 
 @pytest.fixture

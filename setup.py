@@ -6,7 +6,7 @@ import sys
 import setuptools
 
 
-PACKAGE_NAME = 'ethically'
+PACKAGE_NAME = 'responsibly'
 MINIMUM_PYTHON_VERSION = '3.5'
 
 
@@ -52,7 +52,7 @@ setuptools.setup(
     include_package_data=True,
 
     # entry_points={'console_scripts': [
-    #     'ethically-cli = ethically.cli:main',
+    #     'responsibly-cli = responsibly.cli:main',
     # ]},
 
     long_description=build_description(),

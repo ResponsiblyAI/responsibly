@@ -18,10 +18,10 @@ should be fair.
     as it summarized the current core knowledge regarding fairness
     in classification.
 
-Currently, the :mod:`ethically.fairness` module has two components:
+Currently, the :mod:`responsibly.fairness` module has two components:
 
-1. **Metrics** (:mod:`ethically.fairness.metrics`) for measuring unfairness.
-2. **Algorithmic interventions** (:mod:`ethically.fairness.interventions`)
+1. **Metrics** (:mod:`responsibly.fairness.metrics`) for measuring unfairness.
+2. **Algorithmic interventions** (:mod:`responsibly.fairness.interventions`)
    for satisfying fairness criteria.
 
 """

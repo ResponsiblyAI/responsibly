@@ -6,7 +6,7 @@ import pandas as pd
 from sklearn.metrics import roc_auc_score, roc_curve
 from sklearn.utils.multiclass import unique_labels
 
-from ethically.fairness.metrics.utils import _assert_binary
+from responsibly.fairness.metrics.utils import _assert_binary
 
 
 def _proportion(data, labels):
@@ -209,7 +209,7 @@ def roc_curve_by_attr(y_true, y_score, x_sens,
                                   ' It will be implemented'
                                   ' in the future.'
                                   ' Please post your use-case in'
-                                  ' https://github.com/EthicallyAI/ethically/issues/15')  # pylint: disable=line-too-long
+                                  ' https://github.com/ResponsiblyAI/responsibly/issues/15')  # pylint: disable=line-too-long
 
     return roc_curves
 

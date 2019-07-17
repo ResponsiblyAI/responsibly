@@ -1,7 +1,7 @@
 Word Embedding Bias
 ===================
 
-.. automodule:: ethically.we
+.. automodule:: responsibly.we
 
 Refer to the `Word Embedding demo <notebooks/demo-word-embedding-bias.html>`_
 for a complete usage example.
@@ -12,23 +12,23 @@ refer to the page :doc:`word-embedding-bias-metric-analysis`.
 Bolukbasi Bias Measure and Debiasing
 ------------------------------------
 
-.. automodule:: ethically.we.bias
+.. automodule:: responsibly.we.bias
     :members:
 
 WEAT
 ----
 
-.. automodule:: ethically.we.weat
+.. automodule:: responsibly.we.weat
     :members:
 
 Utilities
 ---------
 
-.. automodule:: ethically.we.utils
+.. automodule:: responsibly.we.utils
     :members:
 
 Word Embedding Benchmarks
 -------------------------
 
-.. automodule:: ethically.we.benchmark
+.. automodule:: responsibly.we.benchmark
     :members:

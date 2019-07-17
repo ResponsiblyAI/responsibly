@@ -35,7 +35,7 @@ import numpy as np
 import pandas as pd
 from scipy.spatial import Delaunay
 
-from ethically.fairness.metrics.visualization import plot_roc_curves
+from responsibly.fairness.metrics.visualization import plot_roc_curves
 
 
 def _ternary_search_float(f, left, right, tol):
@@ -481,7 +481,7 @@ def plot_roc_curves_thresholds(roc_curves, thresholds_data,
     :type roc_curves: dict
     :param thresholds_data: Thresholds by attribute from the
                             function
-                            :func:`~ethically.interventions
+                            :func:`~responsibly.interventions
                             .threshold.find_thresholds`.
     :type thresholds_data: dict
     :param aucs: Area Under the ROC (AUC) by attribute.
@@ -581,7 +581,7 @@ def plot_costs(thresholds_data,
 
     :param thresholds_data: Thresholds by attribute from the
                             function
-                            :func:`~ethically.interventions
+                            :func:`~responsibly.interventions
                             .threshold.find_thresholds`.
     :type thresholds_data: dict
     :param str title: Title of the generated plot.
