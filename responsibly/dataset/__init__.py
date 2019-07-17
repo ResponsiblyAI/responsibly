@@ -9,28 +9,28 @@ The preprocessing is done by standard practices that are associated with
 this data set: from its manual (e.g., README)
 or as other did in the literature.
 
-See :class:`ethically.dataset.Dataset`
+See :class:`responsibly.dataset.Dataset`
 for additional attribute and complete documentation.
 
 Currently these are the available datasets:
 
     - ProPublica recidivism/COMPAS dataset,
-      see: :class:`~ethically.dataset.COMPASDataset`
+      see: :class:`~responsibly.dataset.COMPASDataset`
 
     - Adult dataset,
-      see: :class:`~ethically.dataset.AdultDataset`
+      see: :class:`~responsibly.dataset.AdultDataset`
 
     - German credit dataset,
-      see: :class:`~ethically.dataset.GermanDataset`
+      see: :class:`~responsibly.dataset.GermanDataset`
 
     - FICO credit score dataset,
-      see :func:`~ethically.dataset.build_FICO_dataset`
+      see :func:`~responsibly.dataset.build_FICO_dataset`
 
 Usage
 -----
 .. code:: python
 
-    >>> from ethically.dataset import COMPASDataset
+    >>> from responsibly.dataset import COMPASDataset
     >>> compas_ds = COMPASDataset()
     >>> print(compas_ds)
     <ProPublica Recidivism/COMPAS Dataset. 6172 rows, 56 columns in
@@ -47,8 +47,8 @@ Usage
     Name: race, dtype: int64
 """
 
-from ethically.dataset.adult import AdultDataset
-from ethically.dataset.compas import COMPASDataset
-from ethically.dataset.core import Dataset
-from ethically.dataset.fico import build_FICO_dataset
-from ethically.dataset.german import GermanDataset
+from responsibly.dataset.adult import AdultDataset
+from responsibly.dataset.compas import COMPASDataset
+from responsibly.dataset.core import Dataset
+from responsibly.dataset.fico import build_FICO_dataset
+from responsibly.dataset.german import GermanDataset

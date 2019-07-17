@@ -15,7 +15,7 @@ else:
     notify = Notifier.notify
 
 
-watch_paths = ["ethically", "tests"]
+watch_paths = ["responsibly", "tests"]
 
 
 class Options:

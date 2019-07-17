@@ -1,4 +1,4 @@
-"""Unit test module for ethically.we"""
+"""Unit test module for responsibly.we"""
 # pylint: disable=redefined-outer-name,unused-variable,expression-not-assigned,singleton-comparison,protected-access
 
 import copy
@@ -7,14 +7,14 @@ from math import isclose
 import numpy as np
 import pytest
 
-from ethically.consts import RANDOM_STATE
-from ethically.tests.data import TOLGA_GENDER_ANALOGIES
-from ethically.tests.utils import assert_deep_almost_equal
-from ethically.we import (
+from responsibly.consts import RANDOM_STATE
+from responsibly.tests.data import TOLGA_GENDER_ANALOGIES
+from responsibly.tests.utils import assert_deep_almost_equal
+from responsibly.we import (
     GenderBiasWE, calc_all_weat, calc_weat_pleasant_unpleasant_attribute,
 )
-from ethically.we.data import WEAT_DATA, load_w2v_small
-from ethically.we.utils import (
+from responsibly.we.data import WEAT_DATA, load_w2v_small
+from responsibly.we.utils import (
     most_similar, normalize, project_params, project_reject_vector,
     project_vector,
 )
@@ -437,14 +437,14 @@ def test_calc_weat_pleasant_attribute(w2v_small):
 def test_most_similar(w2v_small):
     POSITIVE, NEGATIVE = ('doctor', 'she'), ('he',)
 
-    ethically_results = most_similar(w2v_small, POSITIVE, NEGATIVE,
-                                     topn=10)
+    responsibly_results = most_similar(w2v_small, POSITIVE, NEGATIVE,
+                                       topn=10)
     gensim_results = w2v_small.most_similar(POSITIVE, NEGATIVE,
                                             topn=9)
 
-    assert ethically_results[0][0] == 'doctor'
+    assert responsibly_results[0][0] == 'doctor'
 
-    assert_deep_almost_equal(ethically_results[1:], gensim_results,
+    assert_deep_almost_equal(responsibly_results[1:], gensim_results,
                              atol=0.01)
 
 

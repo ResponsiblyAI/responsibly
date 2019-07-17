@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from pkg_resources import resource_filename
 
-from ethically.dataset.core import Dataset
+from responsibly.dataset.core import Dataset
 
 
 COMPAS_PATH = resource_filename(__name__,
@@ -14,7 +14,7 @@ COMPAS_PATH = resource_filename(__name__,
 class COMPASDataset(Dataset):
     """ProPublica Recidivism/COMPAS Dataset.
 
-    See :class:`~ethically.dataset.Dataset` for a description of
+    See :class:`~responsibly.dataset.Dataset` for a description of
     the arguments and attributes.
 
     References:

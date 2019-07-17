@@ -2,7 +2,7 @@ import pandas as pd
 from pandas.core.algorithms import unique as _unique
 from sklearn.metrics import confusion_matrix
 
-from ethically.fairness.metrics.utils import _assert_binary
+from responsibly.fairness.metrics.utils import _assert_binary
 
 
 def _select_dict(d, keys):

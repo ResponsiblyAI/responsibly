@@ -60,10 +60,10 @@ import numpy as np
 import pandas as pd
 from mlxtend.evaluate import permutation_test
 
-from ethically.consts import RANDOM_STATE
-from ethically.utils import _warning_setup
-from ethically.we.data import WEAT_DATA
-from ethically.we.utils import (
+from responsibly.consts import RANDOM_STATE
+from responsibly.utils import _warning_setup
+from responsibly.we.data import WEAT_DATA
+from responsibly.we.utils import (
     assert_gensim_keyed_vectors, cosine_similarities_by_words,
 )
 

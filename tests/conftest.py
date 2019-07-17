@@ -2,4 +2,4 @@
 
 # pylint: disable=unused-import
 
-# from ethically.tests.conftest import pytest_configure
+# from responsibly.tests.conftest import pytest_configure

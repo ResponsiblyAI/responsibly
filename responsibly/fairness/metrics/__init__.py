@@ -50,13 +50,13 @@ There are three demographic fairness criteria for classification:
 """
 
 
-from ethically.fairness.metrics.binary import (
+from responsibly.fairness.metrics.binary import (
     independence_binary, report_binary, separation_binary, sufficiency_binary,
 )
-from ethically.fairness.metrics.score import (
+from responsibly.fairness.metrics.score import (
     independence_score, roc_auc_score_by_attr, roc_curve_by_attr,
     separation_score, sufficiency_score,
 )
-from ethically.fairness.metrics.visualization import (
+from responsibly.fairness.metrics.visualization import (
     distplot_by, plot_roc_by_attr, plot_roc_curves,
 )

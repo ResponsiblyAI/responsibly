@@ -7,7 +7,7 @@ name = "pypi"
 python_version = "3.5"
 
 [packages]
-ethically = {editable = true,path = "."}
+responsibly = {editable = true,path = "."}
 
 [dev-packages]
 # Linters

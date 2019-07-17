@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 from pkg_resources import resource_filename, resource_stream
 
-from ethically.dataset.core import Dataset
+from responsibly.dataset.core import Dataset
 
 
 __all__ = ['GermanDataset']
@@ -30,7 +30,7 @@ COLUMN_NAMES = ['status', 'duration', 'credit_history', 'purpose',
 class GermanDataset(Dataset):
     """German Credit Dataset.
 
-    See :class:`~ethically.dataset.Dataset` for a description of
+    See :class:`~responsibly.dataset.Dataset` for a description of
     the arguments and attributes.
 
     References:
