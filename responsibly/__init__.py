@@ -6,7 +6,7 @@ from responsibly import fairness, we
 __project__ = 'responsibly'
 __description__ = 'Toolkit for Auditing and Mitigating Bias and Fairness of Machine Learning Systems 🔎🤖🧰'
 __url__ = 'http://docs.responsibly.ai'
-__version__ = '0.0.5'
+__version__ = '0.1.0'
 __author__ = 'Shlomi Hod'
 __author_email__ = 'shlomi.hod@gmail.com'
 __license__ = 'MIT'
