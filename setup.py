@@ -75,14 +75,13 @@ setuptools.setup(
     ],
 
     install_requires=[
-        "numpy >= 1.15",
+        "numpy >= 1.15, < 1.17",
         "scipy >= 1.1",
         "pandas >= 0.23",
         "matplotlib >= 2.2, < 3",
         "seaborn >= 0.9",
         "scikit-learn >= 0.19",
         "gensim == 3.8.0",
-        "smart_open < 1.8.3",
         "tabulate >= 0.8",
         "six >= 1.10",
         "click >= 6.0",
