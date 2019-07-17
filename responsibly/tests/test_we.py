@@ -438,7 +438,7 @@ def test_most_similar(w2v_small):
     POSITIVE, NEGATIVE = ('doctor', 'she'), ('he',)
 
     responsibly_results = most_similar(w2v_small, POSITIVE, NEGATIVE,
-                                     topn=10)
+                                       topn=10)
     gensim_results = w2v_small.most_similar(POSITIVE, NEGATIVE,
                                             topn=9)
 
