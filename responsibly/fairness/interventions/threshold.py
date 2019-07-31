@@ -30,11 +30,15 @@ References:
 
 # pylint: disable=no-name-in-module
 
+from collections import Counter
+
 import matplotlib.pylab as plt
 import numpy as np
 import pandas as pd
 from scipy.spatial import Delaunay
 
+from responsibly.fairness.metrics.score import roc_curve_by_attr
+from responsibly.fairness.metrics.utils import _groupby_y_x_sens
 from responsibly.fairness.metrics.visualization import plot_roc_curves
 
 
