@@ -28,13 +28,15 @@ References:
 
 """
 
-# pylint: disable=no-name-in-module
+# pylint: disable=no-name-in-module,ungrouped-imports
 
 from collections import Counter
 
 import matplotlib.pylab as plt
 import numpy as np
 import pandas as pd
+import seaborn as sns
+from matplotlib.ticker import AutoMinorLocator
 from scipy.spatial import Delaunay
 
 from responsibly.fairness.metrics.score import roc_curve_by_attr
@@ -704,6 +706,67 @@ def plot_costs(thresholds_data,
 
     ax.set_xlabel('Cost', fontsize=text_fontsize)
     ax.set_ylabel('Threshold', fontsize=text_fontsize)
+    ax.tick_params(labelsize=text_fontsize)
+
+    return ax
+
+
+def plot_thresholds(thresholds_data,
+                    markersize=7,
+                    title='Thresholds by Strategy and Attribute',
+                    xlim=None,
+                    ax=None, figsize=None,
+                    title_fontsize='large', text_fontsize='medium'):
+    """Plot thresholds by strategy and by attribute.
+
+    Based on :func:`skplt.metrics.plot_roc`
+
+    :param thresholds_data: Thresholds by attribute from the
+                            function
+                            :func:`~responsibly.interventions
+                            .threshold.find_thresholds`.
+    :type thresholds_data: dict
+    :param int markersize: Marker size.
+    :param str title: Title of the generated plot.
+    :param tuple xlim: Set the data limits for the x-axis.
+    :param ax: The axes upon which to plot the curve.
+               If `None`, the plot is drawn on a new set of axes.
+    :param tuple figsize: Tuple denoting figure size of the plot
+                          e.g. (6, 6).
+    :param title_fontsize: Matplotlib-style fontsizes.
+                          Use e.g. 'small', 'medium', 'large'
+                          or integer-values.
+    :param text_fontsize: Matplotlib-style fontsizes.
+                          Use e.g. 'small', 'medium', 'large'
+                          or integer-values.
+    :return: The axes on which the plot was drawn.
+    :rtype: :class:`matplotlib.axes.Axes`
+    """
+
+    if ax is None:
+        fig, ax = plt.subplots(1, 1, figsize=figsize)  # pylint: disable=unused-variable
+
+    ax.set_title(title, fontsize=title_fontsize)
+
+    # TODO: refactor!
+    df = pd.DataFrame({titlify(key): thresholds
+                       for key, (thresholds, *_) in thresholds_data.items()
+                       if key != 'separation'})
+    melted_df = pd.melt(df, var_name='Strategy', value_name='Threshold')
+    melted_df['Attribute'] = list(df.index) * len(df.columns)
+
+    sns.stripplot(y='Strategy', x='Threshold', hue='Attribute', data=melted_df,
+                  jitter=False, dodge=True, size=markersize, ax=ax)
+
+    minor_locator = AutoMinorLocator(2)
+    fig.gca().yaxis.set_minor_locator(minor_locator)
+    ax.grid(which='minor')
+
+    if xlim is not None:
+        ax.set_xlim(*xlim)
+
+    ax.set_xlabel('Threshold', fontsize=text_fontsize)
+    ax.set_ylabel('Strategy', fontsize=text_fontsize)
     ax.tick_params(labelsize=text_fontsize)
 
     return ax
