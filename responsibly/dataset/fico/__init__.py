@@ -100,6 +100,8 @@ def build_FICO_dataset():
     +---------------+------------------------------------------------------+
     | FICO key      | Meaning                                              |
     +===============+======================================================+
+    | `total`       | Total number of individuals                          |
+    +---------------+------------------------------------------------------+
     | `totals`      | Number of individuals per group                      |
     +---------------+------------------------------------------------------+
     | `cdf`         | Cumulative distribution function of score per group  |
@@ -137,6 +139,8 @@ def build_FICO_dataset():
     totals, cdfs_df, performance_df = _load_data()
     pdfs_df = _get_pdfs(cdfs_df)
 
+    total = sum(totals.values())
+
     proportions = {group: total / sum(totals.values())
                    for group, total in totals.items()}
 
@@ -149,7 +153,8 @@ def build_FICO_dataset():
     aucs = {group: auc(fpr, tpr) for group, (fpr, tpr, _)
             in rocs.items()}
 
-    return {'totals': totals,
+    return {'total': total,
+            'totals': totals,
             'cdf': cdfs_df,
             'pdf': pdfs_df,
             'performance': performance_df,
