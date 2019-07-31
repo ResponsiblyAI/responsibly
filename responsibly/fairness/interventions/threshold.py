@@ -12,7 +12,7 @@ There are multiple definitions for choosing the thresholds:
 4. A threshold for each sensitive attribute value
    that achieve equal FNR (equal opportunity) and minimize cost.
 5. A threshold for each sensitive attribute value
-   that achieve seperation (equalized odds) and minimize cost.
+   that achieve separation (equalized odds) and minimize cost.
 
 The code is based on `fairmlbook repository <https://github.com/fairmlbook/fairmlbook.github.io>`_.
 
