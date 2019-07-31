@@ -1,4 +1,8 @@
-"""Unit test module for responsibly.fairness"""
+"""Unit test module for responsibly.fairness
+
+FICO results are based on running the code from:
+https://github.com/fairmlbook/fairmlbook.github.io
+"""
 # pylint: disable=redefined-outer-name,line-too-long
 
 import pytest
@@ -13,6 +17,8 @@ from responsibly.fairness.metrics.binary import compare_privileged
 from responsibly.tests.utils import assert_deep_almost_equal
 
 
+FICO_TOL = {'atol': 1e-5, 'rtol': 5e-3}
+
 COST_MATRIX = [[0, - 5 / 6], [0, 1 / 6]]
 
 FICO_SINGLE = (42.5,
@@ -20,8 +26,9 @@ FICO_SINGLE = (42.5,
                 'Black': (0.03421435054752242, 0.5140401023192323),
                 'Hispanic': (0.07888468140621363, 0.6254574967221331),
                 'White': (0.10256570907095985, 0.7931580812742784)},
-               -0.06830064096108142)
+               -11888.109525713331 / 174047)
 
+# Cost is NOT taken from FairMLBook repo
 FICO_MIN_COST = ({'Asian': 38.5,
                   'Black': 49.0,
                   'Hispanic': 46.5,
@@ -30,7 +37,7 @@ FICO_MIN_COST = ({'Asian': 38.5,
                   'Black': (0.020067107153418196, 0.4079222735623631),
                   'Hispanic': (0.058653539271323774, 0.5589875936027981),
                   'White': (0.11087988887409528, 0.8075167832686126)},
-                 -0.20640680666666658)
+                 -0.06875738629781994)
 
 FICO_INDEPENDENCE = ({'Asian': 53.0,
                       'Black': 18.0,
@@ -40,8 +47,10 @@ FICO_INDEPENDENCE = ({'Asian': 53.0,
                       'Black': (0.33376894053666994, 0.9049491843143592),
                       'Hispanic': (0.1693120676295986, 0.7999748148855363),
                       'White': (0.058478838627887275, 0.6773498273098238)},
+                     -8183.343726279998 / 174047,
                      0.5189755206777411)
 
+# All the values are NOT taken from FairMLBook repo
 FICO_FNR = ({'Asian': 46.0, 'Black': 29.5, 'Hispanic': 35.0, 'White': 46.5},
             {'Asian': (0.13087886175132435, 0.7450217322938637),
              'Black': (0.1077846495570669, 0.7487442676155007),
@@ -52,7 +61,8 @@ FICO_FNR = ({'Asian': 46.0, 'Black': 29.5, 'Hispanic': 35.0, 'White': 46.5},
 
 FICO_SEPARATION = ({},
                    {'': (0.11393540338532637, 0.7091695018283077)},
-                   0.054347341376646846)
+                   # slightly different from the fairmlbook repository:
+                   -9448.09030585854 / 174047)
 
 FICO_THRESHOLD_DATA = {'single': FICO_SINGLE,
                        'min_cost': FICO_MIN_COST,
@@ -128,7 +138,8 @@ def test_single_threshold(fico):
                                                              fico['base_rates'],
                                                              fico['proportions'],
                                                              COST_MATRIX),
-                             FICO_SINGLE)
+                             FICO_SINGLE,
+                             **FICO_TOL)
 
 
 # https://github.com/fairmlbook/fairmlbook.github.io/blob/b1dfc9756ee8d2adf502c1b0f7265f10c5b1033c/code/creditscore/criteria.py#L122
@@ -141,8 +152,10 @@ def test_single_threshold(fico):
 def test_min_cost_threshold(fico):
     assert_deep_almost_equal(threshold.find_min_cost_thresholds(fico['rocs'],
                                                                 fico['base_rates'],
+                                                                fico['proportions'],
                                                                 COST_MATRIX),
-                             FICO_MIN_COST)
+                             FICO_MIN_COST,
+                             **FICO_TOL)
 
 
 def test_independence_thresholds(fico):
@@ -150,7 +163,8 @@ def test_independence_thresholds(fico):
                                                                     fico['base_rates'],
                                                                     fico['proportions'],
                                                                     COST_MATRIX),
-                             FICO_INDEPENDENCE)
+                             FICO_INDEPENDENCE,
+                             **FICO_TOL)
 
 
 def test_fnr_thresholds(fico):
@@ -158,14 +172,16 @@ def test_fnr_thresholds(fico):
                                                            fico['base_rates'],
                                                            fico['proportions'],
                                                            COST_MATRIX),
-                             FICO_FNR)
+                             FICO_FNR,
+                             **FICO_TOL)
 
 
 def test_separation_thresholds(fico):
     assert_deep_almost_equal(threshold.find_separation_thresholds(fico['rocs'],
                                                                   fico['base_rate'],
                                                                   COST_MATRIX),
-                             FICO_SEPARATION)
+                             FICO_SEPARATION,
+                             **FICO_TOL)
 
 
 def test_thresholds(fico):
@@ -175,7 +191,8 @@ def test_thresholds(fico):
                                                fico['base_rates'],
                                                COST_MATRIX)
 
-    assert_deep_almost_equal(threshold_data, FICO_THRESHOLD_DATA)
+    assert_deep_almost_equal(threshold_data, FICO_THRESHOLD_DATA,
+                             **FICO_TOL)
 
 
 def test_plot_roc_by_attr_thresholds_exception(compas_ds):
