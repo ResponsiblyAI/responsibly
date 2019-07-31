@@ -143,6 +143,7 @@ def find_single_threshold(roc_curves, base_rates, proportions,
 
             group_cost = _cost_function(fpr, tpr,
                                         base_rates[group], cost_matrix)
+
             group_cost *= proportions[group]
 
             total_cost += group_cost
@@ -162,7 +163,7 @@ def find_single_threshold(roc_curves, base_rates, proportions,
     return thresholds[cutoff_index], fpr_tpr, cost
 
 
-def find_min_cost_thresholds(roc_curves, base_rates, cost_matrix):
+def find_min_cost_thresholds(roc_curves, base_rates, proportions, cost_matrix):
     """Compute thresholds by attribute values that minimize cost.
 
     :param roc_curves: Receiver operating characteristic (ROC)
@@ -170,6 +171,8 @@ def find_min_cost_thresholds(roc_curves, base_rates, cost_matrix):
     :type roc_curves: dict
     :param base_rates: Base rate by attribute.
     :type base_rates: dict
+    :param proportions: Proportion of each attribute value.
+    :type proportions: dict
     :param cost_matrix: Cost matrix by [[tn, fp], [fn, tp]].
     :type cost_matrix: sequence
     :return: Thresholds, FPR and TPR by attribute and cost value.
@@ -199,7 +202,7 @@ def find_min_cost_thresholds(roc_curves, base_rates, cost_matrix):
         fpr_tpr[group] = (roc[0][threshold_index],
                           roc[1][threshold_index])
 
-        cost += group_cost_function(threshold_index)
+        cost += group_cost_function(threshold_index) * proportions[group]
 
     return cutoffs, fpr_tpr, cost
 
@@ -265,6 +268,9 @@ def find_independence_thresholds(roc_curves, base_rates, proportions,
 
     acceptance_rate_min_cost = _ternary_search_float(total_cost_function,
                                                      0, 1, 1e-3)
+
+    cost = total_cost_function(acceptance_rate_min_cost)
+
     threshold_indices = get_acceptance_rate_indices(roc_curves, base_rates,
                                                     acceptance_rate_min_cost)
 
@@ -278,7 +284,7 @@ def find_independence_thresholds(roc_curves, base_rates, proportions,
                        roc[1][threshold_indices[group]])
                for group, roc in roc_curves.items()}
 
-    return cutoffs, fpr_tpr, acceptance_rate_min_cost
+    return cutoffs, fpr_tpr, cost, acceptance_rate_min_cost
 
 
 def get_fnr_indices(roc_curves, fnr_value):
@@ -392,6 +398,7 @@ def find_separation_thresholds(roc_curves, base_rate, cost_matrix):
                                                      cost_matrix),
                                       (fpr, tpr))
                                      for fpr, tpr in feasible_points)
+    cost = - cost
 
     return {}, {'': (best_fpr, best_tpr)}, cost
 
@@ -444,6 +451,7 @@ def find_thresholds(roc_curves, proportions, base_rate,
     if with_min_cost:
         thresholds['min_cost'] = find_min_cost_thresholds(roc_curves,
                                                           base_rates,
+                                                          proportions,
                                                           cost_matrix)
 
     if with_independence:
@@ -464,6 +472,78 @@ def find_thresholds(roc_curves, proportions, base_rate,
                                                               cost_matrix)
 
     return thresholds
+
+
+def find_thresholds_by_attr(y_true, y_score, x_sens,
+                            cost_matrix,
+                            with_single=True, with_min_cost=True,
+                            with_independence=True, with_fnr=True,
+                            with_separation=True,
+                            pos_label=None, sample_weight=None,
+                            drop_intermediate=False):
+    """
+    Compute thresholds that achieve various criteria and minimize cost.
+
+    :param y_true: Binary ground truth (correct) target values.
+    :param y_score: Estimated target score as returned by a classifier.
+    :param x_sens: Sensitive attribute values corresponded to each
+                   estimated target.
+    :param cost_matrix: Cost matrix by [[tn, fp], [fn, tp]].
+    :type cost_matrix: sequence
+
+    :param pos_label: Label considered as positive and others
+                      are considered negative.
+    :param sample_weight: Sample weights.
+    :param drop_intermediate: Whether to drop some suboptimal
+                              thresholds which would not appear on
+                              a plotted ROC curve.
+                              This is useful in order to create
+                              lighter ROC curves.
+
+    :param with_single: Compute single threshold.
+    :type with_single: bool
+    :param with_min_cost: Compute minimum cost thresholds.
+    :type with_min_cost: bool
+    :param with_independence: Compute independence thresholds.
+    :type with_independence: bool
+    :param with_fnr: Compute FNR thresholds.
+    :type with_fnr: bool
+    :param with_separation: Compute separation thresholds.
+    :type with_separation: bool
+
+    :return: Dictionary of threshold criteria,
+             and for each criterion:
+             thresholds, FPR and TPR by attribute and cost value.
+    :rtype: dict
+    """
+    # pylint: disable=too-many-locals
+
+    roc_curves = roc_curve_by_attr(y_true, y_score, x_sens,
+                                   pos_label, sample_weight,
+                                   drop_intermediate)
+
+    proportions = {value: count / len(x_sens)
+                   for value, count in Counter(x_sens).items()}
+
+    if pos_label is None:
+        pos_label = 1
+
+    base_rate = np.mean(y_true == pos_label)
+    grouped = _groupby_y_x_sens(y_true, y_score, x_sens)
+
+    base_rates = {x_sens_value: np.mean(group['y_true'] == pos_label)
+                  for x_sens_value, group in grouped}
+
+    thresholds_data = find_thresholds(roc_curves,
+                                      proportions,
+                                      base_rate,
+                                      base_rates,
+                                      cost_matrix,
+                                      with_single, with_min_cost,
+                                      with_independence, with_fnr,
+                                      with_separation)
+
+    return thresholds_data
 
 
 def plot_roc_curves_thresholds(roc_curves, thresholds_data,
@@ -572,7 +652,7 @@ def plot_fpt_tpr(roc_curves,
 
 
 def plot_costs(thresholds_data,
-               title='Cost by Threshold',
+               title='Cost by Threshold Strategy',
                ax=None, figsize=None,
                title_fontsize='large', text_fontsize='medium'):
     """Plot cost by threshold definition and by attribute.
@@ -597,7 +677,6 @@ def plot_costs(thresholds_data,
                           or integer-values.
     :return: The axes on which the plot was drawn.
     :rtype: :class:`matplotlib.axes.Axes`
-
     """
 
     if ax is None:
