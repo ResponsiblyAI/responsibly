@@ -42,6 +42,13 @@ from responsibly.fairness.metrics.utils import _groupby_y_x_sens
 from responsibly.fairness.metrics.visualization import plot_roc_curves
 
 
+def titlify(text):
+    text = text.replace('_', ' ').title()
+    if text == 'Fnr':
+        text = 'FNR'
+    return text
+
+
 def _ternary_search_float(f, left, right, tol):
     """Trinary search: minimize f(x) over [left, right], to within +/-tol in x.
 
@@ -592,7 +599,7 @@ def plot_roc_curves_thresholds(roc_curves, thresholds_data,
     MARKERS = ['o', '^', 'x', '+', 'p']
 
     for (name, data), marker in zip(thresholds_data.items(), MARKERS):
-        label = name.replace('_', ' ').title()
+        label = titlify(name)
         ax.scatter(*zip(*data[1].values()),
                    marker=marker, color='k', label=label,
                    zorder=float('inf'))
@@ -688,7 +695,7 @@ def plot_costs(thresholds_data,
 
     ax.set_title(title, fontsize=title_fontsize)
 
-    costs = {group.replace('_', ' ').title(): cost
+    costs = {titlify(group): cost
              for group, (_, _, cost, *_) in thresholds_data.items()}
 
     (pd.Series(costs)
