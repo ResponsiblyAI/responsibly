@@ -6,7 +6,9 @@ import pandas as pd
 from sklearn.metrics import roc_auc_score, roc_curve
 from sklearn.utils.multiclass import unique_labels
 
-from responsibly.fairness.metrics.utils import _assert_binary
+from responsibly.fairness.metrics.utils import (
+    _assert_binary, _groupby_y_x_sens,
+)
 
 
 def _proportion(data, labels):
@@ -149,13 +151,6 @@ def _all_equal(iterator):
         return all(np.allclose(first, rest) for rest in iterator)
     except ValueError:
         return False
-
-
-def _groupby_y_x_sens(y_true, y_score, x_sens):
-    return (pd.DataFrame({'y_true': y_true,
-                          'y_score': y_score,
-                          'x_sens': x_sens})
-            .groupby('x_sens'))
 
 
 def roc_curve_by_attr(y_true, y_score, x_sens,
