@@ -81,7 +81,7 @@ install:
   # Add Make and Python to the PATH
   - copy C:\MinGW\bin\mingw32-make.exe C:\MinGW\bin\make.exe
   - SET PATH=C:\MinGW\bin;%PATH%
-  - ll C:\MinGW\bin
+  - ls C:\MinGW\bin
   - ECHO $PATH
 
   # Install system dependencies
