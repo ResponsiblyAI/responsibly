@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>ethically.fairness.interventions.threshold &#8212; Ethically 0.0.5 documentation</title>
+    <title>responsibly.fairness.interventions.threshold &#8212; Responsibly 0.1.0 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -31,7 +31,7 @@
 
           <div class="body" role="main">
             
-  <h1>Source code for ethically.fairness.interventions.threshold</h1><div class="highlight"><pre>
+  <h1>Source code for responsibly.fairness.interventions.threshold</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Post-processing fairness intervension by choosing thresholds.</span>
 
@@ -46,7 +46,7 @@
 <span class="sd">4. A threshold for each sensitive attribute value</span>
 <span class="sd">   that achieve equal FNR (equal opportunity) and minimize cost.</span>
 <span class="sd">5. A threshold for each sensitive attribute value</span>
-<span class="sd">   that achieve seperation (equalized odds) and minimize cost.</span>
+<span class="sd">   that achieve separation (equalized odds) and minimize cost.</span>
 
 <span class="sd">The code is based on `fairmlbook repository &lt;https://github.com/fairmlbook/fairmlbook.github.io&gt;`_.</span>
 
@@ -62,22 +62,42 @@
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-<span class="c1"># pylint: disable=no-name-in-module</span>
+<span class="c1"># pylint: disable=no-name-in-module,ungrouped-imports</span>
+
+<span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">Counter</span>
 
 <span class="kn">import</span> <span class="nn">matplotlib.pylab</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
+<span class="kn">from</span> <span class="nn">matplotlib.ticker</span> <span class="k">import</span> <span class="n">AutoMinorLocator</span>
 <span class="kn">from</span> <span class="nn">scipy.spatial</span> <span class="k">import</span> <span class="n">Delaunay</span>
 
-<span class="kn">from</span> <span class="nn">ethically.fairness.metrics.visualization</span> <span class="k">import</span> <span class="n">plot_roc_curves</span>
+<span class="kn">from</span> <span class="nn">responsibly.fairness.metrics.score</span> <span class="k">import</span> <span class="n">roc_curve_by_attr</span>
+<span class="kn">from</span> <span class="nn">responsibly.fairness.metrics.utils</span> <span class="k">import</span> <span class="n">_groupby_y_x_sens</span>
+<span class="kn">from</span> <span class="nn">responsibly.fairness.metrics.visualization</span> <span class="k">import</span> <span class="n">plot_roc_curves</span>
+
+
+<span class="n">TRINARY_SEARCH_TOL</span> <span class="o">=</span> <span class="mf">1e-3</span>
+
+
+<span class="k">def</span> <span class="nf">_strictly_increasing</span><span class="p">(</span><span class="n">arr</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">all</span><span class="p">()</span>
+
+
+<span class="k">def</span> <span class="nf">_titlify</span><span class="p">(</span><span class="n">text</span><span class="p">):</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">text</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">text</span> <span class="o">==</span> <span class="s1">&#39;Fnr&#39;</span><span class="p">:</span>
+        <span class="n">text</span> <span class="o">=</span> <span class="s1">&#39;FNR&#39;</span>
+    <span class="k">return</span> <span class="n">text</span>
 
 
 <span class="k">def</span> <span class="nf">_ternary_search_float</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">tol</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Trinary search: minimize f(x) over [left, right], to within +/-tol in x.</span>
 
 <span class="sd">    Works assuming f is quasiconvex.</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="k">while</span> <span class="n">right</span> <span class="o">-</span> <span class="n">left</span> <span class="o">&gt;</span> <span class="n">tol</span><span class="p">:</span>
         <span class="n">left_third</span> <span class="o">=</span> <span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">left</span> <span class="o">+</span> <span class="n">right</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3</span>
         <span class="n">right_third</span> <span class="o">=</span> <span class="p">(</span><span class="n">left</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">right</span><span class="p">)</span> <span class="o">/</span> <span class="mi">3</span>
@@ -93,7 +113,16 @@
 
 <span class="sd">    Works assuming f is quasiconvex and domain is ascending sorted.</span>
 
+<span class="sd">    BUGGY, DO NOT USE</span>
+
+<span class="sd">    &gt;&gt;&gt; arr = np.concatenate([np.arange(10, 2, -1), np.arange(2, 20)])</span>
+<span class="sd">    &gt;&gt;&gt; t1 = _ternary_search_domain(lambda t: arr[t], range(len(arr)))</span>
+<span class="sd">    &gt;&gt;&gt; t2 = np.argmin(arr)</span>
+
+<span class="sd">    &gt;&gt;&gt; assert t1 == t2</span>
+<span class="sd">    &gt;&gt;&gt; assert arr[t1] == arr[t2]</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">left</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">right</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">domain</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="n">changed</span> <span class="o">=</span> <span class="kc">True</span>
@@ -135,22 +164,26 @@
     <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="nb">iter</span><span class="p">(</span><span class="n">roc_curves</span><span class="o">.</span><span class="n">values</span><span class="p">()))[</span><span class="mi">2</span><span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">_first_index_above</span><span class="p">(</span><span class="n">array</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">_first_index_above</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Find the smallest index i for which array[i] &gt; value.</span>
 
 <span class="sd">    If no such value exists, return len(array).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">array</span><span class="p">)</span>
-    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">array</span> <span class="o">&gt;</span> <span class="n">value</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">array</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">:])])</span>
+
+    <span class="k">assert</span> <span class="n">_strictly_increasing</span><span class="p">(</span><span class="n">arr</span><span class="p">),</span> <span class="p">(</span>
+        <span class="s1">&#39;arr should be stricktly increasing.&#39;</span><span class="p">)</span>
+
+    <span class="n">arr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">arr</span><span class="p">)</span>
+    <span class="n">v</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">([</span><span class="n">arr</span> <span class="o">&gt;</span> <span class="n">value</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">]])</span>
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 
 <span class="k">def</span> <span class="nf">_calc_acceptance_rate</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">base_rate</span><span class="p">):</span>
-    <span class="k">return</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">((</span><span class="n">fpr</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">base_rate</span><span class="p">)</span>
-                 <span class="o">+</span> <span class="n">tpr</span> <span class="o">*</span> <span class="n">base_rate</span><span class="p">))</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">fpr</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">base_rate</span><span class="p">)</span>
+            <span class="o">+</span> <span class="n">tpr</span> <span class="o">*</span> <span class="n">base_rate</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="find_single_threshold"><a class="viewcode-back" href="../../../../fairness.html#ethically.fairness.interventions.threshold.find_single_threshold">[docs]</a><span class="k">def</span> <span class="nf">find_single_threshold</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">,</span> <span class="n">base_rates</span><span class="p">,</span> <span class="n">proportions</span><span class="p">,</span>
+<div class="viewcode-block" id="find_single_threshold"><a class="viewcode-back" href="../../../../fairness.html#responsibly.fairness.interventions.threshold.find_single_threshold">[docs]</a><span class="k">def</span> <span class="nf">find_single_threshold</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">,</span> <span class="n">base_rates</span><span class="p">,</span> <span class="n">proportions</span><span class="p">,</span>
                           <span class="n">cost_matrix</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute single threshold that minimizes cost.</span>
 
@@ -177,6 +210,7 @@
 
             <span class="n">group_cost</span> <span class="o">=</span> <span class="n">_cost_function</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span>
                                         <span class="n">base_rates</span><span class="p">[</span><span class="n">group</span><span class="p">],</span> <span class="n">cost_matrix</span><span class="p">)</span>
+
             <span class="n">group_cost</span> <span class="o">*=</span> <span class="n">proportions</span><span class="p">[</span><span class="n">group</span><span class="p">]</span>
 
             <span class="n">total_cost</span> <span class="o">+=</span> <span class="n">group_cost</span>
@@ -185,8 +219,9 @@
 
     <span class="n">thresholds</span> <span class="o">=</span> <span class="n">_extract_threshold</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">)</span>
 
-    <span class="n">cutoff_index</span> <span class="o">=</span> <span class="n">_ternary_search_domain</span><span class="p">(</span><span class="n">total_cost_function</span><span class="p">,</span>
-                                          <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">thresholds</span><span class="p">)))</span>
+    <span class="n">cost_per_threshold</span> <span class="o">=</span> <span class="p">[</span><span class="n">total_cost_function</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+                          <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">thresholds</span><span class="p">))]</span>
+    <span class="n">cutoff_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">cost_per_threshold</span><span class="p">)</span>
 
     <span class="n">fpr_tpr</span> <span class="o">=</span> <span class="p">{</span><span class="n">group</span><span class="p">:</span> <span class="p">(</span><span class="n">roc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">cutoff_index</span><span class="p">],</span> <span class="n">roc</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">cutoff_index</span><span class="p">])</span>
                <span class="k">for</span> <span class="n">group</span><span class="p">,</span> <span class="n">roc</span> <span class="ow">in</span> <span class="n">roc_curves</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
@@ -196,7 +231,7 @@
     <span class="k">return</span> <span class="n">thresholds</span><span class="p">[</span><span class="n">cutoff_index</span><span class="p">],</span> <span class="n">fpr_tpr</span><span class="p">,</span> <span class="n">cost</span></div>
 
 
-<div class="viewcode-block" id="find_min_cost_thresholds"><a class="viewcode-back" href="../../../../fairness.html#ethically.fairness.interventions.threshold.find_min_cost_thresholds">[docs]</a><span class="k">def</span> <span class="nf">find_min_cost_thresholds</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">,</span> <span class="n">base_rates</span><span class="p">,</span> <span class="n">cost_matrix</span><span class="p">):</span>
+<div class="viewcode-block" id="find_min_cost_thresholds"><a class="viewcode-back" href="../../../../fairness.html#responsibly.fairness.interventions.threshold.find_min_cost_thresholds">[docs]</a><span class="k">def</span> <span class="nf">find_min_cost_thresholds</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">,</span> <span class="n">base_rates</span><span class="p">,</span> <span class="n">proportions</span><span class="p">,</span> <span class="n">cost_matrix</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute thresholds by attribute values that minimize cost.</span>
 
 <span class="sd">    :param roc_curves: Receiver operating characteristic (ROC)</span>
@@ -204,6 +239,8 @@
 <span class="sd">    :type roc_curves: dict</span>
 <span class="sd">    :param base_rates: Base rate by attribute.</span>
 <span class="sd">    :type base_rates: dict</span>
+<span class="sd">    :param proportions: Proportion of each attribute value.</span>
+<span class="sd">    :type proportions: dict</span>
 <span class="sd">    :param cost_matrix: Cost matrix by [[tn, fp], [fn, tp]].</span>
 <span class="sd">    :type cost_matrix: sequence</span>
 <span class="sd">    :return: Thresholds, FPR and TPR by attribute and cost value.</span>
@@ -225,15 +262,16 @@
             <span class="k">return</span> <span class="o">-</span><span class="n">_cost_function</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span>
                                    <span class="n">base_rates</span><span class="p">[</span><span class="n">group</span><span class="p">],</span> <span class="n">cost_matrix</span><span class="p">)</span>
 
-        <span class="n">threshold_index</span> <span class="o">=</span> <span class="n">_ternary_search_domain</span><span class="p">(</span><span class="n">group_cost_function</span><span class="p">,</span>
-                                                 <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">thresholds</span><span class="p">)))</span>
+        <span class="n">cost_per_threshold</span> <span class="o">=</span> <span class="p">[</span><span class="n">group_cost_function</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+                              <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">thresholds</span><span class="p">))]</span>
+        <span class="n">cutoff_index</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmin</span><span class="p">(</span><span class="n">cost_per_threshold</span><span class="p">)</span>
 
-        <span class="n">cutoffs</span><span class="p">[</span><span class="n">group</span><span class="p">]</span> <span class="o">=</span> <span class="n">thresholds</span><span class="p">[</span><span class="n">threshold_index</span><span class="p">]</span>
+        <span class="n">cutoffs</span><span class="p">[</span><span class="n">group</span><span class="p">]</span> <span class="o">=</span> <span class="n">thresholds</span><span class="p">[</span><span class="n">cutoff_index</span><span class="p">]</span>
 
-        <span class="n">fpr_tpr</span><span class="p">[</span><span class="n">group</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">roc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">threshold_index</span><span class="p">],</span>
-                          <span class="n">roc</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">threshold_index</span><span class="p">])</span>
+        <span class="n">fpr_tpr</span><span class="p">[</span><span class="n">group</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">roc</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="n">cutoff_index</span><span class="p">],</span>
+                          <span class="n">roc</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">cutoff_index</span><span class="p">])</span>
 
-        <span class="n">cost</span> <span class="o">+=</span> <span class="n">group_cost_function</span><span class="p">(</span><span class="n">threshold_index</span><span class="p">)</span>
+        <span class="n">cost</span> <span class="o">+=</span> <span class="n">group_cost_function</span><span class="p">(</span><span class="n">cutoff_index</span><span class="p">)</span> <span class="o">*</span> <span class="n">proportions</span><span class="p">[</span><span class="n">group</span><span class="p">]</span>
 
     <span class="k">return</span> <span class="n">cutoffs</span><span class="p">,</span> <span class="n">fpr_tpr</span><span class="p">,</span> <span class="n">cost</span></div>
 
@@ -241,6 +279,7 @@
 <span class="k">def</span> <span class="nf">get_acceptance_rate_indices</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">,</span> <span class="n">base_rates</span><span class="p">,</span>
                                 <span class="n">acceptance_rate_value</span><span class="p">):</span>
     <span class="n">indices</span> <span class="o">=</span> <span class="p">{}</span>
+
     <span class="k">for</span> <span class="n">group</span><span class="p">,</span> <span class="n">roc</span> <span class="ow">in</span> <span class="n">roc_curves</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="c1"># can be calculated outside the function</span>
         <span class="n">acceptance_rates</span> <span class="o">=</span> <span class="n">_calc_acceptance_rate</span><span class="p">(</span><span class="n">fpr</span><span class="o">=</span><span class="n">roc</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
@@ -248,14 +287,14 @@
                                                  <span class="n">base_rate</span><span class="o">=</span><span class="n">base_rates</span><span class="p">[</span><span class="n">group</span><span class="p">])</span>
 
         <span class="n">index</span> <span class="o">=</span> <span class="n">_first_index_above</span><span class="p">(</span><span class="n">acceptance_rates</span><span class="p">,</span>
-                                   <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">acceptance_rate_value</span><span class="p">))</span> <span class="o">-</span> <span class="mi">2</span>
+                                   <span class="n">acceptance_rate_value</span><span class="p">)</span>
 
         <span class="n">indices</span><span class="p">[</span><span class="n">group</span><span class="p">]</span> <span class="o">=</span> <span class="n">index</span>
 
     <span class="k">return</span> <span class="n">indices</span>
 
 
-<div class="viewcode-block" id="find_independence_thresholds"><a class="viewcode-back" href="../../../../fairness.html#ethically.fairness.interventions.threshold.find_independence_thresholds">[docs]</a><span class="k">def</span> <span class="nf">find_independence_thresholds</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">,</span> <span class="n">base_rates</span><span class="p">,</span> <span class="n">proportions</span><span class="p">,</span>
+<div class="viewcode-block" id="find_independence_thresholds"><a class="viewcode-back" href="../../../../fairness.html#responsibly.fairness.interventions.threshold.find_independence_thresholds">[docs]</a><span class="k">def</span> <span class="nf">find_independence_thresholds</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">,</span> <span class="n">base_rates</span><span class="p">,</span> <span class="n">proportions</span><span class="p">,</span>
                                  <span class="n">cost_matrix</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute thresholds that achieve independence and minimize cost.</span>
 
@@ -277,6 +316,8 @@
 
     <span class="k">def</span> <span class="nf">total_cost_function</span><span class="p">(</span><span class="n">acceptance_rate_value</span><span class="p">):</span>
         <span class="c1"># todo: move demo here + multiple cost</span>
+        <span class="c1">#       + refactor - use threshold to calculate</span>
+        <span class="c1">#         acceptance_rate_value</span>
         <span class="n">indices</span> <span class="o">=</span> <span class="n">get_acceptance_rate_indices</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">,</span> <span class="n">base_rates</span><span class="p">,</span>
                                               <span class="n">acceptance_rate_value</span><span class="p">)</span>
 
@@ -291,6 +332,7 @@
             <span class="n">group_cost</span> <span class="o">=</span> <span class="n">_cost_function</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span>
                                         <span class="n">base_rates</span><span class="p">[</span><span class="n">group</span><span class="p">],</span>
                                         <span class="n">cost_matrix</span><span class="p">)</span>
+
             <span class="n">group_cost</span> <span class="o">*=</span> <span class="n">proportions</span><span class="p">[</span><span class="n">group</span><span class="p">]</span>
 
             <span class="n">total_cost</span> <span class="o">+=</span> <span class="n">group_cost</span>
@@ -298,10 +340,12 @@
         <span class="k">return</span> <span class="o">-</span><span class="n">total_cost</span>
 
     <span class="n">acceptance_rate_min_cost</span> <span class="o">=</span> <span class="n">_ternary_search_float</span><span class="p">(</span><span class="n">total_cost_function</span><span class="p">,</span>
-                                                     <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">)</span>
+                                                     <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">TRINARY_SEARCH_TOL</span><span class="p">)</span>
+
+    <span class="n">cost</span> <span class="o">=</span> <span class="n">total_cost_function</span><span class="p">(</span><span class="n">acceptance_rate_min_cost</span><span class="p">)</span>
+
     <span class="n">threshold_indices</span> <span class="o">=</span> <span class="n">get_acceptance_rate_indices</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">,</span> <span class="n">base_rates</span><span class="p">,</span>
                                                     <span class="n">acceptance_rate_min_cost</span><span class="p">)</span>
-
     <span class="n">thresholds</span> <span class="o">=</span> <span class="n">_extract_threshold</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">)</span>
 
     <span class="n">cutoffs</span> <span class="o">=</span> <span class="p">{</span><span class="n">group</span><span class="p">:</span> <span class="n">thresholds</span><span class="p">[</span><span class="n">threshold_index</span><span class="p">]</span>
@@ -312,22 +356,25 @@
                        <span class="n">roc</span><span class="p">[</span><span class="mi">1</span><span class="p">][</span><span class="n">threshold_indices</span><span class="p">[</span><span class="n">group</span><span class="p">]])</span>
                <span class="k">for</span> <span class="n">group</span><span class="p">,</span> <span class="n">roc</span> <span class="ow">in</span> <span class="n">roc_curves</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
-    <span class="k">return</span> <span class="n">cutoffs</span><span class="p">,</span> <span class="n">fpr_tpr</span><span class="p">,</span> <span class="n">acceptance_rate_min_cost</span></div>
+    <span class="k">return</span> <span class="n">cutoffs</span><span class="p">,</span> <span class="n">fpr_tpr</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="n">acceptance_rate_min_cost</span></div>
 
 
 <span class="k">def</span> <span class="nf">get_fnr_indices</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">,</span> <span class="n">fnr_value</span><span class="p">):</span>
     <span class="n">indices</span> <span class="o">=</span> <span class="p">{}</span>
+
+    <span class="n">tpr_value</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">-</span> <span class="n">fnr_value</span>
+
     <span class="k">for</span> <span class="n">group</span><span class="p">,</span> <span class="n">roc</span> <span class="ow">in</span> <span class="n">roc_curves</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
         <span class="n">tprs</span> <span class="o">=</span> <span class="n">roc</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="n">index</span> <span class="o">=</span> <span class="n">_first_index_above</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">tprs</span><span class="p">,</span>
-                                   <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">fnr_value</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span>
-
+        <span class="n">index</span> <span class="o">=</span> <span class="n">_first_index_above</span><span class="p">(</span><span class="n">tprs</span><span class="p">,</span>
+                                   <span class="n">tpr_value</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span>
         <span class="n">indices</span><span class="p">[</span><span class="n">group</span><span class="p">]</span> <span class="o">=</span> <span class="n">index</span>
 
     <span class="k">return</span> <span class="n">indices</span>
 
 
-<div class="viewcode-block" id="find_fnr_thresholds"><a class="viewcode-back" href="../../../../fairness.html#ethically.fairness.interventions.threshold.find_fnr_thresholds">[docs]</a><span class="k">def</span> <span class="nf">find_fnr_thresholds</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">,</span> <span class="n">base_rates</span><span class="p">,</span> <span class="n">proportions</span><span class="p">,</span>
+<div class="viewcode-block" id="find_fnr_thresholds"><a class="viewcode-back" href="../../../../fairness.html#responsibly.fairness.interventions.threshold.find_fnr_thresholds">[docs]</a><span class="k">def</span> <span class="nf">find_fnr_thresholds</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">,</span> <span class="n">base_rates</span><span class="p">,</span> <span class="n">proportions</span><span class="p">,</span>
                         <span class="n">cost_matrix</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute thresholds that achieve equal FNRs and minimize cost.</span>
 
@@ -371,7 +418,9 @@
         <span class="k">return</span> <span class="o">-</span><span class="n">total_cost</span>
 
     <span class="n">fnr_value_min_cost</span> <span class="o">=</span> <span class="n">_ternary_search_float</span><span class="p">(</span><span class="n">total_cost_function</span><span class="p">,</span>
-                                               <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">1e-3</span><span class="p">)</span>
+                                               <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span>
+                                               <span class="n">TRINARY_SEARCH_TOL</span><span class="p">)</span>
+
     <span class="n">threshold_indices</span> <span class="o">=</span> <span class="n">get_fnr_indices</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">,</span> <span class="n">fnr_value_min_cost</span><span class="p">)</span>
 
     <span class="n">cost</span> <span class="o">=</span> <span class="n">total_cost_function</span><span class="p">(</span><span class="n">fnr_value_min_cost</span><span class="p">)</span>
@@ -403,7 +452,7 @@
     <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">feasible_points</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="find_separation_thresholds"><a class="viewcode-back" href="../../../../fairness.html#ethically.fairness.interventions.threshold.find_separation_thresholds">[docs]</a><span class="k">def</span> <span class="nf">find_separation_thresholds</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">,</span> <span class="n">base_rate</span><span class="p">,</span> <span class="n">cost_matrix</span><span class="p">):</span>
+<div class="viewcode-block" id="find_separation_thresholds"><a class="viewcode-back" href="../../../../fairness.html#responsibly.fairness.interventions.threshold.find_separation_thresholds">[docs]</a><span class="k">def</span> <span class="nf">find_separation_thresholds</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">,</span> <span class="n">base_rate</span><span class="p">,</span> <span class="n">cost_matrix</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute thresholds that achieve separation and minimize cost.</span>
 
 <span class="sd">    Also known as **equalized odds**.</span>
@@ -426,11 +475,12 @@
                                                      <span class="n">cost_matrix</span><span class="p">),</span>
                                       <span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">))</span>
                                      <span class="k">for</span> <span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span> <span class="ow">in</span> <span class="n">feasible_points</span><span class="p">)</span>
+    <span class="n">cost</span> <span class="o">=</span> <span class="o">-</span> <span class="n">cost</span>
 
     <span class="k">return</span> <span class="p">{},</span> <span class="p">{</span><span class="s1">&#39;&#39;</span><span class="p">:</span> <span class="p">(</span><span class="n">best_fpr</span><span class="p">,</span> <span class="n">best_tpr</span><span class="p">)},</span> <span class="n">cost</span></div>
 
 
-<div class="viewcode-block" id="find_thresholds"><a class="viewcode-back" href="../../../../fairness.html#ethically.fairness.interventions.threshold.find_thresholds">[docs]</a><span class="k">def</span> <span class="nf">find_thresholds</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">,</span> <span class="n">proportions</span><span class="p">,</span> <span class="n">base_rate</span><span class="p">,</span>
+<div class="viewcode-block" id="find_thresholds"><a class="viewcode-back" href="../../../../fairness.html#responsibly.fairness.interventions.threshold.find_thresholds">[docs]</a><span class="k">def</span> <span class="nf">find_thresholds</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">,</span> <span class="n">proportions</span><span class="p">,</span> <span class="n">base_rate</span><span class="p">,</span>
                     <span class="n">base_rates</span><span class="p">,</span> <span class="n">cost_matrix</span><span class="p">,</span>
                     <span class="n">with_single</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_min_cost</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
                     <span class="n">with_independence</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_fnr</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -478,6 +528,7 @@
     <span class="k">if</span> <span class="n">with_min_cost</span><span class="p">:</span>
         <span class="n">thresholds</span><span class="p">[</span><span class="s1">&#39;min_cost&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">find_min_cost_thresholds</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">,</span>
                                                           <span class="n">base_rates</span><span class="p">,</span>
+                                                          <span class="n">proportions</span><span class="p">,</span>
                                                           <span class="n">cost_matrix</span><span class="p">)</span>
 
     <span class="k">if</span> <span class="n">with_independence</span><span class="p">:</span>
@@ -500,7 +551,79 @@
     <span class="k">return</span> <span class="n">thresholds</span></div>
 
 
-<div class="viewcode-block" id="plot_roc_curves_thresholds"><a class="viewcode-back" href="../../../../fairness.html#ethically.fairness.interventions.threshold.plot_roc_curves_thresholds">[docs]</a><span class="k">def</span> <span class="nf">plot_roc_curves_thresholds</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">,</span> <span class="n">thresholds_data</span><span class="p">,</span>
+<div class="viewcode-block" id="find_thresholds_by_attr"><a class="viewcode-back" href="../../../../fairness.html#responsibly.fairness.interventions.threshold.find_thresholds_by_attr">[docs]</a><span class="k">def</span> <span class="nf">find_thresholds_by_attr</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_score</span><span class="p">,</span> <span class="n">x_sens</span><span class="p">,</span>
+                            <span class="n">cost_matrix</span><span class="p">,</span>
+                            <span class="n">with_single</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_min_cost</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                            <span class="n">with_independence</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">with_fnr</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                            <span class="n">with_separation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                            <span class="n">pos_label</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">sample_weight</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                            <span class="n">drop_intermediate</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute thresholds that achieve various criteria and minimize cost.</span>
+
+<span class="sd">    :param y_true: Binary ground truth (correct) target values.</span>
+<span class="sd">    :param y_score: Estimated target score as returned by a classifier.</span>
+<span class="sd">    :param x_sens: Sensitive attribute values corresponded to each</span>
+<span class="sd">                   estimated target.</span>
+<span class="sd">    :param cost_matrix: Cost matrix by [[tn, fp], [fn, tp]].</span>
+<span class="sd">    :type cost_matrix: sequence</span>
+
+<span class="sd">    :param pos_label: Label considered as positive and others</span>
+<span class="sd">                      are considered negative.</span>
+<span class="sd">    :param sample_weight: Sample weights.</span>
+<span class="sd">    :param drop_intermediate: Whether to drop some suboptimal</span>
+<span class="sd">                              thresholds which would not appear on</span>
+<span class="sd">                              a plotted ROC curve.</span>
+<span class="sd">                              This is useful in order to create</span>
+<span class="sd">                              lighter ROC curves.</span>
+
+<span class="sd">    :param with_single: Compute single threshold.</span>
+<span class="sd">    :type with_single: bool</span>
+<span class="sd">    :param with_min_cost: Compute minimum cost thresholds.</span>
+<span class="sd">    :type with_min_cost: bool</span>
+<span class="sd">    :param with_independence: Compute independence thresholds.</span>
+<span class="sd">    :type with_independence: bool</span>
+<span class="sd">    :param with_fnr: Compute FNR thresholds.</span>
+<span class="sd">    :type with_fnr: bool</span>
+<span class="sd">    :param with_separation: Compute separation thresholds.</span>
+<span class="sd">    :type with_separation: bool</span>
+
+<span class="sd">    :return: Dictionary of threshold criteria,</span>
+<span class="sd">             and for each criterion:</span>
+<span class="sd">             thresholds, FPR and TPR by attribute and cost value.</span>
+<span class="sd">    :rtype: dict</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># pylint: disable=too-many-locals</span>
+
+    <span class="n">roc_curves</span> <span class="o">=</span> <span class="n">roc_curve_by_attr</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_score</span><span class="p">,</span> <span class="n">x_sens</span><span class="p">,</span>
+                                   <span class="n">pos_label</span><span class="p">,</span> <span class="n">sample_weight</span><span class="p">,</span>
+                                   <span class="n">drop_intermediate</span><span class="p">)</span>
+
+    <span class="n">proportions</span> <span class="o">=</span> <span class="p">{</span><span class="n">value</span><span class="p">:</span> <span class="n">count</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">x_sens</span><span class="p">)</span>
+                   <span class="k">for</span> <span class="n">value</span><span class="p">,</span> <span class="n">count</span> <span class="ow">in</span> <span class="n">Counter</span><span class="p">(</span><span class="n">x_sens</span><span class="p">)</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
+
+    <span class="k">if</span> <span class="n">pos_label</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">pos_label</span> <span class="o">=</span> <span class="mi">1</span>
+
+    <span class="n">base_rate</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">y_true</span> <span class="o">==</span> <span class="n">pos_label</span><span class="p">)</span>
+    <span class="n">grouped</span> <span class="o">=</span> <span class="n">_groupby_y_x_sens</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_score</span><span class="p">,</span> <span class="n">x_sens</span><span class="p">)</span>
+
+    <span class="n">base_rates</span> <span class="o">=</span> <span class="p">{</span><span class="n">x_sens_value</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">group</span><span class="p">[</span><span class="s1">&#39;y_true&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">pos_label</span><span class="p">)</span>
+                  <span class="k">for</span> <span class="n">x_sens_value</span><span class="p">,</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">grouped</span><span class="p">}</span>
+
+    <span class="n">thresholds_data</span> <span class="o">=</span> <span class="n">find_thresholds</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">,</span>
+                                      <span class="n">proportions</span><span class="p">,</span>
+                                      <span class="n">base_rate</span><span class="p">,</span>
+                                      <span class="n">base_rates</span><span class="p">,</span>
+                                      <span class="n">cost_matrix</span><span class="p">,</span>
+                                      <span class="n">with_single</span><span class="p">,</span> <span class="n">with_min_cost</span><span class="p">,</span>
+                                      <span class="n">with_independence</span><span class="p">,</span> <span class="n">with_fnr</span><span class="p">,</span>
+                                      <span class="n">with_separation</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">thresholds_data</span></div>
+
+
+<div class="viewcode-block" id="plot_roc_curves_thresholds"><a class="viewcode-back" href="../../../../fairness.html#responsibly.fairness.interventions.threshold.plot_roc_curves_thresholds">[docs]</a><span class="k">def</span> <span class="nf">plot_roc_curves_thresholds</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">,</span> <span class="n">thresholds_data</span><span class="p">,</span>
                                <span class="n">aucs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                                <span class="n">title</span><span class="o">=</span><span class="s1">&#39;ROC Curves by Attribute&#39;</span><span class="p">,</span>
                                <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
@@ -515,7 +638,7 @@
 <span class="sd">    :type roc_curves: dict</span>
 <span class="sd">    :param thresholds_data: Thresholds by attribute from the</span>
 <span class="sd">                            function</span>
-<span class="sd">                            :func:`~ethically.interventions</span>
+<span class="sd">                            :func:`~responsibly.interventions</span>
 <span class="sd">                            .threshold.find_thresholds`.</span>
 <span class="sd">    :type thresholds_data: dict</span>
 <span class="sd">    :param aucs: Area Under the ROC (AUC) by attribute.</span>
@@ -542,7 +665,7 @@
     <span class="n">MARKERS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;o&#39;</span><span class="p">,</span> <span class="s1">&#39;^&#39;</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">,</span> <span class="s1">&#39;+&#39;</span><span class="p">,</span> <span class="s1">&#39;p&#39;</span><span class="p">]</span>
 
     <span class="k">for</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">data</span><span class="p">),</span> <span class="n">marker</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">thresholds_data</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">MARKERS</span><span class="p">):</span>
-        <span class="n">label</span> <span class="o">=</span> <span class="n">name</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">()</span>
+        <span class="n">label</span> <span class="o">=</span> <span class="n">_titlify</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="o">*</span><span class="nb">zip</span><span class="p">(</span><span class="o">*</span><span class="n">data</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">()),</span>
                    <span class="n">marker</span><span class="o">=</span><span class="n">marker</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;k&#39;</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">,</span>
                    <span class="n">zorder</span><span class="o">=</span><span class="nb">float</span><span class="p">(</span><span class="s1">&#39;inf&#39;</span><span class="p">))</span>
@@ -552,7 +675,7 @@
     <span class="k">return</span> <span class="n">ax</span></div>
 
 
-<div class="viewcode-block" id="plot_fpt_tpr"><a class="viewcode-back" href="../../../../fairness.html#ethically.fairness.interventions.threshold.plot_fpt_tpr">[docs]</a><span class="k">def</span> <span class="nf">plot_fpt_tpr</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">,</span>
+<div class="viewcode-block" id="plot_fpt_tpr"><a class="viewcode-back" href="../../../../fairness.html#responsibly.fairness.interventions.threshold.plot_fpt_tpr">[docs]</a><span class="k">def</span> <span class="nf">plot_fpt_tpr</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">,</span>
                  <span class="n">title</span><span class="o">=</span><span class="s1">&#39;FPR-TPR Curves by Attribute&#39;</span><span class="p">,</span>
                  <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">title_fontsize</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">,</span> <span class="n">text_fontsize</span><span class="o">=</span><span class="s1">&#39;medium&#39;</span><span class="p">):</span>
@@ -605,8 +728,8 @@
     <span class="k">return</span> <span class="n">ax</span></div>
 
 
-<div class="viewcode-block" id="plot_costs"><a class="viewcode-back" href="../../../../fairness.html#ethically.fairness.interventions.threshold.plot_costs">[docs]</a><span class="k">def</span> <span class="nf">plot_costs</span><span class="p">(</span><span class="n">thresholds_data</span><span class="p">,</span>
-               <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Cost by Threshold&#39;</span><span class="p">,</span>
+<div class="viewcode-block" id="plot_costs"><a class="viewcode-back" href="../../../../fairness.html#responsibly.fairness.interventions.threshold.plot_costs">[docs]</a><span class="k">def</span> <span class="nf">plot_costs</span><span class="p">(</span><span class="n">thresholds_data</span><span class="p">,</span>
+               <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Cost by Threshold Strategy&#39;</span><span class="p">,</span>
                <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                <span class="n">title_fontsize</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">,</span> <span class="n">text_fontsize</span><span class="o">=</span><span class="s1">&#39;medium&#39;</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Plot cost by threshold definition and by attribute.</span>
@@ -615,7 +738,7 @@
 
 <span class="sd">    :param thresholds_data: Thresholds by attribute from the</span>
 <span class="sd">                            function</span>
-<span class="sd">                            :func:`~ethically.interventions</span>
+<span class="sd">                            :func:`~responsibly.interventions</span>
 <span class="sd">                            .threshold.find_thresholds`.</span>
 <span class="sd">    :type thresholds_data: dict</span>
 <span class="sd">    :param str title: Title of the generated plot.</span>
@@ -631,7 +754,6 @@
 <span class="sd">                          or integer-values.</span>
 <span class="sd">    :return: The axes on which the plot was drawn.</span>
 <span class="sd">    :rtype: :class:`matplotlib.axes.Axes`</span>
-
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -639,7 +761,7 @@
 
     <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">title_fontsize</span><span class="p">)</span>
 
-    <span class="n">costs</span> <span class="o">=</span> <span class="p">{</span><span class="n">group</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">,</span> <span class="s1">&#39; &#39;</span><span class="p">)</span><span class="o">.</span><span class="n">title</span><span class="p">():</span> <span class="n">cost</span>
+    <span class="n">costs</span> <span class="o">=</span> <span class="p">{</span><span class="n">_titlify</span><span class="p">(</span><span class="n">group</span><span class="p">):</span> <span class="n">cost</span>
              <span class="k">for</span> <span class="n">group</span><span class="p">,</span> <span class="p">(</span><span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">cost</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="n">thresholds_data</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
     <span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">costs</span><span class="p">)</span>
@@ -651,6 +773,67 @@
     <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelsize</span><span class="o">=</span><span class="n">text_fontsize</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">ax</span></div>
+
+
+<div class="viewcode-block" id="plot_thresholds"><a class="viewcode-back" href="../../../../fairness.html#responsibly.fairness.interventions.threshold.plot_thresholds">[docs]</a><span class="k">def</span> <span class="nf">plot_thresholds</span><span class="p">(</span><span class="n">thresholds_data</span><span class="p">,</span>
+                    <span class="n">markersize</span><span class="o">=</span><span class="mi">7</span><span class="p">,</span>
+                    <span class="n">title</span><span class="o">=</span><span class="s1">&#39;Thresholds by Strategy and Attribute&#39;</span><span class="p">,</span>
+                    <span class="n">xlim</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                    <span class="n">title_fontsize</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">,</span> <span class="n">text_fontsize</span><span class="o">=</span><span class="s1">&#39;medium&#39;</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Plot thresholds by strategy and by attribute.</span>
+
+<span class="sd">    Based on :func:`skplt.metrics.plot_roc`</span>
+
+<span class="sd">    :param thresholds_data: Thresholds by attribute from the</span>
+<span class="sd">                            function</span>
+<span class="sd">                            :func:`~responsibly.interventions</span>
+<span class="sd">                            .threshold.find_thresholds`.</span>
+<span class="sd">    :type thresholds_data: dict</span>
+<span class="sd">    :param int markersize: Marker size.</span>
+<span class="sd">    :param str title: Title of the generated plot.</span>
+<span class="sd">    :param tuple xlim: Set the data limits for the x-axis.</span>
+<span class="sd">    :param ax: The axes upon which to plot the curve.</span>
+<span class="sd">               If `None`, the plot is drawn on a new set of axes.</span>
+<span class="sd">    :param tuple figsize: Tuple denoting figure size of the plot</span>
+<span class="sd">                          e.g. (6, 6).</span>
+<span class="sd">    :param title_fontsize: Matplotlib-style fontsizes.</span>
+<span class="sd">                          Use e.g. &#39;small&#39;, &#39;medium&#39;, &#39;large&#39;</span>
+<span class="sd">                          or integer-values.</span>
+<span class="sd">    :param text_fontsize: Matplotlib-style fontsizes.</span>
+<span class="sd">                          Use e.g. &#39;small&#39;, &#39;medium&#39;, &#39;large&#39;</span>
+<span class="sd">                          or integer-values.</span>
+<span class="sd">    :return: The axes on which the plot was drawn.</span>
+<span class="sd">    :rtype: :class:`matplotlib.axes.Axes`</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">if</span> <span class="n">ax</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>  <span class="c1"># pylint: disable=unused-variable</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">title_fontsize</span><span class="p">)</span>
+
+    <span class="c1"># TODO: refactor!</span>
+    <span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="n">_titlify</span><span class="p">(</span><span class="n">key</span><span class="p">):</span> <span class="n">thresholds</span>
+                       <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="p">(</span><span class="n">thresholds</span><span class="p">,</span> <span class="o">*</span><span class="n">_</span><span class="p">)</span> <span class="ow">in</span> <span class="n">thresholds_data</span><span class="o">.</span><span class="n">items</span><span class="p">()</span>
+                       <span class="k">if</span> <span class="n">key</span> <span class="o">!=</span> <span class="s1">&#39;separation&#39;</span><span class="p">})</span>
+    <span class="n">melted_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">melt</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">var_name</span><span class="o">=</span><span class="s1">&#39;Strategy&#39;</span><span class="p">,</span> <span class="n">value_name</span><span class="o">=</span><span class="s1">&#39;Threshold&#39;</span><span class="p">)</span>
+    <span class="n">melted_df</span><span class="p">[</span><span class="s1">&#39;Attribute&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+    <span class="n">sns</span><span class="o">.</span><span class="n">stripplot</span><span class="p">(</span><span class="n">y</span><span class="o">=</span><span class="s1">&#39;Strategy&#39;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="s1">&#39;Threshold&#39;</span><span class="p">,</span> <span class="n">hue</span><span class="o">=</span><span class="s1">&#39;Attribute&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">melted_df</span><span class="p">,</span>
+                  <span class="n">jitter</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">dodge</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">markersize</span><span class="p">,</span> <span class="n">ax</span><span class="o">=</span><span class="n">ax</span><span class="p">)</span>
+
+    <span class="n">minor_locator</span> <span class="o">=</span> <span class="n">AutoMinorLocator</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">fig</span><span class="o">.</span><span class="n">gca</span><span class="p">()</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">minor_locator</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s1">&#39;minor&#39;</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">xlim</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span><span class="o">*</span><span class="n">xlim</span><span class="p">)</span>
+
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Threshold&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">text_fontsize</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Strategy&#39;</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="n">text_fontsize</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">tick_params</span><span class="p">(</span><span class="n">labelsize</span><span class="o">=</span><span class="n">text_fontsize</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">ax</span></div>
 </pre></div>
 
           </div>
@@ -659,7 +842,7 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../../../../index.html">Ethically</a></h1>
+<h1 class="logo"><a href="../../../../index.html">Responsibly</a></h1>
 
 
 
@@ -667,7 +850,7 @@
 
 
 <p>
-<iframe src="https://ghbtns.com/github-btn.html?user=EthicallyAI&repo=ethically&type=star&v=2&count=true&size=large&v=2"
+<iframe src="https://ghbtns.com/github-btn.html?user=ResponsiblyAI&repo=responsibly&type=star&v=2&count=true&size=large&v=2"
   allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
 </p>
 
@@ -696,10 +879,10 @@
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -721,13 +904,13 @@
       &copy;2019, Shlomi Hod.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
 
     
-    <a href="https://github.com/EthicallyAI/ethically" class="github">
+    <a href="https://github.com/ResponsiblyAI/responsibly" class="github">
         <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
     </a>
     

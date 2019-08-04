@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>ethically.dataset.fico &#8212; Ethically 0.0.5 documentation</title>
+    <title>responsibly.dataset.fico &#8212; Responsibly 0.1.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -31,7 +31,7 @@
 
           <div class="body" role="main">
             
-  <h1>Source code for ethically.dataset.fico</h1><div class="highlight"><pre>
+  <h1>Source code for responsibly.dataset.fico</h1><div class="highlight"><pre>
 <span></span><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;build_FICO_dataset&#39;</span><span class="p">]</span>
 
 
@@ -97,13 +97,17 @@
 
         <span class="n">proportion_over_all_scores</span> <span class="o">=</span> <span class="n">proportion_per_score</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-        <span class="n">cum_prop_per_score</span> <span class="o">=</span> <span class="n">proportion_per_score</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">cum_prop_per_score</span> <span class="o">=</span> <span class="n">proportion_per_score</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">cumsum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="n">rate</span> <span class="o">=</span> <span class="n">cum_prop_per_score</span> <span class="o">/</span> <span class="n">proportion_over_all_scores</span>
 
-        <span class="n">dfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">rate</span><span class="p">,</span>
-                                <span class="n">index</span><span class="o">=</span><span class="n">pdfs_df</span><span class="o">.</span><span class="n">index</span><span class="p">,</span>
-                                <span class="n">columns</span><span class="o">=</span><span class="n">pdfs_df</span><span class="o">.</span><span class="n">columns</span><span class="p">))</span>
+        <span class="c1"># by sklean convention, thresholds[0]</span>
+        <span class="c1"># represents no instances being predicted positive</span>
+        <span class="c1"># and is arbitrarily set to max(y_score) + 1</span>
+        <span class="c1"># https://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_curve.html</span>
+        <span class="n">rate</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="nb">max</span><span class="p">(</span><span class="n">rate</span><span class="o">.</span><span class="n">index</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="nb">len</span><span class="p">(</span><span class="n">rate</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+        <span class="n">dfs</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">rate</span><span class="p">)</span>
 
     <span class="n">tpr_df</span><span class="p">,</span> <span class="n">fpr_df</span> <span class="o">=</span> <span class="n">dfs</span>  <span class="c1"># pylint: disable=unbalanced-tuple-unpacking</span>
     <span class="k">return</span> <span class="n">tpr_df</span><span class="p">,</span> <span class="n">fpr_df</span>
@@ -112,13 +116,18 @@
 <span class="k">def</span> <span class="nf">_build_rocs</span><span class="p">(</span><span class="n">fpr_df</span><span class="p">,</span> <span class="n">tpr_df</span><span class="p">):</span>
     <span class="n">rocs</span> <span class="o">=</span> <span class="p">{}</span>
     <span class="k">for</span> <span class="n">group</span> <span class="ow">in</span> <span class="n">fpr_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
-        <span class="n">rocs</span><span class="p">[</span><span class="n">group</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">fpr_df</span><span class="p">[</span><span class="n">group</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
-                       <span class="n">tpr_df</span><span class="p">[</span><span class="n">group</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span>
-                       <span class="n">fpr_df</span><span class="o">.</span><span class="n">index</span><span class="p">)</span>
+        <span class="n">fprs</span> <span class="o">=</span> <span class="n">fpr_df</span><span class="p">[</span><span class="n">group</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">tprs</span> <span class="o">=</span> <span class="n">tpr_df</span><span class="p">[</span><span class="n">group</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">thresholds</span> <span class="o">=</span> <span class="n">fpr_df</span><span class="o">.</span><span class="n">index</span><span class="p">[::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">rocs</span><span class="p">[</span><span class="n">group</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">fprs</span><span class="p">,</span>
+                       <span class="n">tprs</span><span class="p">,</span>
+                       <span class="n">thresholds</span><span class="p">)</span>
+
     <span class="k">return</span> <span class="n">rocs</span>
 
 
-<div class="viewcode-block" id="build_FICO_dataset"><a class="viewcode-back" href="../../../dataset.html#ethically.dataset.build_FICO_dataset">[docs]</a><span class="k">def</span> <span class="nf">build_FICO_dataset</span><span class="p">():</span>
+<div class="viewcode-block" id="build_FICO_dataset"><a class="viewcode-back" href="../../../dataset.html#responsibly.dataset.build_FICO_dataset">[docs]</a><span class="k">def</span> <span class="nf">build_FICO_dataset</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Build the FICO dataset.</span>
 
 <span class="sd">    Dataset of the credit score of TransUnion (called TransRisk).</span>
@@ -134,6 +143,8 @@
 <span class="sd">    +---------------+------------------------------------------------------+</span>
 <span class="sd">    | FICO key      | Meaning                                              |</span>
 <span class="sd">    +===============+======================================================+</span>
+<span class="sd">    | `total`       | Total number of individuals                          |</span>
+<span class="sd">    +---------------+------------------------------------------------------+</span>
 <span class="sd">    | `totals`      | Number of individuals per group                      |</span>
 <span class="sd">    +---------------+------------------------------------------------------+</span>
 <span class="sd">    | `cdf`         | Cumulative distribution function of score per group  |</span>
@@ -171,6 +182,8 @@
     <span class="n">totals</span><span class="p">,</span> <span class="n">cdfs_df</span><span class="p">,</span> <span class="n">performance_df</span> <span class="o">=</span> <span class="n">_load_data</span><span class="p">()</span>
     <span class="n">pdfs_df</span> <span class="o">=</span> <span class="n">_get_pdfs</span><span class="p">(</span><span class="n">cdfs_df</span><span class="p">)</span>
 
+    <span class="n">total</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="n">totals</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+
     <span class="n">proportions</span> <span class="o">=</span> <span class="p">{</span><span class="n">group</span><span class="p">:</span> <span class="n">total</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">totals</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
                    <span class="k">for</span> <span class="n">group</span><span class="p">,</span> <span class="n">total</span> <span class="ow">in</span> <span class="n">totals</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
@@ -183,7 +196,8 @@
     <span class="n">aucs</span> <span class="o">=</span> <span class="p">{</span><span class="n">group</span><span class="p">:</span> <span class="n">auc</span><span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">)</span> <span class="k">for</span> <span class="n">group</span><span class="p">,</span> <span class="p">(</span><span class="n">fpr</span><span class="p">,</span> <span class="n">tpr</span><span class="p">,</span> <span class="n">_</span><span class="p">)</span>
             <span class="ow">in</span> <span class="n">rocs</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
-    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;totals&#39;</span><span class="p">:</span> <span class="n">totals</span><span class="p">,</span>
+    <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;total&#39;</span><span class="p">:</span> <span class="n">total</span><span class="p">,</span>
+            <span class="s1">&#39;totals&#39;</span><span class="p">:</span> <span class="n">totals</span><span class="p">,</span>
             <span class="s1">&#39;cdf&#39;</span><span class="p">:</span> <span class="n">cdfs_df</span><span class="p">,</span>
             <span class="s1">&#39;pdf&#39;</span><span class="p">:</span> <span class="n">pdfs_df</span><span class="p">,</span>
             <span class="s1">&#39;performance&#39;</span><span class="p">:</span> <span class="n">performance_df</span><span class="p">,</span>
@@ -202,7 +216,7 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../../../index.html">Ethically</a></h1>
+<h1 class="logo"><a href="../../../index.html">Responsibly</a></h1>
 
 
 
@@ -210,7 +224,7 @@
 
 
 <p>
-<iframe src="https://ghbtns.com/github-btn.html?user=EthicallyAI&repo=ethically&type=star&v=2&count=true&size=large&v=2"
+<iframe src="https://ghbtns.com/github-btn.html?user=ResponsiblyAI&repo=responsibly&type=star&v=2&count=true&size=large&v=2"
   allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
 </p>
 
@@ -239,10 +253,10 @@
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -264,13 +278,13 @@
       &copy;2019, Shlomi Hod.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
 
     
-    <a href="https://github.com/EthicallyAI/ethically" class="github">
+    <a href="https://github.com/ResponsiblyAI/responsibly" class="github">
         <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
     </a>
     

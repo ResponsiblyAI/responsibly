@@ -9,7 +9,7 @@ of the COMPAS Recidivism Risk Scores. It might be helpful to open `the
 methodology <https://www.propublica.org/article/how-we-analyzed-the-compas-recidivism-algorithm/>`__
 in another tab to understand the following.
 
-.. code:: ipython3
+.. code:: 
 
     import numpy as np
     import pandas as pd
@@ -17,8 +17,8 @@ in another tab to understand the following.
     import matplotlib.pylab as plt
     import seaborn as sns
     
-    from ethically.dataset import COMPASDataset
-    from ethically.fairness.metrics import distplot_by
+    from responsibly.dataset import COMPASDataset
+    from responsibly.fairness.metrics import distplot_by
 
 Loading the Data
 ----------------
@@ -45,9 +45,9 @@ There are a number of reasons remove rows because of missing data:
    years, or had at least two years outside of a correctional facility.
 
 All of this is already done by instantiating a ``COMPASDataset`` object
-from ``ethically``.
+from ``responsibly``.
 
-.. code:: ipython3
+.. code:: 
 
     compas_ds = COMPASDataset()
     df = compas_ds.df
@@ -69,7 +69,7 @@ EDA
 Higher COMPAS scores are slightly correlated with a longer length of
 stay.
 
-.. code:: ipython3
+.. code:: 
 
     stats.pearsonr(df['length_of_stay'].astype(int), df['decile_score'])
 
@@ -78,13 +78,13 @@ stay.
 
 .. parsed-literal::
 
-    (0.20741201943031592, 5.943991686932148e-61)
+    (0.20741201943031584, 5.943991686971499e-61)
 
 
 
 After filtering we have the following demographic breakdown:
 
-.. code:: ipython3
+.. code:: 
 
     df['age_cat'].value_counts()
 
@@ -100,7 +100,7 @@ After filtering we have the following demographic breakdown:
 
 
 
-.. code:: ipython3
+.. code:: 
 
     df['race'].value_counts()
 
@@ -119,7 +119,7 @@ After filtering we have the following demographic breakdown:
 
 
 
-.. code:: ipython3
+.. code:: 
 
     (((df['race'].value_counts() / len(df))
       * 100)
@@ -140,7 +140,7 @@ After filtering we have the following demographic breakdown:
 
 
 
-.. code:: ipython3
+.. code:: 
 
     df['score_text'].value_counts()
 
@@ -156,7 +156,7 @@ After filtering we have the following demographic breakdown:
 
 
 
-.. code:: ipython3
+.. code:: 
 
     pd.crosstab(df['sex'], df['race'])
 
@@ -225,7 +225,7 @@ After filtering we have the following demographic breakdown:
 
 
 
-.. code:: ipython3
+.. code:: 
 
     (((df['sex'].value_counts() / len(df))
       * 100)
@@ -242,7 +242,7 @@ After filtering we have the following demographic breakdown:
 
 
 
-.. code:: ipython3
+.. code:: 
 
     df['two_year_recid'].value_counts()
 
@@ -257,7 +257,7 @@ After filtering we have the following demographic breakdown:
 
 
 
-.. code:: ipython3
+.. code:: 
 
     (((df['two_year_recid'].value_counts() / len(df))
       * 100)
@@ -279,12 +279,12 @@ system – one that classifies people into High, Medium and Low risk, and
 a corresponding decile score. There is a clear downward trend in the
 decile scores as those scores increase for white defendants.
 
-.. code:: ipython3
+.. code:: 
 
     RACE_IN_FOCUS = ['African-American', 'Caucasian']
     df_race_focused = df[df['race'].isin(RACE_IN_FOCUS)]
 
-.. code:: ipython3
+.. code:: 
 
     g = sns.FacetGrid(df_race_focused, col='race', height=7)#, aspect=4,)
     g.map(plt.hist, 'decile_score', rwidth=0.9);
@@ -294,7 +294,7 @@ decile scores as those scores increase for white defendants.
 .. image:: demo-compas-analysis_files/demo-compas-analysis_18_0.png
 
 
-.. code:: ipython3
+.. code:: 
 
     distplot_by(df['decile_score'], df['race'], hist=False);
 
@@ -303,7 +303,7 @@ decile scores as those scores increase for white defendants.
 .. image:: demo-compas-analysis_files/demo-compas-analysis_19_0.png
 
 
-.. code:: ipython3
+.. code:: 
 
     pd.crosstab(df['decile_score'], df['race'])
 
@@ -444,7 +444,7 @@ decile scores as those scores increase for white defendants.
 
 
 
-.. code:: ipython3
+.. code:: 
 
     pd.crosstab(df['two_year_recid'], df['race'], normalize='index')
 
@@ -513,7 +513,7 @@ decile scores as those scores increase for white defendants.
 
 
 
-.. code:: ipython3
+.. code:: 
 
     pd.crosstab(df_race_focused['two_year_recid'],
                 df_race_focused['race'],
@@ -573,9 +573,9 @@ Fairness Demographic Classification Criteria
 
 Based on: https://fairmlbook.org/demographic.html
 
-.. code:: ipython3
+.. code:: 
 
-    from ethically.fairness.metrics import (independence_binary,
+    from responsibly.fairness.metrics import (independence_binary,
                                             separation_binary,
                                             sufficiency_binary,
                                             independence_score,
@@ -587,21 +587,21 @@ Based on: https://fairmlbook.org/demographic.html
 Independence
 ~~~~~~~~~~~~
 
-.. code:: ipython3
+.. code:: 
 
     indp, indp_cmp = independence_binary((df_race_focused['decile_score'] > 4),
                                          df_race_focused['race'],
                                          'Caucasian',
                                          as_df=True)
 
-.. code:: ipython3
+.. code:: 
 
     indp, indp_cmp = independence_binary((df_race_focused['decile_score'] > 4),
                                          df_race_focused['race'],
                                          'Caucasian',
                                          as_df=True)
 
-.. code:: ipython3
+.. code:: 
 
     indp.plot(kind='bar');
 
@@ -610,7 +610,7 @@ Independence
 .. image:: demo-compas-analysis_files/demo-compas-analysis_28_0.png
 
 
-.. code:: ipython3
+.. code:: 
 
     indp_cmp
 
@@ -659,7 +659,7 @@ Independence
 
 
 
-.. code:: ipython3
+.. code:: 
 
     independence_score(df_race_focused['decile_score'],
                        df_race_focused['race'], as_df=True).plot();
@@ -672,7 +672,7 @@ Independence
 Separation
 ~~~~~~~~~~
 
-.. code:: ipython3
+.. code:: 
 
     sep, sep_cmp = separation_binary(df_race_focused['two_year_recid'],
                                      (df_race_focused['decile_score'] > 4),
@@ -680,7 +680,7 @@ Separation
                                      'Caucasian',
                                     as_df=True)
 
-.. code:: ipython3
+.. code:: 
 
     sep.plot(kind='bar');
 
@@ -689,7 +689,7 @@ Separation
 .. image:: demo-compas-analysis_files/demo-compas-analysis_33_0.png
 
 
-.. code:: ipython3
+.. code:: 
 
     sep_cmp
 
@@ -750,7 +750,7 @@ Separation
 
 
 
-.. code:: ipython3
+.. code:: 
 
     plot_roc_by_attr(df_race_focused['two_year_recid'],
                      df_race_focused['decile_score'],
@@ -765,7 +765,7 @@ Separation
 Sufficiency
 ~~~~~~~~~~~
 
-.. code:: ipython3
+.. code:: 
 
     suff, suff_cmp = sufficiency_binary(df_race_focused['two_year_recid'],
                                        (df_race_focused['decile_score'] > 4),
@@ -773,7 +773,7 @@ Sufficiency
                                        'Caucasian',
                                        as_df=True)
 
-.. code:: ipython3
+.. code:: 
 
     suff.plot(kind='bar');
 
@@ -782,7 +782,7 @@ Sufficiency
 .. image:: demo-compas-analysis_files/demo-compas-analysis_38_0.png
 
 
-.. code:: ipython3
+.. code:: 
 
     suff_cmp
 
@@ -835,7 +835,7 @@ Sufficiency
 
 
 
-.. code:: ipython3
+.. code:: 
 
     sufficiency_score(df_race_focused['two_year_recid'],
                       df_race_focused['decile_score'],
@@ -850,7 +850,7 @@ Sufficiency
 Transforming the score to percentiles by group
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. code:: ipython3
+.. code:: 
 
     sufficiency_score(df_race_focused['two_year_recid'],
                       df_race_focused['decile_score'],
@@ -866,7 +866,7 @@ Transforming the score to percentiles by group
 Generating all the relevant statistics for a binary prediction
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-.. code:: ipython3
+.. code:: 
 
     report_binary(df_race_focused['two_year_recid'],
                   df_race_focused['decile_score'] > 4,
@@ -949,4 +949,91 @@ Generating all the relevant statistics for a binary prediction
     </table>
     </div>
 
+
+
+Threshold Intervention
+----------------------
+
+.. code:: 
+
+    from responsibly.fairness.metrics import roc_curve_by_attr
+    from responsibly.fairness.interventions.threshold import (find_thresholds_by_attr,
+                                                              plot_fpt_tpr,
+                                                              plot_roc_curves_thresholds,
+                                                              plot_costs,
+                                                              plot_thresholds)
+
+.. code:: 
+
+    rocs = roc_curve_by_attr(df_race_focused['two_year_recid'],
+                             df_race_focused['decile_score'],
+                             df_race_focused['race'])
+
+Thresholds vs. FPR and TPR
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: 
+
+    plot_fpt_tpr(rocs);
+
+
+
+.. image:: demo-compas-analysis_files/demo-compas-analysis_49_0.png
+
+
+Comparison of Different Criteria
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+-  Single threshold (Group Unaware)
+-  Minimum Cost
+-  Independence (Demographic Parity)
+-  FNR (Equality of opportunity)
+-  Separation (Equalized odds)
+
+Cost: :math:`FP = FN = -1`
+^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. code:: 
+
+    COST_MATRIX = [[0,  -1],
+                   [-1,  0]]
+
+.. code:: 
+
+    thresholds_data = find_thresholds_by_attr(df_race_focused['two_year_recid'],
+                                              df_race_focused['decile_score'],
+                                              df_race_focused['race'],
+                                              COST_MATRIX)
+
+.. code:: 
+
+    plot_roc_curves_thresholds(rocs, thresholds_data);
+
+
+
+.. image:: demo-compas-analysis_files/demo-compas-analysis_53_0.png
+
+
+Thresholds by Strategy and Group
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: 
+
+    plot_thresholds(thresholds_data, xlim=(0, 10));
+
+
+
+.. image:: demo-compas-analysis_files/demo-compas-analysis_55_0.png
+
+
+Cost by Threshold Strategy
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+.. code:: 
+
+    plot_costs(thresholds_data);
+
+
+
+.. image:: demo-compas-analysis_files/demo-compas-analysis_57_0.png
 

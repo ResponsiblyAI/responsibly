@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>ethically.fairness.metrics.visualization &#8212; Ethically 0.0.5 documentation</title>
+    <title>responsibly.fairness.metrics.visualization &#8212; Responsibly 0.1.0 documentation</title>
     <link rel="stylesheet" href="../../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../../" src="../../../../_static/documentation_options.js"></script>
@@ -31,13 +31,13 @@
 
           <div class="body" role="main">
             
-  <h1>Source code for ethically.fairness.metrics.visualization</h1><div class="highlight"><pre>
+  <h1>Source code for responsibly.fairness.metrics.visualization</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">collections</span> <span class="k">import</span> <span class="n">defaultdict</span>
 
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 <span class="kn">from</span> <span class="nn">matplotlib</span> <span class="k">import</span> <span class="n">pylab</span> <span class="k">as</span> <span class="n">plt</span>
 
-<span class="kn">from</span> <span class="nn">ethically.fairness.metrics.score</span> <span class="k">import</span> <span class="p">(</span>
+<span class="kn">from</span> <span class="nn">responsibly.fairness.metrics.score</span> <span class="k">import</span> <span class="p">(</span>
     <span class="n">roc_auc_score_by_attr</span><span class="p">,</span> <span class="n">roc_curve_by_attr</span><span class="p">,</span>
 <span class="p">)</span>
 
@@ -66,7 +66,7 @@
 
 
 <span class="c1"># Soruce: https://github.com/reiinakano/scikit-plot/blob/master/scikitplot/metrics.py#L332</span>
-<div class="viewcode-block" id="plot_roc_curves"><a class="viewcode-back" href="../../../../fairness.html#ethically.fairness.metrics.plot_roc_curves">[docs]</a><span class="k">def</span> <span class="nf">plot_roc_curves</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">,</span> <span class="n">aucs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="plot_roc_curves"><a class="viewcode-back" href="../../../../fairness.html#responsibly.fairness.metrics.plot_roc_curves">[docs]</a><span class="k">def</span> <span class="nf">plot_roc_curves</span><span class="p">(</span><span class="n">roc_curves</span><span class="p">,</span> <span class="n">aucs</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                     <span class="n">title</span><span class="o">=</span><span class="s1">&#39;ROC Curves by Attribute&#39;</span><span class="p">,</span>
                     <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                     <span class="n">title_fontsize</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">,</span> <span class="n">text_fontsize</span><span class="o">=</span><span class="s1">&#39;medium&#39;</span><span class="p">):</span>
@@ -122,7 +122,7 @@
     <span class="k">return</span> <span class="n">ax</span></div>
 
 
-<div class="viewcode-block" id="plot_roc_by_attr"><a class="viewcode-back" href="../../../../fairness.html#ethically.fairness.metrics.plot_roc_by_attr">[docs]</a><span class="k">def</span> <span class="nf">plot_roc_by_attr</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_score</span><span class="p">,</span> <span class="n">x_sens</span><span class="p">,</span>
+<div class="viewcode-block" id="plot_roc_by_attr"><a class="viewcode-back" href="../../../../fairness.html#responsibly.fairness.metrics.plot_roc_by_attr">[docs]</a><span class="k">def</span> <span class="nf">plot_roc_by_attr</span><span class="p">(</span><span class="n">y_true</span><span class="p">,</span> <span class="n">y_score</span><span class="p">,</span> <span class="n">x_sens</span><span class="p">,</span>
                      <span class="n">title</span><span class="o">=</span><span class="s1">&#39;ROC Curves by Attribute&#39;</span><span class="p">,</span>
                      <span class="n">ax</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                      <span class="n">title_fontsize</span><span class="o">=</span><span class="s1">&#39;large&#39;</span><span class="p">,</span> <span class="n">text_fontsize</span><span class="o">=</span><span class="s1">&#39;medium&#39;</span><span class="p">):</span>
@@ -163,7 +163,7 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../../../../index.html">Ethically</a></h1>
+<h1 class="logo"><a href="../../../../index.html">Responsibly</a></h1>
 
 
 
@@ -171,7 +171,7 @@
 
 
 <p>
-<iframe src="https://ghbtns.com/github-btn.html?user=EthicallyAI&repo=ethically&type=star&v=2&count=true&size=large&v=2"
+<iframe src="https://ghbtns.com/github-btn.html?user=ResponsiblyAI&repo=responsibly&type=star&v=2&count=true&size=large&v=2"
   allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
 </p>
 
@@ -200,10 +200,10 @@
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -225,13 +225,13 @@
       &copy;2019, Shlomi Hod.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
 
     
-    <a href="https://github.com/EthicallyAI/ethically" class="github">
+    <a href="https://github.com/ResponsiblyAI/responsibly" class="github">
         <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
     </a>
     

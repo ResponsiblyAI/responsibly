@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Demo - Fairness Analysis of COMPAS by ProPublica &#8212; Ethically 0.0.5 documentation</title>
+    <title>Demo - Fairness Analysis of COMPAS by ProPublica &#8212; Responsibly 0.1.0 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -40,14 +40,14 @@
 of the COMPAS Recidivism Risk Scores. It might be helpful to open <a class="reference external" href="https://www.propublica.org/article/how-we-analyzed-the-compas-recidivism-algorithm/">the
 methodology</a>
 in another tab to understand the following.</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">stats</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pylab</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 
-<span class="kn">from</span> <span class="nn">ethically.dataset</span> <span class="k">import</span> <span class="n">COMPASDataset</span>
-<span class="kn">from</span> <span class="nn">ethically.fairness.metrics</span> <span class="k">import</span> <span class="n">distplot_by</span>
+<span class="kn">from</span> <span class="nn">responsibly.dataset</span> <span class="k">import</span> <span class="n">COMPASDataset</span>
+<span class="kn">from</span> <span class="nn">responsibly.fairness.metrics</span> <span class="k">import</span> <span class="n">distplot_by</span>
 </pre></div>
 </div>
 <div class="section" id="loading-the-data">
@@ -70,8 +70,8 @@ those rows representing people who had either recidivated in two
 years, or had at least two years outside of a correctional facility.</p></li>
 </ul>
 <p>All of this is already done by instantiating a <code class="docutils literal notranslate"><span class="pre">COMPASDataset</span></code> object
-from <code class="docutils literal notranslate"><span class="pre">ethically</span></code>.</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">compas_ds</span> <span class="o">=</span> <span class="n">COMPASDataset</span><span class="p">()</span>
+from <code class="docutils literal notranslate"><span class="pre">responsibly</span></code>.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">compas_ds</span> <span class="o">=</span> <span class="n">COMPASDataset</span><span class="p">()</span>
 <span class="n">df</span> <span class="o">=</span> <span class="n">compas_ds</span><span class="o">.</span><span class="n">df</span>
 
 <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)</span>
@@ -85,14 +85,14 @@ from <code class="docutils literal notranslate"><span class="pre">ethically</spa
 <h2>EDA<a class="headerlink" href="#eda" title="Permalink to this headline">¶</a></h2>
 <p>Higher COMPAS scores are slightly correlated with a longer length of
 stay.</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">stats</span><span class="o">.</span><span class="n">pearsonr</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;length_of_stay&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">stats</span><span class="o">.</span><span class="n">pearsonr</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;length_of_stay&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">),</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mf">0.20741201943031592</span><span class="p">,</span> <span class="mf">5.943991686932148e-61</span><span class="p">)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(</span><span class="mf">0.20741201943031584</span><span class="p">,</span> <span class="mf">5.943991686971499e-61</span><span class="p">)</span>
 </pre></div>
 </div>
 <p>After filtering we have the following demographic breakdown:</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;age_cat&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;age_cat&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">25</span> <span class="o">-</span> <span class="mi">45</span>            <span class="mi">3532</span>
@@ -101,7 +101,7 @@ stay.</p>
 <span class="n">Name</span><span class="p">:</span> <span class="n">age_cat</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">African</span><span class="o">-</span><span class="n">American</span>    <span class="mi">3175</span>
@@ -113,7 +113,7 @@ stay.</p>
 <span class="n">Name</span><span class="p">:</span> <span class="n">race</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(((</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(((</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
   <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
  <span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
 </pre></div>
@@ -127,7 +127,7 @@ stay.</p>
 <span class="n">Name</span><span class="p">:</span> <span class="n">race</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;score_text&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;score_text&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Low</span>       <span class="mi">3421</span>
@@ -136,7 +136,7 @@ stay.</p>
 <span class="n">Name</span><span class="p">:</span> <span class="n">score_text</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;sex&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;sex&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 <div>
@@ -195,7 +195,7 @@ stay.</p>
     </tr>
   </tbody>
 </table>
-</div><div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(((</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;sex&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(((</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;sex&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
   <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
  <span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
 </pre></div>
@@ -205,7 +205,7 @@ stay.</p>
 <span class="n">Name</span><span class="p">:</span> <span class="n">sex</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">float64</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span>
 </pre></div>
 </div>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="mi">0</span>    <span class="mi">3363</span>
@@ -213,7 +213,7 @@ stay.</p>
 <span class="n">Name</span><span class="p">:</span> <span class="n">two_year_recid</span><span class="p">,</span> <span class="n">dtype</span><span class="p">:</span> <span class="n">int64</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="p">(((</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="p">(((</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">value_counts</span><span class="p">()</span> <span class="o">/</span> <span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">))</span>
   <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
  <span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">2</span><span class="p">))</span>
 </pre></div>
@@ -227,20 +227,20 @@ stay.</p>
 system – one that classifies people into High, Medium and Low risk, and
 a corresponding decile score. There is a clear downward trend in the
 decile scores as those scores increase for white defendants.</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">RACE_IN_FOCUS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;African-American&#39;</span><span class="p">,</span> <span class="s1">&#39;Caucasian&#39;</span><span class="p">]</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">RACE_IN_FOCUS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;African-American&#39;</span><span class="p">,</span> <span class="s1">&#39;Caucasian&#39;</span><span class="p">]</span>
 <span class="n">df_race_focused</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">RACE_IN_FOCUS</span><span class="p">)]</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s1">&#39;race&#39;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span><span class="c1">#, aspect=4,)</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">g</span> <span class="o">=</span> <span class="n">sns</span><span class="o">.</span><span class="n">FacetGrid</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">,</span> <span class="n">col</span><span class="o">=</span><span class="s1">&#39;race&#39;</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mi">7</span><span class="p">)</span><span class="c1">#, aspect=4,)</span>
 <span class="n">g</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">plt</span><span class="o">.</span><span class="n">hist</span><span class="p">,</span> <span class="s1">&#39;decile_score&#39;</span><span class="p">,</span> <span class="n">rwidth</span><span class="o">=</span><span class="mf">0.9</span><span class="p">);</span>
 </pre></div>
 </div>
 <img alt="../_images/demo-compas-analysis_18_0.png" src="../_images/demo-compas-analysis_18_0.png" />
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">distplot_by</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">],</span> <span class="n">hist</span><span class="o">=</span><span class="kc">False</span><span class="p">);</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">distplot_by</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">],</span> <span class="n">hist</span><span class="o">=</span><span class="kc">False</span><span class="p">);</span>
 </pre></div>
 </div>
 <img alt="../_images/demo-compas-analysis_19_0.png" src="../_images/demo-compas-analysis_19_0.png" />
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">])</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">])</span>
 </pre></div>
 </div>
 <div>
@@ -371,7 +371,7 @@ decile scores as those scores increase for white defendants.</p>
     </tr>
   </tbody>
 </table>
-</div><div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">],</span> <span class="n">normalize</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">)</span>
+</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">],</span> <span class="n">normalize</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">)</span>
 </pre></div>
 </div>
 <div>
@@ -430,7 +430,7 @@ decile scores as those scores increase for white defendants.</p>
     </tr>
   </tbody>
 </table>
-</div><div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">],</span>
+</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">pd</span><span class="o">.</span><span class="n">crosstab</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">],</span>
             <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">],</span>
             <span class="n">normalize</span><span class="o">=</span><span class="s1">&#39;index&#39;</span><span class="p">)</span>
 </pre></div>
@@ -479,7 +479,7 @@ decile scores as those scores increase for white defendants.</p>
 <div class="section" id="fairness-demographic-classification-criteria">
 <h2>Fairness Demographic Classification Criteria<a class="headerlink" href="#fairness-demographic-classification-criteria" title="Permalink to this headline">¶</a></h2>
 <p>Based on: <a class="reference external" href="https://fairmlbook.org/demographic.html">https://fairmlbook.org/demographic.html</a></p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ethically.fairness.metrics</span> <span class="k">import</span> <span class="p">(</span><span class="n">independence_binary</span><span class="p">,</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">responsibly.fairness.metrics</span> <span class="k">import</span> <span class="p">(</span><span class="n">independence_binary</span><span class="p">,</span>
                                         <span class="n">separation_binary</span><span class="p">,</span>
                                         <span class="n">sufficiency_binary</span><span class="p">,</span>
                                         <span class="n">independence_score</span><span class="p">,</span>
@@ -491,23 +491,23 @@ decile scores as those scores increase for white defendants.</p>
 </div>
 <div class="section" id="independence">
 <h3>Independence<a class="headerlink" href="#independence" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">indp</span><span class="p">,</span> <span class="n">indp_cmp</span> <span class="o">=</span> <span class="n">independence_binary</span><span class="p">((</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">),</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">indp</span><span class="p">,</span> <span class="n">indp_cmp</span> <span class="o">=</span> <span class="n">independence_binary</span><span class="p">((</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">),</span>
                                      <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">],</span>
                                      <span class="s1">&#39;Caucasian&#39;</span><span class="p">,</span>
                                      <span class="n">as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">indp</span><span class="p">,</span> <span class="n">indp_cmp</span> <span class="o">=</span> <span class="n">independence_binary</span><span class="p">((</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">),</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">indp</span><span class="p">,</span> <span class="n">indp_cmp</span> <span class="o">=</span> <span class="n">independence_binary</span><span class="p">((</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">),</span>
                                      <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">],</span>
                                      <span class="s1">&#39;Caucasian&#39;</span><span class="p">,</span>
                                      <span class="n">as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">indp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">);</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">indp</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 <img alt="../_images/demo-compas-analysis_28_0.png" src="../_images/demo-compas-analysis_28_0.png" />
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">indp_cmp</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">indp_cmp</span>
 </pre></div>
 </div>
 <div>
@@ -546,7 +546,7 @@ decile scores as those scores increase for white defendants.</p>
     </tr>
   </tbody>
 </table>
-</div><div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">independence_score</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">],</span>
+</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">independence_score</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">],</span>
                    <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">],</span> <span class="n">as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
 </pre></div>
 </div>
@@ -554,18 +554,18 @@ decile scores as those scores increase for white defendants.</p>
 </div>
 <div class="section" id="separation">
 <h3>Separation<a class="headerlink" href="#separation" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sep</span><span class="p">,</span> <span class="n">sep_cmp</span> <span class="o">=</span> <span class="n">separation_binary</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">],</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sep</span><span class="p">,</span> <span class="n">sep_cmp</span> <span class="o">=</span> <span class="n">separation_binary</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">],</span>
                                  <span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">),</span>
                                  <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">],</span>
                                  <span class="s1">&#39;Caucasian&#39;</span><span class="p">,</span>
                                 <span class="n">as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sep</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">);</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sep</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 <img alt="../_images/demo-compas-analysis_33_0.png" src="../_images/demo-compas-analysis_33_0.png" />
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sep_cmp</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sep_cmp</span>
 </pre></div>
 </div>
 <div>
@@ -616,7 +616,7 @@ decile scores as those scores increase for white defendants.</p>
     </tr>
   </tbody>
 </table>
-</div><div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">plot_roc_by_attr</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">],</span>
+</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_roc_by_attr</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">],</span>
                  <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">],</span>
                  <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">],</span>
                  <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">7</span><span class="p">));</span>
@@ -626,18 +626,18 @@ decile scores as those scores increase for white defendants.</p>
 </div>
 <div class="section" id="sufficiency">
 <h3>Sufficiency<a class="headerlink" href="#sufficiency" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">suff</span><span class="p">,</span> <span class="n">suff_cmp</span> <span class="o">=</span> <span class="n">sufficiency_binary</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">],</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">suff</span><span class="p">,</span> <span class="n">suff_cmp</span> <span class="o">=</span> <span class="n">sufficiency_binary</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">],</span>
                                    <span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">),</span>
                                    <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">],</span>
                                    <span class="s1">&#39;Caucasian&#39;</span><span class="p">,</span>
                                    <span class="n">as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">suff</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">);</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">suff</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;bar&#39;</span><span class="p">);</span>
 </pre></div>
 </div>
 <img alt="../_images/demo-compas-analysis_38_0.png" src="../_images/demo-compas-analysis_38_0.png" />
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">suff_cmp</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">suff_cmp</span>
 </pre></div>
 </div>
 <div>
@@ -680,7 +680,7 @@ decile scores as those scores increase for white defendants.</p>
     </tr>
   </tbody>
 </table>
-</div><div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sufficiency_score</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">],</span>
+</div><div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sufficiency_score</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">],</span>
                   <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">],</span>
                   <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">],</span>
                   <span class="n">as_df</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span><span class="o">.</span><span class="n">plot</span><span class="p">();</span>
@@ -689,7 +689,7 @@ decile scores as those scores increase for white defendants.</p>
 <img alt="../_images/demo-compas-analysis_40_0.png" src="../_images/demo-compas-analysis_40_0.png" />
 <div class="section" id="transforming-the-score-to-percentiles-by-group">
 <h4>Transforming the score to percentiles by group<a class="headerlink" href="#transforming-the-score-to-percentiles-by-group" title="Permalink to this headline">¶</a></h4>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">sufficiency_score</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">],</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">sufficiency_score</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">],</span>
                   <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">],</span>
                   <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">],</span>
                   <span class="n">within_score_percentile</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
@@ -701,7 +701,7 @@ decile scores as those scores increase for white defendants.</p>
 </div>
 <div class="section" id="generating-all-the-relevant-statistics-for-a-binary-prediction">
 <h3>Generating all the relevant statistics for a binary prediction<a class="headerlink" href="#generating-all-the-relevant-statistics-for-a-binary-prediction" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">report_binary</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">],</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">report_binary</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">],</span>
               <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">,</span>
               <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">])</span>
 </pre></div>
@@ -778,6 +778,70 @@ decile scores as those scores increase for white defendants.</p>
 </table>
 </div></div>
 </div>
+<div class="section" id="threshold-intervention">
+<h2>Threshold Intervention<a class="headerlink" href="#threshold-intervention" title="Permalink to this headline">¶</a></h2>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">responsibly.fairness.metrics</span> <span class="k">import</span> <span class="n">roc_curve_by_attr</span>
+<span class="kn">from</span> <span class="nn">responsibly.fairness.interventions.threshold</span> <span class="k">import</span> <span class="p">(</span><span class="n">find_thresholds_by_attr</span><span class="p">,</span>
+                                                          <span class="n">plot_fpt_tpr</span><span class="p">,</span>
+                                                          <span class="n">plot_roc_curves_thresholds</span><span class="p">,</span>
+                                                          <span class="n">plot_costs</span><span class="p">,</span>
+                                                          <span class="n">plot_thresholds</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">rocs</span> <span class="o">=</span> <span class="n">roc_curve_by_attr</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">],</span>
+                         <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">],</span>
+                         <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
+<div class="section" id="thresholds-vs-fpr-and-tpr">
+<h3>Thresholds vs. FPR and TPR<a class="headerlink" href="#thresholds-vs-fpr-and-tpr" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_fpt_tpr</span><span class="p">(</span><span class="n">rocs</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="../_images/demo-compas-analysis_49_0.png" src="../_images/demo-compas-analysis_49_0.png" />
+</div>
+<div class="section" id="comparison-of-different-criteria">
+<h3>Comparison of Different Criteria<a class="headerlink" href="#comparison-of-different-criteria" title="Permalink to this headline">¶</a></h3>
+<ul class="simple">
+<li><p>Single threshold (Group Unaware)</p></li>
+<li><p>Minimum Cost</p></li>
+<li><p>Independence (Demographic Parity)</p></li>
+<li><p>FNR (Equality of opportunity)</p></li>
+<li><p>Separation (Equalized odds)</p></li>
+</ul>
+<div class="section" id="cost-fp-fn-1">
+<h4>Cost: <span class="math notranslate nohighlight">\(FP = FN = -1\)</span><a class="headerlink" href="#cost-fp-fn-1" title="Permalink to this headline">¶</a></h4>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">COST_MATRIX</span> <span class="o">=</span> <span class="p">[[</span><span class="mi">0</span><span class="p">,</span>  <span class="o">-</span><span class="mi">1</span><span class="p">],</span>
+               <span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span>  <span class="mi">0</span><span class="p">]]</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">thresholds_data</span> <span class="o">=</span> <span class="n">find_thresholds_by_attr</span><span class="p">(</span><span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;two_year_recid&#39;</span><span class="p">],</span>
+                                          <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;decile_score&#39;</span><span class="p">],</span>
+                                          <span class="n">df_race_focused</span><span class="p">[</span><span class="s1">&#39;race&#39;</span><span class="p">],</span>
+                                          <span class="n">COST_MATRIX</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_roc_curves_thresholds</span><span class="p">(</span><span class="n">rocs</span><span class="p">,</span> <span class="n">thresholds_data</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="../_images/demo-compas-analysis_53_0.png" src="../_images/demo-compas-analysis_53_0.png" />
+</div>
+</div>
+<div class="section" id="thresholds-by-strategy-and-group">
+<h3>Thresholds by Strategy and Group<a class="headerlink" href="#thresholds-by-strategy-and-group" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_thresholds</span><span class="p">(</span><span class="n">thresholds_data</span><span class="p">,</span> <span class="n">xlim</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">10</span><span class="p">));</span>
+</pre></div>
+</div>
+<img alt="../_images/demo-compas-analysis_55_0.png" src="../_images/demo-compas-analysis_55_0.png" />
+</div>
+<div class="section" id="cost-by-threshold-strategy">
+<h3>Cost by Threshold Strategy<a class="headerlink" href="#cost-by-threshold-strategy" title="Permalink to this headline">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">plot_costs</span><span class="p">(</span><span class="n">thresholds_data</span><span class="p">);</span>
+</pre></div>
+</div>
+<img alt="../_images/demo-compas-analysis_57_0.png" src="../_images/demo-compas-analysis_57_0.png" />
+</div>
+</div>
 </div>
 
 
@@ -787,7 +851,7 @@ decile scores as those scores increase for white defendants.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../index.html">Ethically</a></h1>
+<h1 class="logo"><a href="../index.html">Responsibly</a></h1>
 
 
 
@@ -795,7 +859,7 @@ decile scores as those scores increase for white defendants.</p>
 
 
 <p>
-<iframe src="https://ghbtns.com/github-btn.html?user=EthicallyAI&repo=ethically&type=star&v=2&count=true&size=large&v=2"
+<iframe src="https://ghbtns.com/github-btn.html?user=ResponsiblyAI&repo=responsibly&type=star&v=2&count=true&size=large&v=2"
   allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
 </p>
 
@@ -831,10 +895,10 @@ decile scores as those scores increase for white defendants.</p>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -856,7 +920,7 @@ decile scores as those scores increase for white defendants.</p>
       &copy;2019, Shlomi Hod.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
@@ -865,7 +929,7 @@ decile scores as those scores increase for white defendants.</p>
     </div>
 
     
-    <a href="https://github.com/EthicallyAI/ethically" class="github">
+    <a href="https://github.com/ResponsiblyAI/responsibly" class="github">
         <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
     </a>
     

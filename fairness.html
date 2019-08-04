@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>Classification Fairness &#8212; Ethically 0.0.5 documentation</title>
+    <title>Classification Fairness &#8212; Responsibly 0.1.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -33,8 +33,8 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="module-ethically.fairness">
-<span id="classification-fairness"></span><h1>Classification Fairness<a class="headerlink" href="#module-ethically.fairness" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-responsibly.fairness">
+<span id="classification-fairness"></span><h1>Classification Fairness<a class="headerlink" href="#module-responsibly.fairness" title="Permalink to this headline">¶</a></h1>
 <p>Demographic fairness in binary classification.</p>
 <p>The common and simples setting, but not the only one, of fairness
 of a binary classifier is the demographic one.
@@ -53,10 +53,10 @@ Therefore, it is advised to get familiar with
 as it summarized the current core knowledge regarding fairness
 in classification.</p>
 </div>
-<p>Currently, the <a class="reference internal" href="#module-ethically.fairness" title="ethically.fairness"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethically.fairness</span></code></a> module has two components:</p>
+<p>Currently, the <a class="reference internal" href="#module-responsibly.fairness" title="responsibly.fairness"><code class="xref py py-mod docutils literal notranslate"><span class="pre">responsibly.fairness</span></code></a> module has two components:</p>
 <ol class="arabic simple">
-<li><p><strong>Metrics</strong> (<a class="reference internal" href="#module-ethically.fairness.metrics" title="ethically.fairness.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethically.fairness.metrics</span></code></a>) for measuring unfairness.</p></li>
-<li><p><strong>Algorithmic interventions</strong> (<a class="reference internal" href="#module-ethically.fairness.interventions" title="ethically.fairness.interventions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">ethically.fairness.interventions</span></code></a>)
+<li><p><strong>Metrics</strong> (<a class="reference internal" href="#module-responsibly.fairness.metrics" title="responsibly.fairness.metrics"><code class="xref py py-mod docutils literal notranslate"><span class="pre">responsibly.fairness.metrics</span></code></a>) for measuring unfairness.</p></li>
+<li><p><strong>Algorithmic interventions</strong> (<a class="reference internal" href="#module-responsibly.fairness.interventions" title="responsibly.fairness.interventions"><code class="xref py py-mod docutils literal notranslate"><span class="pre">responsibly.fairness.interventions</span></code></a>)
 for satisfying fairness criteria.</p></li>
 </ol>
 <p>The <a class="reference external" href="demos.html">demos section</a> contains two examples of measuring
@@ -65,13 +65,13 @@ the fairness of a classifier and applying intervention to adjust it:</p>
 <li><p><a class="reference external" href="notebooks/demo-compas-analysis.html">COMPAS by ProPublica</a></p></li>
 <li><p><a class="reference external" href="notebooks/demo-fico-analysis.html">FICO credit score</a></p></li>
 </ol>
-<div class="section" id="module-ethically.fairness.metrics">
-<span id="metrics"></span><h2>Metrics<a class="headerlink" href="#module-ethically.fairness.metrics" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-responsibly.fairness.metrics">
+<span id="metrics"></span><h2>Metrics<a class="headerlink" href="#module-responsibly.fairness.metrics" title="Permalink to this headline">¶</a></h2>
 <p>Demographic Classification Fairness Criteria.</p>
 <p>The objectives of the demographic classification fairness criteria
 is to measure unfairness towards sensitive attribute valuse.</p>
 <p>The metrics have the same interface and behavior as the ones in
-<a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics" title="(in scikit-learn v0.21.2)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.metrics</span></code></a>
+<a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics" title="(in scikit-learn v0.21.3)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.metrics</span></code></a>
 (e.g., using <code class="docutils literal notranslate"><span class="pre">y_true</span></code>, <code class="docutils literal notranslate"><span class="pre">y_pred</span></code> and <code class="docutils literal notranslate"><span class="pre">y_score</span></code>).</p>
 <p>One should keep in mind that the criteria are intended
 to <em>measure unfairness, rather than to prove fairness</em>, as it stated in
@@ -112,8 +112,8 @@ Using <em>Machine Learning and Fairness</em> book’s notions:</p>
 <div class="section" id="independence">
 <h3>Independence<a class="headerlink" href="#independence" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="ethically.fairness.metrics.independence_binary">
-<code class="descclassname">ethically.fairness.metrics.</code><code class="descname">independence_binary</code><span class="sig-paren">(</span><em>y_pred</em>, <em>x_sens</em>, <em>x_sens_privileged=None</em>, <em>labels=None</em>, <em>as_df=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/metrics/binary.html#independence_binary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.metrics.independence_binary" title="Permalink to this definition">¶</a></dt>
+<dt id="responsibly.fairness.metrics.independence_binary">
+<code class="sig-prename descclassname">responsibly.fairness.metrics.</code><code class="sig-name descname">independence_binary</code><span class="sig-paren">(</span><em class="sig-param">y_pred</em>, <em class="sig-param">x_sens</em>, <em class="sig-param">x_sens_privileged=None</em>, <em class="sig-param">labels=None</em>, <em class="sig-param">as_df=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/binary.html#independence_binary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.metrics.independence_binary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the independence criteria for binary prediction.</p>
 <p>In classification terminology, it is the <strong>acceptance rate</strong>
 grouped by the sensitive attribute.</p>
@@ -133,7 +133,7 @@ If none is given, those that appear at least once in
 y_pred are used in sorted order; first is negative
 and the second is positive.</p></li>
 <li><p><strong>as_df</strong> – Whether to return the results as <cite>dict</cite> (if <cite>False</cite>)
-or as <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <cite>True</cite>).</p></li>
+or as <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <cite>True</cite>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -147,8 +147,8 @@ only two values for the sensitive attribute.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="ethically.fairness.metrics.separation_binary">
-<code class="descclassname">ethically.fairness.metrics.</code><code class="descname">separation_binary</code><span class="sig-paren">(</span><em>y_true</em>, <em>y_pred</em>, <em>x_sens</em>, <em>x_sens_privileged=None</em>, <em>labels=None</em>, <em>as_df=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/metrics/binary.html#separation_binary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.metrics.separation_binary" title="Permalink to this definition">¶</a></dt>
+<dt id="responsibly.fairness.metrics.separation_binary">
+<code class="sig-prename descclassname">responsibly.fairness.metrics.</code><code class="sig-name descname">separation_binary</code><span class="sig-paren">(</span><em class="sig-param">y_true</em>, <em class="sig-param">y_pred</em>, <em class="sig-param">x_sens</em>, <em class="sig-param">x_sens_privileged=None</em>, <em class="sig-param">labels=None</em>, <em class="sig-param">as_df=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/binary.html#separation_binary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.metrics.separation_binary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the separation criteria for binary prediction.</p>
 <p>In classification terminology, it is the <strong>TPR</strong>, <strong>FPR</strong>,
 <strong>TNR</strong> and <strong>FNR</strong> grouped by the sensitive attribute.</p>
@@ -170,7 +170,7 @@ If none is given, those that appear at least once in
 y_pred are used in sorted order; first is negative
 and the second is positive.</p></li>
 <li><p><strong>as_df</strong> – Whether to return the results as <cite>dict</cite> (if <cite>False</cite>)
-or as <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <cite>True</cite>).</p></li>
+or as <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <cite>True</cite>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -188,7 +188,7 @@ only two values for the sensitive attribute.</p>
 <h3>Separation<a class="headerlink" href="#separation" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
 <dt>
-<code class="descclassname">ethically.fairness.metrics.</code><code class="descname">separation_binary</code><span class="sig-paren">(</span><em>y_true</em>, <em>y_pred</em>, <em>x_sens</em>, <em>x_sens_privileged=None</em>, <em>labels=None</em>, <em>as_df=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/metrics/binary.html#separation_binary"><span class="viewcode-link">[source]</span></a></dt>
+<code class="sig-prename descclassname">responsibly.fairness.metrics.</code><code class="sig-name descname">separation_binary</code><span class="sig-paren">(</span><em class="sig-param">y_true</em>, <em class="sig-param">y_pred</em>, <em class="sig-param">x_sens</em>, <em class="sig-param">x_sens_privileged=None</em>, <em class="sig-param">labels=None</em>, <em class="sig-param">as_df=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/binary.html#separation_binary"><span class="viewcode-link">[source]</span></a></dt>
 <dd><p>Compute the separation criteria for binary prediction.</p>
 <p>In classification terminology, it is the <strong>TPR</strong>, <strong>FPR</strong>,
 <strong>TNR</strong> and <strong>FNR</strong> grouped by the sensitive attribute.</p>
@@ -210,7 +210,7 @@ If none is given, those that appear at least once in
 y_pred are used in sorted order; first is negative
 and the second is positive.</p></li>
 <li><p><strong>as_df</strong> – Whether to return the results as <cite>dict</cite> (if <cite>False</cite>)
-or as <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <cite>True</cite>).</p></li>
+or as <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <cite>True</cite>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -224,8 +224,8 @@ only two values for the sensitive attribute.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="ethically.fairness.metrics.separation_score">
-<code class="descclassname">ethically.fairness.metrics.</code><code class="descname">separation_score</code><span class="sig-paren">(</span><em>y_true</em>, <em>y_score</em>, <em>x_sens</em>, <em>labels=None</em>, <em>as_df=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/metrics/score.html#separation_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.metrics.separation_score" title="Permalink to this definition">¶</a></dt>
+<dt id="responsibly.fairness.metrics.separation_score">
+<code class="sig-prename descclassname">responsibly.fairness.metrics.</code><code class="sig-name descname">separation_score</code><span class="sig-paren">(</span><em class="sig-param">y_true</em>, <em class="sig-param">y_score</em>, <em class="sig-param">x_sens</em>, <em class="sig-param">labels=None</em>, <em class="sig-param">as_df=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/score.html#separation_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.metrics.separation_score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the separation criteria for score prediction.</p>
 <p>In classification terminology, it is the <strong>FPR</strong> and <strong>TPR</strong>
 grouped by the score and the sensitive attribute.</p>
@@ -237,14 +237,14 @@ grouped by the score and the sensitive attribute.</p>
 <li><p><strong>x_sens</strong> – Sensitive attribute values corresponded to each
 estimated target.</p></li>
 <li><p><strong>as_df</strong> – Whether to return the results as <code class="docutils literal notranslate"><span class="pre">dict</span></code> (if <code class="docutils literal notranslate"><span class="pre">False</span></code>)
-or as <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <code class="docutils literal notranslate"><span class="pre">True</span></code>).</p></li>
+or as <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <code class="docutils literal notranslate"><span class="pre">True</span></code>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Separation criteria.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>dict or <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
+<dd class="field-odd"><p>dict or <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -255,8 +255,8 @@ or as <a class="reference external" href="http://pandas.pydata.org/pandas-docs/s
 therefore these functions can generate ROC and ROC-AUC per
 sensitive attribute values:</p>
 <dl class="function">
-<dt id="ethically.fairness.metrics.roc_auc_score_by_attr">
-<code class="descclassname">ethically.fairness.metrics.</code><code class="descname">roc_auc_score_by_attr</code><span class="sig-paren">(</span><em>y_true</em>, <em>y_score</em>, <em>x_sens</em>, <em>sample_weight=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/metrics/score.html#roc_auc_score_by_attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.metrics.roc_auc_score_by_attr" title="Permalink to this definition">¶</a></dt>
+<dt id="responsibly.fairness.metrics.roc_auc_score_by_attr">
+<code class="sig-prename descclassname">responsibly.fairness.metrics.</code><code class="sig-name descname">roc_auc_score_by_attr</code><span class="sig-paren">(</span><em class="sig-param">y_true</em>, <em class="sig-param">y_score</em>, <em class="sig-param">x_sens</em>, <em class="sig-param">sample_weight=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/score.html#roc_auc_score_by_attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.metrics.roc_auc_score_by_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute Area Under the ROC (AUC) by attribute.</p>
 <p>Based on function:<cite>sklearn.metrics.roc_auc_score</cite></p>
 <dl class="field-list simple">
@@ -279,10 +279,10 @@ estimated target.</p></li>
 </dd></dl>
 
 <dl class="function">
-<dt id="ethically.fairness.metrics.roc_curve_by_attr">
-<code class="descclassname">ethically.fairness.metrics.</code><code class="descname">roc_curve_by_attr</code><span class="sig-paren">(</span><em>y_true</em>, <em>y_score</em>, <em>x_sens</em>, <em>pos_label=None</em>, <em>sample_weight=None</em>, <em>drop_intermediate=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/metrics/score.html#roc_curve_by_attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.metrics.roc_curve_by_attr" title="Permalink to this definition">¶</a></dt>
+<dt id="responsibly.fairness.metrics.roc_curve_by_attr">
+<code class="sig-prename descclassname">responsibly.fairness.metrics.</code><code class="sig-name descname">roc_curve_by_attr</code><span class="sig-paren">(</span><em class="sig-param">y_true</em>, <em class="sig-param">y_score</em>, <em class="sig-param">x_sens</em>, <em class="sig-param">pos_label=None</em>, <em class="sig-param">sample_weight=None</em>, <em class="sig-param">drop_intermediate=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/score.html#roc_curve_by_attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.metrics.roc_curve_by_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute Receiver operating characteristic (ROC) by attribute.</p>
-<p>Based on <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_curve.html#sklearn.metrics.roc_curve" title="(in scikit-learn v0.21.2)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.metrics.roc_curve()</span></code></a></p>
+<p>Based on <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_curve.html#sklearn.metrics.roc_curve" title="(in scikit-learn v0.21.3)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.metrics.roc_curve()</span></code></a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -329,8 +329,8 @@ to max(y_score) + 1.</p></li>
 <div class="section" id="plotting">
 <h4>Plotting<a class="headerlink" href="#plotting" title="Permalink to this headline">¶</a></h4>
 <dl class="function">
-<dt id="ethically.fairness.metrics.plot_roc_by_attr">
-<code class="descclassname">ethically.fairness.metrics.</code><code class="descname">plot_roc_by_attr</code><span class="sig-paren">(</span><em>y_true</em>, <em>y_score</em>, <em>x_sens</em>, <em>title='ROC Curves by Attribute'</em>, <em>ax=None</em>, <em>figsize=None</em>, <em>title_fontsize='large'</em>, <em>text_fontsize='medium'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/metrics/visualization.html#plot_roc_by_attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.metrics.plot_roc_by_attr" title="Permalink to this definition">¶</a></dt>
+<dt id="responsibly.fairness.metrics.plot_roc_by_attr">
+<code class="sig-prename descclassname">responsibly.fairness.metrics.</code><code class="sig-name descname">plot_roc_by_attr</code><span class="sig-paren">(</span><em class="sig-param">y_true</em>, <em class="sig-param">y_score</em>, <em class="sig-param">x_sens</em>, <em class="sig-param">title='ROC Curves by Attribute'</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">figsize=None</em>, <em class="sig-param">title_fontsize='large'</em>, <em class="sig-param">text_fontsize='medium'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/visualization.html#plot_roc_by_attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.metrics.plot_roc_by_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate the ROC curves by attribute from targets and scores.</p>
 <p>Based on <code class="xref py py-func docutils literal notranslate"><span class="pre">skplt.metrics.plot_roc()</span></code></p>
 <dl class="field-list simple">
@@ -357,14 +357,14 @@ or integer-values.</p></li>
 <dd class="field-even"><p>The axes on which the plot was drawn.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.1.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="function">
-<dt id="ethically.fairness.metrics.plot_roc_curves">
-<code class="descclassname">ethically.fairness.metrics.</code><code class="descname">plot_roc_curves</code><span class="sig-paren">(</span><em>roc_curves</em>, <em>aucs=None</em>, <em>title='ROC Curves by Attribute'</em>, <em>ax=None</em>, <em>figsize=None</em>, <em>title_fontsize='large'</em>, <em>text_fontsize='medium'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/metrics/visualization.html#plot_roc_curves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.metrics.plot_roc_curves" title="Permalink to this definition">¶</a></dt>
+<dt id="responsibly.fairness.metrics.plot_roc_curves">
+<code class="sig-prename descclassname">responsibly.fairness.metrics.</code><code class="sig-name descname">plot_roc_curves</code><span class="sig-paren">(</span><em class="sig-param">roc_curves</em>, <em class="sig-param">aucs=None</em>, <em class="sig-param">title='ROC Curves by Attribute'</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">figsize=None</em>, <em class="sig-param">title_fontsize='large'</em>, <em class="sig-param">text_fontsize='medium'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/visualization.html#plot_roc_curves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.metrics.plot_roc_curves" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate the ROC curves by attribute from (fpr, tpr, thresholds).</p>
 <p>Based on <code class="xref py py-func docutils literal notranslate"><span class="pre">skplt.metrics.plot_roc()</span></code></p>
 <dl class="field-list simple">
@@ -390,7 +390,7 @@ or integer-values.</p></li>
 <dd class="field-even"><p>The axes on which the plot was drawn.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.1.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -400,8 +400,8 @@ or integer-values.</p></li>
 <div class="section" id="sufficiency">
 <h3>Sufficiency<a class="headerlink" href="#sufficiency" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="ethically.fairness.metrics.sufficiency_binary">
-<code class="descclassname">ethically.fairness.metrics.</code><code class="descname">sufficiency_binary</code><span class="sig-paren">(</span><em>y_true</em>, <em>y_pred</em>, <em>x_sens</em>, <em>x_sens_privileged=None</em>, <em>labels=None</em>, <em>as_df=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/metrics/binary.html#sufficiency_binary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.metrics.sufficiency_binary" title="Permalink to this definition">¶</a></dt>
+<dt id="responsibly.fairness.metrics.sufficiency_binary">
+<code class="sig-prename descclassname">responsibly.fairness.metrics.</code><code class="sig-name descname">sufficiency_binary</code><span class="sig-paren">(</span><em class="sig-param">y_true</em>, <em class="sig-param">y_pred</em>, <em class="sig-param">x_sens</em>, <em class="sig-param">x_sens_privileged=None</em>, <em class="sig-param">labels=None</em>, <em class="sig-param">as_df=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/binary.html#sufficiency_binary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.metrics.sufficiency_binary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the sufficiency criteria for binary prediction.</p>
 <p>In classification terminology, it is the <strong>PPV</strong> and <strong>NPV</strong>
 grouped by the sensitive attribute.</p>
@@ -423,7 +423,7 @@ If none is given, those that appear at least once in
 y_pred are used in sorted order; first is negative
 and the second is positive.</p></li>
 <li><p><strong>as_df</strong> – Whether to return the results as <cite>dict</cite> (if <cite>False</cite>)
-or as <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <cite>True</cite>).</p></li>
+or as <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <cite>True</cite>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -437,8 +437,8 @@ only two values for the sensitive attribute.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="ethically.fairness.metrics.sufficiency_score">
-<code class="descclassname">ethically.fairness.metrics.</code><code class="descname">sufficiency_score</code><span class="sig-paren">(</span><em>y_true</em>, <em>y_score</em>, <em>x_sens</em>, <em>labels=None</em>, <em>within_score_percentile=False</em>, <em>as_df=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/metrics/score.html#sufficiency_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.metrics.sufficiency_score" title="Permalink to this definition">¶</a></dt>
+<dt id="responsibly.fairness.metrics.sufficiency_score">
+<code class="sig-prename descclassname">responsibly.fairness.metrics.</code><code class="sig-name descname">sufficiency_score</code><span class="sig-paren">(</span><em class="sig-param">y_true</em>, <em class="sig-param">y_score</em>, <em class="sig-param">x_sens</em>, <em class="sig-param">labels=None</em>, <em class="sig-param">within_score_percentile=False</em>, <em class="sig-param">as_df=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/score.html#sufficiency_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.metrics.sufficiency_score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the sufficiency criteria for score prediction.</p>
 <p>In classification terminology, it is the <strong>PPV</strong> and the <strong>NPV</strong>
 grouped by the score and the sensitive attribute.</p>
@@ -450,14 +450,14 @@ grouped by the score and the sensitive attribute.</p>
 <li><p><strong>x_sens</strong> – Sensitive attribute values corresponded to each
 target.</p></li>
 <li><p><strong>as_df</strong> – Whether to return the results as <code class="docutils literal notranslate"><span class="pre">dict</span></code> (if <code class="docutils literal notranslate"><span class="pre">False</span></code>)
-or as <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <code class="docutils literal notranslate"><span class="pre">True</span></code>).</p></li>
+or as <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <code class="docutils literal notranslate"><span class="pre">True</span></code>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Sufficiency criteria.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>dict or <a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
+<dd class="field-odd"><p>dict or <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -466,8 +466,8 @@ or as <a class="reference external" href="http://pandas.pydata.org/pandas-docs/s
 <div class="section" id="report">
 <h3>Report<a class="headerlink" href="#report" title="Permalink to this headline">¶</a></h3>
 <dl class="function">
-<dt id="ethically.fairness.metrics.report_binary">
-<code class="descclassname">ethically.fairness.metrics.</code><code class="descname">report_binary</code><span class="sig-paren">(</span><em>y_true</em>, <em>y_pred</em>, <em>x_sens</em>, <em>labels=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/metrics/binary.html#report_binary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.metrics.report_binary" title="Permalink to this definition">¶</a></dt>
+<dt id="responsibly.fairness.metrics.report_binary">
+<code class="sig-prename descclassname">responsibly.fairness.metrics.</code><code class="sig-name descname">report_binary</code><span class="sig-paren">(</span><em class="sig-param">y_true</em>, <em class="sig-param">y_pred</em>, <em class="sig-param">x_sens</em>, <em class="sig-param">labels=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/binary.html#report_binary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.metrics.report_binary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a report of criteria for binary prediction.</p>
 <p>In classification terminology, the statistics are
 grouped by the sensitive attribute:
@@ -499,7 +499,7 @@ and the second is positive.</p></li>
 sensitive attribute.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="http://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.24.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -510,8 +510,8 @@ sensitive attribute.</p>
 <p><a class="reference external" href="https://fairmlbook.org/demographic.html#a-dictionary-of-criteria">https://fairmlbook.org/demographic.html#a-dictionary-of-criteria</a></p>
 </div>
 </div>
-<div class="section" id="module-ethically.fairness.interventions">
-<span id="algorithmic-interventions"></span><h2>Algorithmic Interventions<a class="headerlink" href="#module-ethically.fairness.interventions" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-responsibly.fairness.interventions">
+<span id="algorithmic-interventions"></span><h2>Algorithmic Interventions<a class="headerlink" href="#module-responsibly.fairness.interventions" title="Permalink to this headline">¶</a></h2>
 <p>Algorithmic intervensions for satisfying fairness criteria.</p>
 <p>There are three families of techniques:</p>
 <ol class="arabic simple">
@@ -519,8 +519,8 @@ sensitive attribute.</p>
 <li><p><strong>In-processing</strong> - Adjust the learning algorithm.</p></li>
 <li><p><strong>Post-processing</strong> - Adjust the learned classifier.</p></li>
 </ol>
-<div class="section" id="module-ethically.fairness.interventions.threshold">
-<span id="threshold-post-processing"></span><h3>Threshold - Post-processing<a class="headerlink" href="#module-ethically.fairness.interventions.threshold" title="Permalink to this headline">¶</a></h3>
+<div class="section" id="module-responsibly.fairness.interventions.threshold">
+<span id="threshold-post-processing"></span><h3>Threshold - Post-processing<a class="headerlink" href="#module-responsibly.fairness.interventions.threshold" title="Permalink to this headline">¶</a></h3>
 <p>Post-processing fairness intervension by choosing thresholds.</p>
 <p>There are multiple definitions for choosing the thresholds:</p>
 <ol class="arabic simple">
@@ -533,7 +533,7 @@ that achieve independence and minimize cost.</p></li>
 <li><p>A threshold for each sensitive attribute value
 that achieve equal FNR (equal opportunity) and minimize cost.</p></li>
 <li><p>A threshold for each sensitive attribute value
-that achieve seperation (equalized odds) and minimize cost.</p></li>
+that achieve separation (equalized odds) and minimize cost.</p></li>
 </ol>
 <p>The code is based on <a class="reference external" href="https://github.com/fairmlbook/fairmlbook.github.io">fairmlbook repository</a>.</p>
 <dl class="simple">
@@ -548,8 +548,8 @@ smarter machine learning by Google</a>.</p></li>
 </dd>
 </dl>
 <dl class="function">
-<dt id="ethically.fairness.interventions.threshold.find_single_threshold">
-<code class="descclassname">ethically.fairness.interventions.threshold.</code><code class="descname">find_single_threshold</code><span class="sig-paren">(</span><em>roc_curves</em>, <em>base_rates</em>, <em>proportions</em>, <em>cost_matrix</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/interventions/threshold.html#find_single_threshold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.interventions.threshold.find_single_threshold" title="Permalink to this definition">¶</a></dt>
+<dt id="responsibly.fairness.interventions.threshold.find_single_threshold">
+<code class="sig-prename descclassname">responsibly.fairness.interventions.threshold.</code><code class="sig-name descname">find_single_threshold</code><span class="sig-paren">(</span><em class="sig-param">roc_curves</em>, <em class="sig-param">base_rates</em>, <em class="sig-param">proportions</em>, <em class="sig-param">cost_matrix</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#find_single_threshold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.find_single_threshold" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute single threshold that minimizes cost.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -571,8 +571,8 @@ by attribute.</p></li>
 </dd></dl>
 
 <dl class="function">
-<dt id="ethically.fairness.interventions.threshold.find_min_cost_thresholds">
-<code class="descclassname">ethically.fairness.interventions.threshold.</code><code class="descname">find_min_cost_thresholds</code><span class="sig-paren">(</span><em>roc_curves</em>, <em>base_rates</em>, <em>cost_matrix</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/interventions/threshold.html#find_min_cost_thresholds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.interventions.threshold.find_min_cost_thresholds" title="Permalink to this definition">¶</a></dt>
+<dt id="responsibly.fairness.interventions.threshold.find_min_cost_thresholds">
+<code class="sig-prename descclassname">responsibly.fairness.interventions.threshold.</code><code class="sig-name descname">find_min_cost_thresholds</code><span class="sig-paren">(</span><em class="sig-param">roc_curves</em>, <em class="sig-param">base_rates</em>, <em class="sig-param">proportions</em>, <em class="sig-param">cost_matrix</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#find_min_cost_thresholds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.find_min_cost_thresholds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute thresholds by attribute values that minimize cost.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -580,6 +580,7 @@ by attribute.</p></li>
 <li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
 by attribute.</p></li>
 <li><p><strong>base_rates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Base rate by attribute.</p></li>
+<li><p><strong>proportions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Proportion of each attribute value.</p></li>
 <li><p><strong>cost_matrix</strong> (<em>sequence</em>) – Cost matrix by [[tn, fp], [fn, tp]].</p></li>
 </ul>
 </dd>
@@ -593,8 +594,8 @@ by attribute.</p></li>
 </dd></dl>
 
 <dl class="function">
-<dt id="ethically.fairness.interventions.threshold.find_independence_thresholds">
-<code class="descclassname">ethically.fairness.interventions.threshold.</code><code class="descname">find_independence_thresholds</code><span class="sig-paren">(</span><em>roc_curves</em>, <em>base_rates</em>, <em>proportions</em>, <em>cost_matrix</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/interventions/threshold.html#find_independence_thresholds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.interventions.threshold.find_independence_thresholds" title="Permalink to this definition">¶</a></dt>
+<dt id="responsibly.fairness.interventions.threshold.find_independence_thresholds">
+<code class="sig-prename descclassname">responsibly.fairness.interventions.threshold.</code><code class="sig-name descname">find_independence_thresholds</code><span class="sig-paren">(</span><em class="sig-param">roc_curves</em>, <em class="sig-param">base_rates</em>, <em class="sig-param">proportions</em>, <em class="sig-param">cost_matrix</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#find_independence_thresholds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.find_independence_thresholds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute thresholds that achieve independence and minimize cost.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -616,8 +617,8 @@ by attribute.</p></li>
 </dd></dl>
 
 <dl class="function">
-<dt id="ethically.fairness.interventions.threshold.find_fnr_thresholds">
-<code class="descclassname">ethically.fairness.interventions.threshold.</code><code class="descname">find_fnr_thresholds</code><span class="sig-paren">(</span><em>roc_curves</em>, <em>base_rates</em>, <em>proportions</em>, <em>cost_matrix</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/interventions/threshold.html#find_fnr_thresholds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.interventions.threshold.find_fnr_thresholds" title="Permalink to this definition">¶</a></dt>
+<dt id="responsibly.fairness.interventions.threshold.find_fnr_thresholds">
+<code class="sig-prename descclassname">responsibly.fairness.interventions.threshold.</code><code class="sig-name descname">find_fnr_thresholds</code><span class="sig-paren">(</span><em class="sig-param">roc_curves</em>, <em class="sig-param">base_rates</em>, <em class="sig-param">proportions</em>, <em class="sig-param">cost_matrix</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#find_fnr_thresholds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.find_fnr_thresholds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute thresholds that achieve equal FNRs and minimize cost.</p>
 <p>Also known as <strong>equal opportunity</strong>.</p>
 <dl class="field-list simple">
@@ -640,8 +641,8 @@ by attribute.</p></li>
 </dd></dl>
 
 <dl class="function">
-<dt id="ethically.fairness.interventions.threshold.find_separation_thresholds">
-<code class="descclassname">ethically.fairness.interventions.threshold.</code><code class="descname">find_separation_thresholds</code><span class="sig-paren">(</span><em>roc_curves</em>, <em>base_rate</em>, <em>cost_matrix</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/interventions/threshold.html#find_separation_thresholds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.interventions.threshold.find_separation_thresholds" title="Permalink to this definition">¶</a></dt>
+<dt id="responsibly.fairness.interventions.threshold.find_separation_thresholds">
+<code class="sig-prename descclassname">responsibly.fairness.interventions.threshold.</code><code class="sig-name descname">find_separation_thresholds</code><span class="sig-paren">(</span><em class="sig-param">roc_curves</em>, <em class="sig-param">base_rate</em>, <em class="sig-param">cost_matrix</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#find_separation_thresholds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.find_separation_thresholds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute thresholds that achieve separation and minimize cost.</p>
 <p>Also known as <strong>equalized odds</strong>.</p>
 <dl class="field-list simple">
@@ -663,8 +664,8 @@ by attribute.</p></li>
 </dd></dl>
 
 <dl class="function">
-<dt id="ethically.fairness.interventions.threshold.find_thresholds">
-<code class="descclassname">ethically.fairness.interventions.threshold.</code><code class="descname">find_thresholds</code><span class="sig-paren">(</span><em>roc_curves</em>, <em>proportions</em>, <em>base_rate</em>, <em>base_rates</em>, <em>cost_matrix</em>, <em>with_single=True</em>, <em>with_min_cost=True</em>, <em>with_independence=True</em>, <em>with_fnr=True</em>, <em>with_separation=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/interventions/threshold.html#find_thresholds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.interventions.threshold.find_thresholds" title="Permalink to this definition">¶</a></dt>
+<dt id="responsibly.fairness.interventions.threshold.find_thresholds">
+<code class="sig-prename descclassname">responsibly.fairness.interventions.threshold.</code><code class="sig-name descname">find_thresholds</code><span class="sig-paren">(</span><em class="sig-param">roc_curves</em>, <em class="sig-param">proportions</em>, <em class="sig-param">base_rate</em>, <em class="sig-param">base_rates</em>, <em class="sig-param">cost_matrix</em>, <em class="sig-param">with_single=True</em>, <em class="sig-param">with_min_cost=True</em>, <em class="sig-param">with_independence=True</em>, <em class="sig-param">with_fnr=True</em>, <em class="sig-param">with_separation=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#find_thresholds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.find_thresholds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute thresholds that achieve various criteria and minimize cost.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -694,8 +695,46 @@ thresholds, FPR and TPR by attribute and cost value.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="ethically.fairness.interventions.threshold.plot_roc_curves_thresholds">
-<code class="descclassname">ethically.fairness.interventions.threshold.</code><code class="descname">plot_roc_curves_thresholds</code><span class="sig-paren">(</span><em>roc_curves</em>, <em>thresholds_data</em>, <em>aucs=None</em>, <em>title='ROC Curves by Attribute'</em>, <em>ax=None</em>, <em>figsize=None</em>, <em>title_fontsize='large'</em>, <em>text_fontsize='medium'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/interventions/threshold.html#plot_roc_curves_thresholds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.interventions.threshold.plot_roc_curves_thresholds" title="Permalink to this definition">¶</a></dt>
+<dt id="responsibly.fairness.interventions.threshold.find_thresholds_by_attr">
+<code class="sig-prename descclassname">responsibly.fairness.interventions.threshold.</code><code class="sig-name descname">find_thresholds_by_attr</code><span class="sig-paren">(</span><em class="sig-param">y_true</em>, <em class="sig-param">y_score</em>, <em class="sig-param">x_sens</em>, <em class="sig-param">cost_matrix</em>, <em class="sig-param">with_single=True</em>, <em class="sig-param">with_min_cost=True</em>, <em class="sig-param">with_independence=True</em>, <em class="sig-param">with_fnr=True</em>, <em class="sig-param">with_separation=True</em>, <em class="sig-param">pos_label=None</em>, <em class="sig-param">sample_weight=None</em>, <em class="sig-param">drop_intermediate=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#find_thresholds_by_attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.find_thresholds_by_attr" title="Permalink to this definition">¶</a></dt>
+<dd><p>Compute thresholds that achieve various criteria and minimize cost.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>y_true</strong> – Binary ground truth (correct) target values.</p></li>
+<li><p><strong>y_score</strong> – Estimated target score as returned by a classifier.</p></li>
+<li><p><strong>x_sens</strong> – Sensitive attribute values corresponded to each
+estimated target.</p></li>
+<li><p><strong>cost_matrix</strong> (<em>sequence</em>) – Cost matrix by [[tn, fp], [fn, tp]].</p></li>
+<li><p><strong>pos_label</strong> – Label considered as positive and others
+are considered negative.</p></li>
+<li><p><strong>sample_weight</strong> – Sample weights.</p></li>
+<li><p><strong>drop_intermediate</strong> – Whether to drop some suboptimal
+thresholds which would not appear on
+a plotted ROC curve.
+This is useful in order to create
+lighter ROC curves.</p></li>
+<li><p><strong>with_single</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Compute single threshold.</p></li>
+<li><p><strong>with_min_cost</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Compute minimum cost thresholds.</p></li>
+<li><p><strong>with_independence</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Compute independence thresholds.</p></li>
+<li><p><strong>with_fnr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Compute FNR thresholds.</p></li>
+<li><p><strong>with_separation</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.7)"><em>bool</em></a>) – Compute separation thresholds.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Dictionary of threshold criteria,
+and for each criterion:
+thresholds, FPR and TPR by attribute and cost value.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="responsibly.fairness.interventions.threshold.plot_roc_curves_thresholds">
+<code class="sig-prename descclassname">responsibly.fairness.interventions.threshold.</code><code class="sig-name descname">plot_roc_curves_thresholds</code><span class="sig-paren">(</span><em class="sig-param">roc_curves</em>, <em class="sig-param">thresholds_data</em>, <em class="sig-param">aucs=None</em>, <em class="sig-param">title='ROC Curves by Attribute'</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">figsize=None</em>, <em class="sig-param">title_fontsize='large'</em>, <em class="sig-param">text_fontsize='medium'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#plot_roc_curves_thresholds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.plot_roc_curves_thresholds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate the ROC curves by attribute with thresholds.</p>
 <p>Based on <code class="xref py py-func docutils literal notranslate"><span class="pre">skplt.metrics.plot_roc()</span></code></p>
 <dl class="field-list simple">
@@ -724,14 +763,14 @@ or integer-values.</p></li>
 <dd class="field-even"><p>The axes on which the plot was drawn.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.1.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="function">
-<dt id="ethically.fairness.interventions.threshold.plot_fpt_tpr">
-<code class="descclassname">ethically.fairness.interventions.threshold.</code><code class="descname">plot_fpt_tpr</code><span class="sig-paren">(</span><em>roc_curves</em>, <em>title='FPR-TPR Curves by Attribute'</em>, <em>ax=None</em>, <em>figsize=None</em>, <em>title_fontsize='large'</em>, <em>text_fontsize='medium'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/interventions/threshold.html#plot_fpt_tpr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.interventions.threshold.plot_fpt_tpr" title="Permalink to this definition">¶</a></dt>
+<dt id="responsibly.fairness.interventions.threshold.plot_fpt_tpr">
+<code class="sig-prename descclassname">responsibly.fairness.interventions.threshold.</code><code class="sig-name descname">plot_fpt_tpr</code><span class="sig-paren">(</span><em class="sig-param">roc_curves</em>, <em class="sig-param">title='FPR-TPR Curves by Attribute'</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">figsize=None</em>, <em class="sig-param">title_fontsize='large'</em>, <em class="sig-param">text_fontsize='medium'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#plot_fpt_tpr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.plot_fpt_tpr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate FPR and TPR curves by thresholds and by attribute.</p>
 <p>Based on <code class="xref py py-func docutils literal notranslate"><span class="pre">skplt.metrics.plot_roc()</span></code></p>
 <dl class="field-list simple">
@@ -756,14 +795,14 @@ or integer-values.</p></li>
 <dd class="field-even"><p>The axes on which the plot was drawn.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.1.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="function">
-<dt id="ethically.fairness.interventions.threshold.plot_costs">
-<code class="descclassname">ethically.fairness.interventions.threshold.</code><code class="descname">plot_costs</code><span class="sig-paren">(</span><em>thresholds_data</em>, <em>title='Cost by Threshold'</em>, <em>ax=None</em>, <em>figsize=None</em>, <em>title_fontsize='large'</em>, <em>text_fontsize='medium'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/ethically/fairness/interventions/threshold.html#plot_costs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#ethically.fairness.interventions.threshold.plot_costs" title="Permalink to this definition">¶</a></dt>
+<dt id="responsibly.fairness.interventions.threshold.plot_costs">
+<code class="sig-prename descclassname">responsibly.fairness.interventions.threshold.</code><code class="sig-name descname">plot_costs</code><span class="sig-paren">(</span><em class="sig-param">thresholds_data</em>, <em class="sig-param">title='Cost by Threshold Strategy'</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">figsize=None</em>, <em class="sig-param">title_fontsize='large'</em>, <em class="sig-param">text_fontsize='medium'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#plot_costs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.plot_costs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot cost by threshold definition and by attribute.</p>
 <p>Based on <code class="xref py py-func docutils literal notranslate"><span class="pre">skplt.metrics.plot_roc()</span></code></p>
 <dl class="field-list simple">
@@ -789,7 +828,42 @@ or integer-values.</p></li>
 <dd class="field-even"><p>The axes on which the plot was drawn.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.1.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="responsibly.fairness.interventions.threshold.plot_thresholds">
+<code class="sig-prename descclassname">responsibly.fairness.interventions.threshold.</code><code class="sig-name descname">plot_thresholds</code><span class="sig-paren">(</span><em class="sig-param">thresholds_data</em>, <em class="sig-param">markersize=7</em>, <em class="sig-param">title='Thresholds by Strategy and Attribute'</em>, <em class="sig-param">xlim=None</em>, <em class="sig-param">ax=None</em>, <em class="sig-param">figsize=None</em>, <em class="sig-param">title_fontsize='large'</em>, <em class="sig-param">text_fontsize='medium'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#plot_thresholds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.plot_thresholds" title="Permalink to this definition">¶</a></dt>
+<dd><p>Plot thresholds by strategy and by attribute.</p>
+<p>Based on <code class="xref py py-func docutils literal notranslate"><span class="pre">skplt.metrics.plot_roc()</span></code></p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>thresholds_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)"><em>dict</em></a>) – Thresholds by attribute from the
+function
+<code class="xref py py-func docutils literal notranslate"><span class="pre">find_thresholds()</span></code>.</p></li>
+<li><p><strong>markersize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.7)"><em>int</em></a>) – Marker size.</p></li>
+<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.7)"><em>str</em></a>) – Title of the generated plot.</p></li>
+<li><p><strong>xlim</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a>) – Set the data limits for the x-axis.</p></li>
+<li><p><strong>ax</strong> – The axes upon which to plot the curve.
+If <cite>None</cite>, the plot is drawn on a new set of axes.</p></li>
+<li><p><strong>figsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.7)"><em>tuple</em></a>) – Tuple denoting figure size of the plot
+e.g. (6, 6).</p></li>
+<li><p><strong>title_fontsize</strong> – Matplotlib-style fontsizes.
+Use e.g. ‘small’, ‘medium’, ‘large’
+or integer-values.</p></li>
+<li><p><strong>text_fontsize</strong> – Matplotlib-style fontsizes.
+Use e.g. ‘small’, ‘medium’, ‘large’
+or integer-values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The axes on which the plot was drawn.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.1.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -805,7 +879,7 @@ or integer-values.</p></li>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">Ethically</a></h1>
+<h1 class="logo"><a href="index.html">Responsibly</a></h1>
 
 
 
@@ -813,7 +887,7 @@ or integer-values.</p></li>
 
 
 <p>
-<iframe src="https://ghbtns.com/github-btn.html?user=EthicallyAI&repo=ethically&type=star&v=2&count=true&size=large&v=2"
+<iframe src="https://ghbtns.com/github-btn.html?user=ResponsiblyAI&repo=responsibly&type=star&v=2&count=true&size=large&v=2"
   allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
 </p>
 
@@ -825,8 +899,8 @@ or integer-values.</p></li>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="dataset.html">Datasets</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Classification Fairness</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#module-ethically.fairness.metrics">Metrics</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#module-ethically.fairness.interventions">Algorithmic Interventions</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-responsibly.fairness.metrics">Metrics</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-responsibly.fairness.interventions">Algorithmic Interventions</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="word-embedding-bias.html">Word Embedding Bias</a></li>
@@ -846,10 +920,10 @@ or integer-values.</p></li>
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -871,7 +945,7 @@ or integer-values.</p></li>
       &copy;2019, Shlomi Hod.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
@@ -880,7 +954,7 @@ or integer-values.</p></li>
     </div>
 
     
-    <a href="https://github.com/EthicallyAI/ethically" class="github">
+    <a href="https://github.com/ResponsiblyAI/responsibly" class="github">
         <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
     </a>
     

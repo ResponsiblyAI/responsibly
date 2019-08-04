@@ -4,7 +4,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>ethically.we.utils &#8212; Ethically 0.0.5 documentation</title>
+    <title>responsibly.we.utils &#8212; Responsibly 0.1.0 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
@@ -31,7 +31,7 @@
 
           <div class="body" role="main">
             
-  <h1>Source code for ethically.we.utils</h1><div class="highlight"><pre>
+  <h1>Source code for responsibly.we.utils</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">math</span>
 
 <span class="kn">import</span> <span class="nn">gensim</span>
@@ -59,7 +59,7 @@
     <span class="k">return</span> <span class="n">new_value</span>
 
 
-<div class="viewcode-block" id="normalize"><a class="viewcode-back" href="../../../word-embedding-bias.html#ethically.we.utils.normalize">[docs]</a><span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
+<div class="viewcode-block" id="normalize"><a class="viewcode-back" href="../../../word-embedding-bias.html#responsibly.we.utils.normalize">[docs]</a><span class="k">def</span> <span class="nf">normalize</span><span class="p">(</span><span class="n">v</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Normalize a 1-D vector.&quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="n">v</span><span class="o">.</span><span class="n">ndim</span> <span class="o">!=</span> <span class="mi">1</span><span class="p">:</span>
         <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;v should be 1-D, </span><span class="si">{}</span><span class="s1">-D was given&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span>
@@ -70,7 +70,7 @@
     <span class="k">return</span> <span class="n">v</span> <span class="o">/</span> <span class="n">norm</span></div>
 
 
-<div class="viewcode-block" id="cosine_similarity"><a class="viewcode-back" href="../../../word-embedding-bias.html#ethically.we.utils.cosine_similarity">[docs]</a><span class="k">def</span> <span class="nf">cosine_similarity</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+<div class="viewcode-block" id="cosine_similarity"><a class="viewcode-back" href="../../../word-embedding-bias.html#responsibly.we.utils.cosine_similarity">[docs]</a><span class="k">def</span> <span class="nf">cosine_similarity</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Calculate the cosine similarity between two vectors.&quot;&quot;&quot;</span>
     <span class="n">v_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">v</span><span class="p">)</span>
     <span class="n">u_norm</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linalg</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
@@ -78,25 +78,25 @@
     <span class="k">return</span> <span class="n">similarity</span></div>
 
 
-<div class="viewcode-block" id="project_vector"><a class="viewcode-back" href="../../../word-embedding-bias.html#ethically.we.utils.project_vector">[docs]</a><span class="k">def</span> <span class="nf">project_vector</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+<div class="viewcode-block" id="project_vector"><a class="viewcode-back" href="../../../word-embedding-bias.html#responsibly.we.utils.project_vector">[docs]</a><span class="k">def</span> <span class="nf">project_vector</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Projecting the vector v onto direction u.&quot;&quot;&quot;</span>
     <span class="n">normalize_u</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">v</span> <span class="o">@</span> <span class="n">normalize_u</span><span class="p">)</span> <span class="o">*</span> <span class="n">normalize_u</span></div>
 
 
-<div class="viewcode-block" id="reject_vector"><a class="viewcode-back" href="../../../word-embedding-bias.html#ethically.we.utils.reject_vector">[docs]</a><span class="k">def</span> <span class="nf">reject_vector</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+<div class="viewcode-block" id="reject_vector"><a class="viewcode-back" href="../../../word-embedding-bias.html#responsibly.we.utils.reject_vector">[docs]</a><span class="k">def</span> <span class="nf">reject_vector</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Rejecting the vector v onto direction u.&quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">v</span> <span class="o">-</span> <span class="n">project_vector</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="project_reject_vector"><a class="viewcode-back" href="../../../word-embedding-bias.html#ethically.we.utils.project_reject_vector">[docs]</a><span class="k">def</span> <span class="nf">project_reject_vector</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
+<div class="viewcode-block" id="project_reject_vector"><a class="viewcode-back" href="../../../word-embedding-bias.html#responsibly.we.utils.project_reject_vector">[docs]</a><span class="k">def</span> <span class="nf">project_reject_vector</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Projecting and rejecting the vector v onto direction u.&quot;&quot;&quot;</span>
     <span class="n">projected_vector</span> <span class="o">=</span> <span class="n">project_vector</span><span class="p">(</span><span class="n">v</span><span class="p">,</span> <span class="n">u</span><span class="p">)</span>
     <span class="n">rejected_vector</span> <span class="o">=</span> <span class="n">v</span> <span class="o">-</span> <span class="n">projected_vector</span>
     <span class="k">return</span> <span class="n">projected_vector</span><span class="p">,</span> <span class="n">rejected_vector</span></div>
 
 
-<div class="viewcode-block" id="project_params"><a class="viewcode-back" href="../../../word-embedding-bias.html#ethically.we.utils.project_params">[docs]</a><span class="k">def</span> <span class="nf">project_params</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
+<div class="viewcode-block" id="project_params"><a class="viewcode-back" href="../../../word-embedding-bias.html#responsibly.we.utils.project_params">[docs]</a><span class="k">def</span> <span class="nf">project_params</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">v</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Projecting and rejecting the vector v onto direction u with scalar.&quot;&quot;&quot;</span>
     <span class="n">normalize_u</span> <span class="o">=</span> <span class="n">normalize</span><span class="p">(</span><span class="n">u</span><span class="p">)</span>
     <span class="n">projection</span> <span class="o">=</span> <span class="p">(</span><span class="n">v</span> <span class="o">@</span> <span class="n">normalize_u</span><span class="p">)</span>
@@ -105,7 +105,7 @@
     <span class="k">return</span> <span class="n">projection</span><span class="p">,</span> <span class="n">projected_vector</span><span class="p">,</span> <span class="n">rejected_vector</span></div>
 
 
-<div class="viewcode-block" id="cosine_similarities_by_words"><a class="viewcode-back" href="../../../word-embedding-bias.html#ethically.we.utils.cosine_similarities_by_words">[docs]</a><span class="k">def</span> <span class="nf">cosine_similarities_by_words</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">words</span><span class="p">):</span>
+<div class="viewcode-block" id="cosine_similarities_by_words"><a class="viewcode-back" href="../../../word-embedding-bias.html#responsibly.we.utils.cosine_similarities_by_words">[docs]</a><span class="k">def</span> <span class="nf">cosine_similarities_by_words</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">word</span><span class="p">,</span> <span class="n">words</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Compute cosine similarities between a word and a set of other words.&quot;&quot;&quot;</span>
 
     <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">word</span><span class="p">,</span> <span class="n">string_types</span><span class="p">),</span> \
@@ -158,7 +158,7 @@
                                 <span class="nb">type</span><span class="p">(</span><span class="n">model</span><span class="p">)))</span>
 
 
-<div class="viewcode-block" id="most_similar"><a class="viewcode-back" href="../../../word-embedding-bias.html#ethically.we.utils.most_similar">[docs]</a><span class="k">def</span> <span class="nf">most_similar</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">negative</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+<div class="viewcode-block" id="most_similar"><a class="viewcode-back" href="../../../word-embedding-bias.html#responsibly.we.utils.most_similar">[docs]</a><span class="k">def</span> <span class="nf">most_similar</span><span class="p">(</span><span class="n">model</span><span class="p">,</span> <span class="n">positive</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">negative</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">topn</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">restrict_vocab</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">indexer</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">unrestricted</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;</span>
@@ -316,7 +316,7 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="../../../index.html">Ethically</a></h1>
+<h1 class="logo"><a href="../../../index.html">Responsibly</a></h1>
 
 
 
@@ -324,7 +324,7 @@
 
 
 <p>
-<iframe src="https://ghbtns.com/github-btn.html?user=EthicallyAI&repo=ethically&type=star&v=2&count=true&size=large&v=2"
+<iframe src="https://ghbtns.com/github-btn.html?user=ResponsiblyAI&repo=responsibly&type=star&v=2&count=true&size=large&v=2"
   allowtransparency="true" frameborder="0" scrolling="0" width="200px" height="35px"></iframe>
 </p>
 
@@ -353,10 +353,10 @@
 </ul>
 </div>
 <div id="searchbox" style="display: none" role="search">
-  <h3>Quick search</h3>
+  <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
     <form class="search" action="../../../search.html" method="get">
-      <input type="text" name="q" />
+      <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
     </form>
     </div>
@@ -378,13 +378,13 @@
       &copy;2019, Shlomi Hod.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.0.0</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>
 
     
-    <a href="https://github.com/EthicallyAI/ethically" class="github">
+    <a href="https://github.com/ResponsiblyAI/responsibly" class="github">
         <img style="position: absolute; top: 0; right: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_darkblue_121621.png" alt="Fork me on GitHub"  class="github"/>
     </a>
     

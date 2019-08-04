@@ -102,7 +102,7 @@ embeddings <https://arxiv.org/abs/1607.06520>`__. NIPS 2016.
 
 .. code:: ipython3
 
-    from ethically.we import GenderBiasWE, most_similar
+    from responsibly.we import GenderBiasWE, most_similar
 
 Create a gender bias word embedding object (``GenderBiasWE``)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -362,7 +362,7 @@ Generate analogies along the gender direction
 
 .. parsed-literal::
 
-    /project/ethically/ethically/we/bias.py:528: UserWarning: Not Using unrestricted most_similar may introduce fake biased analogies.
+    /project/responsibly/responsibly/we/bias.py:528: UserWarning: Not Using unrestricted most_similar may introduce fake biased analogies.
 
 
 
@@ -619,7 +619,7 @@ Generate analogies along the gender direction
 
 Let’s examine the analogy #129: ``she:volleyball::he:football``. We can
 try to reproduce it with by applying the arithmetic by ourselves:
-``football - he + she`` with *ethically*\ ’s ``most_similar``:
+``football - he + she`` with *responsibly*\ ’s ``most_similar``:
 
 .. code:: ipython3
 
@@ -660,7 +660,7 @@ that have the form ``she:X::he:X``, that doesn’t reflect a gender bias.
 Therefore, the method itself may introduce “fake” bias.
 
 We can run ``generate_analogies`` with ``unrestricted=True`` to address
-this issue. Then, for each generated analogies, *ethically*\ ’s
+this issue. Then, for each generated analogies, *responsibly*\ ’s
 ``most_similar`` function will be called twice for ``she:X::he:Y`` -
 once for getting ``X`` and second for ``Y``. An analogy is considered to
 be *matched* if the generated ``X`` and ``Y`` match the results from
@@ -668,11 +668,11 @@ be *matched* if the generated ``X`` and ``Y`` match the results from
 
 Note: running with ``unrestricted=True`` may take some minutes on the
 original word embedding. Therefore we will use a reduced version of
-Word2Vec which is available in *ethically*.
+Word2Vec which is available in *responsibly*.
 
 .. code:: ipython3
 
-    from ethically.we import load_w2v_small
+    from responsibly.we import load_w2v_small
     
     model_w2v_small = load_w2v_small()
     w2v_small_gender_bias_we = GenderBiasWE(model_w2v_small)
@@ -927,7 +927,7 @@ Association with percentage of female in occupation
 
     import pandas as pd
     
-    from ethically.we.data import OCCUPATION_FEMALE_PRECENTAGE
+    from responsibly.we.data import OCCUPATION_FEMALE_PRECENTAGE
     
     pd.Series(OCCUPATION_FEMALE_PRECENTAGE).sort_values().plot(kind='barh', figsize=(5, 10));
 
@@ -1506,7 +1506,7 @@ Generate analogies along the gender direction
 
 .. parsed-literal::
 
-    /project/ethically/ethically/we/bias.py:528: UserWarning: Not Using unrestricted most_similar may introduce fake biased analogies.
+    /project/responsibly/responsibly/we/bias.py:528: UserWarning: Not Using unrestricted most_similar may introduce fake biased analogies.
 
 
 
@@ -2117,8 +2117,8 @@ Can we identify race bias? (Exploratory - API may change in a future release)
 
 .. code:: ipython3
 
-    from ethically.we import BiasWordEmbedding
-    from ethically.we.data import BOLUKBASI_DATA
+    from responsibly.we import BiasWordEmbedding
+    from responsibly.we.data import BOLUKBASI_DATA
 
 .. code:: ipython3
 
@@ -2182,7 +2182,7 @@ Can we identify race bias? (Exploratory - API may change in a future release)
 
 .. parsed-literal::
 
-    /project/ethically/ethically/we/bias.py:528: UserWarning: Not Using unrestricted most_similar may introduce fake biased analogies.
+    /project/responsibly/responsibly/we/bias.py:528: UserWarning: Not Using unrestricted most_similar may introduce fake biased analogies.
 
 
 
@@ -2437,7 +2437,7 @@ Can we identify race bias? (Exploratory - API may change in a future release)
 
 .. parsed-literal::
 
-    /project/ethically/ethically/we/bias.py:528: UserWarning: Not Using unrestricted most_similar may introduce fake biased analogies.
+    /project/responsibly/responsibly/we/bias.py:528: UserWarning: Not Using unrestricted most_similar may introduce fake biased analogies.
 
 
 
@@ -2706,7 +2706,7 @@ Science, 356(6334), 183-186.
 
 .. code:: ipython3
 
-    from ethically.we import calc_all_weat
+    from responsibly.we import calc_all_weat
 
 First, let’s look on a reduced version of Word2Vec.
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -2719,7 +2719,7 @@ First, let’s look on a reduced version of Word2Vec.
 
 .. parsed-literal::
 
-    /project/ethically/ethically/we/weat.py:368: UserWarning: Given weat_data was filterd by model.
+    /project/responsibly/responsibly/we/weat.py:368: UserWarning: Given weat_data was filterd by model.
 
 
 
@@ -2904,7 +2904,7 @@ Let’s reproduce the results from the paper on the full Word2Vec and Glove word
 
 .. parsed-literal::
 
-    /project/ethically/ethically/we/weat.py:368: UserWarning: Given weat_data was filterd by data.
+    /project/responsibly/responsibly/we/weat.py:368: UserWarning: Given weat_data was filterd by data.
 
 
 
@@ -3094,7 +3094,7 @@ Results from the paper:
 
 .. parsed-literal::
 
-    /project/ethically/ethically/we/weat.py:368: UserWarning: Given weat_data was filterd by model.
+    /project/responsibly/responsibly/we/weat.py:368: UserWarning: Given weat_data was filterd by model.
 
 
 
@@ -3283,7 +3283,7 @@ No WEAT bias in this case.
 
 .. code:: ipython3
 
-    from ethically.we import calc_weat_pleasant_unpleasant_attribute
+    from responsibly.we import calc_weat_pleasant_unpleasant_attribute
     
     targets = {'first_target': {'name': 'Citizen',
                                 'words': ['citizen', 'citizenship', 'nationality', 'native', 'national', 'countryman', 
@@ -3339,7 +3339,7 @@ First experiment - WEAT before and after debias
 
 .. parsed-literal::
 
-    /project/ethically/ethically/we/weat.py:368: UserWarning: Given weat_data was filterd by model.
+    /project/responsibly/responsibly/we/weat.py:368: UserWarning: Given weat_data was filterd by model.
 
 
 
@@ -3433,7 +3433,7 @@ First experiment - WEAT before and after debias
 
 .. parsed-literal::
 
-    /project/ethically/ethically/we/weat.py:368: UserWarning: Given weat_data was filterd by model.
+    /project/responsibly/responsibly/we/weat.py:368: UserWarning: Given weat_data was filterd by model.
 
 
 
@@ -3527,8 +3527,8 @@ attribute words (Math vs. Arts and Science vs. Arts).
 
 .. code:: ipython3
 
-    from ethically.we import calc_single_weat
-    from ethically.we.data import WEAT_DATA
+    from responsibly.we import calc_single_weat
+    from responsibly.we.data import WEAT_DATA
 
 .. code:: ipython3
 
