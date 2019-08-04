@@ -91,9 +91,9 @@ we would appreciate citations to the following:
 ::
 
   @Misc{,
-    author =    {Shlomi Hod},
-    title =     {{Responsibly}: Toolkit for Auditing and Mitigating Bias and Fairness of Machine Learning Systems},
-    year =      {2018--},
-    url = "https://docs.responsibly.ai/",
-    note = {[Online; accessed <today>]}
+    author = {Shlomi Hod},
+    title =  {{Responsibly}: Toolkit for Auditing and Mitigating Bias and Fairness of Machine Learning Systems},
+    year =   {2018--},
+    url =    "http://docs.responsibly.ai/",
+    note =   {[Online; accessed <today>]}
   }
