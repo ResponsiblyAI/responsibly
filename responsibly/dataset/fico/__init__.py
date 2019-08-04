@@ -63,13 +63,17 @@ def _calc_tpr_fpr(pdfs_df, performance_df):
 
         proportion_over_all_scores = proportion_per_score.sum(axis=0)
 
-        cum_prop_per_score = proportion_per_score.cumsum(axis=0)
+        cum_prop_per_score = proportion_per_score[::-1].cumsum(axis=0)[::-1]
 
         rate = cum_prop_per_score / proportion_over_all_scores
 
-        dfs.append(pd.DataFrame(1 - rate,
-                                index=pdfs_df.index,
-                                columns=pdfs_df.columns))
+        # by sklean convention, thresholds[0]
+        # represents no instances being predicted positive
+        # and is arbitrarily set to max(y_score) + 1
+        # https://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_curve.html
+        rate.loc[max(rate.index) + 1] = [0] * len(rate.columns)
+
+        dfs.append(rate)
 
     tpr_df, fpr_df = dfs  # pylint: disable=unbalanced-tuple-unpacking
     return tpr_df, fpr_df
@@ -78,9 +82,14 @@ def _calc_tpr_fpr(pdfs_df, performance_df):
 def _build_rocs(fpr_df, tpr_df):
     rocs = {}
     for group in fpr_df.columns:
-        rocs[group] = (fpr_df[group].values,
-                       tpr_df[group].values,
-                       fpr_df.index)
+        fprs = fpr_df[group].values[::-1]
+        tprs = tpr_df[group].values[::-1]
+        thresholds = fpr_df.index[::-1]
+
+        rocs[group] = (fprs,
+                       tprs,
+                       thresholds)
+
     return rocs
 
 
@@ -100,6 +109,8 @@ def build_FICO_dataset():
     +---------------+------------------------------------------------------+
     | FICO key      | Meaning                                              |
     +===============+======================================================+
+    | `total`       | Total number of individuals                          |
+    +---------------+------------------------------------------------------+
     | `totals`      | Number of individuals per group                      |
     +---------------+------------------------------------------------------+
     | `cdf`         | Cumulative distribution function of score per group  |
@@ -137,6 +148,8 @@ def build_FICO_dataset():
     totals, cdfs_df, performance_df = _load_data()
     pdfs_df = _get_pdfs(cdfs_df)
 
+    total = sum(totals.values())
+
     proportions = {group: total / sum(totals.values())
                    for group, total in totals.items()}
 
@@ -149,7 +162,8 @@ def build_FICO_dataset():
     aucs = {group: auc(fpr, tpr) for group, (fpr, tpr, _)
             in rocs.items()}
 
-    return {'totals': totals,
+    return {'total': total,
+            'totals': totals,
             'cdf': cdfs_df,
             'pdf': pdfs_df,
             'performance': performance_df,
