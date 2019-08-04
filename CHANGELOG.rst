@@ -4,7 +4,7 @@ Revision History
 0.1.0 (2019/07/31)
 ------------------
 
-- Rename project to ``responsibly`` from ``ethically``
+- Rename the project to ``responsibly`` from ``ethically``
 
 - Word embedding bias
 
