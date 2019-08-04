@@ -22,42 +22,57 @@ FICO_TOL = {'atol': 1e-5, 'rtol': 5e-3}
 COST_MATRIX = [[0, - 5 / 6], [0, 1 / 6]]
 
 FICO_SINGLE = (42.5,
-               {'Asian': (0.1565417064845852, 0.7935353629697238),
-                'Black': (0.03421435054752242, 0.5140401023192323),
-                'Hispanic': (0.07888468140621363, 0.6254574967221331),
-                'White': (0.10256570907095985, 0.7931580812742784)},
+               {'Asian': (0.159210978241477, 0.7982257394726964),
+                'Black': (0.03562475202516957, 0.5222536366818645),
+                'Hispanic': (0.0811160539719404, 0.6318581559145164),
+                'White': (0.10494970149747886, 0.7974084986440749)},
                -11888.109525713331 / 174047)
 
+# In the FairMLBook repo the cutoffs are
+# {'Asian': 38.5, 'Black': 49.0, 'Hispanic': 47.0, 'White': 41.0}
+# Cost per group from there:
+# max_profit Asian 0.0027352900000000044
+# max_profit Black 1.0889999999999889e-05
+# max_profit Hispanic 9.025000000000055e-05
+# max_profit White 0.00021315999999999818
 # Cost is NOT taken from FairMLBook repo
 FICO_MIN_COST = ({'Asian': 38.5,
                   'Black': 49.0,
-                  'Hispanic': 46.5,
+                  'Hispanic': 47.0,
                   'White': 41.0},
-                 {'Asian': (0.18460486111161467, 0.8381280415042232),
-                  'Black': (0.020067107153418196, 0.4079222735623631),
-                  'Hispanic': (0.058653539271323774, 0.5589875936027981),
-                  'White': (0.11087988887409528, 0.8075167832686126)},
-                 -0.06875738629781994)
+                 {'Asian': (0.18688340039863297, 0.8409289340716826),
+                  'Black': (0.020748274408693028, 0.4148991737082274),
+                  'Hispanic': (0.05865353927132363, 0.5589875936027977),
+                  'White': (0.11484787793720092, 0.8138995270074796)},
+                 -0.06876633661556937)
 
-FICO_INDEPENDENCE = ({'Asian': 53.0,
+
+# In the FairMLBook repo the cutoffs are
+# {'Asian': 53.5, 'Black': 18.5, 'Hispanic': 32.0, 'White': 52.5}
+# and the acceptance rate is 0.5189755206777411
+# It might be that there is some issue with _ternary_search_float
+# The cost is slightly worse, so we probably don't find the optimal
+# solution, but very close to it
+# From the repo this is the cost: -8183.343726279998 / 174047
+FICO_INDEPENDENCE = ({'Asian': 53.5,
                       'Black': 18.0,
                       'Hispanic': 31.5,
                       'White': 52.0},
-                     {'Asian': (0.08776430097924892, 0.6420627855534078),
-                      'Black': (0.33376894053666994, 0.9049491843143592),
-                      'Hispanic': (0.1693120676295986, 0.7999748148855363),
-                      'White': (0.058478838627887275, 0.6773498273098238)},
-                     -8183.343726279998 / 174047,
-                     0.5189755206777411)
+                     {'Asian': (0.08776430097924894, 0.6420627855534083),
+                      'Black': (0.3445144172941361, 0.908131231733616),
+                      'Hispanic': (0.1739271675548935, 0.8061475266133501),
+                      'White': (0.060298201269177995, 0.6844160268999959)},
+                     -0.046725728876261405,
+                     0.532796101034295)
 
 # All the values are NOT taken from FairMLBook repo
-FICO_FNR = ({'Asian': 46.0, 'Black': 29.5, 'Hispanic': 35.0, 'White': 46.5},
-            {'Asian': (0.13087886175132435, 0.7450217322938637),
-             'Black': (0.1077846495570669, 0.7487442676155007),
-             'Hispanic': (0.13118970292760168, 0.7416493778636012),
-             'White': (0.07995200854013917, 0.7456505446682594)},
+FICO_FNR = ({'Asian': 45.5, 'Black': 29.5, 'Hispanic': 35.0, 'White': 46},
+            {'Asian': (0.13830821486672065, 0.7597270937393894),
+             'Black': (0.11069747158860148, 0.753996048320934),
+             'Hispanic': (0.13779115742038225, 0.7528248235528201),
+             'White': (0.0845338139109347, 0.7565831625671293)},
             -0.06352608487155771,
-            0.7413488681028431)
+            0.2402515268107051)
 
 FICO_SEPARATION = ({},
                    {'': (0.11393540338532637, 0.7091695018283077)},
@@ -134,11 +149,11 @@ def fico():
 
 
 def test_single_threshold(fico):
-    assert_deep_almost_equal(threshold.find_single_threshold(fico['rocs'],
+    assert_deep_almost_equal(FICO_SINGLE,
+                             threshold.find_single_threshold(fico['rocs'],
                                                              fico['base_rates'],
                                                              fico['proportions'],
                                                              COST_MATRIX),
-                             FICO_SINGLE,
                              **FICO_TOL)
 
 
@@ -150,37 +165,37 @@ def test_single_threshold(fico):
 # on the cost function, and in the fairmlbook there are performing argmin
 # all over the cost function values.
 def test_min_cost_threshold(fico):
-    assert_deep_almost_equal(threshold.find_min_cost_thresholds(fico['rocs'],
+    assert_deep_almost_equal(FICO_MIN_COST,
+                             threshold.find_min_cost_thresholds(fico['rocs'],
                                                                 fico['base_rates'],
                                                                 fico['proportions'],
                                                                 COST_MATRIX),
-                             FICO_MIN_COST,
                              **FICO_TOL)
 
 
 def test_independence_thresholds(fico):
-    assert_deep_almost_equal(threshold.find_independence_thresholds(fico['rocs'],
+    assert_deep_almost_equal(FICO_INDEPENDENCE,
+                             threshold.find_independence_thresholds(fico['rocs'],
                                                                     fico['base_rates'],
                                                                     fico['proportions'],
                                                                     COST_MATRIX),
-                             FICO_INDEPENDENCE,
                              **FICO_TOL)
 
 
 def test_fnr_thresholds(fico):
-    assert_deep_almost_equal(threshold.find_fnr_thresholds(fico['rocs'],
+    assert_deep_almost_equal(FICO_FNR,
+                             threshold.find_fnr_thresholds(fico['rocs'],
                                                            fico['base_rates'],
                                                            fico['proportions'],
                                                            COST_MATRIX),
-                             FICO_FNR,
                              **FICO_TOL)
 
 
 def test_separation_thresholds(fico):
-    assert_deep_almost_equal(threshold.find_separation_thresholds(fico['rocs'],
+    assert_deep_almost_equal(FICO_SEPARATION,
+                             threshold.find_separation_thresholds(fico['rocs'],
                                                                   fico['base_rate'],
                                                                   COST_MATRIX),
-                             FICO_SEPARATION,
                              **FICO_TOL)
 
 
@@ -191,7 +206,7 @@ def test_thresholds(fico):
                                                fico['base_rates'],
                                                COST_MATRIX)
 
-    assert_deep_almost_equal(threshold_data, FICO_THRESHOLD_DATA,
+    assert_deep_almost_equal(FICO_THRESHOLD_DATA, threshold_data,
                              **FICO_TOL)
 
 

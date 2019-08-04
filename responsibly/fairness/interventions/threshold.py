@@ -44,7 +44,14 @@ from responsibly.fairness.metrics.utils import _groupby_y_x_sens
 from responsibly.fairness.metrics.visualization import plot_roc_curves
 
 
-def titlify(text):
+TRINARY_SEARCH_TOL = 1e-3
+
+
+def _strictly_increasing(arr):
+    return (np.diff(arr) >= 0).all()
+
+
+def _titlify(text):
     text = text.replace('_', ' ').title()
     if text == 'Fnr':
         text = 'FNR'
@@ -55,8 +62,8 @@ def _ternary_search_float(f, left, right, tol):
     """Trinary search: minimize f(x) over [left, right], to within +/-tol in x.
 
     Works assuming f is quasiconvex.
-
     """
+
     while right - left > tol:
         left_third = (2 * left + right) / 3
         right_third = (left + 2 * right) / 3
@@ -72,7 +79,16 @@ def _ternary_search_domain(f, domain):
 
     Works assuming f is quasiconvex and domain is ascending sorted.
 
+    BUGGY, DO NOT USE
+
+    >>> arr = np.concatenate([np.arange(10, 2, -1), np.arange(2, 20)])
+    >>> t1 = _ternary_search_domain(lambda t: arr[t], range(len(arr)))
+    >>> t2 = np.argmin(arr)
+
+    >>> assert t1 == t2
+    >>> assert arr[t1] == arr[t2]
     """
+
     left = 0
     right = len(domain) - 1
     changed = True
@@ -114,19 +130,23 @@ def _extract_threshold(roc_curves):
     return next(iter(roc_curves.values()))[2]
 
 
-def _first_index_above(array, value):
+def _first_index_above(arr, value):
     """Find the smallest index i for which array[i] > value.
 
     If no such value exists, return len(array).
     """
-    array = np.array(array)
-    v = np.concatenate([array > value, np.ones_like(array[-1:])])
+
+    assert _strictly_increasing(arr), (
+        'arr should be stricktly increasing.')
+
+    arr = np.array(arr)
+    v = np.concatenate([arr > value, [1]])
     return np.argmax(v, axis=0)
 
 
 def _calc_acceptance_rate(fpr, tpr, base_rate):
-    return 1 - ((fpr * (1 - base_rate)
-                 + tpr * base_rate))
+    return (fpr * (1 - base_rate)
+            + tpr * base_rate)
 
 
 def find_single_threshold(roc_curves, base_rates, proportions,
@@ -165,8 +185,9 @@ def find_single_threshold(roc_curves, base_rates, proportions,
 
     thresholds = _extract_threshold(roc_curves)
 
-    cutoff_index = _ternary_search_domain(total_cost_function,
-                                          range(len(thresholds)))
+    cost_per_threshold = [total_cost_function(index)
+                          for index in range(len(thresholds))]
+    cutoff_index = np.argmin(cost_per_threshold)
 
     fpr_tpr = {group: (roc[0][cutoff_index], roc[1][cutoff_index])
                for group, roc in roc_curves.items()}
@@ -207,15 +228,16 @@ def find_min_cost_thresholds(roc_curves, base_rates, proportions, cost_matrix):
             return -_cost_function(fpr, tpr,
                                    base_rates[group], cost_matrix)
 
-        threshold_index = _ternary_search_domain(group_cost_function,
-                                                 range(len(thresholds)))
+        cost_per_threshold = [group_cost_function(index)
+                              for index in range(len(thresholds))]
+        cutoff_index = np.argmin(cost_per_threshold)
 
-        cutoffs[group] = thresholds[threshold_index]
+        cutoffs[group] = thresholds[cutoff_index]
 
-        fpr_tpr[group] = (roc[0][threshold_index],
-                          roc[1][threshold_index])
+        fpr_tpr[group] = (roc[0][cutoff_index],
+                          roc[1][cutoff_index])
 
-        cost += group_cost_function(threshold_index) * proportions[group]
+        cost += group_cost_function(cutoff_index) * proportions[group]
 
     return cutoffs, fpr_tpr, cost
 
@@ -223,6 +245,7 @@ def find_min_cost_thresholds(roc_curves, base_rates, proportions, cost_matrix):
 def get_acceptance_rate_indices(roc_curves, base_rates,
                                 acceptance_rate_value):
     indices = {}
+
     for group, roc in roc_curves.items():
         # can be calculated outside the function
         acceptance_rates = _calc_acceptance_rate(fpr=roc[0],
@@ -230,7 +253,7 @@ def get_acceptance_rate_indices(roc_curves, base_rates,
                                                  base_rate=base_rates[group])
 
         index = _first_index_above(acceptance_rates,
-                                   (1 - acceptance_rate_value)) - 2
+                                   acceptance_rate_value)
 
         indices[group] = index
 
@@ -259,6 +282,8 @@ def find_independence_thresholds(roc_curves, base_rates, proportions,
 
     def total_cost_function(acceptance_rate_value):
         # todo: move demo here + multiple cost
+        #       + refactor - use threshold to calculate
+        #         acceptance_rate_value
         indices = get_acceptance_rate_indices(roc_curves, base_rates,
                                               acceptance_rate_value)
 
@@ -273,6 +298,7 @@ def find_independence_thresholds(roc_curves, base_rates, proportions,
             group_cost = _cost_function(fpr, tpr,
                                         base_rates[group],
                                         cost_matrix)
+
             group_cost *= proportions[group]
 
             total_cost += group_cost
@@ -280,13 +306,12 @@ def find_independence_thresholds(roc_curves, base_rates, proportions,
         return -total_cost
 
     acceptance_rate_min_cost = _ternary_search_float(total_cost_function,
-                                                     0, 1, 1e-3)
+                                                     0, 1, TRINARY_SEARCH_TOL)
 
     cost = total_cost_function(acceptance_rate_min_cost)
 
     threshold_indices = get_acceptance_rate_indices(roc_curves, base_rates,
                                                     acceptance_rate_min_cost)
-
     thresholds = _extract_threshold(roc_curves)
 
     cutoffs = {group: thresholds[threshold_index]
@@ -302,11 +327,14 @@ def find_independence_thresholds(roc_curves, base_rates, proportions,
 
 def get_fnr_indices(roc_curves, fnr_value):
     indices = {}
+
+    tpr_value = 1 - fnr_value
+
     for group, roc in roc_curves.items():
         tprs = roc[1]
-        index = _first_index_above(1 - tprs,
-                                   (1 - fnr_value)) - 1
-
+        index = _first_index_above(tprs,
+                                   tpr_value) - 1
+        index = max(0, index)
         indices[group] = index
 
     return indices
@@ -356,7 +384,9 @@ def find_fnr_thresholds(roc_curves, base_rates, proportions,
         return -total_cost
 
     fnr_value_min_cost = _ternary_search_float(total_cost_function,
-                                               0, 1, 1e-3)
+                                               0, 1,
+                                               TRINARY_SEARCH_TOL)
+
     threshold_indices = get_fnr_indices(roc_curves, fnr_value_min_cost)
 
     cost = total_cost_function(fnr_value_min_cost)
@@ -601,7 +631,7 @@ def plot_roc_curves_thresholds(roc_curves, thresholds_data,
     MARKERS = ['o', '^', 'x', '+', 'p']
 
     for (name, data), marker in zip(thresholds_data.items(), MARKERS):
-        label = titlify(name)
+        label = _titlify(name)
         ax.scatter(*zip(*data[1].values()),
                    marker=marker, color='k', label=label,
                    zorder=float('inf'))
@@ -697,7 +727,7 @@ def plot_costs(thresholds_data,
 
     ax.set_title(title, fontsize=title_fontsize)
 
-    costs = {titlify(group): cost
+    costs = {_titlify(group): cost
              for group, (_, _, cost, *_) in thresholds_data.items()}
 
     (pd.Series(costs)
@@ -749,7 +779,7 @@ def plot_thresholds(thresholds_data,
     ax.set_title(title, fontsize=title_fontsize)
 
     # TODO: refactor!
-    df = pd.DataFrame({titlify(key): thresholds
+    df = pd.DataFrame({_titlify(key): thresholds
                        for key, (thresholds, *_) in thresholds_data.items()
                        if key != 'separation'})
     melted_df = pd.melt(df, var_name='Strategy', value_name='Threshold')
