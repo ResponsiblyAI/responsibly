@@ -1,22 +1,87 @@
+# https://github.com/numpy/numpy/blob/master/.appveyor.yml
+
 environment:
   global:
     RANDOM_SEED: 0
+    MINGW_32: C:\mingw-w64\i686-6.3.0-posix-dwarf-rt_v5-rev1\mingw32\bin
+    MINGW_64: C:\mingw-w64\x86_64-6.3.0-posix-seh-rt_v5-rev1\mingw64\bin
+    OPENBLAS_32: https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com/openblas-5f998ef_gcc7_1_0_win32.zip
+    OPENBLAS_64: https://3f23b170c54c2533c070-1c8a9b3114517dc5fe17b7c3f8c63a43.ssl.cf2.rackcdn.com/openblas-5f998ef_gcc7_1_0_win64.zip
+
   matrix:
-    - PYTHON_MAJOR: 3
-      PYTHON_MINOR: 5
+    - PYTHON: C:\Python35
+      PYTHON_VERSION: 3.5
+      PYTHON_ARCH: 32
+      TEST_MODE: fast
+
+    - PYTHON: C:\Python36
+      PYTHON_VERSION: 3.6
+      PYTHON_ARCH: 32
+      TEST_MODE: fast
+
+    - PYTHON: C:\Python37
+      PYTHON_VERSION: 3.7
+      PYTHON_ARCH: 32
+      TEST_MODE: fast
+
+    - PYTHON: C:\Python36-x64
+      PYTHON_VERSION: 3.6
+      PYTHON_ARCH: 64
+      TEST_MODE: full
+      INSTALL_PICKLE5: 1
+
+    - PYTHON: C:\Python37-x64
+      PYTHON_VERSION: 3.7
+      PYTHON_ARCH: 64
+      TEST_MODE: full
+      INSTALL_PICKLE5: 1
 
 cache:
   - .venv -> Makefile
 
+init:
+  - "ECHO %PYTHON% %PYTHON_VERSION% %PYTHON_ARCH%"
+  - "ECHO \"%APPVEYOR_SCHEDULED_BUILD%\""
+
 install:
-  # Add Make and Python to the PATH
-  - copy C:\MinGW\bin\mingw32-make.exe C:\MinGW\bin\make.exe
-  - set PATH=%PATH%;C:\MinGW\bin
-  - set PATH=C:\Python%PYTHON_MAJOR%%PYTHON_MINOR%;%PATH%
-  - set PATH=C:\Python%PYTHON_MAJOR%%PYTHON_MINOR%\Scripts;%PATH%
+  # Prepend newly installed Python to the PATH of this build (this cannot be
+  # done from inside the powershell script as it would require to restart
+  # the parent CMD process).
+  - SET PATH=%PYTHON%;%PYTHON%\Scripts;%PATH%
+  - if [%PYTHON_ARCH%]==[32] SET PATH=%MINGW_32%;%PATH% & SET OPENBLAS=%OPENBLAS_32%
+  - if [%PYTHON_ARCH%]==[64] SET PATH=%MINGW_64%;%PATH% & SET OPENBLAS=%OPENBLAS_64%
+
+  # Check that we have the expected version and architecture for Python
+  - python --version
+  - >-
+     %CMD_IN_ENV%
+     python -c "import sys,platform,struct;
+     print(sys.platform, platform.machine(), struct.calcsize('P') * 8, )"
+  # Install "openblas.a" to PYTHON\lib
+  # Library provided by Matthew Brett at https://github.com/matthew-brett/build-openblas
+  - ps: |
+      $clnt = new-object System.Net.WebClient
+      $file = "$(New-TemporaryFile).zip"
+      $tmpdir = New-TemporaryFile | %{ rm $_; mkdir $_ }
+      $destination = "$env:PYTHON\lib\openblas.a"
+      echo $file
+      echo $tmpdir
+      echo $env:OPENBLAS
+      $clnt.DownloadFile($env:OPENBLAS, $file)
+      Get-FileHash $file | Format-List
+      Expand-Archive $file $tmpdir
+      rm $tmpdir\$env:PYTHON_ARCH\lib\*.dll.a
+      $lib = ls $tmpdir\$env:PYTHON_ARCH\lib\*.a | ForEach { ls $_ } | Select-Object -first 1
+      echo $lib
+      cp $lib $destination
+      ls $destination
+  # Upgrade to the latest pip.
+  - 'python -m pip install -U pip setuptools wheel'
+
   # Install system dependencies
   - pip install pipenv
   - make doctor
+
   # Install project dependencies
   - make install
 
