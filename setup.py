@@ -87,6 +87,6 @@ setuptools.setup(
         "six >= 1.10",
         "click >= 6.0",
         "tqdm >= 4.24",
-        "mlxtend >= 0.13",
+        "mlxtend >= 0.13, < 0.17",
     ],
 )
