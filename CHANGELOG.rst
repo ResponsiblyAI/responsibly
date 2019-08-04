@@ -1,6 +1,13 @@
 Revision History
 ================
 
+0.1.1 (2019/08/04)
+------------------
+
+- Fix a dependencies issue with ``smart_open``
+
+- Change URLs to https
+
 0.1.0 (2019/07/31)
 ------------------
 
