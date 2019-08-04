@@ -1,7 +1,7 @@
 # Project settings
-PROJECT := responsibly
-PACKAGE := responsibly
-REPOSITORY := ResponsiblyAI/responsibly
+PROJECT := ethically
+PACKAGE := ethically
+REPOSITORY := EthicallyAI/ethically
 
 # Project paths
 PACKAGES := $(PACKAGE) tests
@@ -141,7 +141,7 @@ docs:
 	cd docs/notebooks && find *.ipynb -exec jupyter nbconvert --to rst {} \;
 	cd docs && make html
 	@echo "\033[95m\n\nBuild successful! View the docs homepage at docs/_build/html/index.html.\n\033[0m"
-	# && sphinx-apidoc  -o api ../responsibly
+	# && sphinx-apidoc  -o api ../ethically
 
 .PHONY: show
 show: docs

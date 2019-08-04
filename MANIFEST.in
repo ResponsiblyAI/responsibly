@@ -2,10 +2,10 @@ include *.rst *.txt *.md
 recursive-include docs *.rst *.txt *.md
 graft */files
 graft */*/files
-recursive-include responsibly/we/data *.txt *.tsv *.json *.bin
-recursive-include responsibly/we/data/evaluation *.txt *.tsv *.json *.bin
-recursive-include responsibly/tests/data *.txt *.tsv *.json *.bin
-recursive-include responsibly/dataset *.txt *.csv *.json *.bin *.data *.names *.test
+recursive-include ethically/we/data *.txt *.tsv *.json *.bin
+recursive-include ethically/we/data/evaluation *.txt *.tsv *.json *.bin
+recursive-include ethically/tests/data *.txt *.tsv *.json *.bin
+recursive-include ethically/dataset *.txt *.csv *.json *.bin *.data *.names *.test
 
 recursive-include docs/notebooks *.png
 recursive-include docs/notebooks/* *.png

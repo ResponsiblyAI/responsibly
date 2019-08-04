@@ -1,20 +1,6 @@
 Revision History
 ================
 
-0.1.0 (2019/07/31)
-------------------
-
-- Rename project to ``responsibly`` from ``ethically``
-
-- Word embedding bias
-
-  - Improve functionality of ``BiasWordEmbedding``
-
-- Threshold fainess interventions
-
-  - Fix bugs with ROCs handling
-  - Improve API and add functionality (``plot_thresholds``)
-
 0.0.5 (2019/06/14)
 ------------------
 

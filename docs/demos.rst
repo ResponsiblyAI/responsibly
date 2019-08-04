@@ -10,4 +10,4 @@ Demos
 
 The demos can also be accessible as Jupyter notebooks
 through the `GitHub repository
-<https://github.com/ResponsiblyAI/responsibly/tree/master/docs/notebooks>`_.
+<https://github.com/EthicallyAI/ethically/tree/master/docs/notebooks>`_.
