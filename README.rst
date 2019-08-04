@@ -11,9 +11,6 @@ Responsibly
 .. image:: https://img.shields.io/travis/ResponsiblyAI/responsibly/master.svg
     :target: https://travis-ci.org/ResponsiblyAI/responsibly
 
-.. image:: https://img.shields.io/appveyor/ci/shlomihod/responsibly/master.svg
-   :target: https://ci.appveyor.com/project/shlomihod/responsibly
-
 .. image::  https://img.shields.io/coveralls/ResponsiblyAI/responsibly/master.svg
    :target: https://coveralls.io/r/ResponsiblyAI/responsibly
 
