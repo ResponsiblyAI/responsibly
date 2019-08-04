@@ -21,7 +21,7 @@ Responsibly
   :target: https://pypi.org/project/responsibly
 
 .. image::  https://img.shields.io/github/license/ResponsiblyAI/responsibly.svg
-    :target: http://docs.responsibly.ai/about/license.html
+    :target: https://docs.responsibly.ai/about/license.html
 
 **Toolkit for Auditing and Mitigating Bias and Fairness**
 **of Machine Learning Systems 🔎🤖🧰**
