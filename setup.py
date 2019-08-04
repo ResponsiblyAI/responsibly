@@ -82,7 +82,7 @@ setuptools.setup(
         "seaborn >= 0.9",
         "scikit-learn >= 0.19",
         "smart_open < 1.8",
-        "gensim ~= 3.7",
+        "gensim ~= 3.7.0",
         "tabulate >= 0.8",
         "six >= 1.10",
         "click >= 6.0",
