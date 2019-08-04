@@ -1,7 +1,7 @@
 Classification Fairness
 =======================
 
-.. automodule:: ethically.fairness
+.. automodule:: responsibly.fairness
 
 The `demos section <demos.html>`_ contains two examples of measuring
 the fairness of a classifier and applying intervention to adjust it:
@@ -14,22 +14,22 @@ the fairness of a classifier and applying intervention to adjust it:
 Metrics
 -------
 
-.. automodule:: ethically.fairness.metrics
+.. automodule:: responsibly.fairness.metrics
 
 
 Independence
 ^^^^^^^^^^^^
 
-.. autofunction:: ethically.fairness.metrics.independence_binary
+.. autofunction:: responsibly.fairness.metrics.independence_binary
 
-.. autofunction:: ethically.fairness.metrics.separation_binary
+.. autofunction:: responsibly.fairness.metrics.separation_binary
 
 Separation
 ^^^^^^^^^^
 
-.. autofunction:: ethically.fairness.metrics.separation_binary
+.. autofunction:: responsibly.fairness.metrics.separation_binary
 
-.. autofunction:: ethically.fairness.metrics.separation_score
+.. autofunction:: responsibly.fairness.metrics.separation_score
 
 ROC
 ~~~
@@ -38,26 +38,26 @@ The separation criterion has strong relation to the ROC,
 therefore these functions can generate ROC and ROC-AUC per
 sensitive attribute values:
 
-.. autofunction:: ethically.fairness.metrics.roc_auc_score_by_attr
+.. autofunction:: responsibly.fairness.metrics.roc_auc_score_by_attr
 
-.. autofunction:: ethically.fairness.metrics.roc_curve_by_attr
+.. autofunction:: responsibly.fairness.metrics.roc_curve_by_attr
 
 Plotting
 ~~~~~~~~
 
-.. autofunction:: ethically.fairness.metrics.plot_roc_by_attr
+.. autofunction:: responsibly.fairness.metrics.plot_roc_by_attr
 
-.. autofunction:: ethically.fairness.metrics.plot_roc_curves
+.. autofunction:: responsibly.fairness.metrics.plot_roc_curves
 
 Sufficiency
 ^^^^^^^^^^^
-.. autofunction:: ethically.fairness.metrics.sufficiency_binary
+.. autofunction:: responsibly.fairness.metrics.sufficiency_binary
 
-.. autofunction:: ethically.fairness.metrics.sufficiency_score
+.. autofunction:: responsibly.fairness.metrics.sufficiency_score
 
 Report
 ^^^^^^
-.. autofunction:: ethically.fairness.metrics.report_binary
+.. autofunction:: responsibly.fairness.metrics.report_binary
 
 A Dictionary of criteria
 ^^^^^^^^^^^^^^^^^^^^^^^^
@@ -68,12 +68,12 @@ https://fairmlbook.org/demographic.html#a-dictionary-of-criteria
 Algorithmic Interventions
 -------------------------
 
-.. automodule:: ethically.fairness.interventions
+.. automodule:: responsibly.fairness.interventions
 
 
 Threshold - Post-processing
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-.. automodule:: ethically.fairness.interventions.threshold
+.. automodule:: responsibly.fairness.interventions.threshold
     :members:
 
