@@ -12,7 +12,7 @@ Revision History
 
 - Threshold fainess interventions
 
-  - Fix bugs with ROCs handeling
+  - Fix bugs with ROCs handling
   - Improve API and add functionality (``plot_thresholds``)
 
 0.0.5 (2019/06/14)
