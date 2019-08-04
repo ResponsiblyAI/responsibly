@@ -6,7 +6,7 @@ import sys
 import setuptools
 
 
-PACKAGE_NAME = 'responsibly'
+PACKAGE_NAME = 'ethically'
 MINIMUM_PYTHON_VERSION = '3.5'
 
 
@@ -52,7 +52,7 @@ setuptools.setup(
     include_package_data=True,
 
     # entry_points={'console_scripts': [
-    #     'responsibly-cli = responsibly.cli:main',
+    #     'ethically-cli = ethically.cli:main',
     # ]},
 
     long_description=build_description(),
@@ -81,12 +81,11 @@ setuptools.setup(
         "matplotlib >= 2.2, < 3",
         "seaborn >= 0.9",
         "scikit-learn >= 0.19",
-        "smart_open < 1.8",
-        "gensim >= 3.7",
+        "gensim == 3.7.1",
         "tabulate >= 0.8",
         "six >= 1.10",
         "click >= 6.0",
         "tqdm >= 4.24",
-        "mlxtend >= 0.13, < 0.17",
+        "mlxtend >= 0.13",
     ],
 )

@@ -17,18 +17,18 @@ import sys
 sys.path.insert(0, os.path.abspath('..'))
 
 
-import responsibly
+import ethically
 
 # -- Project information -----------------------------------------------------
 
-project = 'Responsibly'
+project = 'Ethically'
 copyright = '2019, Shlomi Hod'
 author = 'Shlomi Hod'
 
 # The short X.Y version
-version = responsibly.__version__
+version = ethically.__version__
 # The full version, including alpha/beta/rc tags
-release = responsibly.__version__
+release = ethically.__version__
 
 
 # -- General configuration ---------------------------------------------------
@@ -60,8 +60,8 @@ extensions = [
 html_theme_options = {
     'github_button': True,
     'github_type': 'star&v=2',  ## Use v2 button
-    'github_user': 'ResponsiblyAI',
-    'github_repo': 'responsibly',
+    'github_user': 'EthicallyAI',
+    'github_repo': 'ethically',
     'github_banner': True,
 }
 
@@ -134,7 +134,7 @@ html_static_path = ['_static']
 # -- Options for HTMLHelp output ---------------------------------------------
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'Responsiblydoc'
+htmlhelp_basename = 'Ethicallydoc'
 
 
 # -- Options for LaTeX output ------------------------------------------------
@@ -161,7 +161,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'Responsibly.tex', 'Responsibly Documentation',
+    (master_doc, 'Ethically.tex', 'Ethically Documentation',
      'Shlomi Hod', 'manual'),
 ]
 
@@ -171,7 +171,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'responsibly', 'Responsibly Documentation',
+    (master_doc, 'ethically', 'Ethically Documentation',
      [author], 1)
 ]
 
@@ -182,8 +182,8 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'Responsibly', 'Responsibly Documentation',
-     author, 'Responsibly', 'One line description of project.',
+    (master_doc, 'Ethically', 'Ethically Documentation',
+     author, 'Ethically', 'One line description of project.',
      'Miscellaneous'),
 ]
 

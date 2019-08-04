@@ -1,29 +1,29 @@
 Datasets
 ========
 
-.. automodule:: responsibly.dataset
+.. automodule:: ethically.dataset
 
 General Dataset
 ---------------
-.. autoclass:: responsibly.dataset.Dataset
+.. autoclass:: ethically.dataset.Dataset
     :members:
 
 Available Datasets
 ------------------
 
-.. autoclass:: responsibly.dataset.COMPASDataset
+.. autoclass:: ethically.dataset.COMPASDataset
     :members:
 
 
-.. autoclass:: responsibly.dataset.AdultDataset
+.. autoclass:: ethically.dataset.AdultDataset
     :members:
 
 
-.. autoclass:: responsibly.dataset.GermanDataset
+.. autoclass:: ethically.dataset.GermanDataset
     :members:
 
 
 FICO Dataset
 ------------
 
-.. autofunction:: responsibly.dataset.build_FICO_dataset
+.. autofunction:: ethically.dataset.build_FICO_dataset
