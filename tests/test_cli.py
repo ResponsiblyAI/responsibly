@@ -6,7 +6,7 @@
 #
 # from click.testing import CliRunner
 #
-# from ethically.cli import main
+# from responsibly.cli import main
 #
 #
 # @pytest.fixture
