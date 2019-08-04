@@ -10,7 +10,7 @@ Revision History
 
   - Improve functionality of ``BiasWordEmbedding``
 
-- Threshold fainess interventions
+- Threshold fairness interventions
 
   - Fix bugs with ROCs handling
   - Improve API and add functionality (``plot_thresholds``)
