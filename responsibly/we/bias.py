@@ -122,8 +122,6 @@ class BiasWordEmbedding:
 
     def __init__(self, model, only_lower=False, verbose=False,
                  identify_direction=False, to_normalize=True):
-        # pylint: disable=undefined-variable
-
         assert_gensim_keyed_vectors(model)
 
         # TODO: this is bad Python, ask someone about it
@@ -524,7 +522,7 @@ class BiasWordEmbedding:
         :return: Data Frame of analogies (x, y), their distances,
                  and their cosine similarity scores
         """
-        # pylint: disable=C0301,R0914,E1136
+        # pylint: disable=C0301,R0914
 
         if not unrestricted:
             warnings.warn('Not Using unrestricted most_similar '
