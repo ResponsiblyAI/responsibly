@@ -83,6 +83,7 @@ from scipy.stats import pearsonr, spearmanr
 from sklearn.decomposition import PCA
 from sklearn.metrics.pairwise import euclidean_distances
 from sklearn.svm import LinearSVC
+from tabulate import tabulate
 from tqdm import tqdm
 
 from responsibly.consts import RANDOM_STATE
@@ -96,7 +97,6 @@ from responsibly.we.utils import (
     project_vector, reject_vector, round_to_extreme,
     take_two_sides_extreme_sorted, update_word_vector,
 )
-from tabulate import tabulate
 
 
 DIRECTION_METHODS = ['single', 'sum', 'pca']
@@ -348,10 +348,11 @@ class BiasWordEmbedding:
         projections_df['color'] = ((projections_df['projection'] + 0.5)
                                    .apply(cmap))
 
-        most_extream_projection = (projections_df['projection']
-                                   .abs()
-                                   .max()
-                                   .round(1))
+        most_extream_projection = np.round(
+            projections_df['projection']
+            .abs()
+            .max(),
+            decimals=1)
 
         sns.barplot(x='projection', y='word', data=projections_df,
                     palette=projections_df['color'])
