@@ -58,6 +58,7 @@ def test_assert_gensim_keyed_vectors():
 
 
 def test_project_params():
+    # pylint: disable=arguments-out-of-order
     v = np.array([1, 2, 3])
     u = np.array([-4, 5, -6])
 
