@@ -49,7 +49,3 @@ jupyter = "*"
 notebook = ">=5.7.8"
 requests = ">=2.20.0"
 sniffer = "*"
-
-# Travis Hack (becaouse of botocore)
-# TODO: Remove me in the future future
-python-dateutil = "<2.8.1,>=2.1"
