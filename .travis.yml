@@ -22,6 +22,7 @@ env:
 
 before_install:
   - "sudo apt-get install python3-tk"
+  - pip install --upgrade pip
   - pip install pipenv
   - make doctor
 
