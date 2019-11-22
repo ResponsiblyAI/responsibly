@@ -77,7 +77,7 @@ setuptools.setup(
     install_requires=[
         "numpy >= 1.15",
         "scipy >= 1.1",
-        "pandas >= 0.23, < 0.24", # >= 0.25 supports only Python >= 3.5.3
+        "pandas >= 0.23",
         "matplotlib >= 2.2, < 3",
         "seaborn >= 0.9",
         "scikit-learn >= 0.19",
