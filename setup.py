@@ -77,7 +77,7 @@ setuptools.setup(
     install_requires=[
         "numpy >= 1.15",
         "scipy >= 1.1",
-        "pandas >= 0.23",
+        "pandas >= 0.23, < 0.24", # >= 0.25 supports only Python >= 3.5.3
         "matplotlib >= 2.2, < 3",
         "seaborn >= 0.9",
         "scikit-learn >= 0.19",
@@ -89,6 +89,6 @@ setuptools.setup(
         "mlxtend >= 0.13, < 0.17",
         # Travis Hack (becaouse of botocore)
         # TODO: Remove me in the future future
-        "python-dateutil < 2.8.1, >=2.1",
+        "python-dateutil < 2.8.1, >= 2.1",
     ],
 )
