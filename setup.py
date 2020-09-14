@@ -87,8 +87,5 @@ setuptools.setup(
         "click >= 6.0",
         "tqdm >= 4.24",
         "mlxtend >= 0.13, < 0.17",
-        # Travis Hack (becaouse of botocore)
-        # TODO: Remove me in the future future
-        "python-dateutil < 2.8.1, >= 2.1",
     ],
 )

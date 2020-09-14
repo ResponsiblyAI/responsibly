@@ -24,7 +24,7 @@ def _get_labels(ys, labels):
         labels = unique_labels(ys)
     else:
         labels = np.asarray(labels)
-        if np.all([l not in ys for l in labels]):
+        if np.all([label not in ys for label in labels]):
             raise ValueError('At least one label specified must be in y.')
 
     return labels
