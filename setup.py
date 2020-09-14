@@ -79,5 +79,6 @@ setuptools.setup(
         "click >= 6.0",
         "tqdm >= 4.24",
         "mlxtend >= 0.13, < 0.17",
+        "zipp >= 2.2",  # work around for tavis ci issue
     ],
 )
