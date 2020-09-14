@@ -190,6 +190,7 @@ def roc_curve_by_attr(y_true, y_score, x_sens,
 
     grouped = _groupby_y_x_sens(y_true, y_score, x_sens)
 
+    # pylint: disable=too-many-function-args
     roc_curves = {x_sens_value: roc_curve(group['y_true'],
                                           group['y_score'],
                                           pos_label, sample_weight,
