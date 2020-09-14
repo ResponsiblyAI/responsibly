@@ -5,15 +5,18 @@ def pytest_configure(config):
     """Disable verbose output when running tests."""
 
     terminal = config.pluginmanager.getplugin('terminal')
-    base = terminal.TerminalReporter
 
-    class QuietReporter(base):
-        """Reporter that only shows dots when running tests."""
+    class QuietReporter(terminal.TerminalReporter):
+        @property
+        def verbosity(self):
+            return 0
 
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            self.verbosity = 0
-            self.showlongtestinfo = False
-            self.showfspath = False
+        @property
+        def showlongtestinfo(self):
+            return False
+
+        @property
+        def showfspath(self):
+            return False
 
     terminal.TerminalReporter = QuietReporter

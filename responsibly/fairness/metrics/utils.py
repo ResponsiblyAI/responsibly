@@ -1,5 +1,5 @@
 import pandas as pd
-from sklearn.metrics.classification import _check_targets
+from sklearn.metrics._classification import _check_targets
 
 
 def _assert_binary(y1, y2=None):

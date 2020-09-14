@@ -1,14 +1,11 @@
-dist: xenial   # required for Python >= 3.7
 language: python
 python:
-  - "3.5"
-  - "3.5-dev"  # 3.5 development branch
   - "3.6"
-  - "3.6-dev"  # 3.6 development branch
   - "3.7"
-  - "3.7-dev"  # 3.7 development branch
+  - "3.7"
+  - "3.8"
   - "3.8-dev"  # 3.8 development branch
-  - "nightly"  # nightly build
+  # - "nightly"  # nightly build
 
 cache:
   pip: true
@@ -18,22 +15,24 @@ cache:
 env:
   global:
     - RANDOM_SEED=0
-    - BOTO_CONFIG=/dev/null  # https://github.com/travis-ci/travis-ci/issues/7940
+    # https://github.com/travis-ci/travis-ci/issues/7940
+    - BOTO_CONFIG=/dev/null
 
 before_install:
   - "sudo apt-get install python3-tk"
-  - pip install pipenv
+  # Work around https://github.com/jaraco/zipp/issues/40
+  - python -m pip install -U --upgrade pip setuptools virtualenv
+  - python -m pip install -U pipenv 
   - make doctor
 
 install:
   - make install
 
 script:
-  - make check
-  - make test
+  - make ci
 
 after_success:
-  - pip install coveralls scrutinizer-ocular
+  - python -m pip install -U coveralls scrutinizer-ocular
   - coveralls
   - ocular
 

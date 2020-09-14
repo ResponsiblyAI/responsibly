@@ -24,7 +24,7 @@ def _get_labels(ys, labels):
         labels = unique_labels(ys)
     else:
         labels = np.asarray(labels)
-        if np.all([l not in ys for l in labels]):
+        if np.all([label not in ys for label in labels]):
             raise ValueError('At least one label specified must be in y.')
 
     return labels
@@ -190,6 +190,7 @@ def roc_curve_by_attr(y_true, y_score, x_sens,
 
     grouped = _groupby_y_x_sens(y_true, y_score, x_sens)
 
+    # pylint: disable=too-many-function-args
     roc_curves = {x_sens_value: roc_curve(group['y_true'],
                                           group['y_score'],
                                           pos_label, sample_weight,

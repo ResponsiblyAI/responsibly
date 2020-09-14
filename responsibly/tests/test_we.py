@@ -58,6 +58,7 @@ def test_assert_gensim_keyed_vectors():
 
 
 def test_project_params():
+    # pylint: disable=arguments-out-of-order
     v = np.array([1, 2, 3])
     u = np.array([-4, 5, -6])
 
@@ -454,5 +455,5 @@ def test_compute_association(gender_biased_w2v_small):
     """
     (r, pvalue), _ = gender_biased_w2v_small.compute_factual_association()
 
-    assert isclose(r, 0.7070401592764508)
-    assert isclose(pvalue, 1.4324502214459908e-06)
+    assert isclose(r, 0.7070401592764508, abs_tol=ATOL)
+    assert isclose(pvalue, 1.4324502214459908e-06, abs_tol=ATOL)

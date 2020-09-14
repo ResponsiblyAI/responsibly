@@ -7,13 +7,6 @@ import setuptools
 
 
 PACKAGE_NAME = 'responsibly'
-MINIMUM_PYTHON_VERSION = '3.5'
-
-
-def check_python_version():
-    """Exit when the Python version is too low."""
-    if sys.version < MINIMUM_PYTHON_VERSION:
-        sys.exit("Python {0}+ is required.".format(MINIMUM_PYTHON_VERSION))
 
 
 def read_package_variable(key, filename='__init__.py'):
@@ -35,8 +28,6 @@ def build_description():
         changelog = f.read()
     return readme + '\n' + changelog
 
-
-check_python_version()
 
 setuptools.setup(
     name=read_package_variable('__project__'),
@@ -69,10 +60,11 @@ setuptools.setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3 :: Only',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
     ],
+
+    python_requires='>=3.6',
 
     install_requires=[
         "numpy >= 1.15",
