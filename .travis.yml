@@ -22,7 +22,7 @@ before_install:
   - python -m pip install -U --upgrade pip
   - python -m pip install -U  pipenv
   # Work around https://github.com/jaraco/zipp/issues/40.
-  - python -m pip install -U 'setuptools>=34.4.0' virtualenv==16.7.9
+  - python -m pip install -U zipp
   - make doctor
 
 install:
