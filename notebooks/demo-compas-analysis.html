@@ -1,18 +1,19 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>Demo - Fairness Analysis of COMPAS by ProPublica &#8212; Responsibly 0.1.1 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demo - Fairness Analysis of COMPAS by ProPublica &#8212; Responsibly 0.1.2 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Demo - Fairness Analysis of FICO" href="demo-fico-analysis.html" />
@@ -42,12 +43,12 @@ methodology</a>
 in another tab to understand the following.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">from</span> <span class="nn">scipy</span> <span class="k">import</span> <span class="n">stats</span>
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pylab</span> <span class="k">as</span> <span class="nn">plt</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
 
-<span class="kn">from</span> <span class="nn">responsibly.dataset</span> <span class="k">import</span> <span class="n">COMPASDataset</span>
-<span class="kn">from</span> <span class="nn">responsibly.fairness.metrics</span> <span class="k">import</span> <span class="n">distplot_by</span>
+<span class="kn">from</span> <span class="nn">responsibly.dataset</span> <span class="kn">import</span> <span class="n">COMPASDataset</span>
+<span class="kn">from</span> <span class="nn">responsibly.fairness.metrics</span> <span class="kn">import</span> <span class="n">distplot_by</span>
 </pre></div>
 </div>
 <div class="section" id="loading-the-data">
@@ -479,7 +480,7 @@ decile scores as those scores increase for white defendants.</p>
 <div class="section" id="fairness-demographic-classification-criteria">
 <h2>Fairness Demographic Classification Criteria<a class="headerlink" href="#fairness-demographic-classification-criteria" title="Permalink to this headline">¶</a></h2>
 <p>Based on: <a class="reference external" href="https://fairmlbook.org/demographic.html">https://fairmlbook.org/demographic.html</a></p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">responsibly.fairness.metrics</span> <span class="k">import</span> <span class="p">(</span><span class="n">independence_binary</span><span class="p">,</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">responsibly.fairness.metrics</span> <span class="kn">import</span> <span class="p">(</span><span class="n">independence_binary</span><span class="p">,</span>
                                         <span class="n">separation_binary</span><span class="p">,</span>
                                         <span class="n">sufficiency_binary</span><span class="p">,</span>
                                         <span class="n">independence_score</span><span class="p">,</span>
@@ -780,8 +781,8 @@ decile scores as those scores increase for white defendants.</p>
 </div>
 <div class="section" id="threshold-intervention">
 <h2>Threshold Intervention<a class="headerlink" href="#threshold-intervention" title="Permalink to this headline">¶</a></h2>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">responsibly.fairness.metrics</span> <span class="k">import</span> <span class="n">roc_curve_by_attr</span>
-<span class="kn">from</span> <span class="nn">responsibly.fairness.interventions.threshold</span> <span class="k">import</span> <span class="p">(</span><span class="n">find_thresholds_by_attr</span><span class="p">,</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">responsibly.fairness.metrics</span> <span class="kn">import</span> <span class="n">roc_curve_by_attr</span>
+<span class="kn">from</span> <span class="nn">responsibly.fairness.interventions.threshold</span> <span class="kn">import</span> <span class="p">(</span><span class="n">find_thresholds_by_attr</span><span class="p">,</span>
                                                           <span class="n">plot_fpt_tpr</span><span class="p">,</span>
                                                           <span class="n">plot_roc_curves_thresholds</span><span class="p">,</span>
                                                           <span class="n">plot_costs</span><span class="p">,</span>
@@ -903,7 +904,7 @@ decile scores as those scores increase for white defendants.</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -920,7 +921,7 @@ decile scores as those scores increase for white defendants.</p>
       &copy;2018, Shlomi Hod.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

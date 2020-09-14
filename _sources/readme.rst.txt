@@ -63,7 +63,7 @@ or write us in `Gitter <https://gitter.im/ResponsiblyAI/responsibly>`_.
 Requirements
 ------------
 
--  Python 3.5+
+-  Python 3.6+
 
 Installation
 ------------

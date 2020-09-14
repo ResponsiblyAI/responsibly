@@ -1,18 +1,19 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>Demo - Bias in Word Embedding &#8212; Responsibly 0.1.1 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demo - Bias in Word Embedding &#8212; Responsibly 0.1.2 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="For Contributors" href="../about/contributing.html" />
@@ -44,8 +45,8 @@ on one.</p>
 <h2>Imports<a class="headerlink" href="#imports" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">matplotlib.pylab</span> <span class="k">as</span> <span class="nn">plt</span>
 
-<span class="kn">from</span> <span class="nn">gensim</span> <span class="k">import</span> <span class="n">downloader</span>
-<span class="kn">from</span> <span class="nn">gensim.models</span> <span class="k">import</span> <span class="n">KeyedVectors</span>
+<span class="kn">from</span> <span class="nn">gensim</span> <span class="kn">import</span> <span class="n">downloader</span>
+<span class="kn">from</span> <span class="nn">gensim.models</span> <span class="kn">import</span> <span class="n">KeyedVectors</span>
 </pre></div>
 </div>
 </div>
@@ -80,11 +81,11 @@ on one.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">gzip</span>
 <span class="kn">import</span> <span class="nn">shutil</span>
-<span class="kn">from</span> <span class="nn">urllib.request</span> <span class="k">import</span> <span class="n">urlretrieve</span>
-<span class="kn">from</span> <span class="nn">zipfile</span> <span class="k">import</span> <span class="n">ZipFile</span>
-<span class="kn">from</span> <span class="nn">pathlib</span> <span class="k">import</span> <span class="n">Path</span>
+<span class="kn">from</span> <span class="nn">urllib.request</span> <span class="kn">import</span> <span class="n">urlretrieve</span>
+<span class="kn">from</span> <span class="nn">zipfile</span> <span class="kn">import</span> <span class="n">ZipFile</span>
+<span class="kn">from</span> <span class="nn">pathlib</span> <span class="kn">import</span> <span class="n">Path</span>
 
-<span class="kn">from</span> <span class="nn">gensim.scripts.glove2word2vec</span> <span class="k">import</span> <span class="n">glove2word2vec</span>
+<span class="kn">from</span> <span class="nn">gensim.scripts.glove2word2vec</span> <span class="kn">import</span> <span class="n">glove2word2vec</span>
 
 <span class="n">GLOVE_PATH</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -117,7 +118,7 @@ on one.</p>
 Saligrama, and Adam T. Kalai. <a class="reference external" href="https://arxiv.org/abs/1607.06520">Man is to computer programmer as woman is
 to homemaker? debiasing word
 embeddings</a>. NIPS 2016.</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">responsibly.we</span> <span class="k">import</span> <span class="n">GenderBiasWE</span><span class="p">,</span> <span class="n">most_similar</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">responsibly.we</span> <span class="kn">import</span> <span class="n">GenderBiasWE</span><span class="p">,</span> <span class="n">most_similar</span>
 </pre></div>
 </div>
 <div class="section" id="create-a-gender-bias-word-embedding-object-genderbiaswe">
@@ -608,7 +609,7 @@ be <em>matched</em> if the generated <code class="docutils literal notranslate">
 <p>Note: running with <code class="docutils literal notranslate"><span class="pre">unrestricted=True</span></code> may take some minutes on the
 original word embedding. Therefore we will use a reduced version of
 Word2Vec which is available in <em>responsibly</em>.</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">responsibly.we</span> <span class="k">import</span> <span class="n">load_w2v_small</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">responsibly.we</span> <span class="kn">import</span> <span class="n">load_w2v_small</span>
 
 <span class="n">model_w2v_small</span> <span class="o">=</span> <span class="n">load_w2v_small</span><span class="p">()</span>
 <span class="n">w2v_small_gender_bias_we</span> <span class="o">=</span> <span class="n">GenderBiasWE</span><span class="p">(</span><span class="n">model_w2v_small</span><span class="p">)</span>
@@ -842,7 +843,7 @@ Word2Vec which is available in <em>responsibly</em>.</p>
 <h3>Association with percentage of female in occupation<a class="headerlink" href="#association-with-percentage-of-female-in-occupation" title="Permalink to this headline">¶</a></h3>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-<span class="kn">from</span> <span class="nn">responsibly.we.data</span> <span class="k">import</span> <span class="n">OCCUPATION_FEMALE_PRECENTAGE</span>
+<span class="kn">from</span> <span class="nn">responsibly.we.data</span> <span class="kn">import</span> <span class="n">OCCUPATION_FEMALE_PRECENTAGE</span>
 
 <span class="n">pd</span><span class="o">.</span><span class="n">Series</span><span class="p">(</span><span class="n">OCCUPATION_FEMALE_PRECENTAGE</span><span class="p">)</span><span class="o">.</span><span class="n">sort_values</span><span class="p">()</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">kind</span><span class="o">=</span><span class="s1">&#39;barh&#39;</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">));</span>
 </pre></div>
@@ -1944,8 +1945,8 @@ gender direction.</p>
 </div>
 <div class="section" id="can-we-identify-race-bias-exploratory-api-may-change-in-a-future-release">
 <h3>Can we identify race bias? (Exploratory - API may change in a future release)<a class="headerlink" href="#can-we-identify-race-bias-exploratory-api-may-change-in-a-future-release" title="Permalink to this headline">¶</a></h3>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">responsibly.we</span> <span class="k">import</span> <span class="n">BiasWordEmbedding</span>
-<span class="kn">from</span> <span class="nn">responsibly.we.data</span> <span class="k">import</span> <span class="n">BOLUKBASI_DATA</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">responsibly.we</span> <span class="kn">import</span> <span class="n">BiasWordEmbedding</span>
+<span class="kn">from</span> <span class="nn">responsibly.we.data</span> <span class="kn">import</span> <span class="n">BOLUKBASI_DATA</span>
 </pre></div>
 </div>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">white_common_names</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Emily&#39;</span><span class="p">,</span> <span class="s1">&#39;Anne&#39;</span><span class="p">,</span> <span class="s1">&#39;Jill&#39;</span><span class="p">,</span> <span class="s1">&#39;Allison&#39;</span><span class="p">,</span> <span class="s1">&#39;Laurie&#39;</span><span class="p">,</span> <span class="s1">&#39;Sarah&#39;</span><span class="p">,</span> <span class="s1">&#39;Meredith&#39;</span><span class="p">,</span> <span class="s1">&#39;Carrie&#39;</span><span class="p">,</span>
@@ -2484,7 +2485,7 @@ gender direction.</p>
 human-like
 biases</a>.
 Science, 356(6334), 183-186.</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">responsibly.we</span> <span class="k">import</span> <span class="n">calc_all_weat</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">responsibly.we</span> <span class="kn">import</span> <span class="n">calc_all_weat</span>
 </pre></div>
 </div>
 <div class="section" id="first-lets-look-on-a-reduced-version-of-word2vec">
@@ -3020,7 +3021,7 @@ Science, 356(6334), 183-186.</p>
 <div class="section" id="it-is-possible-also-to-expirements-with-new-target-word-sets-as-in-this-example-citizen-immigrant">
 <h3>It is possible also to expirements with new target word sets as in this example (Citizen-Immigrant)<a class="headerlink" href="#it-is-possible-also-to-expirements-with-new-target-word-sets-as-in-this-example-citizen-immigrant" title="Permalink to this headline">¶</a></h3>
 <p>No WEAT bias in this case.</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">responsibly.we</span> <span class="k">import</span> <span class="n">calc_weat_pleasant_unpleasant_attribute</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">responsibly.we</span> <span class="kn">import</span> <span class="n">calc_weat_pleasant_unpleasant_attribute</span>
 
 <span class="n">targets</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;first_target&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;name&#39;</span><span class="p">:</span> <span class="s1">&#39;Citizen&#39;</span><span class="p">,</span>
                             <span class="s1">&#39;words&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;citizen&#39;</span><span class="p">,</span> <span class="s1">&#39;citizenship&#39;</span><span class="p">,</span> <span class="s1">&#39;nationality&#39;</span><span class="p">,</span> <span class="s1">&#39;native&#39;</span><span class="p">,</span> <span class="s1">&#39;national&#39;</span><span class="p">,</span> <span class="s1">&#39;countryman&#39;</span><span class="p">,</span>
@@ -3228,8 +3229,8 @@ experiment are handled by the debiasing method.</p>
 <p>Let’s use the target words of the first experiment (Male names
 vs. Female names) with the target words of the other two experiments as
 attribute words (Math vs. Arts and Science vs. Arts).</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">responsibly.we</span> <span class="k">import</span> <span class="n">calc_single_weat</span>
-<span class="kn">from</span> <span class="nn">responsibly.we.data</span> <span class="k">import</span> <span class="n">WEAT_DATA</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">responsibly.we</span> <span class="kn">import</span> <span class="n">calc_single_weat</span>
+<span class="kn">from</span> <span class="nn">responsibly.we.data</span> <span class="kn">import</span> <span class="n">WEAT_DATA</span>
 </pre></div>
 </div>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Significant result</span>
@@ -3338,7 +3339,7 @@ attribute words (Math vs. Arts and Science vs. Arts).</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -3355,7 +3356,7 @@ attribute words (Math vs. Arts and Science vs. Arts).</p>
       &copy;2018, Shlomi Hod.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

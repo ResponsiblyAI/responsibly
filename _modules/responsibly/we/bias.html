@@ -1,18 +1,19 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>responsibly.we.bias &#8212; Responsibly 0.1.1 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>responsibly.we.bias &#8212; Responsibly 0.1.2 documentation</title>
     <link rel="stylesheet" href="../../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../../../_static/jquery.js"></script>
-    <script type="text/javascript" src="../../../_static/underscore.js"></script>
-    <script type="text/javascript" src="../../../_static/doctools.js"></script>
-    <script type="text/javascript" src="../../../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/jquery.js"></script>
+    <script src="../../../_static/underscore.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
    
@@ -113,24 +114,24 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">seaborn</span> <span class="k">as</span> <span class="nn">sns</span>
-<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="k">import</span> <span class="n">pearsonr</span><span class="p">,</span> <span class="n">spearmanr</span>
-<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="k">import</span> <span class="n">PCA</span>
-<span class="kn">from</span> <span class="nn">sklearn.metrics.pairwise</span> <span class="k">import</span> <span class="n">euclidean_distances</span>
-<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="k">import</span> <span class="n">LinearSVC</span>
-<span class="kn">from</span> <span class="nn">tqdm</span> <span class="k">import</span> <span class="n">tqdm</span>
+<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">pearsonr</span><span class="p">,</span> <span class="n">spearmanr</span>
+<span class="kn">from</span> <span class="nn">sklearn.decomposition</span> <span class="kn">import</span> <span class="n">PCA</span>
+<span class="kn">from</span> <span class="nn">sklearn.metrics.pairwise</span> <span class="kn">import</span> <span class="n">euclidean_distances</span>
+<span class="kn">from</span> <span class="nn">sklearn.svm</span> <span class="kn">import</span> <span class="n">LinearSVC</span>
+<span class="kn">from</span> <span class="nn">tabulate</span> <span class="kn">import</span> <span class="n">tabulate</span>
+<span class="kn">from</span> <span class="nn">tqdm</span> <span class="kn">import</span> <span class="n">tqdm</span>
 
-<span class="kn">from</span> <span class="nn">responsibly.consts</span> <span class="k">import</span> <span class="n">RANDOM_STATE</span>
-<span class="kn">from</span> <span class="nn">responsibly.utils</span> <span class="k">import</span> <span class="n">_warning_setup</span>
-<span class="kn">from</span> <span class="nn">responsibly.we.benchmark</span> <span class="k">import</span> <span class="n">evaluate_word_embedding</span>
-<span class="kn">from</span> <span class="nn">responsibly.we.data</span> <span class="k">import</span> <span class="n">BOLUKBASI_DATA</span><span class="p">,</span> <span class="n">OCCUPATION_FEMALE_PRECENTAGE</span>
-<span class="kn">from</span> <span class="nn">responsibly.we.utils</span> <span class="k">import</span> <span class="p">(</span>
+<span class="kn">from</span> <span class="nn">responsibly.consts</span> <span class="kn">import</span> <span class="n">RANDOM_STATE</span>
+<span class="kn">from</span> <span class="nn">responsibly.utils</span> <span class="kn">import</span> <span class="n">_warning_setup</span>
+<span class="kn">from</span> <span class="nn">responsibly.we.benchmark</span> <span class="kn">import</span> <span class="n">evaluate_word_embedding</span>
+<span class="kn">from</span> <span class="nn">responsibly.we.data</span> <span class="kn">import</span> <span class="n">BOLUKBASI_DATA</span><span class="p">,</span> <span class="n">OCCUPATION_FEMALE_PRECENTAGE</span>
+<span class="kn">from</span> <span class="nn">responsibly.we.utils</span> <span class="kn">import</span> <span class="p">(</span>
     <span class="n">assert_gensim_keyed_vectors</span><span class="p">,</span> <span class="n">cosine_similarity</span><span class="p">,</span> <span class="n">generate_one_word_forms</span><span class="p">,</span>
     <span class="n">generate_words_forms</span><span class="p">,</span> <span class="n">get_seed_vector</span><span class="p">,</span> <span class="n">most_similar</span><span class="p">,</span> <span class="n">normalize</span><span class="p">,</span>
     <span class="n">plot_clustering_as_classification</span><span class="p">,</span> <span class="n">project_params</span><span class="p">,</span> <span class="n">project_reject_vector</span><span class="p">,</span>
     <span class="n">project_vector</span><span class="p">,</span> <span class="n">reject_vector</span><span class="p">,</span> <span class="n">round_to_extreme</span><span class="p">,</span>
     <span class="n">take_two_sides_extreme_sorted</span><span class="p">,</span> <span class="n">update_word_vector</span><span class="p">,</span>
 <span class="p">)</span>
-<span class="kn">from</span> <span class="nn">tabulate</span> <span class="k">import</span> <span class="n">tabulate</span>
 
 
 <span class="n">DIRECTION_METHODS</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;single&#39;</span><span class="p">,</span> <span class="s1">&#39;sum&#39;</span><span class="p">,</span> <span class="s1">&#39;pca&#39;</span><span class="p">]</span>
@@ -154,8 +155,10 @@
 <span class="sd">                              (recommended!)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">only_lower</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">only_lower</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">identify_direction</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">to_normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+        <span class="c1"># pylint: disable=undefined-variable</span>
+
         <span class="n">assert_gensim_keyed_vectors</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 
         <span class="c1"># TODO: this is bad Python, ask someone about it</span>
@@ -197,10 +200,10 @@
         <span class="n">bias_word_embedding</span><span class="o">.</span><span class="n">model</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">bias_word_embedding</span><span class="o">.</span><span class="n">model</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">bias_word_embedding</span>
 
-    <span class="k">def</span> <span class="nf">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__getitem__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">key</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">item</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span>
 
     <span class="k">def</span> <span class="nf">_filter_words_by_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">words</span><span class="p">):</span>
@@ -380,10 +383,11 @@
         <span class="n">projections_df</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="p">((</span><span class="n">projections_df</span><span class="p">[</span><span class="s1">&#39;projection&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span>
                                    <span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">cmap</span><span class="p">))</span>
 
-        <span class="n">most_extream_projection</span> <span class="o">=</span> <span class="p">(</span><span class="n">projections_df</span><span class="p">[</span><span class="s1">&#39;projection&#39;</span><span class="p">]</span>
-                                   <span class="o">.</span><span class="n">abs</span><span class="p">()</span>
-                                   <span class="o">.</span><span class="n">max</span><span class="p">()</span>
-                                   <span class="o">.</span><span class="n">round</span><span class="p">(</span><span class="mi">1</span><span class="p">))</span>
+        <span class="n">most_extream_projection</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
+            <span class="n">projections_df</span><span class="p">[</span><span class="s1">&#39;projection&#39;</span><span class="p">]</span>
+            <span class="o">.</span><span class="n">abs</span><span class="p">()</span>
+            <span class="o">.</span><span class="n">max</span><span class="p">(),</span>
+            <span class="n">decimals</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 
         <span class="n">sns</span><span class="o">.</span><span class="n">barplot</span><span class="p">(</span><span class="n">x</span><span class="o">=</span><span class="s1">&#39;projection&#39;</span><span class="p">,</span> <span class="n">y</span><span class="o">=</span><span class="s1">&#39;word&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="n">projections_df</span><span class="p">,</span>
                     <span class="n">palette</span><span class="o">=</span><span class="n">projections_df</span><span class="p">[</span><span class="s1">&#39;color&#39;</span><span class="p">])</span>
@@ -556,7 +560,7 @@
 <span class="sd">        :return: Data Frame of analogies (x, y), their distances,</span>
 <span class="sd">                 and their cosine similarity scores</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># pylint: disable=C0301,R0914</span>
+        <span class="c1"># pylint: disable=C0301,R0914,E1136</span>
 
         <span class="k">if</span> <span class="ow">not</span> <span class="n">unrestricted</span><span class="p">:</span>
             <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="s1">&#39;Not Using unrestricted most_similar &#39;</span>
@@ -1130,7 +1134,7 @@
 <span class="sd">                              (recommended!)</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">only_lower</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model</span><span class="p">,</span> <span class="n">only_lower</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">identify_direction</span><span class="o">=</span><span class="s1">&#39;pca&#39;</span><span class="p">,</span> <span class="n">to_normalize</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
                          <span class="n">only_lower</span><span class="o">=</span><span class="n">only_lower</span><span class="p">,</span>
@@ -1302,7 +1306,7 @@
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -1319,7 +1323,7 @@
       &copy;2018, Shlomi Hod.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

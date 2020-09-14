@@ -1,18 +1,19 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>Demo - Fairness Analysis of FICO &#8212; Responsibly 0.1.1 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Demo - Fairness Analysis of FICO &#8212; Responsibly 0.1.2 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Demo - Bias in Word Embedding" href="demo-word-embedding-bias.html" />
@@ -83,8 +84,8 @@ national origin, sex, marital status, or age.</p>
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pylab</span> <span class="k">as</span> <span class="nn">plt</span>
 
-<span class="kn">from</span> <span class="nn">responsibly.fairness.metrics</span> <span class="k">import</span> <span class="n">plot_roc_curves</span>
-<span class="kn">from</span> <span class="nn">responsibly.fairness.interventions.threshold</span> <span class="k">import</span> <span class="p">(</span><span class="n">find_thresholds</span><span class="p">,</span>
+<span class="kn">from</span> <span class="nn">responsibly.fairness.metrics</span> <span class="kn">import</span> <span class="n">plot_roc_curves</span>
+<span class="kn">from</span> <span class="nn">responsibly.fairness.interventions.threshold</span> <span class="kn">import</span> <span class="p">(</span><span class="n">find_thresholds</span><span class="p">,</span>
                                                           <span class="n">plot_fpt_tpr</span><span class="p">,</span>
                                                           <span class="n">plot_roc_curves_thresholds</span><span class="p">,</span>
                                                           <span class="n">plot_costs</span><span class="p">,</span>
@@ -98,7 +99,7 @@ national origin, sex, marital status, or age.</p>
 in this case, is <em>aggregate</em>, i.e., there is no outcome and prediction
 information per individual, but summarized statistics for each FICO
 score and race/race/ethnicity group.</p>
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">responsibly.dataset</span> <span class="k">import</span> <span class="n">build_FICO_dataset</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">responsibly.dataset</span> <span class="kn">import</span> <span class="n">build_FICO_dataset</span>
 
 <span class="n">FICO</span> <span class="o">=</span> <span class="n">build_FICO_dataset</span><span class="p">()</span>
 </pre></div>
@@ -675,7 +676,7 @@ classifier with different positive predictive values in each group.</p>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -692,7 +693,7 @@ classifier with different positive predictive values in each group.</p>
       &copy;2018, Shlomi Hod.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

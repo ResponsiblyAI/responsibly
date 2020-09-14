@@ -1,18 +1,19 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>Datasets &#8212; Responsibly 0.1.1 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Datasets &#8212; Responsibly 0.1.2 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Classification Fairness" href="fairness.html" />
@@ -36,7 +37,7 @@
   <div class="section" id="module-responsibly.dataset">
 <span id="datasets"></span><h1>Datasets<a class="headerlink" href="#module-responsibly.dataset" title="Permalink to this headline">¶</a></h1>
 <p>Collection of common benchmark datasets from fairness research.</p>
-<p>Each dataset object contains a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> as <cite>df</cite> attribute
+<p>Each dataset object contains a <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> as <cite>df</cite> attribute
 that holds the actual data.
 The dataset object will take care of loading, preprocessing
 and validating the data.
@@ -62,7 +63,7 @@ see <a class="reference internal" href="#responsibly.dataset.build_FICO_dataset"
 <h2>Usage<a class="headerlink" href="#usage" title="Permalink to this headline">¶</a></h2>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">responsibly.dataset</span> <span class="kn">import</span> <span class="n">COMPASDataset</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">compas_ds</span> <span class="o">=</span> <span class="n">COMPASDataset</span><span class="p">()</span>
-<span class="gp">&gt;&gt;&gt; </span><span class="k">print</span><span class="p">(</span><span class="n">compas_ds</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="nb">print</span><span class="p">(</span><span class="n">compas_ds</span><span class="p">)</span>
 <span class="go">&lt;ProPublica Recidivism/COMPAS Dataset. 6172 rows, 56 columns in</span>
 <span class="go">which {race, sex} are sensitive attributes&gt;</span>
 <span class="gp">&gt;&gt;&gt; </span><span class="nb">type</span><span class="p">(</span><span class="n">compas_ds</span><span class="o">.</span><span class="n">df</span><span class="p">)</span>
@@ -80,14 +81,13 @@ see <a class="reference internal" href="#responsibly.dataset.build_FICO_dataset"
 </div>
 <div class="section" id="general-dataset">
 <h2>General Dataset<a class="headerlink" href="#general-dataset" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="py class">
 <dt id="responsibly.dataset.Dataset">
-<em class="property">class </em><code class="sig-prename descclassname">responsibly.dataset.</code><code class="sig-name descname">Dataset</code><span class="sig-paren">(</span><em class="sig-param">target</em>, <em class="sig-param">sensitive_attributes</em>, <em class="sig-param">prediction=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/dataset/core.html#Dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.dataset.Dataset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3/library/abc.html#abc.ABC" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></a></p>
-<p>Base class for datasets.</p>
+<em class="property">class </em><code class="sig-prename descclassname">responsibly.dataset.</code><code class="sig-name descname">Dataset</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">target</span></em>, <em class="sig-param"><span class="n">sensitive_attributes</span></em>, <em class="sig-param"><span class="n">prediction</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/dataset/core.html#Dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.dataset.Dataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class for datasets.</p>
 <dl class="simple">
 <dt>Attributes</dt><dd><ul class="simple">
-<li><p><cite>df</cite> - <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v0.25.0)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> that holds the actual data.</p></li>
+<li><p><cite>df</cite> - <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> that holds the actual data.</p></li>
 <li><dl class="simple">
 <dt><cite>target</cite> - Column name of the variable to predict</dt><dd><p>(ground truth)</p>
 </dd>
@@ -111,11 +111,10 @@ see <a class="reference internal" href="#responsibly.dataset.build_FICO_dataset"
 </div>
 <div class="section" id="available-datasets">
 <h2>Available Datasets<a class="headerlink" href="#available-datasets" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="py class">
 <dt id="responsibly.dataset.COMPASDataset">
 <em class="property">class </em><code class="sig-prename descclassname">responsibly.dataset.</code><code class="sig-name descname">COMPASDataset</code><a class="reference internal" href="_modules/responsibly/dataset/compas.html#COMPASDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.dataset.COMPASDataset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">responsibly.dataset.core.Dataset</span></code></p>
-<p>ProPublica Recidivism/COMPAS Dataset.</p>
+<dd><p>ProPublica Recidivism/COMPAS Dataset.</p>
 <p>See <a class="reference internal" href="#responsibly.dataset.Dataset" title="responsibly.dataset.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a> for a description of
 the arguments and attributes.</p>
 <dl class="simple">
@@ -124,11 +123,10 @@ the arguments and attributes.</p>
 </dl>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="responsibly.dataset.AdultDataset">
 <em class="property">class </em><code class="sig-prename descclassname">responsibly.dataset.</code><code class="sig-name descname">AdultDataset</code><a class="reference internal" href="_modules/responsibly/dataset/adult.html#AdultDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.dataset.AdultDataset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">responsibly.dataset.core.Dataset</span></code></p>
-<p>Adult Dataset.</p>
+<dd><p>Adult Dataset.</p>
 <p>See <a class="reference internal" href="#responsibly.dataset.Dataset" title="responsibly.dataset.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a> for a description of
 the arguments and attributes.</p>
 <dl class="simple">
@@ -137,11 +135,10 @@ the arguments and attributes.</p>
 </dl>
 </dd></dl>
 
-<dl class="class">
+<dl class="py class">
 <dt id="responsibly.dataset.GermanDataset">
 <em class="property">class </em><code class="sig-prename descclassname">responsibly.dataset.</code><code class="sig-name descname">GermanDataset</code><a class="reference internal" href="_modules/responsibly/dataset/german.html#GermanDataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.dataset.GermanDataset" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">responsibly.dataset.core.Dataset</span></code></p>
-<p>German Credit Dataset.</p>
+<dd><p>German Credit Dataset.</p>
 <p>See <a class="reference internal" href="#responsibly.dataset.Dataset" title="responsibly.dataset.Dataset"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dataset</span></code></a> for a description of
 the arguments and attributes.</p>
 <dl>
@@ -174,7 +171,7 @@ than it is to class a customer as bad when they are good (1).</p>
 </div>
 <div class="section" id="fico-dataset">
 <h2>FICO Dataset<a class="headerlink" href="#fico-dataset" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
+<dl class="py function">
 <dt id="responsibly.dataset.build_FICO_dataset">
 <code class="sig-prename descclassname">responsibly.dataset.</code><code class="sig-name descname">build_FICO_dataset</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/dataset/fico.html#build_FICO_dataset"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.dataset.build_FICO_dataset" title="Permalink to this definition">¶</a></dt>
 <dd><p>Build the FICO dataset.</p>
@@ -241,7 +238,7 @@ and race/race/ethnicity group.</p>
 of the FICO credit score.</p>
 </dd>
 <dt class="field-even">Return type</dt>
-<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.7)">dict</a></p>
+<dd class="field-even"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)">dict</a></p>
 </dd>
 </dl>
 <dl class="simple">
@@ -315,7 +312,7 @@ from <a class="reference external" href="https://github.com/fairmlbook/fairmlboo
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
 
 
 
@@ -332,7 +329,7 @@ from <a class="reference external" href="https://github.com/fairmlbook/fairmlboo
       &copy;2018, Shlomi Hod.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -1,4 +1,3 @@
-
 Demo - Bias in Word Embedding
 =============================
 

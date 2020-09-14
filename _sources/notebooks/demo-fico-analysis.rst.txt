@@ -1,4 +1,3 @@
-
 Demo - Fairness Analysis of FICO
 ================================
 
