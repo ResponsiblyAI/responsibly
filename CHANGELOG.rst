@@ -1,6 +1,13 @@
 Revision History
 ================
 
+0.1.2 (2020/09/15)
+------------------
+
+- Fix Travis CI issues with pipenv
+
+- Fix bugs with word embedding bias
+
 0.1.1 (2019/08/04)
 ------------------
 
