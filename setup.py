@@ -7,7 +7,7 @@ import setuptools
 
 
 PACKAGE_NAME = 'responsibly'
-MINIMUM_PYTHON_VERSION = '3.5'
+MINIMUM_PYTHON_VERSION = '3.6'
 
 
 def check_python_version():
@@ -69,7 +69,6 @@ setuptools.setup(
         'Programming Language :: Python',
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3 :: Only',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
     ],
