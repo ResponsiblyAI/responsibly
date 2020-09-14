@@ -19,8 +19,10 @@ env:
 
 before_install:
   - "sudo apt-get install python3-tk"
-  - pip install --upgrade pip
-  - pip install pipenv
+  - python -m pip install -U --upgrade pip
+  - python -m pip install -U  pipenv
+  # Work around https://github.com/jaraco/zipp/issues/40.
+  - python -m pip install -U 'setuptools>=34.4.0' virtualenv==16.7.9
   - make doctor
 
 install:
@@ -30,7 +32,7 @@ script:
   - make ci
 
 after_success:
-  - pip install coveralls scrutinizer-ocular
+  - python -m pip install -U coveralls scrutinizer-ocular
   - coveralls
   - ocular
 
