@@ -5,6 +5,7 @@ import sys
 
 import setuptools
 
+from packaging import version
 
 PACKAGE_NAME = 'responsibly'
 MINIMUM_PYTHON_VERSION = '3.6'
@@ -12,7 +13,8 @@ MINIMUM_PYTHON_VERSION = '3.6'
 
 def check_python_version():
     """Exit when the Python version is too low."""
-    if sys.version < MINIMUM_PYTHON_VERSION:
+    if (version.parse(sys.version.split()[0])
+        < version.parse(MINIMUM_PYTHON_VERSION)):
         sys.exit("Python {0}+ is required.".format(MINIMUM_PYTHON_VERSION))
 
 
