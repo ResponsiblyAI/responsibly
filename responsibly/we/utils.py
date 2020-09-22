@@ -81,7 +81,10 @@ def cosine_similarities_by_words(model, word, words):
 
     vec = model[word]
     vecs = [model[w] for w in words]
-    return model.cosine_similarities(vec, vecs)
+#     This line was changed by Leonardo Alchieri
+#     It is done in order to function with later
+#     versions of gensim.
+    return model.wv.cosine_similarities(vec, vecs)
 
 
 def update_word_vector(model, word, new_vector):
