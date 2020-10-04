@@ -9,6 +9,11 @@ for a complete usage example.
 For a technical discussion about the various bias metrics,
 refer to the page :doc:`word-embedding-bias-metric-analysis`.
 
+Check the `WEFE <https://wefe.readthedocs.io/en/latest/>`_
+(The Word Embeddings Fairness Evaluation Framework) package
+for additional word embeddings bias measures.
+
+
 Bolukbasi Bias Measure and Debiasing
 ------------------------------------
 
