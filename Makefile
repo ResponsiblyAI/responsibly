@@ -132,14 +132,14 @@ read-coverage:
 # DOCUMENTATION ###############################################################
 
 .PHONY: docs
-docs:
+docs: install
 	mkdir -p docs/about
 	ln -sf `realpath README.rst --relative-to=docs` docs/readme.rst
 	ln -sf `realpath CHANGELOG.rst --relative-to=docs/about` docs/about/changelog.rst
 	ln -sf `realpath CONTRIBUTING.rst --relative-to=docs/about` docs/about/contributing.rst
 	ln -sf `realpath LICENSE --relative-to=docs/about` docs/about/license.rst
-	cd docs/notebooks && find *.ipynb -exec jupyter nbconvert --to rst {} \;
-	cd docs && make html
+	cd docs/notebooks && pipenv run find *.ipynb -exec jupyter nbconvert --to rst {} \;
+	cd docs && pipenv run make html
 	@echo "\033[95m\n\nBuild successful! View the docs homepage at docs/_build/html/index.html.\n\033[0m"
 	# && sphinx-apidoc  -o api ../responsibly
 
@@ -150,7 +150,7 @@ show: docs
 
 .PHONY: publish
 publish: docs
-	cd docs && sh ./gh-pages.sh
+	cd docs && pipenv run sh ./gh-pages.sh
 
 # PYREVERSE := pipenv run pyreverse
 # MKDOCS := pipenv run mkdocs
@@ -251,7 +251,7 @@ clean-all: clean
 .PHONY: .clean-docs
 .clean-docs:
 	# rm -rf *.rst docs/apidocs *.html docs/*.png site
-	cd docs && make clean
+	cd docs && pipenv run make clean
 	cd docs/notebooks && find . ! -name '*.ipynb' -type f -exec rm -rf {} + && rm -rf -- ./*/
 	cd docs && rm -f readme.rst
 	rm -rf docs/about
