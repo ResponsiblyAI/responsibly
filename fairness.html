@@ -5,15 +5,13 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Classification Fairness &#8212; Responsibly 0.1.2 documentation</title>
-    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <title>Classification Fairness &#8212; Responsibly 0.1.3 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
     <script src="_static/jquery.js"></script>
     <script src="_static/underscore.js"></script>
     <script src="_static/doctools.js"></script>
-    <script src="_static/language_data.js"></script>
-    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Word Embedding Bias" href="word-embedding-bias.html" />
@@ -72,7 +70,7 @@ the fairness of a classifier and applying intervention to adjust it:</p>
 <p>The objectives of the demographic classification fairness criteria
 is to measure unfairness towards sensitive attribute valuse.</p>
 <p>The metrics have the same interface and behavior as the ones in
-<a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics" title="(in scikit-learn v0.23)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.metrics</span></code></a>
+<a class="reference external" href="https://scikit-learn.org/stable/modules/classes.html#module-sklearn.metrics" title="(in scikit-learn v0.24)"><code class="xref py py-mod docutils literal notranslate"><span class="pre">sklearn.metrics</span></code></a>
 (e.g., using <code class="docutils literal notranslate"><span class="pre">y_true</span></code>, <code class="docutils literal notranslate"><span class="pre">y_pred</span></code> and <code class="docutils literal notranslate"><span class="pre">y_score</span></code>).</p>
 <p>One should keep in mind that the criteria are intended
 to <em>measure unfairness, rather than to prove fairness</em>, as it stated in
@@ -114,7 +112,7 @@ Using <em>Machine Learning and Fairness</em> book’s notions:</p>
 <h3>Independence<a class="headerlink" href="#independence" title="Permalink to this headline">¶</a></h3>
 <dl class="py function">
 <dt id="responsibly.fairness.metrics.independence_binary">
-<code class="sig-prename descclassname">responsibly.fairness.metrics.</code><code class="sig-name descname">independence_binary</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y_pred</span></em>, <em class="sig-param"><span class="n">x_sens</span></em>, <em class="sig-param"><span class="n">x_sens_privileged</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">labels</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">as_df</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/binary.html#independence_binary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.metrics.independence_binary" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">responsibly.fairness.metrics.</span></code><code class="sig-name descname"><span class="pre">independence_binary</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_sens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_sens_privileged</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">as_df</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/binary.html#independence_binary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#responsibly.fairness.metrics.independence_binary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the independence criteria for binary prediction.</p>
 <p>In classification terminology, it is the <strong>acceptance rate</strong>
 grouped by the sensitive attribute.</p>
@@ -134,7 +132,7 @@ If none is given, those that appear at least once in
 y_pred are used in sorted order; first is negative
 and the second is positive.</p></li>
 <li><p><strong>as_df</strong> – Whether to return the results as <cite>dict</cite> (if <cite>False</cite>)
-or as <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <cite>True</cite>).</p></li>
+or as <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <cite>True</cite>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -142,14 +140,14 @@ or as <a class="reference external" href="https://pandas.pydata.org/pandas-docs/
 only two values for the sensitive attribute.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="responsibly.fairness.metrics.separation_binary">
-<code class="sig-prename descclassname">responsibly.fairness.metrics.</code><code class="sig-name descname">separation_binary</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y_true</span></em>, <em class="sig-param"><span class="n">y_pred</span></em>, <em class="sig-param"><span class="n">x_sens</span></em>, <em class="sig-param"><span class="n">x_sens_privileged</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">labels</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">as_df</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/binary.html#separation_binary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.metrics.separation_binary" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">responsibly.fairness.metrics.</span></code><code class="sig-name descname"><span class="pre">separation_binary</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_sens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_sens_privileged</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">as_df</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/binary.html#separation_binary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#responsibly.fairness.metrics.separation_binary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the separation criteria for binary prediction.</p>
 <p>In classification terminology, it is the <strong>TPR</strong>, <strong>FPR</strong>,
 <strong>TNR</strong> and <strong>FNR</strong> grouped by the sensitive attribute.</p>
@@ -171,7 +169,7 @@ If none is given, those that appear at least once in
 y_pred are used in sorted order; first is negative
 and the second is positive.</p></li>
 <li><p><strong>as_df</strong> – Whether to return the results as <cite>dict</cite> (if <cite>False</cite>)
-or as <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <cite>True</cite>).</p></li>
+or as <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <cite>True</cite>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -179,7 +177,7 @@ or as <a class="reference external" href="https://pandas.pydata.org/pandas-docs/
 only two values for the sensitive attribute.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -189,7 +187,7 @@ only two values for the sensitive attribute.</p>
 <h3>Separation<a class="headerlink" href="#separation" title="Permalink to this headline">¶</a></h3>
 <dl class="py function">
 <dt id="id0">
-<code class="sig-prename descclassname">responsibly.fairness.metrics.</code><code class="sig-name descname">separation_binary</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y_true</span></em>, <em class="sig-param"><span class="n">y_pred</span></em>, <em class="sig-param"><span class="n">x_sens</span></em>, <em class="sig-param"><span class="n">x_sens_privileged</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">labels</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">as_df</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/binary.html#separation_binary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">responsibly.fairness.metrics.</span></code><code class="sig-name descname"><span class="pre">separation_binary</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_sens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_sens_privileged</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">as_df</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/binary.html#separation_binary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the separation criteria for binary prediction.</p>
 <p>In classification terminology, it is the <strong>TPR</strong>, <strong>FPR</strong>,
 <strong>TNR</strong> and <strong>FNR</strong> grouped by the sensitive attribute.</p>
@@ -211,7 +209,7 @@ If none is given, those that appear at least once in
 y_pred are used in sorted order; first is negative
 and the second is positive.</p></li>
 <li><p><strong>as_df</strong> – Whether to return the results as <cite>dict</cite> (if <cite>False</cite>)
-or as <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <cite>True</cite>).</p></li>
+or as <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <cite>True</cite>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -219,14 +217,14 @@ or as <a class="reference external" href="https://pandas.pydata.org/pandas-docs/
 only two values for the sensitive attribute.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="responsibly.fairness.metrics.separation_score">
-<code class="sig-prename descclassname">responsibly.fairness.metrics.</code><code class="sig-name descname">separation_score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y_true</span></em>, <em class="sig-param"><span class="n">y_score</span></em>, <em class="sig-param"><span class="n">x_sens</span></em>, <em class="sig-param"><span class="n">labels</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">as_df</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/score.html#separation_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.metrics.separation_score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">responsibly.fairness.metrics.</span></code><code class="sig-name descname"><span class="pre">separation_score</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_score</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_sens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">as_df</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/score.html#separation_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#responsibly.fairness.metrics.separation_score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the separation criteria for score prediction.</p>
 <p>In classification terminology, it is the <strong>FPR</strong> and <strong>TPR</strong>
 grouped by the score and the sensitive attribute.</p>
@@ -238,14 +236,14 @@ grouped by the score and the sensitive attribute.</p>
 <li><p><strong>x_sens</strong> – Sensitive attribute values corresponded to each
 estimated target.</p></li>
 <li><p><strong>as_df</strong> – Whether to return the results as <code class="docutils literal notranslate"><span class="pre">dict</span></code> (if <code class="docutils literal notranslate"><span class="pre">False</span></code>)
-or as <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <code class="docutils literal notranslate"><span class="pre">True</span></code>).</p></li>
+or as <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <code class="docutils literal notranslate"><span class="pre">True</span></code>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Separation criteria.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>dict or <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
+<dd class="field-odd"><p>dict or <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -257,7 +255,7 @@ therefore these functions can generate ROC and ROC-AUC per
 sensitive attribute values:</p>
 <dl class="py function">
 <dt id="responsibly.fairness.metrics.roc_auc_score_by_attr">
-<code class="sig-prename descclassname">responsibly.fairness.metrics.</code><code class="sig-name descname">roc_auc_score_by_attr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y_true</span></em>, <em class="sig-param"><span class="n">y_score</span></em>, <em class="sig-param"><span class="n">x_sens</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/score.html#roc_auc_score_by_attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.metrics.roc_auc_score_by_attr" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">responsibly.fairness.metrics.</span></code><code class="sig-name descname"><span class="pre">roc_auc_score_by_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_score</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_sens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/score.html#roc_auc_score_by_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#responsibly.fairness.metrics.roc_auc_score_by_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute Area Under the ROC (AUC) by attribute.</p>
 <p>Based on function:<cite>sklearn.metrics.roc_auc_score</cite></p>
 <dl class="field-list simple">
@@ -274,16 +272,16 @@ estimated target.</p></li>
 <dd class="field-even"><p>ROC AUC grouped by the sensitive attribute.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)">dict</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="responsibly.fairness.metrics.roc_curve_by_attr">
-<code class="sig-prename descclassname">responsibly.fairness.metrics.</code><code class="sig-name descname">roc_curve_by_attr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y_true</span></em>, <em class="sig-param"><span class="n">y_score</span></em>, <em class="sig-param"><span class="n">x_sens</span></em>, <em class="sig-param"><span class="n">pos_label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">drop_intermediate</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/score.html#roc_curve_by_attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.metrics.roc_curve_by_attr" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">responsibly.fairness.metrics.</span></code><code class="sig-name descname"><span class="pre">roc_curve_by_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_score</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_sens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_intermediate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/score.html#roc_curve_by_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#responsibly.fairness.metrics.roc_curve_by_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute Receiver operating characteristic (ROC) by attribute.</p>
-<p>Based on <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_curve.html#sklearn.metrics.roc_curve" title="(in scikit-learn v0.23)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.metrics.roc_curve()</span></code></a></p>
+<p>Based on <a class="reference external" href="https://scikit-learn.org/stable/modules/generated/sklearn.metrics.roc_curve.html#sklearn.metrics.roc_curve" title="(in scikit-learn v0.24)"><code class="xref py py-func docutils literal notranslate"><span class="pre">sklearn.metrics.roc_curve()</span></code></a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
@@ -321,7 +319,7 @@ to max(y_score) + 1.</p></li>
 </p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)">dict</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -331,7 +329,7 @@ to max(y_score) + 1.</p></li>
 <h4>Plotting<a class="headerlink" href="#plotting" title="Permalink to this headline">¶</a></h4>
 <dl class="py function">
 <dt id="responsibly.fairness.metrics.plot_roc_by_attr">
-<code class="sig-prename descclassname">responsibly.fairness.metrics.</code><code class="sig-name descname">plot_roc_by_attr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y_true</span></em>, <em class="sig-param"><span class="n">y_score</span></em>, <em class="sig-param"><span class="n">x_sens</span></em>, <em class="sig-param"><span class="n">title</span><span class="o">=</span><span class="default_value">'ROC Curves by Attribute'</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">title_fontsize</span><span class="o">=</span><span class="default_value">'large'</span></em>, <em class="sig-param"><span class="n">text_fontsize</span><span class="o">=</span><span class="default_value">'medium'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/visualization.html#plot_roc_by_attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.metrics.plot_roc_by_attr" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">responsibly.fairness.metrics.</span></code><code class="sig-name descname"><span class="pre">plot_roc_by_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_score</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_sens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ROC</span> <span class="pre">Curves</span> <span class="pre">by</span> <span class="pre">Attribute'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title_fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'large'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'medium'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/visualization.html#plot_roc_by_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#responsibly.fairness.metrics.plot_roc_by_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate the ROC curves by attribute from targets and scores.</p>
 <p>Based on <code class="xref py py-func docutils literal notranslate"><span class="pre">skplt.metrics.plot_roc()</span></code></p>
 <dl class="field-list simple">
@@ -341,10 +339,10 @@ to max(y_score) + 1.</p></li>
 <li><p><strong>y_score</strong> – Estimated target score as returned by a classifier.</p></li>
 <li><p><strong>x_sens</strong> – Sensitive attribute values corresponded to each
 estimated target.</p></li>
-<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Title of the generated plot.</p></li>
+<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Title of the generated plot.</p></li>
 <li><p><strong>ax</strong> – The axes upon which to plot the curve.
 If <cite>None</cite>, the plot is drawn on a new set of axes.</p></li>
-<li><p><strong>figsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a>) – Tuple denoting figure size of the plot
+<li><p><strong>figsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a>) – Tuple denoting figure size of the plot
 e.g. (6, 6).</p></li>
 <li><p><strong>title_fontsize</strong> – Matplotlib-style fontsizes.
 Use e.g. ‘small’, ‘medium’, ‘large’
@@ -358,26 +356,26 @@ or integer-values.</p></li>
 <dd class="field-even"><p>The axes on which the plot was drawn.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.3.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="responsibly.fairness.metrics.plot_roc_curves">
-<code class="sig-prename descclassname">responsibly.fairness.metrics.</code><code class="sig-name descname">plot_roc_curves</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">roc_curves</span></em>, <em class="sig-param"><span class="n">aucs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">title</span><span class="o">=</span><span class="default_value">'ROC Curves by Attribute'</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">title_fontsize</span><span class="o">=</span><span class="default_value">'large'</span></em>, <em class="sig-param"><span class="n">text_fontsize</span><span class="o">=</span><span class="default_value">'medium'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/visualization.html#plot_roc_curves"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.metrics.plot_roc_curves" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">responsibly.fairness.metrics.</span></code><code class="sig-name descname"><span class="pre">plot_roc_curves</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">roc_curves</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aucs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ROC</span> <span class="pre">Curves</span> <span class="pre">by</span> <span class="pre">Attribute'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title_fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'large'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'medium'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/visualization.html#plot_roc_curves"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#responsibly.fairness.metrics.plot_roc_curves" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate the ROC curves by attribute from (fpr, tpr, thresholds).</p>
 <p>Based on <code class="xref py py-func docutils literal notranslate"><span class="pre">skplt.metrics.plot_roc()</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
+<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
 by attribute.</p></li>
-<li><p><strong>aucs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Area Under the ROC (AUC) by attribute.</p></li>
-<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Title of the generated plot.</p></li>
+<li><p><strong>aucs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Area Under the ROC (AUC) by attribute.</p></li>
+<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Title of the generated plot.</p></li>
 <li><p><strong>ax</strong> – The axes upon which to plot the curve.
 If <cite>None</cite>, the plot is drawn on a new set of axes.</p></li>
-<li><p><strong>figsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a>) – Tuple denoting figure size of the plot
+<li><p><strong>figsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a>) – Tuple denoting figure size of the plot
 e.g. (6, 6).</p></li>
 <li><p><strong>title_fontsize</strong> – Matplotlib-style fontsizes.
 Use e.g. ‘small’, ‘medium’, ‘large’
@@ -391,7 +389,7 @@ or integer-values.</p></li>
 <dd class="field-even"><p>The axes on which the plot was drawn.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.3.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -402,7 +400,7 @@ or integer-values.</p></li>
 <h3>Sufficiency<a class="headerlink" href="#sufficiency" title="Permalink to this headline">¶</a></h3>
 <dl class="py function">
 <dt id="responsibly.fairness.metrics.sufficiency_binary">
-<code class="sig-prename descclassname">responsibly.fairness.metrics.</code><code class="sig-name descname">sufficiency_binary</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y_true</span></em>, <em class="sig-param"><span class="n">y_pred</span></em>, <em class="sig-param"><span class="n">x_sens</span></em>, <em class="sig-param"><span class="n">x_sens_privileged</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">labels</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">as_df</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/binary.html#sufficiency_binary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.metrics.sufficiency_binary" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">responsibly.fairness.metrics.</span></code><code class="sig-name descname"><span class="pre">sufficiency_binary</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_sens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_sens_privileged</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">as_df</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/binary.html#sufficiency_binary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#responsibly.fairness.metrics.sufficiency_binary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the sufficiency criteria for binary prediction.</p>
 <p>In classification terminology, it is the <strong>PPV</strong> and <strong>NPV</strong>
 grouped by the sensitive attribute.</p>
@@ -424,7 +422,7 @@ If none is given, those that appear at least once in
 y_pred are used in sorted order; first is negative
 and the second is positive.</p></li>
 <li><p><strong>as_df</strong> – Whether to return the results as <cite>dict</cite> (if <cite>False</cite>)
-or as <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <cite>True</cite>).</p></li>
+or as <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <cite>True</cite>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -432,14 +430,14 @@ or as <a class="reference external" href="https://pandas.pydata.org/pandas-docs/
 only two values for the sensitive attribute.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="responsibly.fairness.metrics.sufficiency_score">
-<code class="sig-prename descclassname">responsibly.fairness.metrics.</code><code class="sig-name descname">sufficiency_score</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y_true</span></em>, <em class="sig-param"><span class="n">y_score</span></em>, <em class="sig-param"><span class="n">x_sens</span></em>, <em class="sig-param"><span class="n">labels</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">within_score_percentile</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">as_df</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/score.html#sufficiency_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.metrics.sufficiency_score" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">responsibly.fairness.metrics.</span></code><code class="sig-name descname"><span class="pre">sufficiency_score</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_score</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_sens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">within_score_percentile</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">as_df</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/score.html#sufficiency_score"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#responsibly.fairness.metrics.sufficiency_score" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute the sufficiency criteria for score prediction.</p>
 <p>In classification terminology, it is the <strong>PPV</strong> and the <strong>NPV</strong>
 grouped by the score and the sensitive attribute.</p>
@@ -451,14 +449,14 @@ grouped by the score and the sensitive attribute.</p>
 <li><p><strong>x_sens</strong> – Sensitive attribute values corresponded to each
 target.</p></li>
 <li><p><strong>as_df</strong> – Whether to return the results as <code class="docutils literal notranslate"><span class="pre">dict</span></code> (if <code class="docutils literal notranslate"><span class="pre">False</span></code>)
-or as <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <code class="docutils literal notranslate"><span class="pre">True</span></code>).</p></li>
+or as <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a> (if <code class="docutils literal notranslate"><span class="pre">True</span></code>).</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Sufficiency criteria.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>dict or <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
+<dd class="field-odd"><p>dict or <a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -468,7 +466,7 @@ or as <a class="reference external" href="https://pandas.pydata.org/pandas-docs/
 <h3>Report<a class="headerlink" href="#report" title="Permalink to this headline">¶</a></h3>
 <dl class="py function">
 <dt id="responsibly.fairness.metrics.report_binary">
-<code class="sig-prename descclassname">responsibly.fairness.metrics.</code><code class="sig-name descname">report_binary</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y_true</span></em>, <em class="sig-param"><span class="n">y_pred</span></em>, <em class="sig-param"><span class="n">x_sens</span></em>, <em class="sig-param"><span class="n">labels</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/binary.html#report_binary"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.metrics.report_binary" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">responsibly.fairness.metrics.</span></code><code class="sig-name descname"><span class="pre">report_binary</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_pred</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_sens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/metrics/binary.html#report_binary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#responsibly.fairness.metrics.report_binary" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate a report of criteria for binary prediction.</p>
 <p>In classification terminology, the statistics are
 grouped by the sensitive attribute:
@@ -500,7 +498,7 @@ and the second is positive.</p></li>
 sensitive attribute.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.1.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://pandas.pydata.org/pandas-docs/stable/reference/api/pandas.DataFrame.html#pandas.DataFrame" title="(in pandas v1.2.3)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -550,15 +548,15 @@ smarter machine learning by Google</a>.</p></li>
 </dl>
 <dl class="py function">
 <dt id="responsibly.fairness.interventions.threshold.find_single_threshold">
-<code class="sig-prename descclassname">responsibly.fairness.interventions.threshold.</code><code class="sig-name descname">find_single_threshold</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">roc_curves</span></em>, <em class="sig-param"><span class="n">base_rates</span></em>, <em class="sig-param"><span class="n">proportions</span></em>, <em class="sig-param"><span class="n">cost_matrix</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#find_single_threshold"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.find_single_threshold" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">responsibly.fairness.interventions.threshold.</span></code><code class="sig-name descname"><span class="pre">find_single_threshold</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">roc_curves</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_rates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proportions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cost_matrix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#find_single_threshold"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.find_single_threshold" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute single threshold that minimizes cost.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
+<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
 by attribute.</p></li>
-<li><p><strong>base_rates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Base rate by attribute.</p></li>
-<li><p><strong>proportions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Proportion of each attribute value.</p></li>
+<li><p><strong>base_rates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Base rate by attribute.</p></li>
+<li><p><strong>proportions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Proportion of each attribute value.</p></li>
 <li><p><strong>cost_matrix</strong> (<em>sequence</em>) – Cost matrix by [[tn, fp], [fn, tp]].</p></li>
 </ul>
 </dd>
@@ -566,22 +564,22 @@ by attribute.</p></li>
 <dd class="field-even"><p>Threshold, FPR and TPR by attribute and cost value.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="responsibly.fairness.interventions.threshold.find_min_cost_thresholds">
-<code class="sig-prename descclassname">responsibly.fairness.interventions.threshold.</code><code class="sig-name descname">find_min_cost_thresholds</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">roc_curves</span></em>, <em class="sig-param"><span class="n">base_rates</span></em>, <em class="sig-param"><span class="n">proportions</span></em>, <em class="sig-param"><span class="n">cost_matrix</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#find_min_cost_thresholds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.find_min_cost_thresholds" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">responsibly.fairness.interventions.threshold.</span></code><code class="sig-name descname"><span class="pre">find_min_cost_thresholds</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">roc_curves</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_rates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proportions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cost_matrix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#find_min_cost_thresholds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.find_min_cost_thresholds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute thresholds by attribute values that minimize cost.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
+<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
 by attribute.</p></li>
-<li><p><strong>base_rates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Base rate by attribute.</p></li>
-<li><p><strong>proportions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Proportion of each attribute value.</p></li>
+<li><p><strong>base_rates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Base rate by attribute.</p></li>
+<li><p><strong>proportions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Proportion of each attribute value.</p></li>
 <li><p><strong>cost_matrix</strong> (<em>sequence</em>) – Cost matrix by [[tn, fp], [fn, tp]].</p></li>
 </ul>
 </dd>
@@ -589,22 +587,22 @@ by attribute.</p></li>
 <dd class="field-even"><p>Thresholds, FPR and TPR by attribute and cost value.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="responsibly.fairness.interventions.threshold.find_independence_thresholds">
-<code class="sig-prename descclassname">responsibly.fairness.interventions.threshold.</code><code class="sig-name descname">find_independence_thresholds</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">roc_curves</span></em>, <em class="sig-param"><span class="n">base_rates</span></em>, <em class="sig-param"><span class="n">proportions</span></em>, <em class="sig-param"><span class="n">cost_matrix</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#find_independence_thresholds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.find_independence_thresholds" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">responsibly.fairness.interventions.threshold.</span></code><code class="sig-name descname"><span class="pre">find_independence_thresholds</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">roc_curves</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_rates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proportions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cost_matrix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#find_independence_thresholds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.find_independence_thresholds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute thresholds that achieve independence and minimize cost.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
+<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
 by attribute.</p></li>
-<li><p><strong>base_rates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Base rate by attribute.</p></li>
-<li><p><strong>proportions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Proportion of each attribute value.</p></li>
+<li><p><strong>base_rates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Base rate by attribute.</p></li>
+<li><p><strong>proportions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Proportion of each attribute value.</p></li>
 <li><p><strong>cost_matrix</strong> (<em>sequence</em>) – Cost matrix by [[tn, fp], [fn, tp]].</p></li>
 </ul>
 </dd>
@@ -612,23 +610,23 @@ by attribute.</p></li>
 <dd class="field-even"><p>Thresholds, FPR and TPR by attribute and cost value.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="responsibly.fairness.interventions.threshold.find_fnr_thresholds">
-<code class="sig-prename descclassname">responsibly.fairness.interventions.threshold.</code><code class="sig-name descname">find_fnr_thresholds</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">roc_curves</span></em>, <em class="sig-param"><span class="n">base_rates</span></em>, <em class="sig-param"><span class="n">proportions</span></em>, <em class="sig-param"><span class="n">cost_matrix</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#find_fnr_thresholds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.find_fnr_thresholds" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">responsibly.fairness.interventions.threshold.</span></code><code class="sig-name descname"><span class="pre">find_fnr_thresholds</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">roc_curves</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_rates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proportions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cost_matrix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#find_fnr_thresholds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.find_fnr_thresholds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute thresholds that achieve equal FNRs and minimize cost.</p>
 <p>Also known as <strong>equal opportunity</strong>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
+<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
 by attribute.</p></li>
-<li><p><strong>base_rates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Base rate by attribute.</p></li>
-<li><p><strong>proportions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Proportion of each attribute value.</p></li>
+<li><p><strong>base_rates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Base rate by attribute.</p></li>
+<li><p><strong>proportions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Proportion of each attribute value.</p></li>
 <li><p><strong>cost_matrix</strong> (<em>sequence</em>) – Cost matrix by [[tn, fp], [fn, tp]].</p></li>
 </ul>
 </dd>
@@ -636,22 +634,22 @@ by attribute.</p></li>
 <dd class="field-even"><p>Thresholds, FPR and TPR by attribute and cost value.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="responsibly.fairness.interventions.threshold.find_separation_thresholds">
-<code class="sig-prename descclassname">responsibly.fairness.interventions.threshold.</code><code class="sig-name descname">find_separation_thresholds</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">roc_curves</span></em>, <em class="sig-param"><span class="n">base_rate</span></em>, <em class="sig-param"><span class="n">cost_matrix</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#find_separation_thresholds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.find_separation_thresholds" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">responsibly.fairness.interventions.threshold.</span></code><code class="sig-name descname"><span class="pre">find_separation_thresholds</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">roc_curves</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cost_matrix</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#find_separation_thresholds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.find_separation_thresholds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute thresholds that achieve separation and minimize cost.</p>
 <p>Also known as <strong>equalized odds</strong>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
+<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
 by attribute.</p></li>
-<li><p><strong>base_rate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – Overall base rate.</p></li>
+<li><p><strong>base_rate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Overall base rate.</p></li>
 <li><p><strong>cost_matrix</strong> (<em>sequence</em>) – Cost matrix by [[tn, fp], [fn, tp]].</p></li>
 </ul>
 </dd>
@@ -659,29 +657,29 @@ by attribute.</p></li>
 <dd class="field-even"><p>Thresholds, FPR and TPR by attribute and cost value.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)">tuple</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)">tuple</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="responsibly.fairness.interventions.threshold.find_thresholds">
-<code class="sig-prename descclassname">responsibly.fairness.interventions.threshold.</code><code class="sig-name descname">find_thresholds</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">roc_curves</span></em>, <em class="sig-param"><span class="n">proportions</span></em>, <em class="sig-param"><span class="n">base_rate</span></em>, <em class="sig-param"><span class="n">base_rates</span></em>, <em class="sig-param"><span class="n">cost_matrix</span></em>, <em class="sig-param"><span class="n">with_single</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">with_min_cost</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">with_independence</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">with_fnr</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">with_separation</span><span class="o">=</span><span class="default_value">True</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#find_thresholds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.find_thresholds" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">responsibly.fairness.interventions.threshold.</span></code><code class="sig-name descname"><span class="pre">find_thresholds</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">roc_curves</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">proportions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_rate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_rates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cost_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_single</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_min_cost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_independence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_fnr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_separation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#find_thresholds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.find_thresholds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute thresholds that achieve various criteria and minimize cost.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
+<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
 by attribute.</p></li>
-<li><p><strong>proportions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Proportion of each attribute value.</p></li>
-<li><p><strong>base_rate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.8)"><em>float</em></a>) – Overall base rate.</p></li>
-<li><p><strong>base_rates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Base rate by attribute.</p></li>
+<li><p><strong>proportions</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Proportion of each attribute value.</p></li>
+<li><p><strong>base_rate</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#float" title="(in Python v3.9)"><em>float</em></a>) – Overall base rate.</p></li>
+<li><p><strong>base_rates</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Base rate by attribute.</p></li>
 <li><p><strong>cost_matrix</strong> (<em>sequence</em>) – Cost matrix by [[tn, fp], [fn, tp]].</p></li>
-<li><p><strong>with_single</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – Compute single threshold.</p></li>
-<li><p><strong>with_min_cost</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – Compute minimum cost thresholds.</p></li>
-<li><p><strong>with_independence</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – Compute independence thresholds.</p></li>
-<li><p><strong>with_fnr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – Compute FNR thresholds.</p></li>
-<li><p><strong>with_separation</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – Compute separation thresholds.</p></li>
+<li><p><strong>with_single</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Compute single threshold.</p></li>
+<li><p><strong>with_min_cost</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Compute minimum cost thresholds.</p></li>
+<li><p><strong>with_independence</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Compute independence thresholds.</p></li>
+<li><p><strong>with_fnr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Compute FNR thresholds.</p></li>
+<li><p><strong>with_separation</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Compute separation thresholds.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -690,14 +688,14 @@ and for each criterion:
 thresholds, FPR and TPR by attribute and cost value.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)">dict</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="responsibly.fairness.interventions.threshold.find_thresholds_by_attr">
-<code class="sig-prename descclassname">responsibly.fairness.interventions.threshold.</code><code class="sig-name descname">find_thresholds_by_attr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">y_true</span></em>, <em class="sig-param"><span class="n">y_score</span></em>, <em class="sig-param"><span class="n">x_sens</span></em>, <em class="sig-param"><span class="n">cost_matrix</span></em>, <em class="sig-param"><span class="n">with_single</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">with_min_cost</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">with_independence</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">with_fnr</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">with_separation</span><span class="o">=</span><span class="default_value">True</span></em>, <em class="sig-param"><span class="n">pos_label</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">sample_weight</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">drop_intermediate</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#find_thresholds_by_attr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.find_thresholds_by_attr" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">responsibly.fairness.interventions.threshold.</span></code><code class="sig-name descname"><span class="pre">find_thresholds_by_attr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">y_true</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_score</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_sens</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cost_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_single</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_min_cost</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_independence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_fnr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_separation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos_label</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sample_weight</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">drop_intermediate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#find_thresholds_by_attr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.find_thresholds_by_attr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Compute thresholds that achieve various criteria and minimize cost.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -715,11 +713,11 @@ thresholds which would not appear on
 a plotted ROC curve.
 This is useful in order to create
 lighter ROC curves.</p></li>
-<li><p><strong>with_single</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – Compute single threshold.</p></li>
-<li><p><strong>with_min_cost</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – Compute minimum cost thresholds.</p></li>
-<li><p><strong>with_independence</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – Compute independence thresholds.</p></li>
-<li><p><strong>with_fnr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – Compute FNR thresholds.</p></li>
-<li><p><strong>with_separation</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.8)"><em>bool</em></a>) – Compute separation thresholds.</p></li>
+<li><p><strong>with_single</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Compute single threshold.</p></li>
+<li><p><strong>with_min_cost</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Compute minimum cost thresholds.</p></li>
+<li><p><strong>with_independence</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Compute independence thresholds.</p></li>
+<li><p><strong>with_fnr</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Compute FNR thresholds.</p></li>
+<li><p><strong>with_separation</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#bool" title="(in Python v3.9)"><em>bool</em></a>) – Compute separation thresholds.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -728,29 +726,29 @@ and for each criterion:
 thresholds, FPR and TPR by attribute and cost value.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)">dict</a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)">dict</a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="responsibly.fairness.interventions.threshold.plot_roc_curves_thresholds">
-<code class="sig-prename descclassname">responsibly.fairness.interventions.threshold.</code><code class="sig-name descname">plot_roc_curves_thresholds</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">roc_curves</span></em>, <em class="sig-param"><span class="n">thresholds_data</span></em>, <em class="sig-param"><span class="n">aucs</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">title</span><span class="o">=</span><span class="default_value">'ROC Curves by Attribute'</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">title_fontsize</span><span class="o">=</span><span class="default_value">'large'</span></em>, <em class="sig-param"><span class="n">text_fontsize</span><span class="o">=</span><span class="default_value">'medium'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#plot_roc_curves_thresholds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.plot_roc_curves_thresholds" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">responsibly.fairness.interventions.threshold.</span></code><code class="sig-name descname"><span class="pre">plot_roc_curves_thresholds</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">roc_curves</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">thresholds_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">aucs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'ROC</span> <span class="pre">Curves</span> <span class="pre">by</span> <span class="pre">Attribute'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title_fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'large'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'medium'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#plot_roc_curves_thresholds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.plot_roc_curves_thresholds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate the ROC curves by attribute with thresholds.</p>
 <p>Based on <code class="xref py py-func docutils literal notranslate"><span class="pre">skplt.metrics.plot_roc()</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
+<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
 by attribute.</p></li>
-<li><p><strong>thresholds_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Thresholds by attribute from the
+<li><p><strong>thresholds_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Thresholds by attribute from the
 function
 <code class="xref py py-func docutils literal notranslate"><span class="pre">find_thresholds()</span></code>.</p></li>
-<li><p><strong>aucs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Area Under the ROC (AUC) by attribute.</p></li>
-<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Title of the generated plot.</p></li>
+<li><p><strong>aucs</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Area Under the ROC (AUC) by attribute.</p></li>
+<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Title of the generated plot.</p></li>
 <li><p><strong>ax</strong> – The axes upon which to plot the curve.
 If <cite>None</cite>, the plot is drawn on a new set of axes.</p></li>
-<li><p><strong>figsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a>) – Tuple denoting figure size of the plot
+<li><p><strong>figsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a>) – Tuple denoting figure size of the plot
 e.g. (6, 6).</p></li>
 <li><p><strong>title_fontsize</strong> – Matplotlib-style fontsizes.
 Use e.g. ‘small’, ‘medium’, ‘large’
@@ -764,25 +762,25 @@ or integer-values.</p></li>
 <dd class="field-even"><p>The axes on which the plot was drawn.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.3.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="responsibly.fairness.interventions.threshold.plot_fpt_tpr">
-<code class="sig-prename descclassname">responsibly.fairness.interventions.threshold.</code><code class="sig-name descname">plot_fpt_tpr</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">roc_curves</span></em>, <em class="sig-param"><span class="n">title</span><span class="o">=</span><span class="default_value">'FPR-TPR Curves by Attribute'</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">title_fontsize</span><span class="o">=</span><span class="default_value">'large'</span></em>, <em class="sig-param"><span class="n">text_fontsize</span><span class="o">=</span><span class="default_value">'medium'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#plot_fpt_tpr"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.plot_fpt_tpr" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">responsibly.fairness.interventions.threshold.</span></code><code class="sig-name descname"><span class="pre">plot_fpt_tpr</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">roc_curves</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'FPR-TPR</span> <span class="pre">Curves</span> <span class="pre">by</span> <span class="pre">Attribute'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title_fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'large'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'medium'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#plot_fpt_tpr"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.plot_fpt_tpr" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate FPR and TPR curves by thresholds and by attribute.</p>
 <p>Based on <code class="xref py py-func docutils literal notranslate"><span class="pre">skplt.metrics.plot_roc()</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
+<li><p><strong>roc_curves</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Receiver operating characteristic (ROC)
 by attribute.</p></li>
-<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Title of the generated plot.</p></li>
+<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Title of the generated plot.</p></li>
 <li><p><strong>ax</strong> – The axes upon which to plot the curve.
 If <cite>None</cite>, the plot is drawn on a new set of axes.</p></li>
-<li><p><strong>figsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a>) – Tuple denoting figure size of the plot
+<li><p><strong>figsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a>) – Tuple denoting figure size of the plot
 e.g. (6, 6).</p></li>
 <li><p><strong>title_fontsize</strong> – Matplotlib-style fontsizes.
 Use e.g. ‘small’, ‘medium’, ‘large’
@@ -796,26 +794,26 @@ or integer-values.</p></li>
 <dd class="field-even"><p>The axes on which the plot was drawn.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.3.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="responsibly.fairness.interventions.threshold.plot_costs">
-<code class="sig-prename descclassname">responsibly.fairness.interventions.threshold.</code><code class="sig-name descname">plot_costs</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">thresholds_data</span></em>, <em class="sig-param"><span class="n">title</span><span class="o">=</span><span class="default_value">'Cost by Threshold Strategy'</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">title_fontsize</span><span class="o">=</span><span class="default_value">'large'</span></em>, <em class="sig-param"><span class="n">text_fontsize</span><span class="o">=</span><span class="default_value">'medium'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#plot_costs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.plot_costs" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">responsibly.fairness.interventions.threshold.</span></code><code class="sig-name descname"><span class="pre">plot_costs</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thresholds_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Cost</span> <span class="pre">by</span> <span class="pre">Threshold</span> <span class="pre">Strategy'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title_fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'large'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'medium'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#plot_costs"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.plot_costs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot cost by threshold definition and by attribute.</p>
 <p>Based on <code class="xref py py-func docutils literal notranslate"><span class="pre">skplt.metrics.plot_roc()</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>thresholds_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Thresholds by attribute from the
+<li><p><strong>thresholds_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Thresholds by attribute from the
 function
 <code class="xref py py-func docutils literal notranslate"><span class="pre">find_thresholds()</span></code>.</p></li>
-<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Title of the generated plot.</p></li>
+<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Title of the generated plot.</p></li>
 <li><p><strong>ax</strong> – The axes upon which to plot the curve.
 If <cite>None</cite>, the plot is drawn on a new set of axes.</p></li>
-<li><p><strong>figsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a>) – Tuple denoting figure size of the plot
+<li><p><strong>figsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a>) – Tuple denoting figure size of the plot
 e.g. (6, 6).</p></li>
 <li><p><strong>title_fontsize</strong> – Matplotlib-style fontsizes.
 Use e.g. ‘small’, ‘medium’, ‘large’
@@ -829,28 +827,28 @@ or integer-values.</p></li>
 <dd class="field-even"><p>The axes on which the plot was drawn.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.3.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt id="responsibly.fairness.interventions.threshold.plot_thresholds">
-<code class="sig-prename descclassname">responsibly.fairness.interventions.threshold.</code><code class="sig-name descname">plot_thresholds</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">thresholds_data</span></em>, <em class="sig-param"><span class="n">markersize</span><span class="o">=</span><span class="default_value">7</span></em>, <em class="sig-param"><span class="n">title</span><span class="o">=</span><span class="default_value">'Thresholds by Strategy and Attribute'</span></em>, <em class="sig-param"><span class="n">xlim</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">ax</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">figsize</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">title_fontsize</span><span class="o">=</span><span class="default_value">'large'</span></em>, <em class="sig-param"><span class="n">text_fontsize</span><span class="o">=</span><span class="default_value">'medium'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#plot_thresholds"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.plot_thresholds" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname"><span class="pre">responsibly.fairness.interventions.threshold.</span></code><code class="sig-name descname"><span class="pre">plot_thresholds</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thresholds_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">markersize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">7</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Thresholds</span> <span class="pre">by</span> <span class="pre">Strategy</span> <span class="pre">and</span> <span class="pre">Attribute'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">xlim</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">figsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title_fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'large'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">text_fontsize</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'medium'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/responsibly/fairness/interventions/threshold.html#plot_thresholds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#responsibly.fairness.interventions.threshold.plot_thresholds" title="Permalink to this definition">¶</a></dt>
 <dd><p>Plot thresholds by strategy and by attribute.</p>
 <p>Based on <code class="xref py py-func docutils literal notranslate"><span class="pre">skplt.metrics.plot_roc()</span></code></p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>thresholds_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.8)"><em>dict</em></a>) – Thresholds by attribute from the
+<li><p><strong>thresholds_data</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#dict" title="(in Python v3.9)"><em>dict</em></a>) – Thresholds by attribute from the
 function
 <code class="xref py py-func docutils literal notranslate"><span class="pre">find_thresholds()</span></code>.</p></li>
-<li><p><strong>markersize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.8)"><em>int</em></a>) – Marker size.</p></li>
-<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.8)"><em>str</em></a>) – Title of the generated plot.</p></li>
-<li><p><strong>xlim</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a>) – Set the data limits for the x-axis.</p></li>
+<li><p><strong>markersize</strong> (<a class="reference external" href="https://docs.python.org/3/library/functions.html#int" title="(in Python v3.9)"><em>int</em></a>) – Marker size.</p></li>
+<li><p><strong>title</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)"><em>str</em></a>) – Title of the generated plot.</p></li>
+<li><p><strong>xlim</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a>) – Set the data limits for the x-axis.</p></li>
 <li><p><strong>ax</strong> – The axes upon which to plot the curve.
 If <cite>None</cite>, the plot is drawn on a new set of axes.</p></li>
-<li><p><strong>figsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.8)"><em>tuple</em></a>) – Tuple denoting figure size of the plot
+<li><p><strong>figsize</strong> (<a class="reference external" href="https://docs.python.org/3/library/stdtypes.html#tuple" title="(in Python v3.9)"><em>tuple</em></a>) – Tuple denoting figure size of the plot
 e.g. (6, 6).</p></li>
 <li><p><strong>title_fontsize</strong> – Matplotlib-style fontsizes.
 Use e.g. ‘small’, ‘medium’, ‘large’
@@ -864,7 +862,7 @@ or integer-values.</p></li>
 <dd class="field-even"><p>The axes on which the plot was drawn.</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.3.2)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
+<dd class="field-odd"><p><a class="reference external" href="https://matplotlib.org/api/axes_api.html#matplotlib.axes.Axes" title="(in Matplotlib v3.4.1)"><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes.Axes</span></code></a></p>
 </dd>
 </dl>
 </dd></dl>
@@ -946,7 +944,7 @@ or integer-values.</p></li>
       &copy;2018, Shlomi Hod.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.5.3</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
