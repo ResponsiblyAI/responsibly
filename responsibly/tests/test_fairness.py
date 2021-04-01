@@ -75,7 +75,7 @@ FICO_FNR = ({'Asian': 45.5, 'Black': 29.5, 'Hispanic': 35.0, 'White': 46},
             0.2402515268107051)
 
 FICO_SEPARATION = ({},
-                   {'': (0.11393540338532637, 0.7091695018283077)},
+                   {'': (0.11130392607695799, 0.7032306899595236)},
                    # slightly different from the fairmlbook repository:
                    -9448.09030585854 / 174047)
 
