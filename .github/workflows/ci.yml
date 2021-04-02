@@ -1,0 +1,44 @@
+name: CI
+
+# Controls when the action will run. 
+on: [push, pull_request, workflow_dispatch]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: [3.5, 3.6, 3.7, 3.8]
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Before install
+        run: |
+          python -m pip install -U --upgrade pip setuptools virtualenv
+          python -m pip install -U --upgrade pipenv 
+          make doctor
+
+      - name: Install
+        run: make install
+          
+      - name: Script
+        run: make ci
+
+      - name: After success
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          python -m pip install -U coveralls scrutinizer-ocular
+          coveralls --service=github
+          ocular
