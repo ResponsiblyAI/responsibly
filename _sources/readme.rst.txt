@@ -8,9 +8,9 @@ Responsibly
    :alt: Join the chat at https://gitter.im/ResponsiblyAI/responsibly
    :target: https://gitter.im/ResponsiblyAI/responsibly
 
-.. image:: https://img.shields.io/travis/ResponsiblyAI/responsibly/master.svg
-    :target: https://travis-ci.org/ResponsiblyAI/responsibly
-
+.. image:: https://img.shields.io/github/workflow/status/ResponsiblyAI/responsibly/CI/master.svg
+    :target: https://github.com/ResponsiblyAI/responsibly/actions/workflows/ci.yml
+ 
 .. image::  https://img.shields.io/coveralls/ResponsiblyAI/responsibly/master.svg
    :target: https://coveralls.io/r/ResponsiblyAI/responsibly
 

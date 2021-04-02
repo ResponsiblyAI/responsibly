@@ -6,6 +6,8 @@ Revision History
 
 - Fix new pagacke dependencies
 
+- Switch from Travis CI to Github Actions
+
 0.1.2 (2020/09/15)
 ------------------
 
