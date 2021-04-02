@@ -21,7 +21,7 @@ before_install:
   - "sudo apt-get install python3-tk"
   # Work around https://github.com/jaraco/zipp/issues/40
   - python -m pip install -U --upgrade pip setuptools virtualenv
-  - python -m pip install -U pipenv 
+  - python -m pip install -U --upgrade pipenv 
   - make doctor
 
 install:
