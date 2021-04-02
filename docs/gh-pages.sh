@@ -15,8 +15,6 @@ buildDirectory=_build/html
 # # build html docs from sphinx files
 # sphinx-build -b html . "$buildDirectory"
 
-pipenv shell
-
 # create or use orphaned gh-pages branch
 branch_name=gh-pages
 
@@ -48,5 +46,3 @@ else
 fi
 
 git checkout master
-
-deactivate
