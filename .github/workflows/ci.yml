@@ -36,9 +36,9 @@ jobs:
         run: make ci
 
       - name: After success
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           python -m pip install -U coveralls scrutinizer-ocular
           coveralls
           ocular
-      	env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
