@@ -718,7 +718,7 @@ class BiasWordEmbedding:
             extended_specific_words.add(word.upper())
             extended_specific_words.add(word.title())
 
-        neutral_words = [word for word in self.model.vocab
+        neutral_words = [word for word in self.model
                          if word not in extended_specific_words]
 
         return neutral_words
@@ -897,7 +897,7 @@ class BiasWordEmbedding:
         data = []
         non_specific_example_count = 0
 
-        for word in self.model.vocab:
+        for word in self.model:
             is_specific = word in seed_specific_words
 
             if not is_specific:
@@ -923,7 +923,7 @@ class BiasWordEmbedding:
         clf.fit(X, y)
 
         full_specific_words = []
-        for word in self.model.vocab:
+        for word in self.model:
             vector = [normalize(self[word])]
             if clf.predict(vector):
                 full_specific_words.append(word)
