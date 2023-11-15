@@ -217,7 +217,7 @@ def most_similar(model, positive=None, negative=None,
         return indexer.most_similar(mean, topn)
 
     limited = (model.get_vector if restrict_vocab is None
-               else model.get_vector([:restrict_vocab], norm=True))
+               else model.get_normed_vectors()
     dists = limited @ mean
 
     if topn is None:
