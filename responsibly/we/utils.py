@@ -172,7 +172,7 @@ def most_similar(model, positive=None, negative=None,
     if negative is None:
         negative = []
 
-    model.init_sims()
+    # model.init_sims()
 
     if (isinstance(positive, string_types)
             and not negative):
