@@ -90,9 +90,9 @@ def cosine_similarities_by_words(model, word, words):
 
 def update_word_vector(model, word, new_vector):
     model.vectors[model.key_to_index[word]] = new_vector
-    if model.get_normed_vectors() is not None:
+    if model.get_vector is not None:
         # model.vectors_norm[model.key_to_index[word]] = normalize(new_vector)
-        model.get_vector(word, norm=True) == normalize(new_vector)
+        model.get_vector(word, norm=True) = normalize(new_vector)
       
 
 
@@ -216,7 +216,7 @@ def most_similar(model, positive=None, negative=None,
     if indexer is not None:
         return indexer.most_similar(mean, topn)
 
-    limited = (model.get_normed_vectors() if restrict_vocab is None
+    limited = (model.get_vector if restrict_vocab is None
                else model.get_vector([:restrict_vocab], norm=True))
     dists = limited @ mean
 
