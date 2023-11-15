@@ -92,7 +92,7 @@ def update_word_vector(model, word, new_vector):
     model.vectors[model.key_to_index[word]] = new_vector
     if model.get_normed_vectors() is not None:
         # model.vectors_norm[model.key_to_index[word]] = normalize(new_vector)
-        model.get_vector(word, norm=True) = normalize(new_vector)
+        model.get_vector(word, norm=True) == normalize(new_vector)
       
 
 
