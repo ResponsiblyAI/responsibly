@@ -205,8 +205,8 @@ def most_similar(model, positive=None, negative=None,
             mean.append(weight * word)
         else:
             mean.append(weight * model.word_vec(word, use_norm=True))
-            if word in model.vocab:
-                all_words.add(model.vocab[word].index)
+            if word in model:
+                all_words.add(model.key_to_index[word])
 
     if not mean:
         raise ValueError("Cannot compute similarity with no input.")
