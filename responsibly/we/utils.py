@@ -8,14 +8,13 @@ from six import string_types
 from sklearn.cluster import KMeans
 from sklearn.manifold import TSNE
 from sklearn.metrics import accuracy_score
-
+from gensim.models import KeyedVectors
 
 WORD_EMBEDDING_MODEL_TYPES = (gensim.models.keyedvectors.KeyedVectors,
-                              gensim.models.keyedvectors.BaseKeyedVectors,
+                              # gensim.models.keyedvectors.BaseKeyedVectors,
                               gensim.models.fasttext.FastText,
-                              gensim.models.word2vec.Word2Vec,
-                              gensim.models.base_any2vec.BaseWordEmbeddingsModel,)  # pylint: disable=line-too-long
-
+                              gensim.models.word2vec.Word2Vec,)
+                              # gensim.models.base_any2vec.BaseWordEmbeddingsModel,)  # pylint: disable=line-too-long
 
 def round_to_extreme(value, digits=2):
     place = 10**digits
@@ -85,9 +84,11 @@ def cosine_similarities_by_words(model, word, words):
 
 
 def update_word_vector(model, word, new_vector):
-    model.vectors[model.vocab[word].index] = new_vector
-    if model.vectors_norm is not None:
-        model.vectors_norm[model.vocab[word].index] = normalize(new_vector)
+    model.vectors[model.key_to_index[word]] = new_vector
+    if model.get_vector is not None:
+        # model.vectors_norm[model.key_to_index[word]] = normalize(new_vector)
+        model.get_vector(word, norm=True) == normalize(new_vector)
+      
 
 
 def generate_one_word_forms(word):
@@ -166,7 +167,7 @@ def most_similar(model, positive=None, negative=None,
     if negative is None:
         negative = []
 
-    model.init_sims()
+    # model.init_sims()
 
     if (isinstance(positive, string_types)
             and not negative):
@@ -199,8 +200,8 @@ def most_similar(model, positive=None, negative=None,
             mean.append(weight * word)
         else:
             mean.append(weight * model.word_vec(word, use_norm=True))
-            if word in model.vocab:
-                all_words.add(model.vocab[word].index)
+            if word in model.key_to_index:
+                all_words.add(model.key_to_index[word])
 
     if not mean:
         raise ValueError("Cannot compute similarity with no input.")
@@ -210,8 +211,8 @@ def most_similar(model, positive=None, negative=None,
     if indexer is not None:
         return indexer.most_similar(mean, topn)
 
-    limited = (model.vectors_norm if restrict_vocab is None
-               else model.vectors_norm[:restrict_vocab])
+    limited = (model.get_vector if restrict_vocab is None
+               else model.get_vector(restrict_vocab))
     dists = limited @ mean
 
     if topn is None:
